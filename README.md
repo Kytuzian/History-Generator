@@ -17,6 +17,7 @@ The simulation will then just run. Read the mechanics below for more information
 5. Add more resources
 6. Add terrain
 7. Saving
+8. Research
 
 #Mechanics Overview
 At the beginning, the game generates a number of nations. Each of these has their own languages (see language below), name, public offices, cities, and army.
