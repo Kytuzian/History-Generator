@@ -1,0 +1,182 @@
+2016-02-09
+
+Major changes:
+- Added a general history screen for both religions and the entire world.
+- Units now aim ahead of their targets so they aren't useless at long range.
+- Added a bunch more types of buildings with different effects.
+    - Houses: Population capacity: 100, Tax rate: x1.001, Cost: 100
+    - Farm: Population capacity: 10, Food output: 100, Cost: 200
+    - Fishery: Population capacity: 5, Food output: 150, Cost: 200
+    - Ranch: Population capacity: 5, Food output: 200, Cost: 300
+    - Mine: Population capacity: 20, Money output: 500, Cost: 600
+    - Market: Tax rate: x1.01, Money output: 1000, Cost: 1500
+
+Minor changes:
+- Removed some more similar colors.
+
+Bug fixes:
+- Fixed how socialism affects food production (previously was twice what it was supposed to be).
+
+2016-01-07
+
+Major changes:
+- People can fill multiple offices at the same time, and can fill offices again after their term ends.
+- Government type bonuses, each + or - refers to a quarter buff/debuff (++ is x2, -- is x0.5).
+    - Socialism: food ++, morale --
+    - Democracy: morale ++, efficiency -
+    - Republic: morale +
+    - Theocracy: morale +, tolerance --
+    - Kingdom, Principality, Khanate, Sultanate: conscription +, morale -
+    - Hegemony: conscription ++, morale --
+    - Confederacy: morale +, efficiency -
+    - Meritocracy: efficiency++, morale -
+    - Aristocracy, Oligarchy: conscription +, efficiency -
+    - States, Commonwealth: None
+
+Minor changes:
+- Removed even more light colors that are essentially white.
+- Battle window title now uses short nation names rather than full names.
+- Tweaked lose and gain god chances.
+- Tweaked lose and gain modifier chances (for nation names).
+- Tweaked some window sizes.
+- Nations are no longer destroyed when they lose all their cities, but when they lose all their cities and armies.
+- Made world wrap around.
+- Increased average life expectancy to 30 (from 20).
+- Offices now have term lengths.
+- Removed the "person has died!" message.
+- Removed all religion printing messages.
+- Added religion history to religion information window.
+
+Bug fixes:
+- Fixed for real this time the bug where nations could be the same color as each other.
+- Fixed bug where revolts would create a new city instead of just having the cities that revolted.
+- Speculatively fixed issue where population could go below 0.
+- Fixed bug where nations would not be removed from trade treaties when destroyed.
+
+2016-01-05
+
+Major changes:
+- Ranged troops now switch to melee when their target gets too close (and switch back once their target is far enough away, if applicable).
+- Nations names are now composed of various modifiers, a government type, and several place names.
+
+Minor changes:
+- Ranged troops are now half as strong in melee.
+- Removed some more light colors.
+- Added a couple more government types.
+- Added some more government name modifiers.
+- Slightly optimized battles.
+- Units will now switch their targets to the closest unit every few steps even if their previous target has not been fully killed.
+- Under the hood stuff for events with nations (ids so we can keep track of nations even with changing names).
+- Nation list in the control menu no longer shows the age of the nation.
+- Slightly increased projectile movement speed (5 to 6).
+
+Bug fixes:
+- Fixed battle sizes (now troops are actually in the right proportions).
+
+2016-01-04
+
+Major changes:
+- Cities from the same nation now merge together when they have a neighboring square, ideally reducing the overall amount of overlapping cities. Merged cities will display events from all previous merged cities.
+- Religions tolerance is no longer a single number. It is now calculated from a base tolerance, modified by the gods domains and their importances.
+- Religions can now change over time, changing their tolerance (gods can be added and removed from the pantheon, assuming they're polytheistic).
+- Added lots of new events for all the religion stuff.
+
+Minor changes:
+- Events are now outputted on a monthly, rather than yearly, basis.
+- Reduced the chance of religions being monotheistic (20% by default).
+- Events in the nation/city display screens are now displayed in chronological order (as opposed to the no order from before).
+- Made tolerance for religions actually make sense (higher tolerance is more tolerant, rather than less).
+- Gods now have an importance attributes that tracks how important the god is to the civilization.
+- Keeping the civilization's capital city for a year adds morale.
+- Added a new option to the main control screen that allows battle windows to be minimized by default.
+- The controls window will now reopen if closed.
+- People now have an effectiveness stat that affects how well they perform the duties of their office (higher tax multipliers).
+- Offices can now provide a morale bonus every year for the nation.
+
+Bug fixes:
+- Fixed bug where nation actually could be the same color as each other.
+- Fixed bug where gods sometimes displayed no domains in the information window.
+
+2016-01-03
+
+Major changes:
+- Created informational GUIs for nations, religions, and armies.
+
+Minor changes:
+- Stopped cell information window from opening on a focus switch to the map view.
+- Added a city founded event.
+- Added city's history to its information window.
+- Food now spoils based on several factors, the amount of food, the age of the city, and the number of cells in the city.
+- Reorganzing some event data.
+- Increased the average life expectancy.
+
+Bux fixes:
+- Fixed crash when attempting to add more improvements.
+- Fixed issue with cities not producing any money.
+- Fixed issue with troop radius not properly scaling.
+
+2016-01-02
+
+Major changes:
+- Added fairly simple GUI to a new control window to allow for the control of time passing. Run continuously makes the simulation keep running until the box is ticked again.
+- Garrisons are no longer a separate army, but rather randomly drawn from the city's population (at most half of the population) when it is attacked.
+- Armies now consume food, and will partially disband if there isn't enough food (a random amount, based on how much food is missing).
+- Added GUI for examining cells and cities (just click on a cell to open it).
+
+Minor changes:
+- Added more constants instead of magic numbers at the top of various files.
+- Allowed troops to defend themselves against projectiles.
+- Gave units more ammunition based on the number of soldiers in their unit and their discipline.
+- Removed more printing from console.
+- Added the current year to the main window title.
+- Tuned down soldier costs a little, to decrease ridiculously large army sizes.
+- Added a display for the city's population and army size.
+- Cities can now completely starve. This shoud fix the problem with millions of little cities clogging up the map view.
+- Fewer people leave cities when there isn't enough food to feed all of them (randomized).
+- Not having enough food now decreases morale (in addition to increasing morale when there is enough food).
+- Cities are now more likely to expand when they have more surrounding farmland.
+- Increased chance for caravans to go the nation's own cities over trade partners.
+- Nations can no longer have the same color (although some colors are pretty similar anyway).
+- Removed some similar colors.
+- Slowed down the default simulation speed (delay between steps).
+
+Bug fixes:
+- Fixed bug that made it more or less impossible for cities to actually build any improvements.
+- Fixed bug where soldiers would use their opponents discipline to determine their fatigue.
+- Fixed bug where army couldn't return if an attack failed and its nation lost all its cities.
+- Fixed bug where losses wouldn't scale with FOOD_PER_PERSON.
+- Fixed bug where offices wouldn't actually be simulated.
+
+2016-01-01
+
+Major changes:
+- Cities now have two types of cells, city and surrounding. Surrounding generates food, people consume food. If there isn't enough food, city tiles can switch into surrounding tiles, and surrounding tiles can be lost altogether.
+- If two nations have neighboring cities, they must either be at war with each other or trading with each other. They can no longer be neutral.
+- Cities now recruit troops on a monthly, rather than yearly, basis. This should drastically increase the size of battles.
+
+Minor changes:
+- Removed cornsilk and snow as possible colors for nations, because they're essentially white and can't really be seen.
+- Added WAY more colors for nations.
+- Changed default cell size from 5 to 4.
+- City names now show above the average location of all their cells, as opposed to just their first cell, as it previously worked.
+- Cities no longer change their name when their ownership is changed.
+- Battle's window title now shows the name of the city being fought for.
+- Tweaked rate at which nations will trade with each other, so trading is less likely.
+- Increase rate at which nations declare war for non-religious purposes.
+- Added morale bonus for cities which have enough food to feed themselves.
+- Decreased chance of revolts.
+- Doubled group movement speed.
+- Factored the number of nations into the revolt chance. (More nations = fewer revolts)
+- Greatly increased the cost of founding cities (10x more expensive).
+- Decreased soldier's recruitment cost and upkeep.
+- Armies will now return to their owning nations cities if the city they meant to attack is no longer of the war.
+- Reinforcing armies will now attack their destination if it has been taken over by an enemy. Otherwise, they will also return to the original nation.
+- Armies from defeated cities will now leave and return to another city of the nation if there is one. If there isn't one, they will stay and fight to the end.
+- Removed the header for each month, instead printing the date along with each message.
+- Added this changelog file to the release.
+
+Bug fixes:
+- Fixed bug where crash would occur when city had already been taken and was attacked again.
+- Fixed bug where nations could trade with nations they were already at war with.
+- Fixed issue with reinforcing other cities hanging up the game.
+- Stopped nations from declaring war on themselves, because that's stupid.
