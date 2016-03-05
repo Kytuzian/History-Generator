@@ -1,5 +1,6 @@
 from math import *
 from Tkinter import *
+import tkMessageBox
 from time import sleep
 import tkFont
 import random
@@ -154,6 +155,7 @@ class Main(Frame):
         self.nations = []
 
         self.is_continuous = False
+        self.advancing = False
 
         self.setup()
 
@@ -207,7 +209,18 @@ class Main(Frame):
         self.world_history_button.grid(row=1, column=2, sticky=W)
 
         self.simulation_speed_label = Label(self.gui_window, text='Simulation Speed (ms):')
-        self.simulation_speed_label.grid(row=2, sticky=W)
+        self.simulation_speed_label.grid(row=2, column = 0, sticky=W)
+
+        self.advance_time_button = Button(self.gui_window, text='Advance By:', command=self.run_to)
+        self.advance_time_button.grid(row=2, column=1, sticky=W)
+
+        self.years_input = StringVar()
+        self.years_box = Entry(self.gui_window, textvariable=self.years_input)
+        self.years_box.grid(row=3, column=1)
+        self.years_input.set('0')
+
+        self.years_box_label = Label(self.gui_window, text='years')
+        self.years_box_label.grid(row=3, column=2)
 
         self.delay = Scale(self.gui_window, from_=10, to_=1000, orient=HORIZONTAL)
         self.delay.grid(row=3, sticky=W)
@@ -274,6 +287,22 @@ class Main(Frame):
 
             self.cells[cell_x][cell_y].show_information_gui()
 
+    def run_to(self):
+        self.advancing = True
+
+        try:
+            advance_amount = int(self.years_input.get())
+
+            if advance_amount > 0:
+                self.end_year = self.year + advance_amount
+            else:
+                tkMessageBox.showerror('Negative Years', 'Cannot advance a negative amount of time.')
+        except ValueError:
+            tkMessageBox.showerror('Invalid Year', '{} is not a valid integer'.format(self.years_input.get()))
+            return
+
+        self.after_id = self.parent.after(self.delay.get(), self.main_loop)
+
     def toggle_continuous(self):
         self.is_continuous = not self.is_continuous
 
@@ -295,7 +324,7 @@ class Main(Frame):
                 self.month = 1
 
                 for i in self.nations:
-                    i.history_step()
+                    i.history_step(self)
 
             if len(self.battles) == 0 or self.day == 30:
                 for i in self.nations:
@@ -346,6 +375,13 @@ class Main(Frame):
 
             if self.is_continuous:
                 self.after_id = self.parent.after(self.delay.get(), self.main_loop)
+            elif self.advancing:
+                if self.year < self.end_year:
+                    self.after_id = self.parent.after(self.delay.get(), self.main_loop)
+                else:
+                    #We finish advancing next step
+                    self.advancing = False
+                    self.after_id = self.parent.after(self.delay.get(), self.main_loop)
         except KeyboardInterrupt:
             self.write_out_events('event_log.txt')
 

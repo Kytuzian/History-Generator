@@ -520,7 +520,7 @@ class City:
         self.handle_money()
 
         for i in xrange(int(sqrt(self.population))):
-            improvement_chance = self.building_count() // int(log(self.population)) + 1
+            improvement_chance = self.building_count() // (int(log(self.population)) + 1)
             if improvement_chance > 0:
                 if random.randint(0, improvement_chance) == 0:
                     build_building = utility.weighted_random_choice(self.buildings, weight=lambda _, v: v.get_cost() // 100, reverse=True)
@@ -741,6 +741,9 @@ class Nation:
 
         self.army_structure = Troop.init_troop(self.language.make_word(self.language.name_length, True))
 
+        self.tech = base_tech_tree()
+        self.current_research = None
+
         self.tax_rate = random.random() * TAX_MULTIPLIER
 
         self.morale = MORALE_INCREMENT * 4
@@ -750,8 +753,6 @@ class Nation:
         self.elite = random.randint(2, 10)
 
         self.religion = Religion(self.language, self.language.make_name_word())
-
-        self.tech = base_tech_tree()
 
         if len(self.cities) > 0:
             place_name = self.cities[0].name
@@ -838,7 +839,7 @@ class Nation:
 
     def display_events(self):
         all_events = event_analysis.find_nation_mentions(self.id)
-        all_events = all_events.search('name', r'NationFounded|CityFounded|CityMerged|Attack|DiplomacyWar|DiplomacyTrade|Revolt')
+        all_events = all_events.search('name', r'NationFounded|TechResearch|CityFounded|CityMerged|Attack|DiplomacyWar|DiplomacyTrade|Revolt')
         all_events = sorted(all_events.event_list, key=lambda event: event.date)
 
         self.listbox_display.delete(0, END)
@@ -916,7 +917,7 @@ class Nation:
             city.population += per_city
 
     def get_tax_rate(self):
-        return self.tax_rate * utility.product([office.get_modifier('tax_rate') for office in self.offices]) * self.tech.get_effects()['tax_rate']
+        return self.tax_rate * utility.product([office.get_modifier('tax_rate') for office in self.offices])
 
     def get_army_spending(self):
         return self.army_spending * utility.product([office.get_modifier('army_spending') for office in self.offices])
@@ -1044,20 +1045,13 @@ class Nation:
     def get_tolerance_bonus(self):
         return GOVERNMENT_TYPE_BONUSES[self.name.government_type]['tolerance']
 
-    def get_strength_bonus(self):
-        return self.tech.get_effects()['strength']
-
-    def get_health_bonus(self):
-        return self.tech.get_effects()['health']
-
-    def get_armor_bonus(self):
-        return self.tech.get_effects()['armor']
-
-    def get_population_bonus(self):
-        return self.tech.get_effects()['population_capacity']
-
     def get_food_bonus(self):
-        return GOVERNMENT_TYPE_BONUSES[self.name.government_type]['food'] * self.tech.get_effects()['farm_output']
+        mult_mod = 1.0
+        add_mod = 0.0
+        res = self.tech.get_tech('Improved Agriculture')
+        if res != None:
+            mult_mod *= res.effect_strength
+        return GOVERNMENT_TYPE_BONUSES[self.name.government_type]['food'] * mult_mod + add_mod
 
     def get_efficiency_bonus(self):
         return GOVERNMENT_TYPE_BONUSES[self.name.government_type]['efficiency']
@@ -1069,13 +1063,10 @@ class Nation:
         return GOVERNMENT_TYPE_BONUSES[self.name.government_type]['conscription']
 
     def get_soldier_cost(self, name):
-        return SOLDIER_RECRUIT_COST * self.nation.tech.get_effects()['soldier_cost']
+        return SOLDIER_RECRUIT_COST
 
-    def get_self.nation.get_soldier_upkeep(self.army.name)(self, name):
-        return SOLDIER_UPKEEP * self.nation.tech.get_effects()['self.nation.get_soldier_upkeep(self.army.name)']
-
-    def has_tech(self, tech_name):
-        return has_tech(self.tech, tech_name)
+    def get_soldier_upkeep(self, name):
+        return SOLDIER_UPKEEP
 
     def mod_morale(self, amount):
         if amount > 0:
@@ -1085,7 +1076,7 @@ class Nation:
 
         self.morale = int(self.morale + amount * self.get_morale_bonus())
 
-    def history_step(self):
+    def history_step(self, main):
         self.name.history_step(self)
 
         for person in self.people:
@@ -1093,8 +1084,6 @@ class Nation:
 
             if not person.alive:
                 person.handle_death()
-
-                # print("{}: {} has died!".format(self.parent.get_current_date(), person))
 
         #Remove old, redundant offices
         for office in self.offices:
@@ -1119,6 +1108,20 @@ class Nation:
         for city in self.cities:
             if random.randint(0, max([1, len(self.cities)**10 / max([1, city.population])])) == 0 and (self.money > CITY_FOUND_COST * len(self.cities)): #We need enough money
                 self.create_city()
+
+            if self.current_research == None or self.current_research.is_unlocked():
+                if self.current_research != None and self.current_research.is_unlocked():
+                    main.events.append(events.EventTechResearch('TechResearch', {'nation_a': self.id, 'tech_a': self.current_research.name}, main.get_current_date()))
+
+                    print(main.events[-1].text_version())
+                available = self.tech.get_available_research()
+
+                if len(available) > 0:
+                    self.current_research = random.choice(available)
+                else: #There's nothing left to research
+                    self.current_research = None
+            else:
+                self.current_research.do_research(log(city.population + 1))
 
         self.religion.history_step(self.parent)
 

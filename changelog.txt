@@ -1,3 +1,15 @@
+2016-03-05
+Major changes:
+- Officially added research to the game, although there are very few researches and most don't do anything yet.
+- Added weapons such as swords, spears, axes, et cetera to the game, as well as ranged weapons such as stones, slings, bows, et cetera.
+
+Minor changes:
+- Allowed time to be advanced by a specific number of years.
+
+Bug fixes:
+- Fixed some find-replace errors.
+- Fixed occasional divide-by-zero error in civil.py (improvement_chance). Thanks Antsan!
+
 2016-02-09
 
 Major changes:

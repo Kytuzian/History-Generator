@@ -55,6 +55,8 @@ class Event:
             return EventAttack(dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'Revolt':
             return EventRevolt(dict['name'], dict['event_data'], dict['date'])
+        elif dict['name'] == 'TechResearch':
+            return EventTechResearch(dict['name'], dict['event_data'], dict['date'])
         else:
             return Event(dict['name'], dict['event_data'], dict['date'])
 
@@ -183,3 +185,11 @@ class EventRevolt(Event):
 
     def text_version(self):
         return 'A revolt occurred in {}, resulting in the creation of {} made up of {}'.format(get_nation_name(self.parent_nation), get_nation_name(self.new_name), self.cities)
+
+class EventTechResearch(Event):
+    def setup(self):
+        self.research_nation = self.event_data['nation_a']
+        self.tech_name = self.event_data['tech_a']
+
+    def text_version(self):
+        return '{}: The nation of {} has researched the technology of {}.'.format(self.date, get_nation_name(self.research_nation), self.tech_name)

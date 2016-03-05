@@ -9,6 +9,8 @@ import utility
 from civil import *
 from language import *
 
+from research import weapon_list, ranged_weapon_list, unarmed, stones
+
 PROJECTILE_MOVEMENT_SPEED = 6
 PROJECTILE_RADIUS = 3
 
@@ -38,11 +40,16 @@ class Troop:
 
         elite = random.randint(2, 10)
 
+        if ranged:
+            weapon = stones()
+        else:
+            weapon = unarmed()
+
         tier = 1
 
-        return cls(name, strength, health, 0, ranged, discipline, rank_size, ranks, elite, tier, [])
+        return cls(name, strength, health, 0, ranged, discipline, rank_size, ranks, weapon, elite, tier, [])
 
-    def __init__(self, name, strength, health, number, ranged, discipline, rank_size, ranks, elite, tier, upgrades):
+    def __init__(self, name, strength, health, number, ranged, discipline, rank_size, ranks, weapon, elite, tier, upgrades):
         self.name = name
         self.strength = strength
         self.health = health
@@ -55,6 +62,8 @@ class Troop:
 
         self.rank_size = rank_size
         self.ranks = ranks
+
+        self.weapon = weapon
 
         self.upgrades = upgrades
 
@@ -76,9 +85,14 @@ class Troop:
         rank_size = random.randint(2, 18)
         ranks = random.randint(2, 6)
 
+        if ranged:
+            weapon = random.choice(ranged_weapon_list)
+        else:
+            weapon = random.choice(weapon_list)
+
         elite = random.randint(2, 10)
 
-        return cls(name, strength, health, 0, ranged, discipline, rank_size, ranks, elite, self.tier + 1, [])
+        return cls(name, strength, health, 0, ranged, discipline, rank_size, ranks, weapon, elite, self.tier + 1, [])
 
     def show_information_gui(self):
         self.gui_window = Tk()
@@ -175,7 +189,7 @@ class Troop:
         return sorted([self] + reduce(lambda a, b: a + b, [i.make_upgrade_list() for i in self.upgrades], []), key=lambda a: a.strength * a.health)
 
     def copy(self):
-        return Troop(self.name, self.strength, self.health, 0, self.ranged, self.discipline, self.rank_size, self.ranks, self.elite, self.tier, map(lambda i: i.copy(), self.upgrades))
+        return Troop(self.name, self.strength, self.health, 0, self.ranged, self.discipline, self.rank_size, self.ranks, self.weapon.copy(), self.elite, self.tier, map(lambda i: i.copy(), self.upgrades))
 
     def is_empty(self):
         return all(map(lambda i: i.is_empty(), self.upgrades)) and self.number == 0
@@ -728,8 +742,8 @@ class Battle():
                         self.canvas.move(soldier.id, (tx - x) / d * TROOP_MOVEMENT_SPEED, (ty - y) / d * TROOP_MOVEMENT_SPEED)
 
                     if d < 10:
-                        attack = soldier.get_attack()
-                        defense = soldier.target.get_defense()
+                        attack = current_unit.soldier_type.weapon.get_attack(soldier)
+                        defense = current_unit.soldier_type.weapon.get_defense(soldier.target)
 
                         if random.randint(0, soldier.discipline) == 0:
                             soldier.fatigue += 1
@@ -818,7 +832,7 @@ class Battle():
             if unit.name_id == 0: #It was just created, set it up
                 unit.calculate_position()
                 unit.ammunition = len(unit.soldiers) * 10
-                unit.name_id = self.canvas.create_text(unit.x, unit.y - 20, text=("{}: {}, {}".format(unit.soldier_type.name, unit.soldier_type.strength, unit.soldier_type.health)))
+                unit.name_id = self.canvas.create_text(unit.x, unit.y - 20, text=("{} ({}): {}, {}".format(unit.soldier_type.name, unit.soldier_type.weapon.name, unit.soldier_type.strength, unit.soldier_type.health)))
 
         if not self.over:
             self.after_id = self.parent.after(self.battle_speed.get(), self.main_phase)
