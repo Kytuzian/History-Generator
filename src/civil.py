@@ -381,6 +381,12 @@ class City:
 
         return (x // self.total_cell_count(), y // self.total_cell_count())
 
+    def remake_display_name(self):
+        self.parent.canvas.delete(self.name_id)
+        self.name_id = -1
+
+        self.handle_display_name()
+
     def handle_display_name(self):
         x, y = self.get_average_position()
         x = x * utility.CELL_SIZE
@@ -1134,4 +1140,4 @@ class Nation:
         self.mod_morale(-(len(self.cities) + 1))
 
     def __repr__(self):
-        return '{} ({}): ${}; Morale: {}; Pop: {}'.format(self.name, self.color, int(self.money), self.morale, sum([i.population for i in self.cities]))
+        return '{} ({}): ${}; Pop: {}'.format(self.name.short_name(), self.color, int(self.money), sum([i.population for i in self.cities]))

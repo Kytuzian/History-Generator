@@ -5,10 +5,13 @@ from math import *
 
 START_BATTLES_MINIMIZED = False
 
-S_WIDTH = 1000
-S_HEIGHT = 600
+S_WIDTH = 2000
+S_HEIGHT = 1200
 
-CELL_SIZE = 4 #cells are squares, this is the side length
+DISPLAY_WIDTH = 1280
+DISPLAY_HEIGHT = 720
+
+CELL_SIZE = 6 #cells are squares, this is the side length
 
 def calculate_interception(v_e, v_p, (x_e, y_e), (x_p, y_p), theta_e):
     t1 = -(v_e*x_e*cos(theta_e) - v_e*x_p*cos(theta_e) + v_e*y_e*sin(theta_e) - v_e*y_p*sin(theta_e) + sqrt(-(v_e**2*sin(theta_e)**2 - v_p**2)*x_e**2 + 2*(v_e**2*sin(theta_e)**2 - v_p**2)*x_e*x_p - (v_e**2*sin(theta_e)**2 - v_p**2)*x_p**2 - (v_e**2*cos(theta_e)**2 - v_p**2)*y_e**2 - (v_e**2*cos(theta_e)**2 - v_p**2)*y_p**2 + 2*(v_e**2*x_e*cos(theta_e)*sin(theta_e) - v_e**2*x_p*cos(theta_e)*sin(theta_e))*y_e - 2*(v_e**2*x_e*cos(theta_e)*sin(theta_e) - v_e**2*x_p*cos(theta_e)*sin(theta_e) - (v_e**2*cos(theta_e)**2 - v_p**2)*y_e)*y_p))/((cos(theta_e)**2 + sin(theta_e)**2)*v_e**2 - v_p**2)

@@ -29,8 +29,11 @@ class Cell:
 
         self.owner = owner
 
+        self.make_id()
+
+    def make_id(self):
         if self.owner != None:
-            self.id = self.parent.canvas.create_rectangle(self.x * utility.CELL_SIZE, self.y * utility.CELL_SIZE, self.x * utility.CELL_SIZE + utility.CELL_SIZE, self.y * utility.CELL_SIZE + utility.CELL_SIZE, width=0, fill=owner.nation.color)
+            self.id = self.parent.canvas.create_rectangle(self.x * utility.CELL_SIZE, self.y * utility.CELL_SIZE, self.x * utility.CELL_SIZE + utility.CELL_SIZE, self.y * utility.CELL_SIZE + utility.CELL_SIZE, width=0, fill=self.owner.nation.color)
         else:
             self.id = self.parent.canvas.create_rectangle(self.x * utility.CELL_SIZE, self.y * utility.CELL_SIZE, self.x * utility.CELL_SIZE + utility.CELL_SIZE, self.y * utility.CELL_SIZE + utility.CELL_SIZE, width=0, fill='white')
 
@@ -118,8 +121,8 @@ class Cell:
 
         return result
 
-class Main(Frame):
-    nation_count = 5
+class Main:
+    nation_count = 8
 
     def __init__(self):
         self.events = []
@@ -130,19 +133,16 @@ class Main(Frame):
         self.hour = 0
         self.minute = 0
 
-        #Put it up here so it appears above the other window.
-        self.gui_window = Tk()
-        self.gui_window.title("Controls")
-        self.gui_window.geometry("500x300+0+0")
-
         self.parent = Tk()
-        self.parent.geometry("{}x{}+0+0".format(utility.S_WIDTH, utility.S_HEIGHT))
+        self.parent.title('Year: 0')
+        self.parent.geometry("{}x{}+0+0".format(utility.DISPLAY_WIDTH, utility.DISPLAY_HEIGHT))
 
-        Frame.__init__(self, self.parent)
-
-        self.canvas = Canvas(self.parent, width=utility.S_WIDTH, height=utility.S_HEIGHT)
+        self.canvas = Canvas(self.parent, bd=1, relief=RIDGE, width=utility.DISPLAY_WIDTH, height=utility.DISPLAY_HEIGHT - 4, scrollregion=(0, 0, utility.S_WIDTH, utility.S_HEIGHT))
         self.canvas.bind('<Button-1>', self.get_cell_information)
-        self.canvas.pack()
+        self.canvas.bind('<MouseWheel>', self.on_vertical)
+        self.canvas.bind('<Shift-MouseWheel>', self.on_horizontal)
+
+        self.canvas.grid(row=0, column=3, rowspan=11)#, sticky=W + E + N + S)
 
         self.after_id = 0
 
@@ -158,6 +158,42 @@ class Main(Frame):
         self.advancing = False
 
         self.setup()
+
+    def zoom(self, size):
+        utility.CELL_SIZE = int(self.zoom_scale.get())
+
+        if utility.CELL_SIZE < 1:
+            utility.CELL_SIZE = 1
+
+        utility.S_WIDTH = utility.CELL_SIZE * len(self.cells)
+        utility.S_HEIGHT = utility.CELL_SIZE * len(self.cells[0])
+
+        self.canvas.config(scrollregion=(0, 0, utility.S_WIDTH, utility.S_HEIGHT))
+
+        if utility.S_WIDTH < utility.DISPLAY_WIDTH:
+            self.canvas.config(width=utility.S_WIDTH)
+        else:
+            self.canvas.config(width=utility.DISPLAY_WIDTH)
+
+        if utility.S_HEIGHT < utility.DISPLAY_HEIGHT:
+            self.canvas.config(height=utility.S_HEIGHT)
+        else:
+            self.canvas.config(height=utility.DISPLAY_HEIGHT)
+
+        for x in self.cells:
+            for y in x:
+                self.canvas.delete(y.id)
+                y.make_id()
+
+        for nation in self.nations:
+            for city in nation.cities:
+                city.remake_display_name()
+
+    def on_vertical(self, event):
+        self.canvas.yview_scroll(-event.delta, 'units')
+
+    def on_horizontal(self, event):
+        self.canvas.xview_scroll(-event.delta, 'units')
 
     def setup(self):
         for x in xrange(utility.S_WIDTH // utility.CELL_SIZE):
@@ -179,55 +215,47 @@ class Main(Frame):
 
         return 'nation {}'.format(self.nation_id)
 
-    def reopen_control_window(self):
-        self.gui_window.destroy()
-
-        self.gui_window = Tk()
-        self.gui_window.title("Controls")
-        self.gui_window.geometry("500x300+0+0")
-
-        self.create_gui()
-
     def create_gui(self):
-        self.gui_window.columnconfigure(3, weight=1)
+        self.parent.columnconfigure(3, weight=1)
+        self.parent.rowconfigure(10, weight=1)
 
-        self.gui_window.protocol('WM_DELETE_WINDOW', self.reopen_control_window)
-
-        self.continuous = Checkbutton(self.gui_window, text="Run continuously", command=self.toggle_continuous)
+        self.continuous = Checkbutton(self.parent, text="Run continuously", command=self.toggle_continuous)
         self.continuous.grid(row=0, sticky=W)
 
-        self.minimize_battles = Checkbutton(self.gui_window, text='Minimize battle windows', command=self.toggle_minimize_battles)
-        self.minimize_battles.grid(row=0, column=1, sticky=W)
+        self.minimize_battles = Checkbutton(self.parent, text='Minimize battle windows', command=self.toggle_minimize_battles)
+        self.minimize_battles.grid(row=0, column=1, columnspan=2, sticky=W)
 
-        self.advance_button = Button(self.gui_window, text="Advance Step", command=self.main_loop)
-        self.advance_button.grid(row=1, sticky=W)
+        self.religion_history_button = Button(self.parent, text="Religion history", command=self.open_religion_history_window)
+        self.religion_history_button.grid(row=2, column=0, sticky=W)
 
-        self.religion_history_button = Button(self.gui_window, text="Religion history", command=self.open_religion_history_window)
-        self.religion_history_button.grid(row=1, column=1, sticky=W)
+        self.world_history_button = Button(self.parent, text="World history", command=self.open_world_history_window)
+        self.world_history_button.grid(row=2, column=1, sticky=W)
 
-        self.world_history_button = Button(self.gui_window, text="World history", command=self.open_world_history_window)
-        self.world_history_button.grid(row=1, column=2, sticky=W)
+        self.zoom_scale = Scale(self.parent, from_=1, to_=20, orient=HORIZONTAL)
+        self.zoom_scale.grid(row=3, column=0, sticky=W)
+        self.zoom_scale.bind('<ButtonRelease-1>', self.zoom)
+        self.zoom_scale.set(utility.CELL_SIZE)
 
-        self.simulation_speed_label = Label(self.gui_window, text='Simulation Speed (ms):')
-        self.simulation_speed_label.grid(row=2, column = 0, sticky=W)
+        self.advance_button = Button(self.parent, text="Advance Step", command=self.main_loop)
+        self.advance_button.grid(row=4, sticky=W)
 
-        self.advance_time_button = Button(self.gui_window, text='Advance By:', command=self.run_to)
-        self.advance_time_button.grid(row=2, column=1, sticky=W)
+        self.simulation_speed_label = Label(self.parent, text='Simulation Speed (ms):')
+        self.simulation_speed_label.grid(row=5, column=0, sticky=W)
 
-        self.years_input = StringVar()
-        self.years_box = Entry(self.gui_window, textvariable=self.years_input)
-        self.years_box.grid(row=3, column=1)
-        self.years_input.set('0')
-
-        self.years_box_label = Label(self.gui_window, text='years')
-        self.years_box_label.grid(row=3, column=2)
-
-        self.delay = Scale(self.gui_window, from_=10, to_=1000, orient=HORIZONTAL)
-        self.delay.grid(row=3, sticky=W)
+        self.delay = Scale(self.parent, from_=10, to_=1000, orient=HORIZONTAL)
+        self.delay.grid(row=6, sticky=W)
         self.delay.set(DEFAULT_SIMULATION_SPEED)
 
-        self.nation_selector = Listbox(self.gui_window)
-        self.nation_selector.grid(row=4, column=0, columnspan=4, sticky=W+E)
+        self.advance_time_button = Button(self.parent, text='Advance By:', command=self.run_to)
+        self.advance_time_button.grid(row=7, column=0, sticky=W)
+
+        self.years_input = StringVar()
+        self.years_box = Entry(self.parent, textvariable=self.years_input)
+        self.years_box.grid(row=8, column=0, sticky=W)
+        self.years_input.set('0')
+
+        self.nation_selector = Listbox(self.parent)
+        self.nation_selector.grid(row=9, column=0, columnspan=3, sticky=W+E)
 
         self.nation_selector.bind('<Double-Button-1>', self.select_nation)
 
@@ -483,7 +511,7 @@ class Main(Frame):
                         break
 
             #Let's try not warring with them, and trade instead, perhaps?
-            if random.randint(0, max(4, int(7**log(i.get_tolerance())))) == 0: #Randomly start a new trade agreement. Change it later
+            if random.randint(0, max(4, int(7**log(max(1, i.get_tolerance()))))) == 0: #Randomly start a new trade agreement. Change it later
                 partner = utility.weighted_random_choice(self.nations, weight=lambda _, v: int(utility.distance(i.get_average_city_position(), v.get_average_city_position())), reverse=True)
 
                 #We can't trade with somebody we're already trading with or at war with, and we can't trade with ourselves

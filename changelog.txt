@@ -1,3 +1,17 @@
+2016-03-06
+Major changes:
+- World is now scrollable, and twice the size.
+- Added ability to zoom (change tile size from 1 to 30).
+
+Minor changes:
+- Removed control window and moved controls to the main window.
+- Tile size increased from 4 pixels to 6 pixels.
+- Starting nation amount increased from 5 to 8.
+- Group movement speed increased from 3 tiles/step to 5 tiles/step.
+
+Bug fixes:
+- Fixed bug where the game would crash if a nation's tolerance was 0.
+
 2016-03-05
 Major changes:
 - Officially added research to the game, although there are very few researches and most don't do anything yet.
