@@ -363,7 +363,7 @@ class Soldier:
         else:
             return (-1, -1)
 
-    def get_ranged_attack(self):
+    def get_ranged_attack(self, material):
         fatigue_loss = random.randint(0, self.fatigue // 2)
 
         #Find our ranged weapon. Should be first, but better to check in case it's not.
@@ -372,10 +372,19 @@ class Soldier:
             if weapon.name in map(lambda w: w.name, all_ranged_weapons):
                 use_weapon = weapon
 
+                break
+
         if use_weapon == None: #Shouldn't actually happen, but just in case.
             return random.randint(0, 1)
         else:
-            weapon_attack = random.randint(0, use_weapon.attack)
+            effective_attack = use_weapon.attack
+            if material != None and use_weapon.material_multiplier > 0:
+                effective_attack *= use_weapon.material_multiplier * material.effect_strength
+                effective_attack = int(effective_attack)
+
+                # print('Effective Attack: {} from {} with {}'.format(effective_attack, use_weapon.attack, material.name))
+
+            weapon_attack = random.randint(0, effective_attack)
             normal_attack = use_weapon.attack_skill_multiplier * random.randint(0, self.strength)
 
             result = weapon_attack + normal_attack - fatigue_loss
@@ -387,7 +396,7 @@ class Soldier:
             else:
                 return random.randint(0, 1)
 
-    def get_melee_attack(self):
+    def get_melee_attack(self, material):
         fatigue_loss = random.randint(0, self.fatigue // 2)
 
         #Find our ranged weapon. Should be first, but better to check in case it's not.
@@ -396,10 +405,19 @@ class Soldier:
             if weapon.name in map(lambda w: w.name, all_melee_weapons):
                 use_weapon = weapon
 
+                break
+
         if use_weapon == None: #This could happen if ALL of our weapons have broken.
             use_weapon = unarmed()
 
-        weapon_attack = random.randint(0, use_weapon.attack)
+        effective_attack = use_weapon.attack
+        if material != None and use_weapon.material_multiplier > 0:
+            effective_attack *= use_weapon.material_multiplier * material.effect_strength
+            effective_attack = int(effective_attack)
+
+            # print('Effective Attack: {} from {} with {}'.format(effective_attack, use_weapon.attack, material.name))
+
+        weapon_attack = random.randint(0, effective_attack)
         normal_attack = use_weapon.attack_skill_multiplier * random.randint(0, self.strength)
 
         result = weapon_attack + normal_attack - fatigue_loss
@@ -411,7 +429,7 @@ class Soldier:
         else:
             return random.randint(0, 1)
 
-    def get_defense(self):
+    def get_defense(self, material):
         fatigue_loss = random.randint(0, self.fatigue // 2)
 
         #Find our ranged weapon. Should be first, but better to check in case it's not.
@@ -420,10 +438,19 @@ class Soldier:
             if weapon.name in map(lambda w: w.name, all_melee_weapons):
                 use_weapon = weapon
 
+                break
+
         if use_weapon == None: #This could happen if ALL of our weapons have broken.
             use_weapon = unarmed()
 
-        weapon_defense = random.randint(0, use_weapon.defense)
+        effective_defense = use_weapon.defense
+        if material != None and use_weapon.material_multiplier > 0:
+            effective_defense *= use_weapon.material_multiplier * material.effect_strength
+            effective_defense = int(effective_defense)
+
+            # print('Effective Defense: {} from {} with {}'.format(effective_defense, use_weapon.defense, material.name))
+
+        weapon_defense = random.randint(0, effective_defense)
         normal_defense = use_weapon.defense_skill_multiplier * random.randint(0, self.strength)
 
         result = weapon_defense + normal_defense - fatigue_loss
@@ -538,9 +565,9 @@ class Unit:
         return (self.x, self.y)
 
 class Battle:
-    def __init__(self, force_a, a_army, force_b, b_army, city, battle_over):
-        self.a = force_a
-        self.b = force_b
+    def __init__(self, nation_a, a_army, nation_b, b_army, city, battle_over):
+        self.a = nation_a
+        self.b = nation_b
 
         self.a_army = a_army
         self.b_army = b_army
@@ -654,7 +681,7 @@ class Battle:
                         if utility.collided((x, y, PROJECTILE_RADIUS), (tx, ty, TROOP_RADIUS)):
                             hit = True
 
-                            damage = random.randint(0, p.strength)
+                            damage = p.strength
 
                             #Allow the troop being hit by the projectile to try and defend a little.
                             defense = random.randint(0, p.target.strength) - random.randint(0, p.target.fatigue // 2)
@@ -708,7 +735,7 @@ class Battle:
         else:
             return False
 
-    def handle_units(self, force, army, proj, enemy_force, enemy_army, color):
+    def handle_units(self, force, nation, proj, enemy_force, enemy_nation, color):
         for current_unit in force:
             if self.check_end_battle():
                 return True
@@ -728,9 +755,6 @@ class Battle:
                     current_unit.target = None
 
             current_unit.calculate_position()
-
-            # if current_unit.soldier_type.ranged:
-            #     current_unit.calculate_shoot_position()
 
             #If we don't have a target, target the closest unit.
             if current_unit.target == None or random.randint(0, SWITCH_TARGET_COUNT) == 0:
@@ -778,7 +802,8 @@ class Battle:
 
                                 d = utility.distance((x, y), (tx, ty))
 
-                            proj.append(Projectile(((tx - x) / d, (ty - y) / d), soldier.get_ranged_attack(), soldier.target))
+                            damage = soldier.get_ranged_attack(nation.tech.get_best_in_category('material'))
+                            proj.append(Projectile(((tx - x) / d, (ty - y) / d), damage, soldier.target))
 
                             proj[-1].id = self.canvas.create_oval(x, y, x + PROJECTILE_RADIUS, y + PROJECTILE_RADIUS, width=0, fill=color)
                             proj[-1].skip_step = d // PROJECTILE_MOVEMENT_SPEED // 2
@@ -794,7 +819,6 @@ class Battle:
                             current_unit.soldier_type.ranged = False
                     else:
                         soldier.shoot += sqrt(soldier.discipline) / 2 + random.randint(0, 1) * log(soldier.discipline)
-                        # print(soldier.shoot, soldier.shoot_counter)
                 else:
                     #If the target moves out of range, then switch back to ranged.
                     if d > TROOP_MOVEMENT_SPEED * CC_RANGE:
@@ -805,8 +829,8 @@ class Battle:
                         self.canvas.move(soldier.id, (tx - x) / d * TROOP_MOVEMENT_SPEED, (ty - y) / d * TROOP_MOVEMENT_SPEED)
 
                     if d < 10:
-                        attack = soldier.get_melee_attack()
-                        defense = soldier.target.get_defense()
+                        attack = soldier.get_melee_attack(nation.tech.get_best_in_category('material'))
+                        defense = soldier.target.get_defense(enemy_nation.tech.get_best_in_category('material'))
 
                         if random.randint(0, soldier.discipline) == 0:
                             soldier.fatigue += 1

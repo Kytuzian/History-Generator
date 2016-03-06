@@ -3,6 +3,8 @@ Major changes:
 - World is now scrollable, and four times the size (twice as large in either direction).
 - Added ability to zoom (change tile size from 1 to 30).
 - Units are now armed with multiple weapons, a primary weapon, and a side arm (always melee). Melee units do not use their side arms yet.
+- Material of unit's weapons now affect how much attack/defense they have.
+- Added the "lab" building (adds to research rate).
 
 Minor changes:
 - Removed control window and moved controls to the main window.
@@ -13,12 +15,14 @@ Minor changes:
 - Changed amount of ammunition based on ranged weapon (stones: 6, sling: 25, javelin: 3, bow: 15, crossbow: 15, sling staff: 20)
 - Changed reload time based on ranged weapon (stones: 40, sling: 50, javelin: 40, bow: 100, crossbow: 300, sling staff: 60)
 - Changed how reloading works (units shoot much more concentrated volleys now).
+- Modified research rate (now a random number based on the population, instead of a fixed amount based on the population).
 
 Bug fixes:
 - Fixed bug where the game would crash if a nation's tolerance was 0.
 - Fixed bug where cities could try to merge twice, removing both cities and destroying the nation.
 - Fixed error where cities were not removed properly from their previous owning nation (I think, let me know if there are any errors in the console, if you would).
 - Fixed error where cities were not properly transferred to the revolting nation during a revolt.
+- Fixed bug where buildings were never actually built in cities.
 
 2016-03-05
 Major changes:

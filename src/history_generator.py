@@ -219,8 +219,7 @@ class Main:
         self.parent.columnconfigure(3, weight=1)
         self.parent.rowconfigure(11, weight=1)
 
-        self.continuous = Checkbutton(self.parent, text="Run continuously")
-        self.continuous.bind('<Button-1>', self.toggle_continuous)
+        self.continuous = Checkbutton(self.parent, text="Run continuously", command=self.toggle_continuous)
         self.continuous.grid(row=0, sticky=W)
 
         self.minimize_battles = Checkbutton(self.parent, text='Minimize battle windows', command=self.toggle_minimize_battles)
@@ -335,7 +334,7 @@ class Main:
 
         self.after_id = self.parent.after(self.delay.get(), self.main_loop)
 
-    def toggle_continuous(self, e):
+    def toggle_continuous(self):
         self.is_continuous = not self.is_continuous
 
         if self.is_continuous: #This mean we weren't just running continuously, so start

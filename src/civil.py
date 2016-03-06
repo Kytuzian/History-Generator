@@ -89,6 +89,7 @@ farm_effects = {'population_capacity': 10, 'food_output': 100, 'cost': 200}
 fishery_effects = {'population_capacity': 5, 'food_output': 150, 'cost': 200}
 ranch_effects = {'population_capacity': 5, 'food_output': 200, 'cost': 300}
 mine_effects = {'population_capacity': 20, 'money_output': 500, 'cost': 600}
+lab_effects = {'population_capacity': 5, 'research_rate': 5, 'cost': 1000}
 market_effects = {'tax_rate': 1.01, 'money_output': 1000, 'cost': 1500}
 
 class Building:
@@ -101,6 +102,12 @@ class Building:
 
     def get_cost(self):
         return self.effects['cost']
+
+    def get_research_rate(self):
+        if 'research_rate' in self.effects:
+            return self.effects['research_rate'] * self.number
+        else:
+            return 0
 
     def get_population_capacity(self):
         if 'population_capacity' in self.effects:
@@ -155,6 +162,7 @@ class City:
         self.buildings.append(Building('Fishery', self, fishery_effects, 0))
         self.buildings.append(Building('Ranch', self, ranch_effects, 0))
         self.buildings.append(Building('Mine', self, mine_effects, 0))
+        self.buildings.append(Building('Lab', self, lab_effects, 0))
         self.buildings.append(Building('Market', self, market_effects, 0))
 
         if self.parent.cells[self.position[0]][self.position[1]].owner != None:
@@ -541,14 +549,13 @@ class City:
         self.handle_money()
 
         for i in xrange(int(sqrt(self.population))):
-            improvement_chance = self.building_count() // (int(log(self.population)) + 1)
-            if improvement_chance > 0:
-                if random.randint(0, improvement_chance) == 0:
-                    build_building = utility.weighted_random_choice(self.buildings, weight=lambda _, v: v.get_cost() // 100, reverse=True)
+            improvement_chance = int((self.building_count() + 1) / (log(self.population) + 1))
+            if random.randint(0, improvement_chance + 1) == 0:
+                build_building = utility.weighted_random_choice(self.buildings, weight=lambda _, v: v.get_cost() // 100, reverse=True)
 
-                    if self.nation.money > build_building.get_cost():
-                        self.nation.money -= build_building.get_cost()
-                        build_building.number += 1
+                if self.nation.money > build_building.get_cost():
+                    self.nation.money -= build_building.get_cost()
+                    build_building.number += 1
 
         if not self.army:
             self.army = nation.army_structure.zero()
@@ -1145,7 +1152,13 @@ class Nation:
                 else: #There's nothing left to research
                     self.current_research = None
             else:
-                self.current_research.do_research(log(city.population + 1))
+                self.current_research.do_research(random.randint(1, int(log(city.population + 1)**2)))
+
+                for building in city.buildings:
+                    research_rate = building.get_research_rate()
+
+                    if research_rate > 0:
+                        self.current_research.do_research(random.randint(1, research_rate))
 
         self.religion.history_step(self.parent)
 
