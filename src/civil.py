@@ -1172,7 +1172,7 @@ class Nation:
                 else: #There's nothing left to research
                     self.current_research = None
             else:
-                self.current_research.do_research(random.randint(1, int(log(city.population + 1)**2)))
+                self.current_research.do_research(random.randint(1, int(log(city.population + 1)**2 + 1)))
 
                 for building in city.buildings:
                     research_rate = building.get_research_rate()

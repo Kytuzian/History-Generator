@@ -24,7 +24,7 @@ class Weapon:
         return self.copy()
 
     def __repr__(self):
-        return '{}: {} ({}), {} ({})'.format(self.name, self.attack, self.attack_skill_multiplier, self.defense, self.defense_skill_multiplier)
+        return '{} (x{}): {} ({}), {} ({})'.format(self.name, self.material_multiplier, self.attack, self.attack_skill_multiplier, self.defense, self.defense_skill_multiplier)
 
 class Armor:
     def __init__(self, name, material_multiplier, defense, defense_skill_multiplier):
@@ -35,9 +35,18 @@ class Armor:
         self.defense = defense
         self.defense_skill_multiplier = defense_skill_multiplier
 
-#-----------------------------
+    def copy(self):
+        return Armor(self.name, self.material_multiplier, self.defense, self.defense_skill_multiplier)
+
+    def __call__(self):
+        return self.copy()
+
+    def __repr__(self):
+        return '{} (x{}): {} ({})'.format(self.name, self.material_multiplier, self.defense, self.defense_skill_multiplier)
+
+#------------------------------
 # WEAPON AND ARMOR DEFINITIONS
-#-----------------------------
+#------------------------------
 unarmed = Weapon('Unarmed', 0, 1, 1, 1, 1)
 dagger = Weapon('Dagger', 1.5, 2, 2, 1.1, 1)
 rondel = Weapon('Rondel', 1.6, 3, 1, 1.5, 1)
@@ -73,7 +82,7 @@ ranged_weapon_list = [sling, javelin, bow, crossbow, sling_staff]
 
 basic_ranged_list = [stones, sling, javelin, bow]
 
-#-----------------------------
+#------------------------------
 
 def base_tech_tree():
     return Tech('Agriculture', 'agriculture', 0, 1.0,
