@@ -111,7 +111,14 @@ class Building:
 
     def get_population_capacity(self):
         if 'population_capacity' in self.effects:
-            return self.effects['population_capacity'] * self.number
+            amount = self.effects['population_capacity'] * self.number
+
+            multiplier = self.city.nation.tech.get_best_in_category('housing')
+
+            if multiplier != None:
+                amount *= multiplier.effect_strength
+
+            return amount
         else:
             return 0
 
@@ -123,13 +130,26 @@ class Building:
 
     def get_food_output(self):
         if 'food_output' in self.effects:
-            return self.effects['food_output'] * self.number
+            amount = self.effects['food_output'] * self.number
+
+            multiplier = self.city.nation.tech.get_best_in_category('agriculture')
+
+            if multiplier != None:
+                amount *= multiplier.effect_strength
+
+            return amount
         else:
             return 0
 
     def get_money_output(self):
         if 'money_output' in self.effects:
-            return self.effects['money_output'] * self.number
+            amount = self.effects['money_output'] * self.number
+            if self.name == 'Mine':
+                multiplier = self.city.nation.tech.get_best_in_category('mining')
+
+                if multiplier != None:
+                    amount *= multiplier.effect_strength
+            return amount
         else:
             return 0
 

@@ -77,14 +77,23 @@ basic_ranged_list = [stones, sling, javelin, bow]
 
 def base_tech_tree():
     return Tech('Agriculture', 'agriculture', 0, 1.0,
-                [Tech('Stone Working', 'material', 30, 1.1,
-                    [Tech('Copper', 'material', 100, 1.5,
-                        [Tech('Bronze', 'material', 200, 2.0,
-                            [Tech('Iron', 'material', 400, 2.5, [])
+                [
+                    Tech('Stone Working', 'material', 30, 1.1,
+                    [
+                        Tech('Copper', 'material', 100, 1.5,
+                        [
+                            Tech('Bronze', 'material', 200, 2.0,
+                            [
+                                Tech('Iron', 'material', 400, 2.5,
+                                [
+                                    Tech('Steel', 'material', 800, 3.0, [])
+                                ])
                             ])
                         ])
                     ]),
-                 Tech('Improved Agriculture', 'agriculture', 100, 1.1, [])
+                    Tech('Improved Housing', 'housing', 100, 1.5, []),
+                    Tech('Improved Mining', 'mining', 150, 2.0, []),
+                    Tech('Improved Agriculture', 'agriculture', 100, 1.1, [])
                 ])
 
 class Tech:

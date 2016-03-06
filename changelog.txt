@@ -16,8 +16,10 @@ Minor changes:
 - Changed reload time based on ranged weapon (stones: 40, sling: 50, javelin: 40, bow: 100, crossbow: 300, sling staff: 60)
 - Changed how reloading works (units shoot much more concentrated volleys now).
 - Modified research rate (now a random number based on the population, instead of a fixed amount based on the population).
+- Added more researches (Steel, Improved Housing (x1.5 to population capacity of buildings), Improved Mining (x2 to money output of mines))
 
 Bug fixes:
+- Fixed bug where improved agriculture did not affect the nation's farm buildings.
 - Fixed bug where the game would crash if a nation's tolerance was 0.
 - Fixed bug where cities could try to merge twice, removing both cities and destroying the nation.
 - Fixed error where cities were not removed properly from their previous owning nation (I think, let me know if there are any errors in the console, if you would).
