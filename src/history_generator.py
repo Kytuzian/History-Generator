@@ -142,7 +142,7 @@ class Main:
         self.canvas.bind('<MouseWheel>', self.on_vertical)
         self.canvas.bind('<Shift-MouseWheel>', self.on_horizontal)
 
-        self.canvas.grid(row=0, column=3, rowspan=11)#, sticky=W + E + N + S)
+        self.canvas.grid(row=0, column=3, rowspan=12)#, sticky=W + E + N + S)
 
         self.after_id = 0
 
@@ -217,9 +217,10 @@ class Main:
 
     def create_gui(self):
         self.parent.columnconfigure(3, weight=1)
-        self.parent.rowconfigure(10, weight=1)
+        self.parent.rowconfigure(11, weight=1)
 
-        self.continuous = Checkbutton(self.parent, text="Run continuously", command=self.toggle_continuous)
+        self.continuous = Checkbutton(self.parent, text="Run continuously")
+        self.continuous.bind('<Button-1>', self.toggle_continuous)
         self.continuous.grid(row=0, sticky=W)
 
         self.minimize_battles = Checkbutton(self.parent, text='Minimize battle windows', command=self.toggle_minimize_battles)
@@ -231,31 +232,34 @@ class Main:
         self.world_history_button = Button(self.parent, text="World history", command=self.open_world_history_window)
         self.world_history_button.grid(row=2, column=1, sticky=W)
 
+        self.zoom_label = Label(self.parent, text='Zoom (Cell Size):')
+        self.zoom_label.grid(row=3, column=0, sticky=W)
+
         self.zoom_scale = Scale(self.parent, from_=1, to_=20, orient=HORIZONTAL)
-        self.zoom_scale.grid(row=3, column=0, sticky=W)
+        self.zoom_scale.grid(row=4, column=0, sticky=W)
         self.zoom_scale.bind('<ButtonRelease-1>', self.zoom)
         self.zoom_scale.set(utility.CELL_SIZE)
 
         self.advance_button = Button(self.parent, text="Advance Step", command=self.main_loop)
-        self.advance_button.grid(row=4, sticky=W)
+        self.advance_button.grid(row=5, sticky=W)
 
         self.simulation_speed_label = Label(self.parent, text='Simulation Speed (ms):')
-        self.simulation_speed_label.grid(row=5, column=0, sticky=W)
+        self.simulation_speed_label.grid(row=6, column=0, sticky=W)
 
         self.delay = Scale(self.parent, from_=10, to_=1000, orient=HORIZONTAL)
-        self.delay.grid(row=6, sticky=W)
+        self.delay.grid(row=7, sticky=W)
         self.delay.set(DEFAULT_SIMULATION_SPEED)
 
         self.advance_time_button = Button(self.parent, text='Advance By:', command=self.run_to)
-        self.advance_time_button.grid(row=7, column=0, sticky=W)
+        self.advance_time_button.grid(row=8, column=0, sticky=W)
 
         self.years_input = StringVar()
         self.years_box = Entry(self.parent, textvariable=self.years_input)
-        self.years_box.grid(row=8, column=0, sticky=W)
+        self.years_box.grid(row=9, column=0, sticky=W)
         self.years_input.set('0')
 
         self.nation_selector = Listbox(self.parent)
-        self.nation_selector.grid(row=9, column=0, columnspan=3, sticky=W+E)
+        self.nation_selector.grid(row=10, column=0, columnspan=3, sticky=W+E)
 
         self.nation_selector.bind('<Double-Button-1>', self.select_nation)
 
@@ -331,7 +335,7 @@ class Main:
 
         self.after_id = self.parent.after(self.delay.get(), self.main_loop)
 
-    def toggle_continuous(self):
+    def toggle_continuous(self, e):
         self.is_continuous = not self.is_continuous
 
         if self.is_continuous: #This mean we weren't just running continuously, so start
@@ -353,6 +357,9 @@ class Main:
 
                 for i in self.nations:
                     i.history_step(self)
+
+                    if len(i.cities) == 0 and len(i.moving_armies) == 0:
+                        self.remove_nation(i)
 
             if len(self.battles) == 0 or self.day == 30:
                 for i in self.nations:

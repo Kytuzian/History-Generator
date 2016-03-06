@@ -1,16 +1,24 @@
 2016-03-06
 Major changes:
-- World is now scrollable, and twice the size.
+- World is now scrollable, and four times the size (twice as large in either direction).
 - Added ability to zoom (change tile size from 1 to 30).
+- Units are now armed with multiple weapons, a primary weapon, and a side arm (always melee). Melee units do not use their side arms yet.
 
 Minor changes:
 - Removed control window and moved controls to the main window.
 - Tile size increased from 4 pixels to 6 pixels.
 - Starting nation amount increased from 5 to 8.
 - Group movement speed increased from 3 tiles/step to 5 tiles/step.
+- Added more weapons (pike, crossbow, claymore, javelin, shortsword, sling staff, et cetera).
+- Changed amount of ammunition based on ranged weapon (stones: 6, sling: 25, javelin: 3, bow: 15, crossbow: 15, sling staff: 20)
+- Changed reload time based on ranged weapon (stones: 40, sling: 50, javelin: 40, bow: 100, crossbow: 300, sling staff: 60)
+- Changed how reloading works (units shoot much more concentrated volleys now).
 
 Bug fixes:
 - Fixed bug where the game would crash if a nation's tolerance was 0.
+- Fixed bug where cities could try to merge twice, removing both cities and destroying the nation.
+- Fixed error where cities were not removed properly from their previous owning nation (I think, let me know if there are any errors in the console, if you would).
+- Fixed error where cities were not properly transferred to the revolting nation during a revolt.
 
 2016-03-05
 Major changes:

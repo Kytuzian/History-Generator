@@ -7,6 +7,8 @@ def get_nation_name(id):
         if nation.id == id:
             return nation.name
 
+    raise Exception('{} not found in {}'.format(id, map(lambda nation: (nation.id, nation.name), main.nations)))
+
     return None
 
 class Event:

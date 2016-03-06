@@ -229,6 +229,9 @@ class City:
         return None
 
     def combine_cities(self, other):
+        if self.destroy: #We can't merge if we're about to be destroyed, that doesn't make any sense
+            return
+
         while len(other.owned_cells) > 0:
             other.owned_cells[0].change_owner(self)
 
@@ -257,8 +260,16 @@ class City:
 
     def capture(self, attacking_army, new_nation):
         #Old nation loses the city and morale
+        original_cities = len(self.nation.cities)
         if self in self.nation.cities: #should be, but just to be sure
             self.nation.cities.remove(self)
+        else:
+            raise Exception('{} not in {}'.format(self.name, map(lambda c: c.name, self.nation.cities)))
+            return
+
+        if original_cities == len(self.nation.cities):
+            raise Exception('{} was not removed from {}.'.format(self.name, map(lambda c: c.name, self.nation.cities)))
+            return
 
         #If there is an army still here, we should send it away first, instead of just deleting it from existence.
         if self.army.size() > 0:
@@ -266,12 +277,14 @@ class City:
                 return_destination = random.choice(self.nation.cities)
                 self.nation.moving_armies.append(Group(self.nation.name, self.army, self.position, return_destination.position, self.nation.color, lambda s, c: False, self.parent.reinforce(self.nation, return_destination), self.parent.canvas))
 
-                self.parent.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': self.nation.id, 'nation_b': self.nation.id, 'city_a': self.name, 'city_b': return_destination.name, 'reason': 'reinforce', 'army_size': self.army.size()}, self.parent.get_current_date()))
+                self.parent.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': self.nation.id, 'nation_b': self.nation.id, 'city_a': self.name, 'city_b': return_destination.name, 'reason': 'evacuate', 'army_size': self.army.size()}, self.parent.get_current_date()))
 
         if self.is_capital: #We lose twice as much morale for losing the capital
             self.nation.mod_morale(-MORALE_INCREMENT * CAPITAL_CITY_MORALE_BONUS)
         else:
             self.nation.mod_morale(-MORALE_INCREMENT)
+
+        # print('TAKENCITY: {} ({}, {}), ({})'.format(self.nation.name, original_cities, len(self.nation.cities), new_nation.name, len(new_nation.cities)))
 
         self.nation = new_nation
         self.nation.cities.append(self)
@@ -306,6 +319,8 @@ class City:
 
         if self in self.nation.cities:
             self.nation.cities.remove(self)
+
+        del self
 
     def remove_cell(self, cell):
         if cell in self.owned_cells:
@@ -726,6 +741,9 @@ class Nation:
 
         if cities != None:
             self.cities = cities
+
+            for city in self.cities:
+                city.nation = self
         else:
             self.cities = []
 
@@ -768,7 +786,7 @@ class Nation:
         self.name = NationName(random.sample(MODIFIERS, max(0, random.randint(0, 8) - 5)), random.choice(GOVERNMENT_TYPES), [place_name])
 
         #Otherwise we were initialized with some cities and such stuff
-        if self.cities == []:
+        if len(self.cities) == 0:
             for i in xrange(INIT_CITY_COUNT):
                 self.create_city(self.name.places[0])
 
