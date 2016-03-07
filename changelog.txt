@@ -1,3 +1,15 @@
+2016-03-07
+Major changes:
+- Added armor of a few basic types (cloth, leather, chainmail, plate).
+
+Minor changes:
+- Added some more weapons (Atlatl, Hammer)
+- Slightly changed the weapon lists for starting troops (no more daggers, dirks, or rondels).
+- Tweaked some weapon stats.
+- Time no longer advances during battles (because honestly, a battle should never be THAT long).
+
+Bug fixes:
+
 2016-03-06
 Major changes:
 - World is now scrollable, and four times the size (twice as large in either direction).

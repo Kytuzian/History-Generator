@@ -17,6 +17,22 @@ class Weapon:
         self.reload_time = reload_time
         self.ammunition = ammunition
 
+    def get_attack(self, material):
+        effective_attack = self.attack
+
+        if material != None and self.material_multiplier > 0:
+            effective_attack = int(effective_attack * self.material_multiplier * material.effect_strength)
+
+        return random.randint(0, effective_attack)
+
+    def get_defense(self, material):
+        effective_defense = self.defense
+
+        if material != None and self.material_multiplier > 0:
+            effective_defense = int(effective_defense * self.material_multiplier * material.effect_strength)
+
+        return random.randint(0, effective_defense)
+
     def copy(self):
         return Weapon(self.name, self.material_multiplier, self.attack, self.defense, self.attack_skill_multiplier, self.defense_skill_multiplier, self.reload_time, self.ammunition)
 
@@ -34,6 +50,14 @@ class Armor:
 
         self.defense = defense
         self.defense_skill_multiplier = defense_skill_multiplier
+
+    def get_defense(self, material):
+        effective_defense = self.defense
+
+        if material != None and self.material_multiplier > 0:
+            effective_defense = int(effective_defense * self.material_multiplier * material.effect_strength)
+
+        return random.randint(0, effective_defense)
 
     def copy(self):
         return Armor(self.name, self.material_multiplier, self.defense, self.defense_skill_multiplier)
@@ -54,6 +78,7 @@ dirk = Weapon('Dirk', 1.6, 3, 1, 1.5, 1)
 shortsword = Weapon('Shortsword', 1.8, 5, 2, 2, 1.1)
 sword = Weapon('Sword', 2, 6, 3, 2, 1.1)
 club = Weapon('Club', 0, 5, 2, 1, 1)
+hammer = Weapon('Hammer', 1.3, 6, 1, 1.5, 0.8)
 bastard_sword = Weapon('Bastard Sword', 2.3, 7, 2, 2, 1.5)
 claymore = Weapon('Claymore', 2.5, 10, 1, 2.5, 0.5)
 staff = Weapon('Staff', 0, 3, 3, 2, 2)
@@ -65,22 +90,34 @@ axe = Weapon('Axe', 1.8, 8, 2, 2.5, 0.8)
 flail = Weapon('Flail', 1.2, 6, 0, 2, 0.5)
 morning_star = Weapon('Morning Star', 1.5, 8, 0, 2, 0.2)
 
-all_melee_weapons = [unarmed, club, dagger, rondel, dirk, shortsword, sword, bastard_sword, claymore, spear, staff, bill, pike, sarissa, axe, flail, morning_star]
+all_melee_weapons = [unarmed, club, hammer, dagger, rondel, dirk, shortsword, sword, bastard_sword, claymore, spear, staff, bill, pike, sarissa, axe, flail, morning_star]
 weapon_list = [sword, shortsword, bastard_sword, claymore, spear, staff, pike, sarissa, axe, flail, morning_star, bill]
 
-sidearm_list = [dagger, club, rondel, dirk, staff, shortsword, axe, spear]
+sidearm_list = [dagger, club, hammer, rondel, dirk, staff, shortsword, axe, spear]
+basic_weapon_list = [club, hammer, staff, shortsword, axe, spear]
 
-stones = Weapon('Stones', 0, 1, 1, 1, 1, reload_time=40, ammunition=6)
-sling = Weapon('Sling', 0, 3, 1, 1, 1, reload_time=50, ammunition=25)
-javelin = Weapon('Javelin', 1.5, 6, 2, 1, 1, reload_time=40, ammunition=3)
-bow = Weapon('Bow', 1.5, 5, 1, 2, 1, reload_time=100, ammunition=15)
-crossbow = Weapon('Crossbow', 2, 10, 1, 1, 1, reload_time=300, ammunition=15)
+stones = Weapon('Stones', 0, 1, 1, 1.5, 1, reload_time=30, ammunition=6)
+sling = Weapon('Sling', 0, 3, 1, 1.8, 1, reload_time=50, ammunition=25)
+javelin = Weapon('Javelin', 0.5, 6, 2, 1.5, 1, reload_time=30, ammunition=4)
+atlatl = Weapon('Atlatl', 0.5, 8, 1, 2.0, 1, reload_time=80, ammunition=8)
+bow = Weapon('Bow', 0.5, 5, 1, 2, 1, reload_time=100, ammunition=15)
+crossbow = Weapon('Crossbow', 1.5, 10, 1, 1, 1, reload_time=300, ammunition=15)
 sling_staff = Weapon('Sling Staff', 0, 5, 2, 2, 1, reload_time=60, ammunition=20)
 
-all_ranged_weapons = [stones, sling, javelin, bow, crossbow, sling_staff]
-ranged_weapon_list = [sling, javelin, bow, crossbow, sling_staff]
+all_ranged_weapons = [stones, atlatl, sling, javelin, bow, crossbow, sling_staff]
+ranged_weapon_list = [sling, atlatl, javelin, bow, crossbow, sling_staff]
 
 basic_ranged_list = [stones, sling, javelin, bow]
+
+cloth_armor = Armor('Cloth Armor', 0, 2, 1.0)
+leather_armor = Armor('Leather Armor', 0, 4, 1.0)
+chainmail = Armor('Chaimail', 1, 8, 0.5)
+plate = Armor('Plate', 2, 12, 0.4)
+
+all_armor_list = [cloth_armor, leather_armor]
+
+armor_list = [chainmail, plate]
+basic_armor_list = [cloth_armor, leather_armor]
 
 #------------------------------
 

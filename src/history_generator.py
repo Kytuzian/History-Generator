@@ -384,28 +384,10 @@ class Main:
 
                 self.write_out_events('event_log.txt')
 
-                if len(self.battles) > 0:
-                    if self.day == 30:
-                        self.month += 1
-
-                        self.day = 1
-                else:
-                    self.month += 1
+                self.month += 1
 
             if len(self.battles) > 0:
-                if self.hour == 24:
-                    self.day += 1
-                    self.hour = 1
-
-                if self.minute == 60:
-                    self.hour += 1
-                    self.minute = 0
-
-                self.minute += 10
-            else:
-                self.day = 1
-                self.hour = 1
-                self.minute = 0
+                self.is_continuous = False
 
             if self.is_continuous:
                 self.after_id = self.parent.after(self.delay.get(), self.main_loop)
@@ -666,6 +648,8 @@ class Main:
             attack_city.population += battle.b_army.size()
 
         self.attack_city = None
+
+        self.after_id = self.parent.after(self.delay.get(), self.main_loop)
 
     def all_cities(self, ignore_nation=None):
         if len(self.nations) > 0:
