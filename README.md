@@ -14,9 +14,8 @@ The simulation will then just run. Read the mechanics below for more information
 2. Morale for armies
 3. Generals for armies
 4. Alliances, defensive pacts, non-aggression pacts, et cetera
-5. Add more resources
-6. Add terrain
-7. Saving
+5. Add terrain
+6. Saving
 
 #Mechanics Overview
 At the beginning, the game generates a number of nations. Each of these has their own languages (see language below), name, public offices, cities, and army.
@@ -31,7 +30,14 @@ When melee combat occurs, both soldiers roll for their attack/defense (0 to a ma
 
 For ranged units, there is a counter which determines when they can shoot. It goes from 0 to 60, and is incremented a random amount, anywhere from 0 to the square root of the unit's discipline, every step. When the projectile is shot, it is directed at a single target, and if it doesn't hit it, it doesn't hit any other soldier either. Assuming it does hit, the projectile will have a base damage of 0 to the strength of unit that shot it. This, however, will be decreased by another random roll of the defending unit, which is a roll of 0 to its fatigue / 2 subtracted by a roll of 0 to its strength. The damage obviously cannot go below 0 or above the original damage roll of the projectile.
 
-When an army has no more units, the battle will end (they are always fights to the death of the entire army. I know its not entirely realistic, but this is much easier to implement and I plan to implement morale for armies at a later date (if its no longer on the to-do list, assume I've done it and I'm just too lazy to change this description)). The winning (only if the attackers, of course) army conquers a single city from the losers and all of it's production, improvements, et cetera will now contribute to the conquering nation. Additionally, the winners will gain morale, and the losers will lose morale.
+When an army has no more units, the battle will end (they are always fights to the death of the entire army. I know it's not entirely realistic, but this is much easier to implement and I plan to implement morale for armies at a later date (if its no longer on the to-do list, assume I've done it and I'm just too lazy to change this description)). The winning (only if the attackers, of course) army conquers a single city from the losers and all of it's production, improvements, et cetera will now contribute to the conquering nation. Additionally, the winners will gain morale, and the losers will lose morale.
+
+#Weapons and Armor
+Weapons have several stats: attack, defense, a material multiplier, and both attack and defense skill multipliers. To calculate the attack with a weapon, the user first calculates the effective attack from the weapon. This is done by taking the material multiplier of the weapon and multiplying it by the strength of the material the weapon is made out of. Then the weapon's attack is a random number from 0 to the weapon's effective attack. Then the soldier's strength is multiplied by the attack skill multiplier, and the two values are added.
+
+The process is the same for defense, except with defense values instead of attack values.
+
+For armor, the process is also the same, and armor, naturally, does not contribute to attack.
 
 #Nation
 A group of cities all joined together with armies to attack and trade with other nations.

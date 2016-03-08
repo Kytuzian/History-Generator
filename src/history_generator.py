@@ -203,6 +203,7 @@ class Main:
                 self.cells[-1].append(Cell(self, '', x, y, None))
 
         self.nations = []
+        self.old_nations = {}
 
         for new_nation in xrange(self.nation_count):
             self.nations.append(Nation(self))
@@ -303,6 +304,8 @@ class Main:
             remove_trade.trading.remove(nation)
 
         print('{}: {} has been eliminated!'.format(self.get_current_date(), nation.name))
+
+        self.old_nations[nation.id] = nation.name
 
         self.nations.remove(nation)
 
