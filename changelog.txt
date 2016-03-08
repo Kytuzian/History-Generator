@@ -7,6 +7,8 @@ Minor changes:
 - Slightly changed the weapon lists for starting troops (no more daggers, dirks, or rondels).
 - Tweaked some weapon stats.
 - Time no longer advances during battles (because honestly, a battle should never be THAT long).
+- Decreased population growth rate.
+- Capital cities can no longer revolt.
 
 Bug fixes:
 

@@ -539,7 +539,7 @@ class City:
         self.handle_disconnected_cells()
 
         if self.population < self.calculate_population_capacity():
-            self.population += int(random.random() * self.population) + 1
+            self.population += int(random.random() * sqrt(self.population_capacity - self.population)) + 1
         elif self.population > self.calculate_population_capacity():
             self.population -= int(random.random() * (self.population - self.population_capacity))
             self.population = max(self.population, 1)

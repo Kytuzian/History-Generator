@@ -17,7 +17,6 @@ The simulation will then just run. Read the mechanics below for more information
 5. Add more resources
 6. Add terrain
 7. Saving
-8. Research
 
 #Mechanics Overview
 At the beginning, the game generates a number of nations. Each of these has their own languages (see language below), name, public offices, cities, and army.
@@ -81,7 +80,7 @@ I'm no linguist, so the way the languages are created is probably not at all rig
 
 Each language has a list of:
 - Letters (letters can appear more than once to change their frequency)
-- Starting letters (their are the only letters than can appear at the beginning of words)
+- Starting letters (these are the only letters than can appear at the beginning of words)
 - Ending letters (same as above, but for the end)
 - Letter sections (such as 'ae' or 'or', just combinations of letters that should appear commonly)
 - Vowels. This is just a list of all of the vowels in the letters we chose before
