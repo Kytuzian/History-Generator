@@ -6,7 +6,7 @@ import math
 
 import utility
 
-from civil import *
+from nation import *
 from language import *
 
 from research import all_melee_weapons, weapon_list,\

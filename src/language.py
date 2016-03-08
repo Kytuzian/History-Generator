@@ -1,6 +1,6 @@
 import utility
-from civil import *
-from martial import *
+
+import random
 
 from math import *
 

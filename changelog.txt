@@ -1,4 +1,4 @@
-2016-03-07
+2016-03-08
 Major changes:
 - Added armor of a few basic types (cloth, leather, chainmail, plate).
 
@@ -9,6 +9,8 @@ Minor changes:
 - Time no longer advances during battles (because honestly, a battle should never be THAT long).
 - Decreased population growth rate.
 - Capital cities can no longer revolt.
+- Added resources other than money and food (metal, leather, cloth, and wood). Currently unused.
+- Added new buildings to produce the resources (leatheworker, weaver, and woodcutter).
 
 Bug fixes:
 

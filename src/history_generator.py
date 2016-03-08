@@ -10,7 +10,8 @@ import sys
 import cProfile
 
 import utility
-from civil import *
+from nation import *
+from city import *
 from martial import *
 from language import *
 import events
@@ -452,7 +453,7 @@ class Main:
         if random.randint(0, max([20, int(nation.morale * log(len(self.nations)))])) == 0 and len(nation.cities) > 1:
             #Not EVERY city can revolt, because that's like, not actually different.
             cities_revolted_count = random.randint(1, len(nation.cities) - 1)
-            revolted_cities = random.sample(nation.cities, cities_revolted_count)
+            revolted_cities = random.sample(filter(lambda i: not i.is_capital, nation.cities), cities_revolted_count)
 
             for revolted_city in revolted_cities:
                 nation.remove_city(revolted_city)
