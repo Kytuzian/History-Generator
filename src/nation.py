@@ -15,7 +15,6 @@ from math import *
 from Tkinter import *
 
 OFFICE_MORALE_BONUS = 4
-MORALE_INCREMENT = 30
 
 NATION_COLORS = ['dark orange', 'cadet blue', 'sea green', 'gold', 'deep sky blue',\
                  'firebrick', 'dark salmon', 'maroon', 'sienna', 'dark slate blue',\

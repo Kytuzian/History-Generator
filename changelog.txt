@@ -1,6 +1,7 @@
 2016-03-08
 Major changes:
 - Added armor of a few basic types (cloth, leather, chainmail, plate).
+- Levies are now recruited from cities when attacks are sent, and they return home if the target city is conquered.
 
 Minor changes:
 - Added some more weapons (Atlatl, Hammer)
@@ -11,6 +12,7 @@ Minor changes:
 - Capital cities can no longer revolt.
 - Added resources other than money and food (metal, leather, cloth, and wood). Currently unused.
 - Added new buildings to produce the resources (leatheworker, weaver, and woodcutter).
+- Decreased troop count, increased the average tier of troops.
 
 Bug fixes:
 

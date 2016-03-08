@@ -265,8 +265,6 @@ class Main:
 
         self.refresh_nation_selector()
 
-        return True
-
     def open_religion_history_window(self):
         self.religion_history_window = event_analysis.HistoryWindow('Religion History', ['ReligionGodAdded', 'ReligionGodRemoved', 'ReligionDomainAdded', 'ReligionDomainRemoved'])
 
@@ -521,12 +519,22 @@ class Main:
                 if len(enemy.cities) > 0 and enemy in self.nations:
                     attacking_city = utility.weighted_random_choice(enemy.cities, weight=lambda _, v: int(utility.distance(city.position, v.position)), reverse=True)
 
-                    if random.randint(0, max(20, city.army.size() - attacking_city.population // 4)) > 20 and random.randint(0, len(nation.moving_armies)**4) == 0:
+                    if random.randint(0, max(20, city.army.size() - attacking_city.population // 8)) > 20 and random.randint(0, len(nation.moving_armies)**4) == 0:
                         fx, fy = city.position
 
                         dx, dy = attacking_city.position
 
-                        nation.moving_armies.append(Group(nation.name, city.army, (fx, fy), (dx, dy), nation.color, lambda s, c: False, self.do_attack(nation, enemy, attacking_city), self.canvas))
+                        #Conscript some levies to join the army.
+
+                        if city.population // 4 > 1:
+                            conscripted = int(random.randint(1, city.population // 4) * nation.get_conscription_bonus())
+                        else:
+                            conscripted = 0
+
+                        city.population -= conscripted
+                        city.army.add_to(city.army.name, conscripted)
+
+                        nation.moving_armies.append(Group(nation.name, city.army, (fx, fy), (dx, dy), nation.color, lambda s, c: False, self.do_attack(nation, city, enemy, attacking_city), self.canvas))
 
                         self.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': nation.id, 'nation_b': enemy.id, 'city_a': city.name, 'city_b': attacking_city.name, 'reason': 'attack', 'army_size': city.army.size()}, self.get_current_date()))
 
@@ -560,7 +568,7 @@ class Main:
             if reinforce_city.nation == sender: #If we own it, as we should, just join the army.
                 reinforce_city.army.add_army(reinforcing.members)
             elif reinforce_city.nation in sender.at_war: #If we're at war with the nation that now owns our city, attack it.
-                self.attack(sender, reinforcing.members, reinforce_city.nation, reinforce_city)
+                self.attack(sender, reinforcing.members, reinforce_city.nation, None, reinforce_city)
             else: #if a third party is involved, let's just return back home
                 return_destination = random.choice(sender.cities)
                 sender.moving_armies.append(Group(sender.name, reinforcing.members, reinforce_city.position, return_destination.position, sender.color, lambda s, c: False, self.reinforce(sender, return_destination), self.canvas))
@@ -569,19 +577,19 @@ class Main:
 
         return do
 
-    def do_attack(self, attacker, defender, city):
+    def do_attack(self, attacker, attacking_city, defender, city):
         def do(attacking):
             attacker.moving_armies.remove(attacking)
             self.canvas.delete(attacking.id)
 
-            self.attack(attacker, attacking.members, defender, city)
+            self.attack(attacker, attacking.members, defender, attacking_city, city)
 
         return do
 
-    def attack(self, attacker, attacking_army, defender, city):
+    def attack(self, attacker, attacking_army, defender, attacking_city, city):
         if city in defender.cities:
             #At least one person has to show up to defend the city.
-            defender_max = utility.clamp(city.population // 2, city.population // 2, 2)
+            defender_max = max(city.population // 2, 2)
             defending_garrison_size = random.randint(1, defender_max)
 
             defending_army = defender.army_structure.zero().add_to(defender.army_structure.name, defending_garrison_size)
@@ -599,7 +607,7 @@ class Main:
             if attacking_army.size() == 0:
                 attacking_army.add_number(1, attacker)
 
-            battle = Battle(attacker, attacking_army, defender, defending_army, city, self.end_battle)
+            battle = Battle(attacker, attacking_army, defender, defending_army, attacking_city, city, self.end_battle)
             battle.setup_soldiers()
 
             if not battle.check_end_battle():
@@ -636,7 +644,7 @@ class Main:
 
             print("They have taken the city of {} from {}.".format(attack_city.name, b.name))
 
-            attack_city.capture(battle.a_army, a)
+            attack_city.capture(battle.a_army, a, battle.attacking_city)
             a.capture_city(attack_city)
         elif battle.b_army.size() > 0:
             print("{}: {} has triumphed with {} remaining troops!".format(self.get_current_date(), b.name, battle.b_army.size()))

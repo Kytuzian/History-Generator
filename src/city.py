@@ -1,4 +1,5 @@
 import utility
+
 from martial import *
 from language import *
 from group import *
@@ -22,6 +23,7 @@ FOOD_PER_PERSON = 1
 
 MORALE_NOT_ENOUGH_FOOD = 4
 CAPITAL_CITY_MORALE_BONUS = 2
+MORALE_INCREMENT = 30
 
 #Building effects: population_capacity, tax_rate, food_output, money_output
 house_effects = {'population_capacity': 100, 'tax_rate': 1.001, 'cost': 100}
@@ -260,7 +262,7 @@ class City:
 
         other.destroy = True
 
-    def capture(self, attacking_army, new_nation):
+    def capture(self, attacking_army, new_nation, attacking_city):
         #Old nation loses the city and morale
         original_cities = len(self.nation.cities)
         if self in self.nation.cities: #should be, but just to be sure
@@ -305,6 +307,15 @@ class City:
             cell.update_self()
 
         self.is_capital = False
+
+        if self.army.number > 0 and attacking_city != None: #This is just the number of levies, which need to be sent home now that we've conquered them.
+            send_army = self.army.zero()
+            send_army.add_to(send_army.name, self.army.number)
+            self.army.number = 0
+
+            self.nation.moving_armies.append(Group(self.nation.name, send_army, self.position, attacking_city.position, self.nation.color, lambda s, c: False, self.parent.reinforce(self.nation, attacking_city), self.parent.canvas))
+
+            self.parent.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': self.nation.id, 'nation_b': self.nation.id, 'city_a': self.name, 'city_b': attacking_city.name, 'reason': 'return levies', 'army_size': send_army.size()}, self.parent.get_current_date()))
 
         self.army = attacking_army
 
@@ -517,7 +528,7 @@ class City:
             self.army = nation.army_structure.zero()
 
         #This is the number of recruits, it remains to be seen if we can pay for all of them
-        conscripted = int(random.random() * self.population / 6 * self.nation.get_conscription_bonus())
+        conscripted = int(random.random() * (self.population)**(2.0/3) * self.nation.get_conscription_bonus())
         max_soldiers = int(self.nation.money / self.nation.get_soldier_cost(self.army.name) * self.nation.get_army_spending())
 
         if conscripted > max_soldiers: #If we are recruiting more than we can afford, reduce the number

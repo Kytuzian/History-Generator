@@ -145,7 +145,7 @@ class Troop:
     def add_number(self, number, nation):
         self.number += number
 
-        if self.number > self.elite**self.tier: #If we have enough troops, we will create another, better, rank of troops
+        if self.number > self.elite**sqrt(self.tier): #If we have enough troops, we will create another, better, rank of troops
             if len(self.upgrades) < 3:
                 self.upgrades.append(Troop.new_troop(self, nation))
 
@@ -563,7 +563,7 @@ class Unit:
         return (self.x, self.y)
 
 class Battle:
-    def __init__(self, nation_a, a_army, nation_b, b_army, city, battle_over):
+    def __init__(self, nation_a, a_army, nation_b, b_army, attacking_city, city, battle_over):
         self.a = nation_a
         self.b = nation_b
 
@@ -594,6 +594,7 @@ class Battle:
         self.a_amount = 0
         self.b_amount = 0
 
+        self.attacking_city = attacking_city
         self.city = city
 
         self.create_gui()
