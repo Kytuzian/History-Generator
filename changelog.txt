@@ -13,6 +13,7 @@ Minor changes:
 - Added resources other than money and food (metal, leather, cloth, and wood). Currently unused.
 - Added new buildings to produce the resources (leatheworker, weaver, and woodcutter).
 - Decreased troop count, increased the average tier of troops.
+- Made the world slightly bigger so it's a square.
 
 Bug fixes:
 
