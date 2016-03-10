@@ -1,6 +1,6 @@
 import utility
 
-GROUP_SPEED_MULTIPLIER = 5
+GROUP_SPEED_MULTIPLIER = 10
 
 #A group some band of people, who go to some place, and do something when they get there
 class Group:

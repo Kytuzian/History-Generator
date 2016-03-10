@@ -8,6 +8,9 @@ Minor changes:
 - Made houses significantly cheaper.
 - Greatly decreased the population capacity of tiles (city to 100, surrounding to 1) because buildings should provide most of the city's population capacity.
 - Removed green colors that were too similar to the land color.
+- Increased levy amount.
+- Increased group movement speed from 5 to 10.
+- Changed run continuously checkbutton to "Run until battle" button.
 
 Bug fixes:
 -

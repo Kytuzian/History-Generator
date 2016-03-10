@@ -29,10 +29,10 @@ class Terrain:
     def __init__(self, height):
         self.height = max(0, height)
 
-        if self.height < 0.12:
+        if self.height == 0:
             self.name = 'water'
             self.color = utility.rgb_color(0, 0, 255)
-        elif self.height < 0.23:
+        elif self.height < 0.1:
             self.name = 'sand'
             self.color = utility.rgb_color(237, 201, 175)
         else:
@@ -280,7 +280,7 @@ class Main:
         self.parent.columnconfigure(3, weight=1)
         self.parent.rowconfigure(11, weight=1)
 
-        self.continuous = Checkbutton(self.parent, text="Run continuously", command=self.toggle_continuous)
+        self.continuous = Button(self.parent, text="Run until battle", command=self.toggle_continuous)
         self.continuous.grid(row=0, sticky=W)
 
         self.minimize_battles = Checkbutton(self.parent, text='Minimize battle windows', command=self.toggle_minimize_battles)
@@ -490,6 +490,10 @@ class Main:
                 a.at_war.append(b)
                 b.at_war.append(a)
 
+                distance_to_enemy = utility.distance(a.get_average_city_position(), b.get_average_city_position())
+
+                print('Declared war on enemy who is: {} away'.format(distance_to_enemy))
+
                 if is_holy_war:
                     print("{}: {} has started a holy war with {} because of religious differences.".format(self.get_current_date, a.name, b.name))
                     self.events.append(events.EventDiplomacyWar('DiplomacyWar', {'nation_a': a.id, 'nation_b': b.id, 'reason': 'religious'}, self.get_current_date()))
@@ -545,7 +549,7 @@ class Main:
             self.handle_revolt(i)
 
             #Let's go to war, but we can only do that if there is a nation other than us
-            if random.randint(0, max([1, len(i.at_war) ** 12 + 100 - int(log(i.total_army() + 1)**4)])) == 0 and len(self.nations) > 1:
+            if random.randint(0, max([1, len(i.at_war) ** 11 + 100 - int(log(i.total_army() + 1)**4)])) == 0 and len(self.nations) > 1:
                 enemy = utility.weighted_random_choice(self.nations, weight=lambda _, v: utility.distance(i.get_average_city_position(), v.get_average_city_position()), reverse=True)
 
                 #We can't go to war twice, fight with a trading partner, or be war with ourselves
@@ -587,11 +591,12 @@ class Main:
                         dx, dy = attacking_city.position
 
                         #Conscript some levies to join the army.
-
-                        if city.population // 4 > 1:
-                            conscripted = int(random.randint(1, city.population // 4) * nation.get_conscription_bonus())
+                        if city.population // 3 > 1:
+                            conscripted = int(random.randint(1, city.population // 3) * nation.get_conscription_bonus())
                         else:
                             conscripted = 0
+
+                        # print('Conscripted {} people (out of {}) into the army.'.format(conscripted, city.population))
 
                         city.population -= conscripted
                         city.army.add_to(city.army.name, conscripted)
@@ -652,7 +657,7 @@ class Main:
         if city in defender.cities:
             #At least one person has to show up to defend the city.
             defender_max = max(city.population // 2, 2)
-            defending_garrison_size = random.randint(1, defender_max)
+            defending_garrison_size = random.randint(defender_max // 16 + 1, defender_max)
 
             defending_army = defender.army_structure.zero().add_to(defender.army_structure.name, defending_garrison_size)
 
