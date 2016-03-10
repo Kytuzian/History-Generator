@@ -473,7 +473,12 @@ class City:
             self.food = max(0, self.food - random.randint(1, food_max_spoilage))
 
         for surrounding_cell in self.surrounding_cells:
-            self.mod_food(random.randint(BASE_CELL_MIN_FOOD_PRODUCTION, BASE_CELL_FOOD_PRODUCTION))
+            food_amount = random.randint(BASE_CELL_MIN_FOOD_PRODUCTION, BASE_CELL_FOOD_PRODUCTION)
+            prev = food_amount
+            food_amount *= surrounding_cell.food_production_multiplier()
+
+            # print('Was producing {}, now producing {}'.format(prev, food_amount))
+            self.mod_food(food_amount)
 
         for i in self.buildings:
             self.food += i.get_food_output()

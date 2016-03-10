@@ -1,6 +1,8 @@
 2016-03-10
 Major changes:
-- Added terrain
+- Added terrain (land, water, and sand).
+- Additionally, temperatures are higher by the equator.
+- Food production is affected by temperature, as well as the number of water tiles around the tile.
 
 Minor changes:
 - Made houses significantly cheaper.

@@ -39,8 +39,19 @@ class Terrain:
             self.name = 'land'
             self.color = utility.rgb_color(0, 255, 0)
 
+    def get_food_production_multiplier(self):
+        if self.name == 'water':
+            return 1.05
+        elif self.name == 'land':
+            return 1.0
+        elif self.name == 'sand':
+            return 0.95
+
     def is_settleable(self):
         return self.name != 'water'
+
+    def is_water(self):
+        return self.name == 'water'
 
 class Cell:
     def __init__(self, parent, type, x, y, height, owner):
@@ -59,6 +70,16 @@ class Cell:
 
     def get_temperature(self):
         return weather.temperature(self.terrain.height * MAX_HEIGHT, self.y, utility.S_HEIGHT)
+
+    def food_production_multiplier(self):
+        #Higher temperature means better production.
+        multiplier = self.get_temperature() / 98.0 * self.terrain.get_food_production_multiplier()
+        for neighbor in self.neighbors():
+            #So does being surrounding by water
+            if neighbor.terrain.is_water():
+                multiplier *= neighbor.terrain.get_food_production_multiplier()
+
+        return multiplier
 
     def make_id(self):
         start_x, start_y = self.x * utility.CELL_SIZE, self.y * utility.CELL_SIZE
