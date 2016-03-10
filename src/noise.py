@@ -3,7 +3,6 @@
 
 import random
 import math
-from PIL import Image
 
 import utility
 
@@ -40,8 +39,5 @@ def generate_noise(size):
         for x in range(size):
             utility.show_bar(y * size + x, size**2, message='Generating noise: ', number_limit=True)
             data[-1].append(fBm(x*freq, y*freq, int(size*freq), octs))
-    im = Image.new("L", (size, size))
-    im.putdata(data, size, size)
-    im.save("noise.png")
 
     return data
