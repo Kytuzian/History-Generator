@@ -1,4 +1,16 @@
-2016-03-08
+2016-03-10
+Major changes:
+- Added terrain
+
+Minor changes:
+- Made houses significantly cheaper.
+- Greatly decreased the population capacity of tiles (city to 100, surrounding to 1) because buildings should provide most of the city's population capacity.
+- Removed green colors that were too similar to the land color.
+
+Bug fixes:
+-
+
+2016-03-09
 Major changes:
 - Added armor of a few basic types (cloth, leather, chainmail, plate).
 - Levies are now recruited from cities when attacks are sent, and they return home if the target city is conquered.

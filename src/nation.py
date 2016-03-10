@@ -19,16 +19,16 @@ OFFICE_MORALE_BONUS = 4
 NATION_COLORS = ['dark orange', 'cadet blue', 'sea green', 'gold', 'deep sky blue',\
                  'firebrick', 'dark salmon', 'maroon', 'sienna', 'dark slate blue',\
                  'deep pink', 'dark orchid', 'slate gray', 'violet',\
-                 'navy', 'magenta', 'sandy brown', 'saddle brown', 'medium spring green',\
-                 'orchid', 'blue', 'lawn green', 'violet red',\
-                 'medium slate blue', 'purple', 'lime green', 'chartreuse', 'blue violet',\
-                 'dark sea green', 'hot pink', 'orange', 'indian red', 'medium sea green',\
+                 'navy', 'magenta', 'sandy brown', 'saddle brown', \
+                 'orchid', 'blue', 'violet red',\
+                 'medium slate blue', 'purple', 'blue violet',\
+                 'dark sea green', 'hot pink', 'orange', 'indian red', \
                  'red', 'brown', 'dim gray', 'salmon',\
                  'steel blue', 'royal blue', 'medium purple', 'spring green',\
                  'dark slate gray', 'dark olive green', 'cyan', 'chocolate', 'orange red', 'tan',\
                  'dark green', 'tomato', 'gray', 'cornflower blue', 'goldenrod', \
                  'midnight blue', 'rosy brown', 'plum', 'sky blue',\
-                 'dark violet', 'dark khaki', 'burlywood', 'green', 'olive drab', 'medium turquoise',\
+                 'dark violet', 'dark khaki', 'burlywood', 'olive drab', 'medium turquoise',\
                  'slate blue', 'powder blue', 'aquamarine']
 
 OFFICE_MODIFIERS = ['tax_rate', 'army_spending', 'morale']
@@ -507,10 +507,24 @@ class Nation:
             if roll > NAME_SWITCH_THRESHOLD:
                 self.name.add_place(new_name)
 
+    def get_city_candidate_cells(self):
+        candidates = []
+
+        for x in self.parent.cells:
+            for y in x:
+                if y.owner == None and y.terrain.is_settleable():
+                    candidates.append(y)
+
+        return candidates
+
     def create_city(self, name=''):
         if name == '':
             name = self.language.make_name_word()
-        self.cities.append(City(self, name, self.get_average_city_position(), self.parent))
+
+        x, y = self.get_average_city_position()
+        candidates = self.get_city_candidate_cells()
+        candidates = sorted(candidates, key=lambda cell: utility.distance_squared((cell.x, cell.y), (x, y)))
+        self.cities.append(City(self, name, utility.weighted_random_choice(candidates), self.parent))
 
         self.chance_add_new_name(self.cities[-1].name)
 
@@ -577,7 +591,7 @@ class Nation:
 
         self.morale = int(self.morale + amount * self.get_morale_bonus())
 
-    def history_step(self, main):
+    def history_step(self):
         self.name.history_step(self)
 
         for person in self.people:
@@ -612,9 +626,9 @@ class Nation:
 
             if self.current_research == None or self.current_research.is_unlocked():
                 if self.current_research != None and self.current_research.is_unlocked():
-                    main.events.append(events.EventTechResearch('TechResearch', {'nation_a': self.id, 'tech_a': self.current_research.name}, main.get_current_date()))
+                    self.parent.events.append(events.EventTechResearch('TechResearch', {'nation_a': self.id, 'tech_a': self.current_research.name}, self.parent.get_current_date()))
 
-                    print(main.events[-1].text_version())
+                    print(self.parent.events[-1].text_version())
                 available = self.tech.get_available_research()
 
                 if len(available) > 0:

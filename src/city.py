@@ -13,8 +13,8 @@ from math import *
 
 from Tkinter import *
 
-CITY_CELL_POPULATION_CAPACITY = 1000
-SURROUNDING_CELL_POPULATION_CAPACITY = 10
+CITY_CELL_POPULATION_CAPACITY = 100
+SURROUNDING_CELL_POPULATION_CAPACITY = 1
 
 BASE_CELL_FOOD_PRODUCTION = 30
 BASE_CELL_MIN_FOOD_PRODUCTION = 30
@@ -26,7 +26,7 @@ CAPITAL_CITY_MORALE_BONUS = 2
 MORALE_INCREMENT = 30
 
 #Building effects: population_capacity, tax_rate, food_output, money_output
-house_effects = {'population_capacity': 100, 'tax_rate': 1.001, 'cost': 100}
+house_effects = {'population_capacity': 20, 'tax_rate': 1.001, 'cost': 20}
 farm_effects = {'population_capacity': 10, 'food_output': 100, 'cost': 200}
 fishery_effects = {'population_capacity': 5, 'food_output': 150, 'cost': 200}
 ranch_effects = {'population_capacity': 5, 'food_output': 200, 'cost': 300}
@@ -117,7 +117,7 @@ class Building:
         return production
 
 class City:
-    def __init__(self, nation, name, (x, y), parent):
+    def __init__(self, nation, name, cell, parent):
         self.name = name
         self.name_id = -1 #The id of the label that displays this cities name
 
@@ -135,7 +135,7 @@ class City:
         self.owned_cells = []
         self.surrounding_cells = []
 
-        self.position = (utility.clamp(x + random.randint(-10, 10), utility.S_WIDTH // utility.CELL_SIZE - 1, 0), utility.clamp(y + random.randint(-10, 10), utility.S_HEIGHT // utility.CELL_SIZE - 1, 0))
+        self.position = (cell.x, cell.y)
 
         self.army = None
 
@@ -369,8 +369,9 @@ class City:
         for cell in self.owned_cells + self.surrounding_cells:
             for neighbor in cell.neighbors():
                 if neighbor.owner == None:
-                    #It's okay if the cell is in there multiple times. It makes more sense that you'd be more likely to take that cell
-                    result.append(neighbor)
+                    if neighbor.terrain.is_settleable():
+                        #It's okay if the cell is in there multiple times. It makes more sense that you'd be more likely to take that cell
+                        result.append(neighbor)
                 elif neighbor.owner.nation != self.nation: #If there is a nation neighboring one of our cities
                     #we must either be at war with them, or be their trading partner.
                     if not neighbor.owner.nation in self.nation.trading and not neighbor.owner.nation in self.nation.at_war:
@@ -592,9 +593,9 @@ class City:
                 new_square.change_owner(self, 'surrounding')
 
         for i in xrange(int(sqrt(self.population))):
-            improvement_chance = int((self.building_count() + 1) / (log(self.population) + 1))
+            improvement_chance = int((self.building_count() + 1) / (sqrt(self.population) + 1))
             if random.randint(0, improvement_chance + 1) == 0:
-                build_building = utility.weighted_random_choice(self.buildings, weight=lambda _, v: v.get_cost() // 100, reverse=True)
+                build_building = utility.weighted_random_choice(self.buildings, weight=lambda _, building: float(building.get_cost()), reverse=True)
 
                 if self.nation.money > build_building.get_cost():
                     self.nation.money -= build_building.get_cost()

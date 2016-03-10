@@ -17,10 +17,33 @@ from language import *
 import events
 import event_analysis
 
+import noise
+
+import weather
+
+MAX_HEIGHT = 4000
+
 DEFAULT_SIMULATION_SPEED = 300 #ms
 
+class Terrain:
+    def __init__(self, height):
+        self.height = max(0, height)
+
+        if self.height < 0.12:
+            self.name = 'water'
+            self.color = utility.rgb_color(0, 0, 255)
+        elif self.height < 0.23:
+            self.name = 'sand'
+            self.color = utility.rgb_color(237, 201, 175)
+        else:
+            self.name = 'land'
+            self.color = utility.rgb_color(0, 255, 0)
+
+    def is_settleable(self):
+        return self.name != 'water'
+
 class Cell:
-    def __init__(self, parent, type, x, y, owner):
+    def __init__(self, parent, type, x, y, height, owner):
         self.parent = parent
 
         self.type = type
@@ -28,15 +51,22 @@ class Cell:
         self.x = x
         self.y = y
 
+        self.terrain = Terrain(height)
+
         self.owner = owner
 
         self.make_id()
 
+    def get_temperature(self):
+        return weather.temperature(self.terrain.height * MAX_HEIGHT, self.y, utility.S_HEIGHT)
+
     def make_id(self):
+        start_x, start_y = self.x * utility.CELL_SIZE, self.y * utility.CELL_SIZE
+        end_x, end_y = start_x + utility.CELL_SIZE, start_y + utility.CELL_SIZE
         if self.owner != None:
-            self.id = self.parent.canvas.create_rectangle(self.x * utility.CELL_SIZE, self.y * utility.CELL_SIZE, self.x * utility.CELL_SIZE + utility.CELL_SIZE, self.y * utility.CELL_SIZE + utility.CELL_SIZE, width=0, fill=self.owner.nation.color)
+            self.id = self.parent.canvas.create_rectangle(start_x, start_y, end_x, end_y, width=0, fill=self.owner.nation.color)
         else:
-            self.id = self.parent.canvas.create_rectangle(self.x * utility.CELL_SIZE, self.y * utility.CELL_SIZE, self.x * utility.CELL_SIZE + utility.CELL_SIZE, self.y * utility.CELL_SIZE + utility.CELL_SIZE, width=0, fill='white')
+            self.id = self.parent.canvas.create_rectangle(start_x, start_y, end_x, end_y, width=0, fill=self.terrain.color)
 
     def show_information_gui(self):
         self.gui_window = Tk()
@@ -197,10 +227,18 @@ class Main:
         self.canvas.xview_scroll(-event.delta, 'units')
 
     def setup(self):
-        for x in xrange(utility.S_WIDTH // utility.CELL_SIZE):
+        size = utility.S_WIDTH // utility.CELL_SIZE
+        data = noise.generate_noise(size)
+        print('')
+        cells_x = utility.S_WIDTH // utility.CELL_SIZE
+        cells_y = utility.S_HEIGHT // utility.CELL_SIZE
+        for x in xrange(cells_x):
             self.cells.append([])
-            for y in xrange(utility.S_HEIGHT // utility.CELL_SIZE):
-                self.cells[-1].append(Cell(self, '', x, y, None))
+            for y in xrange(cells_y):
+                utility.show_bar(x * cells_y + y, cells_x * cells_y, message='Generating world: ', number_limit=True)
+                self.cells[-1].append(Cell(self, '', x, y, data[x][y], None))
+
+        print('')
 
         self.nations = []
         self.old_nations = {}
@@ -357,7 +395,7 @@ class Main:
                 self.month = 1
 
                 for i in self.nations:
-                    i.history_step(self)
+                    i.history_step()
 
                     if len(i.cities) == 0 and len(i.moving_armies) == 0:
                         self.remove_nation(i)
@@ -487,7 +525,7 @@ class Main:
 
             #Let's go to war, but we can only do that if there is a nation other than us
             if random.randint(0, max([1, len(i.at_war) ** 12 + 100 - int(log(i.total_army() + 1)**4)])) == 0 and len(self.nations) > 1:
-                enemy = utility.weighted_random_choice(self.nations, weight=lambda _, v: int(utility.distance(i.get_average_city_position(), v.get_average_city_position())), reverse=True)
+                enemy = utility.weighted_random_choice(self.nations, weight=lambda _, v: utility.distance(i.get_average_city_position(), v.get_average_city_position()), reverse=True)
 
                 #We can't go to war twice, fight with a trading partner, or be war with ourselves
                 #Because doing any of those things would be really stupid
@@ -502,7 +540,7 @@ class Main:
 
             #Let's try not warring with them, and trade instead, perhaps?
             if random.randint(0, max(4, int(7**log(max(1, i.get_tolerance()))))) == 0: #Randomly start a new trade agreement. Change it later
-                partner = utility.weighted_random_choice(self.nations, weight=lambda _, v: int(utility.distance(i.get_average_city_position(), v.get_average_city_position())), reverse=True)
+                partner = utility.weighted_random_choice(self.nations, weight=lambda _, v: utility.distance(i.get_average_city_position(), v.get_average_city_position()), reverse=True)
 
                 #We can't trade with somebody we're already trading with or at war with, and we can't trade with ourselves
                 if not partner in i.trading and not partner in i.at_war and not partner == i:
@@ -520,7 +558,7 @@ class Main:
                 enemy = random.choice(nation.at_war)
 
                 if len(enemy.cities) > 0 and enemy in self.nations:
-                    attacking_city = utility.weighted_random_choice(enemy.cities, weight=lambda _, v: int(utility.distance(city.position, v.position)), reverse=True)
+                    attacking_city = utility.weighted_random_choice(enemy.cities, weight=lambda _, v: utility.distance(city.position, v.position), reverse=True)
 
                     if random.randint(0, max(20, city.army.size() - attacking_city.population // 8)) > 20 and random.randint(0, len(nation.moving_armies)**4) == 0:
                         fx, fy = city.position
