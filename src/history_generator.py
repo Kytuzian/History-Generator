@@ -626,6 +626,25 @@ class Main:
 
                                 city.army = city.army.zero()
 
+    def return_levies(self, sender, reinforce_city):
+        def do(reinforcing):
+            print('{} levied soldiers returned to {}'.format(reinforcing.members.size(), reinforce_city.name))
+
+            sender.moving_armies.remove(reinforcing)
+            self.canvas.delete(reinforcing.id)
+
+            if reinforce_city.nation == sender: #If we own it, as we should, just join the army.
+                reinforce_city.population += reinforcing.members.size()
+            elif reinforce_city.nation in sender.at_war: #If we're at war with the nation that now owns our city, attack it.
+                self.attack(sender, reinforcing.members, reinforce_city.nation, None, reinforce_city)
+            else: #if a third party is involved, let's just return back home
+                return_destination = random.choice(sender.cities)
+                sender.moving_armies.append(Group(sender.name, reinforcing.members, reinforce_city.position, return_destination.position, sender.color, lambda s, c: False, self.reinforce(sender, return_destination), self.canvas))
+
+                self.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': sender.id, 'nation_b': sender.id, 'city_a': reinforce_city.name, 'city_b': return_destination.name, 'reason': 'reinforce', 'army_size': reinforcing.members.size()}, self.get_current_date()))
+
+        return do
+
     #These functions return other functions so that they can be called from the Group class and still have all the relevant information
     def reinforce(self, sender, reinforce_city):
         def do(reinforcing):
@@ -655,9 +674,9 @@ class Main:
 
     def attack(self, attacker, attacking_army, defender, attacking_city, city):
         if city in defender.cities:
-            #At least one person has to show up to defend the city.
+            #Somebody has to show up to defend the city.
             defender_max = max(city.population // 2, 2)
-            defending_garrison_size = random.randint(defender_max // 16 + 1, defender_max)
+            defending_garrison_size = random.randint(defender_max // 6 + 1, defender_max)
 
             defending_army = defender.army_structure.zero().add_to(defender.army_structure.name, defending_garrison_size)
 

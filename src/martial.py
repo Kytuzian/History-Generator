@@ -337,10 +337,7 @@ class Soldier:
         self.weapons = weapons
         self.armor = armor
 
-        use_weapon = None
-        for weapon in self.weapons:
-            if weapon.name in map(lambda w: w.name, all_ranged_weapons):
-                use_weapon = weapon
+        use_weapon = self.get_ranged_weapon()
 
         if use_weapon == None:
             self.shoot = 0
@@ -364,6 +361,22 @@ class Soldier:
 
         self.canvas = canvas
 
+    def get_melee_weapon(self):
+        for weapon in self.weapons:
+            if weapon.name in map(lambda w: w.name, all_melee_weapons):
+                return weapon
+
+                break
+
+        return None
+
+    def get_ranged_weapon(self):
+        for weapon in self.weapons:
+            if weapon.name in map(lambda w: w.name, all_ranged_weapons):
+                return weapon
+
+        return None
+
     def calculate_position(self):
         coords = self.canvas.coords(self.id)[:2]
 
@@ -378,12 +391,7 @@ class Soldier:
         fatigue_loss = random.randint(0, self.fatigue // 2)
 
         #Find our ranged weapon. Should be first, but better to check in case it's not.
-        use_weapon = None
-        for weapon in self.weapons:
-            if weapon.name in map(lambda w: w.name, all_ranged_weapons):
-                use_weapon = weapon
-
-                break
+        use_weapon = self.get_ranged_weapon()
 
         if use_weapon == None: #Shouldn't actually happen, but just in case.
             return random.randint(0, 1)
@@ -404,12 +412,7 @@ class Soldier:
         fatigue_loss = random.randint(0, self.fatigue // 2)
 
         #Find our melee weapon
-        use_weapon = None
-        for weapon in self.weapons:
-            if weapon.name in map(lambda w: w.name, all_melee_weapons):
-                use_weapon = weapon
-
-                break
+        use_weapon = self.get_melee_weapon()
 
         if use_weapon == None: #This could happen if ALL of our weapons have broken.
             use_weapon = unarmed()
@@ -429,20 +432,15 @@ class Soldier:
     def get_ranged_defense(self, material):
         fatigue_loss = random.randint(0, self.fatigue // 2)
         armor_defense = self.armor.get_defense(material)
-        # skill_defense = self.armor.defense_skill_multiplier * random.randint(0, self.strength)
+        skill_defense = self.armor.defense_skill_multiplier * random.randint(0, self.strength)
 
-        return max(0, armor_defense - fatigue_loss)
+        return max(0, armor_defense + skill_defense - fatigue_loss)
 
     def get_melee_defense(self, material):
         fatigue_loss = random.randint(0, self.fatigue // 2)
 
         #Find our ranged weapon. Should be first, but better to check in case it's not.
-        use_weapon = None
-        for weapon in self.weapons:
-            if weapon.name in map(lambda w: w.name, all_melee_weapons):
-                use_weapon = weapon
-
-                break
+        use_weapon = self.get_melee_weapon()
 
         if use_weapon == None: #This could happen if ALL of our weapons have broken.
             use_weapon = unarmed()
@@ -791,7 +789,9 @@ class Battle:
                     if d < TROOP_MOVEMENT_SPEED * CC_RANGE:
                         soldier.ranged = False
 
-                    if soldier.shoot > soldier.shoot_counter:
+                    if d > soldier.get_ranged_weapon().range:
+                        self.canvas.move(soldier.id, (tx - x) / d * TROOP_MOVEMENT_SPEED, (ty - y) / d * TROOP_MOVEMENT_SPEED)
+                    elif soldier.shoot > soldier.shoot_counter:
                         if d > 0 and current_unit.ammunition > 0:
                             m, tangle = current_unit.target.get_movement_vector(vector_format='polar')
 
@@ -826,10 +826,7 @@ class Battle:
                         if current_unit.soldier_type.ranged:
                             soldier.ranged = True
 
-                    if d > 0:
-                        self.canvas.move(soldier.id, (tx - x) / d * TROOP_MOVEMENT_SPEED, (ty - y) / d * TROOP_MOVEMENT_SPEED)
-
-                    if d < 10:
+                    if d < soldier.get_melee_weapon().range:
                         attack = soldier.get_melee_attack(nation.tech.get_best_in_category('material'))
                         defense = soldier.target.get_melee_defense(enemy_nation.tech.get_best_in_category('material'))
 
@@ -873,6 +870,8 @@ class Battle:
                                 force.remove(current_unit)
 
                                 self.canvas.delete(current_unit.name_id)
+                    else: #Not in range, so we need to get closer.
+                        self.canvas.move(soldier.id, (tx - x) / d * TROOP_MOVEMENT_SPEED, (ty - y) / d * TROOP_MOVEMENT_SPEED)
 
         return False
 

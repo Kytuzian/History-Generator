@@ -48,6 +48,19 @@ class Building:
         self.effects = effects
         self.number = number
 
+    def copy(self):
+        return Building(self.name, self.city, self.effects, self.number)
+
+    #To be used when the copy is for a different city
+    def clean_copy(self, new_city, number=0):
+        return Building(self.name, new_city, self.effects, number)
+
+    def __call__(self, new_city=None, number=0):
+        if new_city != None:
+            return self.clean_copy(new_city, number)
+        else:
+            return self.copy()
+
     def get_cost(self):
         return self.effects['cost']
 
@@ -313,7 +326,7 @@ class City:
             send_army.add_to(send_army.name, self.army.number)
             self.army.number = 0
 
-            self.nation.moving_armies.append(Group(self.nation.name, send_army, self.position, attacking_city.position, self.nation.color, lambda s, c: False, self.parent.reinforce(self.nation, attacking_city), self.parent.canvas))
+            self.nation.moving_armies.append(Group(self.nation.name, send_army, self.position, attacking_city.position, self.nation.color, lambda s, c: False, self.parent.return_levies(self.nation, attacking_city), self.parent.canvas))
 
             self.parent.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': self.nation.id, 'nation_b': self.nation.id, 'city_a': self.name, 'city_b': attacking_city.name, 'reason': 'return levies', 'army_size': send_army.size()}, self.parent.get_current_date()))
 
@@ -621,6 +634,6 @@ class City:
     def __repr__(self):
         result = ""
 
-        result += "{}({}): Pop/Pop Capacity/Size: {} / {} / {}; Improvements: {}\n".format(self.name, self.age, self.population, self.calculate_population_capacity(), self.total_cell_count(), self.building_count())
+        result += "{}({}): Pop/Pop Capacity: {} / {}; Buildings: {}\n".format(self.name, self.age, self.population, self.calculate_population_capacity(), self.building_count())
 
         return result

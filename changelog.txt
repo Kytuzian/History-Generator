@@ -1,3 +1,17 @@
+2016-03-12
+Major changes:
+- Weapons now have different ranges.
+
+Minor changes:
+- Increased troop's defense to ranged attacks.
+- Improved some weapons reload times.
+- Increased defending garrison size.
+- Changed display string for nations (removed size and changed "Improvements" to "Buildings")
+
+Bug fixes:
+- Made levies actually return to the population, instead of joining the army.
+- Fixed bug where units would fight with their sidearm instead of their primary.
+
 2016-03-10
 Major changes:
 - Added terrain (land, water, and sand).
@@ -13,7 +27,6 @@ Minor changes:
 - Changed run continuously checkbutton to "Run until battle" button.
 
 Bug fixes:
--
 
 2016-03-09
 Major changes:

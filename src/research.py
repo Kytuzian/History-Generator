@@ -3,8 +3,10 @@ from Tkinter import *
 import random
 
 class Weapon:
-    def __init__(self, name, material_multiplier, attack, defense, attack_skill_multiplier, defense_skill_multiplier, reload_time=0, ammunition=0):
+    def __init__(self, name, range, material_multiplier, attack, defense, attack_skill_multiplier, defense_skill_multiplier, reload_time=0, ammunition=0):
         self.name = name
+
+        self.range = range
 
         self.material_multiplier = material_multiplier
 
@@ -34,7 +36,7 @@ class Weapon:
         return random.randint(0, effective_defense)
 
     def copy(self):
-        return Weapon(self.name, self.material_multiplier, self.attack, self.defense, self.attack_skill_multiplier, self.defense_skill_multiplier, self.reload_time, self.ammunition)
+        return Weapon(self.name, self.range, self.material_multiplier, self.attack, self.defense, self.attack_skill_multiplier, self.defense_skill_multiplier, self.reload_time, self.ammunition)
 
     def __call__(self):
         return self.copy()
@@ -71,24 +73,24 @@ class Armor:
 #------------------------------
 # WEAPON AND ARMOR DEFINITIONS
 #------------------------------
-unarmed = Weapon('Unarmed', 0, 1, 1, 1, 1)
-dagger = Weapon('Dagger', 1.5, 2, 2, 1.1, 1)
-rondel = Weapon('Rondel', 1.6, 3, 1, 1.5, 1)
-dirk = Weapon('Dirk', 1.6, 3, 1, 1.5, 1)
-shortsword = Weapon('Shortsword', 1.8, 5, 2, 2, 1.1)
-sword = Weapon('Sword', 2, 6, 3, 2, 1.1)
-club = Weapon('Club', 0, 5, 2, 1, 1)
-hammer = Weapon('Hammer', 1.3, 6, 1, 1.5, 0.8)
-bastard_sword = Weapon('Bastard Sword', 2.3, 7, 2, 2, 1.5)
-claymore = Weapon('Claymore', 2.5, 10, 1, 2.5, 0.5)
-staff = Weapon('Staff', 0, 3, 3, 2, 2)
-spear = Weapon('Spear', 1.0, 4, 4, 1.5, 1.5)
-pike = Weapon('Pike', 1.0, 5, 5, 1.5, 1.5)
-sarissa = Weapon('Sarissa', 1.0, 7, 3, 2, 2)
-bill = Weapon('Bill', 1.5, 6, 4, 1.5, 1.5)
-axe = Weapon('Axe', 1.8, 8, 2, 2.5, 0.8)
-flail = Weapon('Flail', 1.2, 6, 0, 2, 0.5)
-morning_star = Weapon('Morning Star', 1.5, 8, 0, 2, 0.2)
+unarmed = Weapon('Unarmed', 5, 0, 1, 1, 1, 1)
+dagger = Weapon('Dagger', 5, 1.5, 2, 2, 1.1, 1)
+rondel = Weapon('Rondel', 5, 1.6, 3, 1, 1.5, 1)
+dirk = Weapon('Dirk', 5, 1.6, 3, 1, 1.5, 1)
+shortsword = Weapon('Shortsword', 7, 1.8, 5, 2, 2, 1.1)
+sword = Weapon('Sword', 10, 2, 6, 3, 2, 1.1)
+club = Weapon('Club', 7, 0, 5, 2, 1, 1)
+hammer = Weapon('Hammer', 7, 1.3, 6, 1, 1.5, 0.8)
+bastard_sword = Weapon('Bastard Sword', 12, 2.3, 7, 2, 2, 1.5)
+claymore = Weapon('Claymore', 15, 2.5, 10, 1, 2.5, 0.5)
+staff = Weapon('Staff', 20, 0, 3, 3, 2, 2)
+spear = Weapon('Spear', 20, 1.0, 4, 4, 1.5, 1.5)
+pike = Weapon('Pike', 25, 1.0, 5, 5, 1.5, 1.5)
+sarissa = Weapon('Sarissa', 35, 1.0, 7, 3, 2, 2)
+bill = Weapon('Bill', 12, 1.5, 6, 4, 1.5, 1.5)
+axe = Weapon('Axe', 7, 1.8, 8, 2, 2.5, 0.8)
+flail = Weapon('Flail', 12, 1.2, 6, 0, 2, 0.5)
+morning_star = Weapon('Morning Star', 7, 1.5, 8, 0, 2, 0.2)
 
 all_melee_weapons = [unarmed, club, hammer, dagger, rondel, dirk, shortsword, sword, bastard_sword, claymore, spear, staff, bill, pike, sarissa, axe, flail, morning_star]
 weapon_list = [sword, shortsword, bastard_sword, claymore, spear, staff, pike, sarissa, axe, flail, morning_star, bill]
@@ -96,23 +98,23 @@ weapon_list = [sword, shortsword, bastard_sword, claymore, spear, staff, pike, s
 sidearm_list = [dagger, club, hammer, rondel, dirk, staff, shortsword, axe, spear]
 basic_weapon_list = [club, hammer, staff, shortsword, axe, spear]
 
-stones = Weapon('Stones', 0, 1, 1, 1.5, 1, reload_time=30, ammunition=6)
-sling = Weapon('Sling', 0, 3, 1, 1.8, 1, reload_time=50, ammunition=25)
-javelin = Weapon('Javelin', 0.5, 6, 2, 1.5, 1, reload_time=30, ammunition=4)
-atlatl = Weapon('Atlatl', 0.5, 8, 1, 2.0, 1, reload_time=80, ammunition=8)
-bow = Weapon('Bow', 0.5, 5, 1, 2, 1, reload_time=100, ammunition=15)
-crossbow = Weapon('Crossbow', 1.5, 10, 1, 1, 1, reload_time=300, ammunition=15)
-sling_staff = Weapon('Sling Staff', 0, 5, 2, 2, 1, reload_time=60, ammunition=20)
+stones = Weapon('Stones', 100, 0, 1, 1, 1.5, 1, reload_time=30, ammunition=6)
+sling = Weapon('Sling', 250, 0, 3, 1, 1.8, 1, reload_time=50, ammunition=25)
+javelin = Weapon('Javelin', 125, 0.5, 6, 2, 1.5, 1, reload_time=30, ammunition=4)
+atlatl = Weapon('Atlatl', 175, 0.5, 8, 1, 2.0, 1, reload_time=70, ammunition=8)
+bow = Weapon('Bow', 350, 0.5, 5, 1, 2, 1, reload_time=80, ammunition=15)
+crossbow = Weapon('Crossbow', 400, 1.5, 10, 1, 1, 1, reload_time=300, ammunition=15)
+sling_staff = Weapon('Sling Staff', 300, 0, 5, 2, 2, 1, reload_time=60, ammunition=20)
 
 all_ranged_weapons = [stones, atlatl, sling, javelin, bow, crossbow, sling_staff]
 ranged_weapon_list = [sling, atlatl, javelin, bow, crossbow, sling_staff]
 
 basic_ranged_list = [stones, sling, javelin, bow]
 
-cloth_armor = Armor('Cloth Armor', 0, 2, 1.0)
-leather_armor = Armor('Leather Armor', 0, 4, 1.0)
-chainmail = Armor('Chaimail', 1, 8, 0.5)
-plate = Armor('Plate', 2, 12, 0.4)
+cloth_armor = Armor('Cloth Armor', 0, 2, 0.4)
+leather_armor = Armor('Leather Armor', 0, 4, 0.3)
+chainmail = Armor('Chaimail', 1, 8, 0.2)
+plate = Armor('Plate', 2, 12, 0.1)
 
 all_armor_list = [cloth_armor, leather_armor]
 
