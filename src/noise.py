@@ -1,6 +1,8 @@
 #Simple noise implementation
 #Written by Boojum on http://gamedev.stackexchange.com/questions/23625/how-do-you-generate-tileable-perlin-noise
 
+from PIL import Image
+
 import random
 import math
 
@@ -31,13 +33,28 @@ def fBm(x, y, per, octs):
         val += 0.5**o * noise(x*2**o, y*2**o, per*2**o)
     return val
 
-def generate_noise(size):
+def put_data(im, data, w, h):
+    data = reduce(lambda a, b: a + b, data)
+    for x in xrange(w):
+        for y in xrange(h):
+            im.putpixel((x, y), int(data[x * h + y] * 255))
+
+def generate_noise(size, message='', fname='noise.png'):
     freq, octs = 1/32.0, 5
     data = []
+    global perm
+    perm = range(256)
+    random.shuffle(perm)
+    perm += perm
     for y in range(size):
         data.append([])
         for x in range(size):
-            utility.show_bar(y * size + x, size**2, message='Generating noise: ', number_limit=True)
+            utility.show_bar(y * size + x, size**2, message=message, number_limit=True)
             data[-1].append(fBm(x*freq, y*freq, int(size*freq), octs))
+
+    if fname != None:
+        im = Image.new("L", (size, size))
+        put_data(im, map(lambda i: max(0, i), data), size, size)
+        im.save(fname)
 
     return data

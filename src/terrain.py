@@ -1,0 +1,391 @@
+import math
+import random
+
+# from PIL import Image
+
+import utility
+
+import noise
+
+MAX_HEIGHT = 4000
+
+def to_celsius(t):
+    return (t - 32.0) / (9.0 / 5.0)
+
+def to_farenheit(t):
+    return (9.0 / 5.0) * t + 32.0
+
+def to_meters(f):
+    return 0.3048 * f
+
+def to_feet(m):
+    return m / 0.3048
+
+def temperature(elevation, height, world_height):
+    r = float(world_height) / 2
+    latitude = (float(height) - r) / world_height * 180 / math.pi
+
+    temp = 103 - 1.45*latitude - 0.00227*elevation - 0.0054*latitude**2 - 0.000007*latitude*elevation
+
+    return to_celsius(temp)
+
+class Terrain:
+    def __init__(self, height, moisture):
+        self.height = max(0, height)
+        self.moisture = moisture
+
+        self.setup()
+
+    def setup(self):
+        if self.height == 0:
+            self.name = 'water'
+            self.color = utility.rgb_color(0, 0, 255)
+        elif self.height < 0.1 and self.moisture < 0.5:
+            self.name = 'sand'
+            self.color = utility.rgb_color(237, 201, 175)
+        elif self.moisture > 0.5:
+            self.name = 'forest'
+            self.color = utility.rgb_color(34, 139, 34)
+        else:
+            self.name = 'land'
+            self.color = utility.rgb_color(0, 255, 0)
+
+    def get_food_production_multiplier(self):
+        if self.name == 'water':
+            return 1.05
+        elif self.name == 'land':
+            return 1.0
+        elif self.name == 'sand':
+            return 0.95
+
+    def is_settleable(self):
+        return not self.is_water()
+
+    def is_water(self):
+        return self.name == 'water'
+
+class Cell:
+    def __init__(self, parent, type, x, y, height, temperature_multiplier, moisture, owner):
+        self.parent = parent
+
+        self.type = type
+
+        self.x = x
+        self.y = y
+
+        self.terrain = Terrain(height, moisture)
+
+        self.temperature_multiplier = max(0, temperature_multiplier)
+
+        self.owner = owner
+
+        self.high_temp_range = random.random() / 5
+        self.low_temp_range = random.random() / 5
+
+        self.make_id()
+
+    def get_elevation(self):
+        return to_meters(self.terrain.height * MAX_HEIGHT)
+
+    def get_high_temperature(self):
+        return self.get_temperature() + self.get_temperature() * self.high_temp_range
+
+    def get_low_temperature(self):
+        return self.get_temperature() - self.get_temperature() * self.low_temp_range
+
+    def get_temperature_range(self):
+        return self.get_high_temperature() - self.get_low_temperature()
+
+    def get_temperature(self):
+        return temperature(self.terrain.height * MAX_HEIGHT, self.y, utility.S_HEIGHT) * (1 - self.temperature_multiplier)
+
+    #http://www.sciencedirect.com/science/article/pii/0002157177900073
+    def get_dew_point(self):
+        return 0.0023 * self.get_elevation() + 0.37 * self.get_temperature() + 0.53 * self.get_temperature_range() - 10.9
+
+    def get_evaporation(self):
+        amount = (self.get_temperature() + 15.0 * self.get_dew_point()) / (80.0 - self.get_temperature())
+        amount *= random.random()
+
+        if self.terrain.is_water():
+            return amount
+
+        if amount > self.terrain.moisture:
+            amount = self.terrain.moisture
+            self.terrain.moisture = 0
+
+            return amount
+        else:
+            self.terrain.moisture -= amount
+
+            return amount
+
+    def food_production_multiplier(self):
+        #Higher temperature means better production.
+        multiplier = self.get_temperature() / 98.0 * self.terrain.get_food_production_multiplier()
+        for neighbor in self.neighbors():
+            #So does being surrounding by water
+            if neighbor.terrain.is_water():
+                multiplier *= neighbor.terrain.get_food_production_multiplier()
+
+        return multiplier
+
+    def make_id(self):
+        start_x, start_y = self.x * utility.CELL_SIZE, self.y * utility.CELL_SIZE
+        end_x, end_y = start_x + utility.CELL_SIZE, start_y + utility.CELL_SIZE
+        try:
+            if self.owner != None:
+                self.id = self.parent.canvas.create_rectangle(start_x, start_y, end_x, end_y, width=0, fill=self.owner.nation.color)
+            else:
+                self.id = self.parent.canvas.create_rectangle(start_x, start_y, end_x, end_y, width=0, fill=self.terrain.color)
+        except:
+            pass
+
+    def show_information_gui(self):
+        self.gui_window = Tk()
+        self.gui_window.title('Cell Information: ({}, {})'.format(self.x, self.y))
+        self.gui_window.geometry("400x150+0+0")
+
+        self.type_label = Label(self.gui_window, text='Type: {}'.format(self.type))
+        self.type_label.grid(row=0, sticky=W)
+
+        self.owning_city_label = Label(self.gui_window, text='Owning city: ')
+        self.owning_city_label.grid(row=1, sticky=W)
+
+        self.owning_nation_label = Label(self.gui_window, text='Owning nation: ')
+        self.owning_nation_label.grid(row=2, sticky=W)
+
+        if self.owner != None:
+            self.owning_city_button = Button(self.gui_window, text=self.owner.name, command=self.owner.show_information_gui)
+            self.owning_nation_button = Button(self.gui_window, text=self.owner.nation.name, command=self.owner.nation.show_information_gui)
+        else:
+            self.owning_city_button = Button(self.gui_window, text='None')
+            self.owning_nation_button = Button(self.gui_window, text='None')
+
+        self.owning_city_button.grid(row=1, column=1, sticky=W)
+        self.owning_nation_button.grid(row=2, column=1, sticky=W)
+
+    def update_self(self):
+        if self.owner == None:
+            self.parent.canvas.itemconfig(self.id, fill='white')
+        else:
+            self.parent.canvas.itemconfig(self.id, fill=self.owner.nation.color)
+
+        if self.type == 'city':
+            self.parent.canvas.itemconfig(self.id, width=1)
+        elif self.type == 'surrounding':
+            self.parent.canvas.itemconfig(self.id, width=0)
+        elif self.type == '':
+            self.parent.canvas.itemconfig(self.id, width=0)
+
+    def change_type(self, new_type):
+        self.type = new_type
+
+        self.update_self()
+
+    def change_owner(self, new_owner, new_type=None):
+        if self.owner != None: #Remove this cell from the list of owned cells
+            self.owner.remove_cell(self)
+
+        #This must be before .add_cell
+        if new_type != None:
+            self.change_type(new_type)
+
+        self.owner = new_owner
+
+        if self.owner != None:
+            self.owner.add_cell(self)
+        else:
+            self.new_type = '' #There is no cell type for an unowned cell.
+
+        self.update_self()
+
+    def neighbors(self):
+        result = []
+
+        if self.x > 0:
+            result.append(self.parent.cells[self.x - 1][self.y])
+        # else:
+        #     result.append(self.parent.cells[utility.S_WIDTH // utility.CELL_SIZE - 1][self.y])
+
+        if self.y > 0:
+            result.append(self.parent.cells[self.x][self.y - 1])
+        # else:
+        #     result.append(self.parent.cells[self.x][utility.S_HEIGHT // utility.CELL_SIZE - 1])
+
+        if self.x < utility.S_WIDTH // utility.CELL_SIZE - 1:
+            result.append(self.parent.cells[self.x + 1][self.y])
+        # else:
+        #     result.append(self.parent.cells[0][self.y])
+
+        if self.y < utility.S_HEIGHT // utility.CELL_SIZE - 1:
+            result.append(self.parent.cells[self.x][self.y + 1])
+        # else:
+        #     result.append(self.parent.cells[self.x][0])
+
+        return result
+
+class Cloud:
+    def __init__(self, x, y, water):
+        self.x = x
+        self.y = y
+        self.water = water
+
+    def add_water(self, amount):
+        self.water += water
+
+    def precipitate(self):
+        if random.randint(0, 1) == 0:
+            amount = random.random() * self.water
+        else:
+            amount = 0
+        self.water -= amount
+        return amount
+
+class Weather:
+    def __init__(self, cells):
+        self.cells = cells
+        self.water_cells = []
+
+        self.clouds = []
+
+        self.cells_x = utility.S_WIDTH // utility.CELL_SIZE
+        self.cells_y = utility.S_HEIGHT // utility.CELL_SIZE
+
+        self.setup()
+
+    def setup(self):
+        print('Calculating wind vectors.')
+        self.wind_vectors = self.calculate_wind_vectors()
+        print('Setting up clouds.')
+        self.setup_clouds()
+        print('Filtering for water cells for evaporation.')
+        self.water_cells = self.get_water_cells()
+
+    def get_water_cells(self):
+        res = []
+
+        for row in self.cells:
+            for cell in row:
+                if cell.terrain.is_water():
+                    res.append(cell)
+
+        return res
+
+    def setup_clouds(self):
+        for x, row in enumerate(self.cells):
+            self.clouds.append([])
+            for y, cell in enumerate(row):
+                self.clouds[-1].append([])
+
+    def handle_evaporation(self):
+        for i, cell in enumerate(self.water_cells):
+            utility.show_bar(i, self.water_cells, message='Handling evaporation: ')
+            amount = cell.get_evaporation() * 4
+
+            if amount <= 0:
+                continue
+
+            has_cloud = False
+            for cloud in self.clouds[cell.x][cell.y]:
+                cloud.water += amount
+                has_cloud = True
+                break
+
+            if not has_cloud:
+                self.clouds[cell.x][cell.y].append(Cloud(cell.x, cell.y, amount))
+
+    def handle_clouds(self):
+        for x, row in enumerate(self.clouds):
+            for y, cell in enumerate(row):
+                for cloud in cell:
+                    if not self.cells[x][y].terrain.is_water():
+                        self.cells[x][y].terrain.moisture += cloud.precipitate()
+
+                    if cloud.water <= 0:
+                        cell.remove(cloud)
+
+    def calculate_wind_vectors(self):
+        wind_vectors = []
+        for x, row in enumerate(self.cells):
+            wind_vectors.append([])
+            for y, cell in enumerate(row):
+                dx, dy = 0.0, 0.0
+                for neighbor in cell.neighbors():
+                    cdx, cdy = cell.x - neighbor.x, cell.y - neighbor.y
+                    cdx = cdx * (cell.get_temperature() - neighbor.get_temperature()) / cell.get_temperature()
+                    cdy = cdy * (cell.get_temperature() - neighbor.get_temperature()) / cell.get_temperature()
+                    dx += cdx
+                    dy += cdy
+                mag = math.sqrt(dx**2 + dy**2)
+                dx, dy = dx / mag * 5, dy / mag * 5
+                dx += 1.5 #Wind goes west to east
+                wind_vectors[-1].append((dx, dy))
+
+        return wind_vectors
+
+    def handle_wind(self):
+        new_clouds = []
+        for x, row in enumerate(self.clouds):
+            new_clouds.append([])
+            for y, cell in enumerate(row):
+                new_clouds[-1].append([])
+
+        for x, row in enumerate(self.clouds):
+            for y, cell in enumerate(row):
+                for cloud in cell:
+                    cell.remove(cloud)
+
+                    # print(cloud.x, cloud.y)
+                    dx, dy = self.wind_vectors[x][y]
+                    cloud.x += dx
+                    cloud.y += dy
+
+                    if cloud.x >= self.cells_x:
+                        cloud.x = 0
+                    elif cloud.x < 0:
+                        cloud.x = self.cells_x - 1
+
+                    if cloud.y >= self.cells_y:
+                        cloud.y = 0
+                    elif cloud.y < 0:
+                        cloud.y = self.cells_y - 1
+
+                    new_clouds[int(cloud.x)][int(cloud.y)].append(cloud)
+
+        self.clouds = new_clouds
+
+    def step(self):
+        print('Handling wind.')
+        self.handle_wind()
+        print('Handling clouds.')
+        self.handle_clouds()
+        self.handle_evaporation()
+
+    def normalize_moistures(self):
+        print('Normalizing moistures.')
+        moistures = reduce(lambda a, b: a + b, map(lambda row: map(lambda cell: cell.terrain.moisture, row), self.cells))
+        max_amount = max(moistures)
+
+        for row in self.cells:
+            for cell in row:
+                cell.terrain.moisture /= max_amount
+
+    def run(self, steps):
+        for step in xrange(steps):
+            print('Step {} of'.format(step, steps))
+            self.step()
+
+            data = reduce(lambda a, b: a + b, map(lambda row: map(lambda cell: cell.terrain.moisture, row), self.cells))
+            max_amount = max(data)
+            # print(data)
+            if max_amount != 0:
+                data = map(lambda i: i / max_amount, data)
+            # im = Image.new("L", (self.cells_x, self.cells_x))
+            # put_data(im, data, self.cells_x, self.cells_x)
+            # im.save("terrain.png")
+
+# def put_data(im, data, w, h):
+#     for x in xrange(w):
+#         for y in xrange(h):
+#             im.putpixel((x, y), int(data[x * h + y] * 255))

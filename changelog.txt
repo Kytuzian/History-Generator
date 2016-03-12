@@ -1,6 +1,8 @@
 2016-03-12
 Major changes:
 - Weapons now have different ranges.
+- Rainfall is now simulated to generate forests.
+- World no longer wraps around.
 
 Minor changes:
 - Increased troop's defense to ranged attacks.

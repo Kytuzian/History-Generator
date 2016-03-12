@@ -19,159 +19,9 @@ import event_analysis
 
 import noise
 
-import weather
-
-MAX_HEIGHT = 4000
+import terrain
 
 DEFAULT_SIMULATION_SPEED = 300 #ms
-
-class Terrain:
-    def __init__(self, height):
-        self.height = max(0, height)
-
-        if self.height == 0:
-            self.name = 'water'
-            self.color = utility.rgb_color(0, 0, 255)
-        elif self.height < 0.1:
-            self.name = 'sand'
-            self.color = utility.rgb_color(237, 201, 175)
-        else:
-            self.name = 'land'
-            self.color = utility.rgb_color(0, 255, 0)
-
-    def get_food_production_multiplier(self):
-        if self.name == 'water':
-            return 1.05
-        elif self.name == 'land':
-            return 1.0
-        elif self.name == 'sand':
-            return 0.95
-
-    def is_settleable(self):
-        return self.name != 'water'
-
-    def is_water(self):
-        return self.name == 'water'
-
-class Cell:
-    def __init__(self, parent, type, x, y, height, owner):
-        self.parent = parent
-
-        self.type = type
-
-        self.x = x
-        self.y = y
-
-        self.terrain = Terrain(height)
-
-        self.owner = owner
-
-        self.make_id()
-
-    def get_temperature(self):
-        return weather.temperature(self.terrain.height * MAX_HEIGHT, self.y, utility.S_HEIGHT)
-
-    def food_production_multiplier(self):
-        #Higher temperature means better production.
-        multiplier = self.get_temperature() / 98.0 * self.terrain.get_food_production_multiplier()
-        for neighbor in self.neighbors():
-            #So does being surrounding by water
-            if neighbor.terrain.is_water():
-                multiplier *= neighbor.terrain.get_food_production_multiplier()
-
-        return multiplier
-
-    def make_id(self):
-        start_x, start_y = self.x * utility.CELL_SIZE, self.y * utility.CELL_SIZE
-        end_x, end_y = start_x + utility.CELL_SIZE, start_y + utility.CELL_SIZE
-        if self.owner != None:
-            self.id = self.parent.canvas.create_rectangle(start_x, start_y, end_x, end_y, width=0, fill=self.owner.nation.color)
-        else:
-            self.id = self.parent.canvas.create_rectangle(start_x, start_y, end_x, end_y, width=0, fill=self.terrain.color)
-
-    def show_information_gui(self):
-        self.gui_window = Tk()
-        self.gui_window.title('Cell Information: ({}, {})'.format(self.x, self.y))
-        self.gui_window.geometry("400x150+0+0")
-
-        self.type_label = Label(self.gui_window, text='Type: {}'.format(self.type))
-        self.type_label.grid(row=0, sticky=W)
-
-        self.owning_city_label = Label(self.gui_window, text='Owning city: ')
-        self.owning_city_label.grid(row=1, sticky=W)
-
-        self.owning_nation_label = Label(self.gui_window, text='Owning nation: ')
-        self.owning_nation_label.grid(row=2, sticky=W)
-
-        if self.owner != None:
-            self.owning_city_button = Button(self.gui_window, text=self.owner.name, command=self.owner.show_information_gui)
-            self.owning_nation_button = Button(self.gui_window, text=self.owner.nation.name, command=self.owner.nation.show_information_gui)
-        else:
-            self.owning_city_button = Button(self.gui_window, text='None')
-            self.owning_nation_button = Button(self.gui_window, text='None')
-
-        self.owning_city_button.grid(row=1, column=1, sticky=W)
-        self.owning_nation_button.grid(row=2, column=1, sticky=W)
-
-    def update_self(self):
-        if self.owner == None:
-            self.parent.canvas.itemconfig(self.id, fill='white')
-        else:
-            self.parent.canvas.itemconfig(self.id, fill=self.owner.nation.color)
-
-        if self.type == 'city':
-            self.parent.canvas.itemconfig(self.id, width=1)
-        elif self.type == 'surrounding':
-            self.parent.canvas.itemconfig(self.id, width=0)
-        elif self.type == '':
-            self.parent.canvas.itemconfig(self.id, width=0)
-
-    def change_type(self, new_type):
-        self.type = new_type
-
-        self.update_self()
-
-    def change_owner(self, new_owner, new_type=None):
-        if self.owner != None: #Remove this cell from the list of owned cells
-            self.owner.remove_cell(self)
-
-        #This must be before .add_cell
-        if new_type != None:
-            self.change_type(new_type)
-
-        self.owner = new_owner
-
-        if self.owner != None:
-            self.owner.add_cell(self)
-        else:
-            self.new_type = '' #There is no cell type for an unowned cell.
-
-        self.update_self()
-
-    def neighbors(self):
-        result = []
-
-        if self.x > 0:
-            result.append(self.parent.cells[self.x - 1][self.y])
-        else:
-            result.append(self.parent.cells[utility.S_WIDTH // utility.CELL_SIZE - 1][self.y])
-
-        if self.y > 0:
-            result.append(self.parent.cells[self.x][self.y - 1])
-        else:
-            result.append(self.parent.cells[self.x][utility.S_HEIGHT // utility.CELL_SIZE - 1])
-
-        if self.x < utility.S_WIDTH // utility.CELL_SIZE - 1:
-            result.append(self.parent.cells[self.x + 1][self.y])
-        else:
-            result.append(self.parent.cells[0][self.y])
-
-        if self.y < utility.S_HEIGHT // utility.CELL_SIZE - 1:
-            result.append(self.parent.cells[self.x][self.y + 1])
-        else:
-            result.append(self.parent.cells[self.x][0])
-
-        return result
 
 class Main:
     nation_count = 8
@@ -249,7 +99,9 @@ class Main:
 
     def setup(self):
         size = utility.S_WIDTH // utility.CELL_SIZE
-        data = noise.generate_noise(size)
+        data = noise.generate_noise(size, 'Generating terrain: ', None)
+        print('')
+        temp = noise.generate_noise(size, 'Generating temperature variation: ', None)
         print('')
         cells_x = utility.S_WIDTH // utility.CELL_SIZE
         cells_y = utility.S_HEIGHT // utility.CELL_SIZE
@@ -257,7 +109,14 @@ class Main:
             self.cells.append([])
             for y in xrange(cells_y):
                 utility.show_bar(x * cells_y + y, cells_x * cells_y, message='Generating world: ', number_limit=True)
-                self.cells[-1].append(Cell(self, '', x, y, data[x][y], None))
+                self.cells[-1].append(terrain.Cell(self, '', x, y, data[x][y], temp[x][y], 0, None))
+
+        self.weather = terrain.Weather(self.cells)
+        self.weather.run(10)
+
+        for x, row in enumerate(self.cells):
+            for y, cell in enumerate(row):
+                cell.terrain.setup()
 
         print('')
 
