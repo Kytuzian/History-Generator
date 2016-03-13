@@ -52,11 +52,13 @@ class Terrain:
 
     def get_food_production_multiplier(self):
         if self.name == 'water':
-            return 1.05
+            return 1.1
         elif self.name == 'land':
             return 1.0
         elif self.name == 'sand':
             return 0.95
+        elif self.name == 'forest':
+            return 1.05
 
     def is_settleable(self):
         return not self.is_water()
@@ -73,14 +75,17 @@ class Cell:
         self.x = x
         self.y = y
 
+        self.id = -1
+
         self.terrain = Terrain(height, moisture)
 
         self.temperature_multiplier = max(0, temperature_multiplier)
-
-        self.owner = owner
+        self.temperature = None
 
         self.high_temp_range = random.random() / 5
         self.low_temp_range = random.random() / 5
+
+        self.owner = owner
 
         self.make_id()
 
@@ -97,7 +102,11 @@ class Cell:
         return self.get_high_temperature() - self.get_low_temperature()
 
     def get_temperature(self):
-        return temperature(self.terrain.height * MAX_HEIGHT, self.y, utility.S_HEIGHT) * (1 - self.temperature_multiplier)
+        #The base temperature never changes, so we only need to calculate it once.
+        if self.temperature == None:
+            self.temperature = temperature(self.terrain.height * MAX_HEIGHT, self.y, utility.S_HEIGHT) * (1 - self.temperature_multiplier)
+
+        return self.temperature
 
     #http://www.sciencedirect.com/science/article/pii/0002157177900073
     def get_dew_point(self):
@@ -129,6 +138,13 @@ class Cell:
                 multiplier *= neighbor.terrain.get_food_production_multiplier()
 
         return multiplier
+
+    def reset_color(self):
+        if self.id >= 0:
+            if self.owner != None:
+                self.parent.canvas.itemconfig(self.id, fill=self.owner.nation.color)
+            else:
+                self.parent.canvas.itemconfig(self.id, fill=self.terrain.color)
 
     def make_id(self):
         start_x, start_y = self.x * utility.CELL_SIZE, self.y * utility.CELL_SIZE
@@ -231,15 +247,20 @@ class Cloud:
         self.y = y
         self.water = water
 
+        self.processed = False
+
+        self.wait = 125 * random.random()**5
+        self.age = 0
+
     def add_water(self, amount):
         self.water += water
 
     def precipitate(self):
-        if random.randint(0, 1) == 0:
+        if self.age > self.wait:
             amount = random.random() * self.water
+            self.water -= amount
         else:
             amount = 0
-        self.water -= amount
         return amount
 
 class Weather:
@@ -280,25 +301,24 @@ class Weather:
 
     def handle_evaporation(self):
         for i, cell in enumerate(self.water_cells):
-            utility.show_bar(i, self.water_cells, message='Handling evaporation: ')
+            # utility.show_bar(i, self.water_cells, message='Handling evaporation: ')
             amount = cell.get_evaporation() * 4
 
             if amount <= 0:
                 continue
 
-            has_cloud = False
-            for cloud in self.clouds[cell.x][cell.y]:
-                cloud.water += amount
-                has_cloud = True
-                break
-
-            if not has_cloud:
+            if len(self.clouds[cell.x][cell.y]) > 0:
+                self.clouds[cell.x][cell.y][0].water += amount
+            else:
                 self.clouds[cell.x][cell.y].append(Cloud(cell.x, cell.y, amount))
 
     def handle_clouds(self):
         for x, row in enumerate(self.clouds):
             for y, cell in enumerate(row):
                 for cloud in cell:
+                    cloud.processed = False
+                    cloud.age += 1
+
                     if not self.cells[x][y].terrain.is_water():
                         self.cells[x][y].terrain.moisture += cloud.precipitate()
 
@@ -325,41 +345,36 @@ class Weather:
         return wind_vectors
 
     def handle_wind(self):
-        new_clouds = []
-        for x, row in enumerate(self.clouds):
-            new_clouds.append([])
-            for y, cell in enumerate(row):
-                new_clouds[-1].append([])
-
         for x, row in enumerate(self.clouds):
             for y, cell in enumerate(row):
                 for cloud in cell:
-                    cell.remove(cloud)
+                    if not cloud.processed:
+                        cell.remove(cloud)
 
-                    # print(cloud.x, cloud.y)
-                    dx, dy = self.wind_vectors[x][y]
-                    cloud.x += dx
-                    cloud.y += dy
+                        cloud.processed = True
 
-                    if cloud.x >= self.cells_x:
-                        cloud.x = 0
-                    elif cloud.x < 0:
-                        cloud.x = self.cells_x - 1
+                        dx, dy = self.wind_vectors[x][y]
+                        cloud.x += dx
+                        cloud.y += dy
 
-                    if cloud.y >= self.cells_y:
-                        cloud.y = 0
-                    elif cloud.y < 0:
-                        cloud.y = self.cells_y - 1
+                        if cloud.x >= self.cells_x:
+                            cloud.x = 0
+                        elif cloud.x < 0:
+                            cloud.x = self.cells_x - 1
 
-                    new_clouds[int(cloud.x)][int(cloud.y)].append(cloud)
+                        if cloud.y >= self.cells_y:
+                            cloud.y = 0
+                        elif cloud.y < 0:
+                            cloud.y = self.cells_y - 1
 
-        self.clouds = new_clouds
+                        self.clouds[int(cloud.x)][int(cloud.y)].append(cloud)
 
     def step(self):
         print('Handling wind.')
         self.handle_wind()
         print('Handling clouds.')
         self.handle_clouds()
+        print('Handling evaporation.')
         self.handle_evaporation()
 
     def normalize_moistures(self):
@@ -372,20 +387,11 @@ class Weather:
                 cell.terrain.moisture /= max_amount
 
     def run(self, steps):
-        for step in xrange(steps):
-            print('Step {} of'.format(step, steps))
+        for step in xrange(steps + 1):
+            print('Step {} of {}'.format(step, steps))
             self.step()
 
             data = reduce(lambda a, b: a + b, map(lambda row: map(lambda cell: cell.terrain.moisture, row), self.cells))
             max_amount = max(data)
-            # print(data)
             if max_amount != 0:
                 data = map(lambda i: i / max_amount, data)
-            # im = Image.new("L", (self.cells_x, self.cells_x))
-            # put_data(im, data, self.cells_x, self.cells_x)
-            # im.save("terrain.png")
-
-# def put_data(im, data, w, h):
-#     for x in xrange(w):
-#         for y in xrange(h):
-#             im.putpixel((x, y), int(data[x * h + y] * 255))

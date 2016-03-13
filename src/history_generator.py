@@ -99,9 +99,7 @@ class Main:
 
     def setup(self):
         size = utility.S_WIDTH // utility.CELL_SIZE
-        data = noise.generate_noise(size, 'Generating terrain: ', None)
-        print('')
-        temp = noise.generate_noise(size, 'Generating temperature variation: ', None)
+        data = noise.generate_noise(size, 'Generating terrain: ')
         print('')
         cells_x = utility.S_WIDTH // utility.CELL_SIZE
         cells_y = utility.S_HEIGHT // utility.CELL_SIZE
@@ -109,7 +107,7 @@ class Main:
             self.cells.append([])
             for y in xrange(cells_y):
                 utility.show_bar(x * cells_y + y, cells_x * cells_y, message='Generating world: ', number_limit=True)
-                self.cells[-1].append(terrain.Cell(self, '', x, y, data[x][y], temp[x][y], 0, None))
+                self.cells[-1].append(terrain.Cell(self, '', x, y, data[x][y], random.random()**6, 0, None))
 
         self.weather = terrain.Weather(self.cells)
         self.weather.run(10)
@@ -117,6 +115,7 @@ class Main:
         for x, row in enumerate(self.cells):
             for y, cell in enumerate(row):
                 cell.terrain.setup()
+                cell.reset_color()
 
         print('')
 
@@ -622,5 +621,6 @@ if len(sys.argv) > 1:
         elif params[0] == "size":
             utility.CELL_SIZE = int(params[1])
 
+# cProfile.run('History = Main()', sort='tottime')
 History = Main()
 History.start()
