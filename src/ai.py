@@ -28,7 +28,7 @@ class Consumer:
 
 class SupplyDemand:
     def __init__(self, goods, producers, consumers):
-        self.goods = goods
+        self.goods = dict(goods)
 
         self.producers = producers
         self.consumers = consumers
@@ -69,3 +69,6 @@ class SupplyDemand:
                             required_producers[producer.name] = required_amount
 
         return required_producers
+
+    def purchase_required_producers(self):
+        return

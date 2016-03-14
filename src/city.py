@@ -6,6 +6,8 @@ from group import *
 from religion import *
 from research import *
 
+import ai
+
 import events
 import event_analysis
 
@@ -38,7 +40,7 @@ lab_effects = {'population_capacity': 5, 'research_rate': 5, 'cost': 1000}
 market_effects = {'tax_rate': 1.01, 'money_output': 1000, 'cost': 1500}
 
 def base_resources():
-    return {'leather': 0, 'wood': 0, 'cloth': 0, 'metal': 0}
+    return {'leather': 0, 'wood': 0, 'cloth': 0, 'metal': 0, 'food': 0}
 
 class Building:
     def __init__(self, name, city, effects, number):
@@ -47,6 +49,12 @@ class Building:
 
         self.effects = effects
         self.number = number
+
+    def produce(self):
+        return
+
+    def buy(self):
+        return
 
     def copy(self):
         return Building(self.name, self.city, self.effects, self.number)
@@ -143,8 +151,6 @@ class City:
 
         self.age = 0
 
-        self.food = 0
-
         self.owned_cells = []
         self.surrounding_cells = []
 
@@ -165,6 +171,8 @@ class City:
         self.buildings.append(Building('Market', self, market_effects, 0))
 
         self.resources = base_resources()
+
+        # self.ai = ai.SupplyDemand(base_resources(), self.buildings, )
 
         if self.parent.cells[self.position[0]][self.position[1]].owner != None:
             self.destroy = True
@@ -199,9 +207,6 @@ class City:
 
         self.size_label = Label(self.gui_window, text='Size: {}'.format(self.total_cell_count()))
         self.size_label.grid(row=1, sticky=W)
-
-        self.food_label = Label(self.gui_window, text='Food: {}'.format(self.food))
-        self.food_label.grid(row=2, sticky=W)
 
         self.population_label = Label(self.gui_window, text='Population: {} of {}'.format(self.population, self.calculate_population_capacity()))
         self.population_label.grid(row=3, sticky=W)
@@ -258,7 +263,8 @@ class City:
         self.population += other.population
         self.army.add_army(other.army)
 
-        self.food += other.food
+        for resource in self.resources:
+            self.resources[resource] += other.resources[resource]
 
         for building in self.buildings:
             other_building = other.get_buildings(building.name)
@@ -461,7 +467,6 @@ class City:
                 removed_cell.change_owner(None)
             else: #If we're about to lose the last square, then just destroy the whole city.
                 self.destroy = True
-                return
 
     def handle_disconnected_cells(self):
         if self.total_cell_count() == 1: #If there's more than one cell, we need to check for disconnected cells and remove them if necessary.
@@ -477,13 +482,13 @@ class City:
             if not has_owned_neighbor:
                 cell.change_owner(None)
 
-    def mod_food(self, amount):
-        self.food = int(self.food + amount * self.nation.get_food_bonus())
+    def mod_resource(self, resource, amount):
+        self.resources[resource] = int(self.resources[resource] + amount * self.nation.get_resource_bonus('food'))
 
     def handle_food(self):
-        food_max_spoilage = int(sqrt(self.food) * sqrt(self.age) * sqrt(self.total_cell_count()))
+        food_max_spoilage = int(sqrt(self.resources['food']) * sqrt(self.age) * sqrt(self.total_cell_count()))
         if food_max_spoilage > 0:
-            self.food = max(0, self.food - random.randint(1, food_max_spoilage))
+            self.food = max(0, self.resources['food'] - random.randint(1, food_max_spoilage))
 
         for surrounding_cell in self.surrounding_cells:
             food_amount = random.randint(BASE_CELL_MIN_FOOD_PRODUCTION, BASE_CELL_FOOD_PRODUCTION)
@@ -491,21 +496,22 @@ class City:
             food_amount *= surrounding_cell.food_production_multiplier()
 
             # print('Was producing {}, now producing {}'.format(prev, food_amount))
-            self.mod_food(food_amount)
+            self.mod_resource('food', food_amount)
 
         for i in self.buildings:
-            self.food += i.get_food_output()
+            self.mod_resource('food', i.get_food_output())
 
         #It takes 1 food to feed each person
-        self.food -= self.population * FOOD_PER_PERSON
+        self.resources['food'] -= self.population * FOOD_PER_PERSON
 
         if self.army != None:
-            self.food -= self.army.size() * FOOD_PER_PERSON
+            self.resources['food'] -= self.army.size() * FOOD_PER_PERSON
 
         #There wasn't enough food for everybody.
-        if self.food < 0:
+        if self.resources['food'] < 0:
             #These people die. Or wander off. Who cares. They've gone.
-            losses = -self.food // FOOD_PER_PERSON #Negative because the food value is less than zero
+            #Negative because the food value is less than zero
+            losses = -self.resources['food'] // FOOD_PER_PERSON
             army_losses = random.randint(1, int(sqrt(losses) + 1))
 
             #Remove some random amount of troops.
@@ -519,7 +525,7 @@ class City:
 
                 self.population = utility.clamp(self.population - population_losses, self.population, 1) #can't be fewer than one person
 
-            self.food = 0
+            self.resources['food'] = 0
 
             self.handle_abandonment()
 

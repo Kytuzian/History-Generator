@@ -1,4 +1,16 @@
-2016-03-12
+2016-03-15
+Major changes:
+
+Minor changes:
+- Converted food to be a normal resource.
+- Removed some more colors.
+
+Bug fixes:
+- Fixed bug where cities did not merge resources properly.
+- Made buildings be properly affected by the various bonuses.
+- Fixed bug where trying to get cell information crashed the program.
+
+2016-03-13
 Major changes:
 - Weapons now have different ranges.
 - Rainfall is now simulated to generate forests.

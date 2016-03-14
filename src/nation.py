@@ -25,7 +25,7 @@ NATION_COLORS = ['dark orange', 'cadet blue', 'sea green', 'gold', 'deep sky blu
                  'dark sea green', 'hot pink', 'orange', 'indian red', \
                  'red', 'brown', 'dim gray', 'salmon',\
                  'steel blue', 'royal blue', 'medium purple', \
-                 'dark slate gray', 'dark olive green', 'cyan', 'chocolate', 'orange red', 'tan',\
+                 'dark slate gray', 'dark olive green', 'cyan', 'chocolate', 'orange red', \
                  'tomato', 'gray', 'cornflower blue', 'goldenrod', \
                  'midnight blue', 'rosy brown', 'plum', 'sky blue',\
                  'dark violet', 'dark khaki', 'olive drab', 'medium turquoise',\
@@ -560,13 +560,16 @@ class Nation:
     def get_tolerance_bonus(self):
         return GOVERNMENT_TYPE_BONUSES[self.name.government_type]['tolerance']
 
-    def get_food_bonus(self):
-        mult_mod = 1.0
-        add_mod = 0.0
-        res = self.tech.get_tech('Improved Agriculture')
-        if res != None:
-            mult_mod *= res.effect_strength
-        return GOVERNMENT_TYPE_BONUSES[self.name.government_type]['food'] * mult_mod + add_mod
+    def get_resource_bonus(self, resource):
+        if resource == 'food':
+            mult_mod = 1.0
+            add_mod = 0.0
+            res = self.tech.get_tech('Improved Agriculture')
+            if res != None:
+                mult_mod *= res.effect_strength
+            return GOVERNMENT_TYPE_BONUSES[self.name.government_type]['food'] * mult_mod + add_mod
+        else:
+            return 1.0
 
     def get_efficiency_bonus(self):
         return GOVERNMENT_TYPE_BONUSES[self.name.government_type]['efficiency']

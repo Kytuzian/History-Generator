@@ -1,10 +1,11 @@
 import math
 import random
 
+from Tkinter import *
+
 # from PIL import Image
 
 import utility
-
 import noise
 
 MAX_HEIGHT = 4000
