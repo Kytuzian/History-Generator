@@ -1,14 +1,16 @@
-2016-03-15
+2016-03-16
 Major changes:
 
 Minor changes:
 - Converted food to be a normal resource.
 - Removed some more colors.
+- Buildings are now contained within cells, not within the nebulousness of a "city".
 
 Bug fixes:
 - Fixed bug where cities did not merge resources properly.
 - Made buildings be properly affected by the various bonuses.
 - Fixed bug where trying to get cell information crashed the program.
+- Fixed bug where buildings' productions were not modified by the production multipliers of the terrain.
 
 2016-03-13
 Major changes:

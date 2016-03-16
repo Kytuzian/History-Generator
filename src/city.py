@@ -15,11 +15,7 @@ from math import *
 
 from Tkinter import *
 
-CITY_CELL_POPULATION_CAPACITY = 100
-SURROUNDING_CELL_POPULATION_CAPACITY = 1
-
-BASE_CELL_FOOD_PRODUCTION = 30
-BASE_CELL_MIN_FOOD_PRODUCTION = 30
+CELL_POPULATION_CAPACITY = 10
 
 FOOD_PER_PERSON = 1
 
@@ -137,6 +133,20 @@ class Building:
 
         return production
 
+def base_buildings(city):
+    buildings = []
+    buildings.append(Building('House', city, house_effects, 0))
+    buildings.append(Building('Farm', city, farm_effects, 0))
+    buildings.append(Building('Fishery', city, fishery_effects, 0))
+    buildings.append(Building('Ranch', city, ranch_effects, 0))
+    buildings.append(Building('Mine', city, mine_effects, 0))
+    buildings.append(Building('Leatherworker', city, leatherworker_effects, 0))
+    buildings.append(Building('Weaver', city, weaver_effects, 0))
+    buildings.append(Building('Woodcutter', city, woodcutter_effects, 0))
+    buildings.append(Building('Lab', city, lab_effects, 0))
+    buildings.append(Building('Market', city, market_effects, 0))
+    return buildings
+
 class City:
     def __init__(self, nation, name, cell, parent):
         self.name = name
@@ -151,24 +161,11 @@ class City:
 
         self.age = 0
 
-        self.owned_cells = []
-        self.surrounding_cells = []
+        self.cells = []
 
         self.position = (cell.x, cell.y)
 
         self.army = None
-
-        self.buildings = []
-        self.buildings.append(Building('House', self, house_effects, 0))
-        self.buildings.append(Building('Farm', self, farm_effects, 0))
-        self.buildings.append(Building('Fishery', self, fishery_effects, 0))
-        self.buildings.append(Building('Ranch', self, ranch_effects, 0))
-        self.buildings.append(Building('Mine', self, mine_effects, 0))
-        self.buildings.append(Building('Leatherworker', self, leatherworker_effects, 0))
-        self.buildings.append(Building('Weaver', self, weaver_effects, 0))
-        self.buildings.append(Building('Woodcutter', self, woodcutter_effects, 0))
-        self.buildings.append(Building('Lab', self, lab_effects, 0))
-        self.buildings.append(Building('Market', self, market_effects, 0))
 
         self.resources = base_resources()
 
@@ -216,8 +213,17 @@ class City:
 
         self.buildings_display = Listbox(self.gui_window)
 
-        for building in self.buildings:
-            self.buildings_display.insert(END, '{}: {}'.format(building.name, building.number))
+        self.building_counts = {}
+
+        for cell in self.cells:
+            for building in cell.buildings:
+                if building.name in self.building_counts:
+                    self.building_counts[building.name] += building.number
+                else:
+                    self.building_counts[building.name] = building.number
+
+        for building in self.building_counts:
+            self.buildings_display.insert(END, '{}: {}'.format(building, self.building_counts[building]))
 
         self.buildings_display.grid(row=4, column=1, columnspan=3, sticky=W+E)
 
@@ -243,33 +249,18 @@ class City:
     def make_capital(self):
         self.is_capital = True
 
-    def get_buildings(self, building_name):
-        for i in self.buildings:
-            if i.name == building_name:
-                return i
-
-        return None
-
     def combine_cities(self, other):
         if self.destroy: #We can't merge if we're about to be destroyed, that doesn't make any sense
             return
 
-        while len(other.owned_cells) > 0:
-            other.owned_cells[0].change_owner(self)
-
-        while len(other.surrounding_cells) > 0:
-            other.surrounding_cells[0].change_owner(self)
+        while len(other.cells) > 0:
+            other.cells[0].change_owner(self)
 
         self.population += other.population
         self.army.add_army(other.army)
 
         for resource in self.resources:
             self.resources[resource] += other.resources[resource]
-
-        for building in self.buildings:
-            other_building = other.get_buildings(building.name)
-            if other_building != None:
-                building.number += other_building.number
 
         for merge in other.merges:
             self.merges.append(merge)
@@ -319,10 +310,7 @@ class City:
             self.nation.mod_morale(MORALE_INCREMENT)
 
         #Switch the cells to the new color/anything else that needs to be done
-        for cell in self.owned_cells:
-            cell.update_self()
-
-        for cell in self.surrounding_cells:
+        for cell in self.cells:
             cell.update_self()
 
         self.is_capital = False
@@ -339,10 +327,7 @@ class City:
         self.army = attacking_army
 
     def destroy_self(self):
-        for cell in self.owned_cells:
-            cell.change_owner(None)
-
-        for cell in self.surrounding_cells:
+        for cell in self.cells:
             cell.change_owner(None)
 
         #We don't want any lingering city names on the map
@@ -355,37 +340,32 @@ class City:
         del self
 
     def remove_cell(self, cell):
-        if cell in self.owned_cells:
-            self.owned_cells.remove(cell)
-        elif cell in self.surrounding_cells:
-            self.surrounding_cells.remove(cell)
+        if cell in self.cells:
+            self.cells.remove(cell)
         else:
-            raise 'Cell ({}, {}) not in either list of cells.'.format(cell.x, cell.y)
+            raise 'Cell ({}, {}) not in list of cells.'.format(cell.x, cell.y)
 
     def add_cell(self, cell):
-        if cell.type == 'surrounding':
-            self.surrounding_cells.append(cell)
-        elif cell.type == 'city':
-            self.owned_cells.append(cell)
+        if cell.type == 'city':
+            self.cells.append(cell)
         else:
-            raise 'Unknown cell type: {}'.format(cell.type)
+            raise Exception('Unknown cell type: {}'.format(cell.type))
 
     def get_center(self):
         return (self.position[0], self.position[1])
 
     def calculate_population_capacity(self):
-        self.population_capacity = len(self.owned_cells) * CITY_CELL_POPULATION_CAPACITY
-        self.population_capacity += len(self.surrounding_cells) * SURROUNDING_CELL_POPULATION_CAPACITY
+        self.population_capacity = len(self.cells) * CELL_POPULATION_CAPACITY
 
-        for i in self.buildings:
-            self.population_capacity += i.get_population_capacity()
+        for cell in self.cells:
+            self.population_capacity += cell.get_population_capacity()
 
         return self.population_capacity
 
     def get_expansion_candidates(self):
         result = []
 
-        for cell in self.owned_cells + self.surrounding_cells:
+        for cell in self.cells:
             for neighbor in cell.neighbors():
                 if neighbor.owner == None:
                     if neighbor.terrain.is_settleable():
@@ -413,7 +393,7 @@ class City:
         return result
 
     def total_cell_count(self):
-        return len(self.owned_cells) + len(self.surrounding_cells)
+        return len(self.cells)
 
     def get_average_position(self):
         #This shouldn't happen, but in case it does
@@ -423,7 +403,7 @@ class City:
         x = 0
         y = 0
 
-        for cell in self.owned_cells + self.surrounding_cells:
+        for cell in self.cells:
             x += cell.x
             y += cell.y
 
@@ -454,15 +434,8 @@ class City:
 
         #Less than 50% of our capacity is filled, then remove some squares.
         if float(self.population) / float(self.calculate_population_capacity()) < 0.5:
-            if len(self.owned_cells) > 0:
-                converted_cell = random.choice(self.owned_cells)
-
-                self.surrounding_cells.append(converted_cell)
-                self.owned_cells.remove(converted_cell)
-
-                converted_cell.change_type('surrounding')
-            elif len(self.surrounding_cells) > 1: #Make sure we always have at least one cell left
-                removed_cell = random.choice(self.surrounding_cells)
+            if len(self.cells) > 1: #Make sure we always have at least one cell left
+                removed_cell = random.choice(self.cells)
 
                 removed_cell.change_owner(None)
             else: #If we're about to lose the last square, then just destroy the whole city.
@@ -472,7 +445,7 @@ class City:
         if self.total_cell_count() == 1: #If there's more than one cell, we need to check for disconnected cells and remove them if necessary.
             return
 
-        for cell in self.owned_cells + self.surrounding_cells:
+        for cell in self.cells:
             has_owned_neighbor = False
             for neighbor in cell.neighbors():
                 if neighbor.owner == self:
@@ -490,16 +463,11 @@ class City:
         if food_max_spoilage > 0:
             self.food = max(0, self.resources['food'] - random.randint(1, food_max_spoilage))
 
-        for surrounding_cell in self.surrounding_cells:
-            food_amount = random.randint(BASE_CELL_MIN_FOOD_PRODUCTION, BASE_CELL_FOOD_PRODUCTION)
-            prev = food_amount
-            food_amount *= surrounding_cell.food_production_multiplier()
+        for cell in self.cells:
+            food_amount = cell.get_food_output()
 
             # print('Was producing {}, now producing {}'.format(prev, food_amount))
             self.mod_resource('food', food_amount)
-
-        for i in self.buildings:
-            self.mod_resource('food', i.get_food_output())
 
         #It takes 1 food to feed each person
         self.resources['food'] -= self.population * FOOD_PER_PERSON
@@ -534,16 +502,17 @@ class City:
             self.nation.mod_morale(MORALE_NOT_ENOUGH_FOOD)
 
     def handle_money(self):
-        total_tax_rate = self.nation.get_tax_rate() * utility.product([building.get_tax_rate() for building in self.buildings])
+        total_tax_rate = utility.product([cell.get_tax_rate() for cell in self.cells])
+        total_tax_rate *= self.nation.get_tax_rate()
 
         self.nation.money += total_tax_rate * self.get_tax_score()
 
-        for building in self.buildings:
-            self.nation.money += building.get_money_output()
+        for cell in self.cells:
+            self.nation.money += cell.get_money_output()
 
     def handle_resources(self):
-        for building in self.buildings:
-            production = building.get_resource_productions()
+        for cell in self.cells:
+            production = cell.get_resource_productions()
 
             for resource in production:
                 self.resources[resource] += production[resource]
@@ -583,7 +552,7 @@ class City:
             self.army.merge_all(self.nation.army_structure)
 
     def building_count(self):
-        return sum([building.number for building in self.buildings])
+        return sum([cell.building_count() for cell in self.cells])
 
     def history_step(self):
         self.handle_display_name()
@@ -595,35 +564,16 @@ class City:
             self.population -= int(random.random() * (self.population - self.population_capacity))
             self.population = max(self.population, 1)
 
-        #Handle the expansion of the city.
-        city_cell_expand = max(1, max(20 - len(self.surrounding_cells), len(self.owned_cells)**3 - len(self.surrounding_cells)))
-        if random.randint(0, city_cell_expand) == 0: #Expand the city if possible/desired
-            candidate_expansion_squares = self.surrounding_cells
-
-            if len(candidate_expansion_squares) > 0:
-                new_square = random.choice(candidate_expansion_squares)
-
-                self.surrounding_cells.remove(new_square)
-                self.owned_cells.append(new_square)
-
-                new_square.change_type('city')
-
-        if random.randint(0, len(self.surrounding_cells)) < self.age // 2: #Add new surrounding land
+        if random.randint(0, len(self.cells)) < self.age // 2: #Add new surrounding land
             candidate_expansion_squares = self.get_expansion_candidates()
 
             if len(candidate_expansion_squares):
                 new_square = random.choice(candidate_expansion_squares)
 
-                new_square.change_owner(self, 'surrounding')
+                new_square.change_owner(self, 'city')
 
-        for i in xrange(int(sqrt(self.population))):
-            improvement_chance = int((self.building_count() + 1) / (sqrt(self.population) + 1))
-            if random.randint(0, improvement_chance + 1) == 0:
-                build_building = utility.weighted_random_choice(self.buildings, weight=lambda _, building: float(building.get_cost()), reverse=True)
-
-                if self.nation.money > build_building.get_cost():
-                    self.nation.money -= build_building.get_cost()
-                    build_building.number += 1
+        for cell in self.cells:
+            cell.build_buildings()
 
         self.handle_food()
         self.handle_money()

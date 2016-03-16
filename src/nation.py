@@ -538,7 +538,7 @@ class Nation:
         self.mod_morale(MORALE_INCREMENT)
 
         if self.parent.cells[self.cities[-1].position[0]][self.cities[-1].position[1]].owner == None:
-            self.parent.change_cell_ownership(self.cities[-1].position[0], self.cities[-1].position[1], self.cities[-1], new_type='surrounding')
+            self.parent.change_cell_ownership(self.cities[-1].position[0], self.cities[-1].position[1], self.cities[-1], new_type='city')
 
     def add_city(self, city):
         self.cities.append(city)

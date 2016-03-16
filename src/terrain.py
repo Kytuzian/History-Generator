@@ -7,8 +7,12 @@ from Tkinter import *
 
 import utility
 import noise
+import city
 
 MAX_HEIGHT = 4000
+
+BASE_CELL_FOOD_PRODUCTION = 30
+BASE_CELL_MIN_FOOD_PRODUCTION = 30
 
 def to_celsius(t):
     return (t - 32.0) / (9.0 / 5.0)
@@ -83,12 +87,57 @@ class Cell:
         self.temperature_multiplier = max(0, temperature_multiplier)
         self.temperature = None
 
+        self.buildings = city.base_buildings(None)
+
         self.high_temp_range = random.random() / 5
         self.low_temp_range = random.random() / 5
 
         self.owner = owner
 
         self.make_id()
+
+    def get_population_capacity(self):
+        return sum([building.get_population_capacity() for building in self.buildings])
+
+    def get_food_output(self):
+        result = random.randint(BASE_CELL_MIN_FOOD_PRODUCTION, BASE_CELL_FOOD_PRODUCTION)
+
+        for building in self.buildings:
+            result += building.get_food_output()
+
+        result *= self.food_production_multiplier()
+
+        return result
+
+    def building_count(self):
+        return sum([building.number for building in self.buildings])
+
+    def build_buildings(self):
+        improvement_chance = int((self.building_count() + 1) / (math.sqrt(self.owner.population) + 1))
+        if random.randint(0, improvement_chance + 1) == 0:
+            build_building = utility.weighted_random_choice(self.buildings, weight=lambda _, building: float(building.get_cost()), reverse=True)
+
+            if self.owner.nation.money > build_building.get_cost():
+                self.owner.nation.money -= build_building.get_cost()
+                build_building.number += 1
+
+    def get_resource_productions(self):
+        result = {}
+        for building in self.buildings:
+            production = building.get_resource_productions()
+
+            for resource in production:
+                if resource in result:
+                    result[resource] += production[resource]
+                else:
+                    result[resource] = production[resource]
+        return result
+
+    def get_tax_rate(self):
+        return utility.product([building.get_tax_rate() for building in self.buildings])
+
+    def get_money_output(self):
+        return sum([building.get_money_output() for building in self.buildings])
 
     def get_elevation(self):
         return to_meters(self.terrain.height * MAX_HEIGHT)
@@ -188,13 +237,6 @@ class Cell:
         else:
             self.parent.canvas.itemconfig(self.id, fill=self.owner.nation.color)
 
-        if self.type == 'city':
-            self.parent.canvas.itemconfig(self.id, width=1)
-        elif self.type == 'surrounding':
-            self.parent.canvas.itemconfig(self.id, width=0)
-        elif self.type == '':
-            self.parent.canvas.itemconfig(self.id, width=0)
-
     def change_type(self, new_type):
         self.type = new_type
 
@@ -211,6 +253,8 @@ class Cell:
         self.owner = new_owner
 
         if self.owner != None:
+            for building in self.buildings:
+                building.city = new_owner
             self.owner.add_cell(self)
         else:
             self.new_type = '' #There is no cell type for an unowned cell.
