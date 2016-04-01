@@ -641,11 +641,12 @@ class Nation:
             else:
                 self.current_research.do_research(random.randint(1, int(log(city.population + 1)**2 + 1)))
 
-                for building in city.buildings:
-                    research_rate = building.get_research_rate()
+                for cell in city.cells:
+                    for building in cell.buildings:
+                        research_rate = building.get_research_rate()
 
-                    if research_rate > 0:
-                        self.current_research.do_research(random.randint(1, research_rate))
+                        if research_rate > 0:
+                            self.current_research.do_research(random.randint(1, research_rate))
 
         self.religion.history_step(self.parent)
 
