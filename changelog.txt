@@ -1,7 +1,7 @@
 2016-04-02
 Major changes:
 - Buildings now each have a specific size, so only so many buildings can fit within a cell.
-- Made the amount of soldiers raised for the garrison more consistent.
+- Made the amount of soldiers raised for garrisons and conscripted forces more consistent.
 
 Minor changes:
 - Converted food to be a normal resource.
@@ -10,7 +10,7 @@ Minor changes:
 - Markets and houses no longer change tax rate, but tax score.
 - Changed population growth formula.
 - Added building GUI to cells which are part of a city.
-- Made world slightly smaller (to improve start up time).
+- Made world smaller (to improve start up time).
 - Made houses more expensive.
 - Lowered javelin ammunition from 4 to 3.
 
