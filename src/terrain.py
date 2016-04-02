@@ -82,6 +82,8 @@ class Cell:
 
         self.id = -1
 
+        self.building_capacity = 100
+
         self.terrain = Terrain(height, moisture)
 
         self.temperature_multiplier = max(0, temperature_multiplier)
@@ -112,14 +114,23 @@ class Cell:
     def building_count(self):
         return sum([building.number for building in self.buildings])
 
+    def get_total_buiding_size(self):
+        return sum([building.get_size() * building.number for building in self.buildings])
+
+    def get_available_building_capacity(self):
+        return self.building_capacity - self.get_total_buiding_size()
+
     def build_buildings(self):
         improvement_chance = int((self.building_count() + 1) / (math.sqrt(self.owner.population) + 1))
         if random.randint(0, improvement_chance + 1) == 0:
-            build_building = utility.weighted_random_choice(self.buildings, weight=lambda _, building: float(building.get_cost()), reverse=True)
+            available_buildings = filter(lambda b: b.get_size() <= self.get_available_building_capacity(), self.buildings)
 
-            if self.owner.nation.money > build_building.get_cost():
-                self.owner.nation.money -= build_building.get_cost()
-                build_building.number += 1
+            if len(available_buildings) > 0:
+                build_building = utility.weighted_random_choice(available_buildings, weight=lambda _, b: float(b.get_cost()), reverse=True)
+
+                if self.owner.nation.money > build_building.get_cost():
+                    self.owner.nation.money -= build_building.get_cost()
+                    build_building.number += 1
 
     def get_resource_productions(self):
         result = {}
@@ -210,7 +221,7 @@ class Cell:
     def show_information_gui(self):
         self.gui_window = Tk()
         self.gui_window.title('Cell Information: ({}, {})'.format(self.x, self.y))
-        self.gui_window.geometry("400x150+0+0")
+        self.gui_window.geometry("400x300+0+0")
 
         self.type_label = Label(self.gui_window, text='Type: {}'.format(self.type))
         self.type_label.grid(row=0, sticky=W)
@@ -230,6 +241,16 @@ class Cell:
 
         self.owning_city_button.grid(row=1, column=1, sticky=W)
         self.owning_nation_button.grid(row=2, column=1, sticky=W)
+
+        self.building_capacity_label = Label(self.gui_window, text='{} of {} filled.'.format(self.get_total_buiding_size(), self.building_capacity))
+        self.building_capacity_label.grid(row=3)
+
+        self.buildings_display = Listbox(self.gui_window)
+
+        for building in self.buildings:
+            self.buildings_display.insert(END, '{}: {}'.format(building.name, building.number))
+
+        self.buildings_display.grid(row=4, column=0, columnspan=3, sticky=W+E)
 
     def update_self(self):
         if self.owner == None:

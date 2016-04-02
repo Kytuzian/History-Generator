@@ -24,16 +24,16 @@ CAPITAL_CITY_MORALE_BONUS = 2
 MORALE_INCREMENT = 30
 
 #Building effects: population_capacity, tax_rate, food_output, money_output
-house_effects = {'population_capacity': 20, 'tax_rate': 1.001, 'cost': 20}
-farm_effects = {'population_capacity': 10, 'food_output': 100, 'cost': 200}
-fishery_effects = {'population_capacity': 5, 'food_output': 150, 'cost': 200}
-ranch_effects = {'population_capacity': 5, 'food_output': 200, 'cost': 300}
-leatherworker_effects = {'population_capacity': 5, 'money_output': 100, 'leather': 5, 'cost': 300}
-weaver_effects = {'population_capacity': 5, 'money_output': 100, 'cloth': 5, 'cost': 300}
-woodcutter_effects = {'population_capacity': 5, 'money_output': 100, 'wood': 5, 'cost': 300}
-mine_effects = {'population_capacity': 20, 'money_output': 500, 'metal': 5, 'cost': 600}
-lab_effects = {'population_capacity': 5, 'research_rate': 5, 'cost': 1000}
-market_effects = {'tax_rate': 1.01, 'money_output': 1000, 'cost': 1500}
+house_effects = {'population_capacity': 20, 'tax_score': 5, 'cost': 50, 'size': 5}
+farm_effects = {'population_capacity': 10, 'food_output': 100, 'cost': 200, 'size': 20}
+fishery_effects = {'population_capacity': 5, 'food_output': 150, 'cost': 200, 'size': 40}
+ranch_effects = {'population_capacity': 5, 'food_output': 200, 'cost': 300, 'size': 50}
+leatherworker_effects = {'population_capacity': 5, 'money_output': 100, 'leather': 5, 'cost': 300, 'size': 5}
+weaver_effects = {'population_capacity': 5, 'money_output': 100, 'cloth': 5, 'cost': 300, 'size': 5}
+woodcutter_effects = {'population_capacity': 5, 'money_output': 100, 'wood': 5, 'cost': 300, 'size': 50}
+mine_effects = {'population_capacity': 20, 'money_output': 500, 'metal': 5, 'cost': 600, 'size': 90}
+lab_effects = {'population_capacity': 5, 'research_rate': 5, 'cost': 1000, 'size': 95}
+market_effects = {'tax_score': 100, 'money_output': 1000, 'cost': 1500, 'size': 60}
 
 def base_resources():
     return {'leather': 0, 'wood': 0, 'cloth': 0, 'metal': 0, 'food': 0}
@@ -67,6 +67,15 @@ class Building:
 
     def get_cost(self):
         return self.effects['cost']
+
+    def get_size(self):
+        return self.effects['size']
+
+    def get_tax_score(self):
+        if 'tax_score' in self.effects:
+            return self.effects['tax_score'] * self.number
+        else:
+            return 0.0
 
     def get_research_rate(self):
         if 'research_rate' in self.effects:
@@ -522,7 +531,7 @@ class City:
             self.army = nation.army_structure.zero()
 
         #This is the number of recruits, it remains to be seen if we can pay for all of them
-        conscripted = int(random.random() * (self.population)**(2.0/3) * self.nation.get_conscription_bonus())
+        conscripted = int(random.random() * (self.population)**(1.0/3.0) * self.nation.get_conscription_bonus())
         max_soldiers = int(self.nation.money / self.nation.get_soldier_cost(self.army.name) * self.nation.get_army_spending())
 
         if conscripted > max_soldiers: #If we are recruiting more than we can afford, reduce the number
@@ -559,10 +568,12 @@ class City:
         self.handle_disconnected_cells()
 
         if self.population < self.calculate_population_capacity():
-            self.population += int(random.random() * sqrt(self.population_capacity - self.population)) + 1
-        elif self.population > self.calculate_population_capacity():
-            self.population -= int(random.random() * (self.population - self.population_capacity))
-            self.population = max(self.population, 1)
+            t = float(self.resources['food']) / self.population * self.population_capacity / self.population
+            rate = 1.0 / (1.0 + self.population**0.5 * e**(-t)) / 10.0
+            new_pop = self.population * (1.0 + rate/12.0)**12.0 + 1
+            # print(self.resources['food'], self.population_capacity, self.population, t, rate, new_pop)
+
+            self.population = int(new_pop)
 
         if random.randint(0, len(self.cells)) < self.age // 2: #Add new surrounding land
             candidate_expansion_squares = self.get_expansion_candidates()
@@ -585,7 +596,13 @@ class City:
         self.age += 1
 
     def get_tax_score(self):
-        return self.population * (1.0 + log(self.building_count() + 1))
+        amount = self.population
+
+        for cell in self.cells:
+            for building in cell.buildings:
+                amount += building.get_tax_score()
+
+        return amount
 
     def __repr__(self):
         result = ""

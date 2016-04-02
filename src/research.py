@@ -100,7 +100,7 @@ basic_weapon_list = [club, hammer, staff, shortsword, axe, spear]
 
 stones = Weapon('Stones', 100, 0, 1, 1, 1.5, 1, reload_time=30, ammunition=6)
 sling = Weapon('Sling', 250, 0, 3, 1, 1.8, 1, reload_time=50, ammunition=25)
-javelin = Weapon('Javelin', 125, 0.5, 6, 2, 1.5, 1, reload_time=30, ammunition=4)
+javelin = Weapon('Javelin', 125, 0.5, 6, 2, 1.5, 1, reload_time=30, ammunition=3)
 atlatl = Weapon('Atlatl', 175, 0.5, 8, 1, 2.0, 1, reload_time=70, ammunition=8)
 bow = Weapon('Bow', 350, 0.5, 5, 1, 2, 1, reload_time=80, ammunition=15)
 crossbow = Weapon('Crossbow', 400, 1.5, 10, 1, 1, 1, reload_time=300, ammunition=15)

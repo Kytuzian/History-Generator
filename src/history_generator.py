@@ -443,14 +443,16 @@ class Main:
                 if len(enemy.cities) > 0 and enemy in self.nations:
                     attacking_city = utility.weighted_random_choice(enemy.cities, weight=lambda _, v: utility.distance(city.position, v.position), reverse=True)
 
-                    if random.randint(0, max(20, city.army.size() - attacking_city.population // 8)) > 20 and random.randint(0, len(nation.moving_armies)**4) == 0:
+                    if random.randint(0, max(20, city.army.size() + city.population // 6 - attacking_city.population // 3)) > 20 and random.randint(0, len(nation.moving_armies)**3) == 0:
                         fx, fy = city.position
 
                         dx, dy = attacking_city.position
 
                         #Conscript some levies to join the army.
                         if city.population // 3 > 1:
-                            conscripted = int(random.randint(1, city.population // 3) * nation.get_conscription_bonus())
+                            conscript_max = max(city.population // 3, 3)
+                            conscript_min = min(city.population // 6, 2)
+                            conscripted = int(random.randint(conscript_min, conscript_max) * nation.get_conscription_bonus())
                         else:
                             conscripted = 0
 
@@ -533,8 +535,9 @@ class Main:
     def attack(self, attacker, attacking_army, defender, attacking_city, city):
         if city in defender.cities:
             #Somebody has to show up to defend the city.
-            defender_max = max(city.population // 2, 2)
-            defending_garrison_size = random.randint(defender_max // 6 + 1, defender_max)
+            defender_max = max(city.population // 3, 3)
+            defender_min = max(city.population // 6, 2)
+            defending_garrison_size = random.randint(defender_min, defender_max)
 
             defending_army = defender.army_structure.zero().add_to(defender.army_structure.name, defending_garrison_size)
 
