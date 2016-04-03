@@ -1,3 +1,26 @@
+2016-04-03
+Major changes:
+- Units now carry a visual representation of their primary melee weapon (just a straight line thus far).
+- Nations will now periodically rearm their soldiers with different weapons (not necessarily better ones).
+- Armies will now always defend the city they are stationed in.
+
+Minor changes:
+- Added new weapons (mace, shortbow, longbow, falx, kopis).
+- Tweaked some weapon stats.
+- Lowered amount of money gained from caravans.
+- Decreased tax rates.
+- Lowered the rate at which new nations were created (not revolts).
+- Armies no longer reinforce random cities (causing performance issues and didn't really help anyway).
+- Nations now declare war less often.
+- Added wooded and padded armor.
+- Increased soldier recruiting costs and upkeep.
+- Decreased population growth rate.
+- Decreased city expansion rate.
+- Increased research points for technologies.
+- Some optimization.
+
+Bug fixes:
+
 2016-04-02
 Major changes:
 - Buildings now each have a specific size, so only so many buildings can fit within a cell.

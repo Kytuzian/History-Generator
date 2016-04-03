@@ -73,75 +73,88 @@ class Armor:
 #------------------------------
 # WEAPON AND ARMOR DEFINITIONS
 #------------------------------
+
+#Short
 unarmed = Weapon('Unarmed', 5, 0, 1, 1, 1, 1)
 dagger = Weapon('Dagger', 5, 1.5, 2, 2, 1.1, 1)
 rondel = Weapon('Rondel', 5, 1.6, 3, 1, 1.5, 1)
 dirk = Weapon('Dirk', 5, 1.6, 3, 1, 1.5, 1)
+kopis = Weapon('Kopis', 6, 1.8, 6, 1, 2, 1)
 shortsword = Weapon('Shortsword', 7, 1.8, 5, 2, 2, 1.1)
-sword = Weapon('Sword', 10, 2, 6, 3, 2, 1.1)
 club = Weapon('Club', 7, 0, 5, 2, 1, 1)
 hammer = Weapon('Hammer', 7, 1.3, 6, 1, 1.5, 0.8)
+mace = Weapon('Mace', 7, 1.5, 6, 1, 1.8, 1.0)
+axe = Weapon('Axe', 7, 1.8, 8, 2, 2.5, 0.8)
+morning_star = Weapon('Morning Star', 7, 1.5, 8, 0, 2, 0.2)
+
+#Medium
+sword = Weapon('Sword', 10, 2, 6, 3, 2, 1.1)
 bastard_sword = Weapon('Bastard Sword', 12, 2.3, 7, 2, 2, 1.5)
 claymore = Weapon('Claymore', 15, 2.5, 10, 1, 2.5, 0.5)
-staff = Weapon('Staff', 20, 0, 3, 3, 2, 2)
+bill = Weapon('Bill', 12, 1.5, 6, 4, 1.5, 1.5)
+flail = Weapon('Flail', 12, 1.2, 6, 0, 2, 0.5)
+falx = Weapon('Falx', 14, 1.8, 8, 1, 2, 0.8)
+
+#Long
+staff = Weapon('Staff', 15, 0, 3, 3, 2, 2)
 spear = Weapon('Spear', 20, 1.0, 4, 4, 1.5, 1.5)
 pike = Weapon('Pike', 25, 1.0, 5, 5, 1.5, 1.5)
 sarissa = Weapon('Sarissa', 35, 1.0, 7, 3, 2, 2)
-bill = Weapon('Bill', 12, 1.5, 6, 4, 1.5, 1.5)
-axe = Weapon('Axe', 7, 1.8, 8, 2, 2.5, 0.8)
-flail = Weapon('Flail', 12, 1.2, 6, 0, 2, 0.5)
-morning_star = Weapon('Morning Star', 7, 1.5, 8, 0, 2, 0.2)
 
-all_melee_weapons = [unarmed, club, hammer, dagger, rondel, dirk, shortsword, sword, bastard_sword, claymore, spear, staff, bill, pike, sarissa, axe, flail, morning_star]
-weapon_list = [sword, shortsword, bastard_sword, claymore, spear, staff, pike, sarissa, axe, flail, morning_star, bill]
+all_melee_weapons = [unarmed, kopis, mace, falx, club, hammer, dagger, rondel, dirk, shortsword, sword, bastard_sword, claymore, spear, staff, bill, pike, sarissa, axe, flail, morning_star]
+weapon_list = [sword, mace, falx, shortsword, bastard_sword, claymore, spear, staff, pike, sarissa, axe, flail, morning_star, bill]
 
-sidearm_list = [dagger, club, hammer, rondel, dirk, staff, shortsword, axe, spear]
-basic_weapon_list = [club, hammer, staff, shortsword, axe, spear]
+sidearm_list = [dagger, club, mace, kopis, hammer, rondel, dirk, staff, shortsword, axe, spear]
+basic_weapon_list = [club, mace, hammer, staff, shortsword, axe, spear]
 
-stones = Weapon('Stones', 100, 0, 1, 1, 1.5, 1, reload_time=30, ammunition=6)
+stones = Weapon('Stones', 90, 0, 1, 1, 1, 1, reload_time=20, ammunition=6)
 sling = Weapon('Sling', 250, 0, 3, 1, 1.8, 1, reload_time=50, ammunition=25)
-javelin = Weapon('Javelin', 125, 0.5, 6, 2, 1.5, 1, reload_time=30, ammunition=3)
+javelin = Weapon('Javelin', 125, 0.5, 6, 2, 1.5, 1, reload_time=20, ammunition=3)
 atlatl = Weapon('Atlatl', 175, 0.5, 8, 1, 2.0, 1, reload_time=70, ammunition=8)
+shortbow = Weapon('Shortbow', 300, 0.5, 4, 1, 2, 1, reload_time=70, ammunition=15)
 bow = Weapon('Bow', 350, 0.5, 5, 1, 2, 1, reload_time=80, ammunition=15)
-crossbow = Weapon('Crossbow', 400, 1.5, 10, 1, 1, 1, reload_time=300, ammunition=15)
+longbow = Weapon('Longbow', 400, 0.5, 6, 1, 2.5, 1, reload_time=90, ammunition=15)
+crossbow = Weapon('Crossbow', 450, 1.5, 10, 1, 1, 1, reload_time=300, ammunition=15)
 sling_staff = Weapon('Sling Staff', 300, 0, 5, 2, 2, 1, reload_time=60, ammunition=20)
 
-all_ranged_weapons = [stones, atlatl, sling, javelin, bow, crossbow, sling_staff]
-ranged_weapon_list = [sling, atlatl, javelin, bow, crossbow, sling_staff]
+all_ranged_weapons = [stones, atlatl, sling, shortbow, longbow, javelin, bow, crossbow, sling_staff]
+ranged_weapon_list = [sling, atlatl, javelin, shortbow, longbow, bow, crossbow, sling_staff]
 
-basic_ranged_list = [stones, sling, javelin, bow]
+basic_ranged_list = [stones, sling, javelin, shortbow, bow]
 
-cloth_armor = Armor('Cloth Armor', 0, 2, 0.4)
-leather_armor = Armor('Leather Armor', 0, 4, 0.3)
-chainmail = Armor('Chaimail', 1, 8, 0.2)
-plate = Armor('Plate', 2, 12, 0.1)
+cloth_armor = Armor('Cloth Armor', 0, 2, 0.5)
+padded_armor = Armor('Padded Armor', 0, 3, 0.5)
+leather_armor = Armor('Leather Armor', 0, 4, 0.4)
+wood_armor = Armor('Wood Armor', 0, 5, 0.3)
+chainmail = Armor('Chaimail', 1, 8, 0.25)
+plate = Armor('Plate', 2, 12, 0.15)
 
-all_armor_list = [cloth_armor, leather_armor]
+all_armor_list = [cloth_armor, padded_armor, leather_armor, wood_armor, chainmail, plate]
 
-armor_list = [chainmail, plate]
-basic_armor_list = [cloth_armor, leather_armor]
+armor_list = [wood_armor, chainmail, plate]
+basic_armor_list = [cloth_armor, leather_armor, wood_armor, padded_armor]
 
 #------------------------------
 
 def base_tech_tree():
     return Tech('Agriculture', 'agriculture', 0, 1.0,
                 [
-                    Tech('Stone Working', 'material', 30, 1.1,
+                    Tech('Stone Working', 'material', 100, 1.1,
                     [
-                        Tech('Copper', 'material', 100, 1.5,
+                        Tech('Copper', 'material', 400, 1.5,
                         [
-                            Tech('Bronze', 'material', 200, 2.0,
+                            Tech('Bronze', 'material', 800, 2.0,
                             [
-                                Tech('Iron', 'material', 400, 2.5,
+                                Tech('Iron', 'material', 1600, 2.5,
                                 [
-                                    Tech('Steel', 'material', 800, 3.0, [])
+                                    Tech('Steel', 'material', 3200, 3.0, [])
                                 ])
                             ])
                         ])
                     ]),
-                    Tech('Improved Housing', 'housing', 100, 1.5, []),
-                    Tech('Improved Mining', 'mining', 150, 2.0, []),
-                    Tech('Improved Agriculture', 'agriculture', 100, 1.1, [])
+                    Tech('Improved Housing', 'housing', 200, 1.5, []),
+                    Tech('Improved Mining', 'mining', 400, 2.0, []),
+                    Tech('Improved Agriculture', 'agriculture', 150, 1.1, [])
                 ])
 
 class Tech:

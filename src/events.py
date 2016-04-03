@@ -63,6 +63,8 @@ class Event:
             return EventRevolt(dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'TechResearch':
             return EventTechResearch(dict['name'], dict['event_data'], dict['date'])
+        elif dict['name'] == 'RearmUnit':
+            return EventRearmUnit(dict['name'], dict['event_data'], dict['date'])
         else:
             return Event(dict['name'], dict['event_data'], dict['date'])
 
@@ -199,3 +201,13 @@ class EventTechResearch(Event):
 
     def text_version(self):
         return '{}: The nation of {} has researched the technology of {}.'.format(self.date, get_nation_name(self.research_nation), self.tech_name)
+
+class EventRearmUnit(Event):
+    def setup(self):
+        self.nation_a = self.event_data['nation_a']
+        self.unit_name = self.event_data['unit_a']
+        self.new_weapons = self.event_data['weapons']
+        self.new_armor = self.event_data['armor']
+
+    def text_version(self):
+        return '{}: The nation of {} has rearmed it\'s unit of {} with {} and {}.'.format(self.date, get_nation_name(self.nation_a), self.unit_name, self.new_weapons, self.new_armor)

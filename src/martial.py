@@ -104,6 +104,35 @@ class Troop:
 
         return cls(name, strength, health, 0, ranged, discipline, rank_size, ranks, weapons, armor, elite, self.tier + 1, [])
 
+    def do_rearm(self):
+        if self.tier == 1:
+            if self.ranged:
+                weapons = [random.choice(basic_ranged_list), random.choice(sidearm_list)]
+            else:
+                weapons = [random.choice(basic_weapon_list), random.choice(basic_weapon_list)]
+
+            armor = random.choice(basic_armor_list)
+        else:
+            if self.ranged:
+                weapons = [random.choice(ranged_weapon_list), random.choice(sidearm_list)]
+            else:
+                weapons = [random.choice(weapon_list), random.choice(sidearm_list)]
+
+            armor = random.choice(armor_list)
+
+        self.weapons = weapons
+        self.armor = armor
+
+        return self
+
+    def rearm(self, name, new_weapons, new_armor):
+        if self.name == name:
+            self.weapons = new_weapons
+            self.armor = new_armor
+        else:
+            for upgrade in self.upgrades:
+                upgrade.rearm(name, new_weapons, new_armor)
+
     def show_information_gui(self):
         self.gui_window = Tk()
         self.gui_window.title(self.name)
@@ -355,6 +384,7 @@ class Soldier:
         self.targeted = None
 
         self.id = -1
+        self.weapon_id = -1
 
         self.x = 0
         self.y = 0
@@ -362,20 +392,28 @@ class Soldier:
         self.canvas = canvas
 
     def get_melee_weapon(self):
-        for weapon in self.weapons:
-            if weapon.name in map(lambda w: w.name, all_melee_weapons):
-                return weapon
-
-                break
-
-        return None
+        if self.unit.soldier_type.originally_ranged:
+            return self.weapons[1]
+        else:
+            return self.weapons[0]
+        # for weapon in self.weapons:
+        #     if weapon.name in map(lambda w: w.name, all_melee_weapons):
+        #         return weapon
+        #
+        #         break
+        #
+        # return None
 
     def get_ranged_weapon(self):
-        for weapon in self.weapons:
-            if weapon.name in map(lambda w: w.name, all_ranged_weapons):
-                return weapon
-
-        return None
+        if self.unit.soldier_type.originally_ranged:
+            return self.weapons[0]
+        else:
+            return None
+        # for weapon in self.weapons:
+        #     if weapon.name in map(lambda w: w.name, all_ranged_weapons):
+        #         return weapon
+        #
+        # return None
 
     def calculate_position(self):
         coords = self.canvas.coords(self.id)[:2]
@@ -623,6 +661,9 @@ class Battle:
 
             force[-1].soldiers[-1].id = self.canvas.create_oval(x, y, x + TROOP_RADIUS, y + TROOP_RADIUS, fill=color)
 
+            cx, cy = x + TROOP_RADIUS // 2, y + TROOP_RADIUS // 2
+            force[-1].soldiers[-1].weapon_id = self.canvas.create_line(cx, cy, cx + 1, cy + force[-1].soldiers[-1].get_melee_weapon().range)
+
             limit -= 1
             army.number -= 1
 
@@ -695,6 +736,7 @@ class Battle:
 
                             if p.target.health <= 0:
                                 self.canvas.delete(p.target.id)
+                                self.canvas.delete(p.target.weapon_id)
 
                                 if len(p.target.unit.soldiers) == 1: #Remove one more, like we are about to, and it's empty
                                     self.canvas.delete(p.target.unit.name_id)
@@ -785,6 +827,10 @@ class Battle:
 
                 d = utility.distance((x, y), (tx, ty))
 
+                cx, cy = x + TROOP_RADIUS // 2, y + TROOP_RADIUS // 2
+                weapon_range = soldier.get_melee_weapon().range
+                self.canvas.coords(soldier.weapon_id, cx, cy, cx + (tx - cx) / d * weapon_range, cy + (ty - cy) / d * weapon_range)
+
                 if soldier.ranged:
                     if d < TROOP_MOVEMENT_SPEED * CC_RANGE:
                         soldier.ranged = False
@@ -842,6 +888,7 @@ class Battle:
 
                         if soldier.target.health <= 0:
                             self.canvas.delete(soldier.target.id)
+                            self.canvas.delete(soldier.target.weapon_id)
 
                             if soldier.target in current_unit.target.soldiers:
                                 current_unit.target.soldiers.remove(soldier.target)
@@ -857,6 +904,7 @@ class Battle:
                                 current_unit.target = None
                         elif soldier.health <= 0:
                             self.canvas.delete(soldier.id)
+                            self.canvas.delete(soldier.weapon_id)
 
                             if soldier.targeted:
                                 soldier.targeted.target = None

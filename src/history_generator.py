@@ -294,7 +294,7 @@ class Main:
                         self.remove_nation(i)
 
                 #We can only have one nation per color
-                if random.randint(0, len(self.nations)**4) == 0 and len(self.nations) < len(NATION_COLORS):
+                if random.randint(0, len(self.nations)**5 + 12) == 0 and len(self.nations) < len(NATION_COLORS):
                     self.add_nation(Nation(self))
 
                 self.diplomacy()
@@ -407,19 +407,19 @@ class Main:
             self.handle_revolt(i)
 
             #Let's go to war, but we can only do that if there is a nation other than us
-            if random.randint(0, max([1, len(i.at_war) ** 11 + 100 - int(log(i.total_army() + 1)**4)])) == 0 and len(self.nations) > 1:
-                enemy = utility.weighted_random_choice(self.nations, weight=lambda _, v: utility.distance(i.get_average_city_position(), v.get_average_city_position()), reverse=True)
-
-                #We can't go to war twice, fight with a trading partner, or be war with ourselves
-                #Because doing any of those things would be really stupid
-                if not enemy in i.at_war and not enemy in i.trading and enemy != i:
+            # if random.randint(0, max([1, len(i.at_war) ** 11 + 100 - int(log(i.total_army() + 1)**4)])) == 0 and len(self.nations) > 1:
+            #     enemy = utility.weighted_random_choice(self.nations, weight=lambda _, v: utility.distance(i.get_average_city_position(), v.get_average_city_position()), reverse=True)
+            #
+            #     #We can't go to war twice, fight with a trading partner, or be war with ourselves
+            #     #Because doing any of those things would be really stupid
+            #     if not enemy in i.at_war and not enemy in i.trading and enemy != i:
+            #         self.start_war(i, enemy)
+            # else:
+            for enemy in self.nations: #CHECK FOR THE HEATHEN BASTARDS
+                if enemy != i and enemy.religion != i.religion and random.randint(0, 100 * i.get_tolerance()) == 0:
                     self.start_war(i, enemy)
-            else:
-                for enemy in self.nations: #CHECK FOR THE HEATHEN BASTARDS
-                    if enemy != i and enemy.religion != i.religion and random.randint(0, 100 * i.get_tolerance()) == 0:
-                        self.start_war(i, enemy)
 
-                        break
+                    break
 
             #Let's try not warring with them, and trade instead, perhaps?
             if random.randint(0, max(4, int(7**log(max(1, i.get_tolerance()))))) == 0: #Randomly start a new trade agreement. Change it later
@@ -443,7 +443,7 @@ class Main:
                 if len(enemy.cities) > 0 and enemy in self.nations:
                     attacking_city = utility.weighted_random_choice(enemy.cities, weight=lambda _, v: utility.distance(city.position, v.position), reverse=True)
 
-                    if random.randint(0, max(20, city.army.size() + city.population // 6 - attacking_city.population // 3)) > 20 and random.randint(0, len(nation.moving_armies)**3) == 0:
+                    if random.randint(0, max(20, city.army.size() + city.population // 6 - attacking_city.population // 3 - attacking_city.army.size())) > 20 and random.randint(0, len(nation.moving_armies)**3) == 0:
                         fx, fy = city.position
 
                         dx, dy = attacking_city.position
@@ -466,25 +466,25 @@ class Main:
                         self.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': nation.id, 'nation_b': enemy.id, 'city_a': city.name, 'city_b': attacking_city.name, 'reason': 'attack', 'army_size': city.army.size()}, self.get_current_date()))
 
                         city.army = city.army.zero()
-                    elif random.randint(0, city.army.size()) < city.army.size() // 4 and len(nation.cities) > 1: #Reinforce another city
-                        fx, fy = city.position
-
-                        #We obviously can't reinforce the same city
-                        reinforcement_cities = filter(lambda check: check != city, nation.cities)
-
-                        #This really should always be true, but, as always, just in case
-                        if len(reinforcement_cities) > 0:
-                            #We want to reinforce cities with larger armies more, so we can better amass our forces for attacks
-                            reinforce_city = utility.weighted_random_choice(reinforcement_cities, lambda _, v: v.army.size())
-
-                            if reinforce_city != city:
-                                dx, dy = reinforce_city.position
-
-                                nation.moving_armies.append(Group(nation.name, city.army, (fx, fy), (dx, dy), nation.color, lambda s, c: False, self.reinforce(nation, reinforce_city), self.canvas))
-
-                                self.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': nation.id, 'nation_b': nation.id, 'city_a': city.name, 'city_b': reinforce_city.name, 'reason': 'reinforce', 'army_size': city.army.size()}, self.get_current_date()))
-
-                                city.army = city.army.zero()
+                    # elif random.randint(0, city.army.size()) < city.army.size() // 4 and len(nation.cities) > 1: #Reinforce another city
+                    #     fx, fy = city.position
+                    #
+                    #     #We obviously can't reinforce the same city
+                    #     reinforcement_cities = filter(lambda check: check != city, nation.cities)
+                    #
+                    #     #This really should always be true, but, as always, just in case
+                    #     if len(reinforcement_cities) > 0:
+                    #         #We want to reinforce cities with larger armies more, so we can better amass our forces for attacks
+                    #         reinforce_city = utility.weighted_random_choice(reinforcement_cities, lambda _, v: v.army.size())
+                    #
+                    #         if reinforce_city != city:
+                    #             dx, dy = reinforce_city.position
+                    #
+                    #             nation.moving_armies.append(Group(nation.name, city.army, (fx, fy), (dx, dy), nation.color, lambda s, c: False, self.reinforce(nation, reinforce_city), self.canvas))
+                    #
+                    #             self.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': nation.id, 'nation_b': nation.id, 'city_a': city.name, 'city_b': reinforce_city.name, 'reason': 'reinforce', 'army_size': city.army.size()}, self.get_current_date()))
+                    #
+                    #             city.army = city.army.zero()
 
     def return_levies(self, sender, reinforce_city):
         def do(reinforcing):
@@ -542,11 +542,11 @@ class Main:
             defending_army = defender.army_structure.zero().add_to(defender.army_structure.name, defending_garrison_size)
 
             city.population = max(city.population - defending_garrison_size, 1)
-            #If this is our last city, the army will contribute to the defense, because they have nowhere else to go
-            if len(defender.cities) == 1:
-                defending_army.add_army(city.army)
 
-                city.army = city.army.zero()
+            #The army should also defend
+            defending_army.add_army(city.army)
+
+            city.army = city.army.zero()
 
             print("{}: A battle has begun between {} and {}".format(self.get_current_date(), attacker.name, defender.name))
             print("{} has {} soldiers, and {} has {} soldiers, for a total of {} soldiers.".format(attacker.name, attacking_army.size(), defender.name, defending_army.size(), attacking_army.size() + defending_army.size()))
@@ -601,7 +601,10 @@ class Main:
             b.mod_morale(MORALE_INCREMENT)
             a.mod_morale(-MORALE_INCREMENT)
 
-            attack_city.population += battle.b_army.size()
+            #Add the levy back to the defending city's population, then put the army back as the army.
+            attack_city.population += battle.b_army.number
+            battle.b_army.number = 0 #Set the first tier soldiers to 0, because they all went back into the city
+            attack_city.army = battle.b_army
 
         self.attack_city = None
 
@@ -624,6 +627,7 @@ if len(sys.argv) > 1:
         elif params[0] == "size":
             utility.CELL_SIZE = int(params[1])
 
-# cProfile.run('History = Main()', sort='tottime')
-History = Main()
-History.start()
+cProfile.run('Main().start()', sort='tottime')
+raw_input()
+# History = Main()
+# History.start()

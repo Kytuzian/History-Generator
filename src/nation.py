@@ -10,6 +10,8 @@ from research import *
 import events
 import event_analysis
 
+import random
+
 from math import *
 
 from Tkinter import *
@@ -39,10 +41,12 @@ GOVERNMENT_TYPES = ["Principality", "Commonwealth", "Kingdom", "Hegemony", "Khan
 INIT_CITY_COUNT = 1
 
 CITY_FOUND_COST = 100000
-SOLDIER_RECRUIT_COST = 1000
-SOLDIER_UPKEEP = 20
+SOLDIER_RECRUIT_COST = 2000
+SOLDIER_UPKEEP = 200
 
-TAX_MULTIPLIER = 10
+REARM_CHANCE = 5
+
+TAX_MULTIPLIER = 1
 
 AVERAGE_MAX_LIFE_EXPECTANCY = 60
 
@@ -418,6 +422,7 @@ class Nation:
             city.population += per_city
 
     def get_tax_rate(self):
+        # print(self.tax_rate, utility.product([office.get_modifier('tax_rate') for office in self.offices]))
         return self.tax_rate * utility.product([office.get_modifier('tax_rate') for office in self.offices])
 
     def get_army_spending(self):
@@ -454,11 +459,11 @@ class Nation:
 
             #More money if we traded with somebody else
             if nation != self:
-                nation.money += 20000
+                nation.money += 2000
 
-                self.money += 20000
+                self.money += 2000
             else:
-                self.money += 10000
+                self.money += 1000
 
         return f
 
@@ -594,6 +599,22 @@ class Nation:
 
         self.morale = int(self.morale + amount * self.get_morale_bonus())
 
+    def handle_rearming(self):
+        if random.randint(0, 100) < REARM_CHANCE:
+            units = self.army_structure.make_upgrade_list()
+
+            rearm_unit = random.choice(units)
+            rearm_unit.do_rearm()
+
+            weapon_string = ','.join(map(lambda w: w.name, rearm_unit.weapons))
+            e = events.EventRearmUnit('RearmUnit', {'nation_a': self.id, 'unit_a': rearm_unit.name, 'weapons': weapon_string, 'armor': rearm_unit.armor.name}, self.parent.get_current_date())
+            self.parent.events.append(e)
+
+            print(self.parent.events[-1].text_version())
+
+            for city in self.cities:
+                city.rearm_army(rearm_unit)
+
     def history_step(self):
         self.name.history_step(self)
 
@@ -649,6 +670,7 @@ class Nation:
                             self.current_research.do_research(random.randint(1, research_rate))
 
         self.religion.history_step(self.parent)
+        self.handle_rearming()
 
         self.age += 1
 

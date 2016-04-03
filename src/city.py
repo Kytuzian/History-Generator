@@ -253,7 +253,8 @@ class City:
 
         self.event_log_display.grid(row=6, column=0, columnspan=3, rowspan=10, sticky=W+E)
 
-    #population_capacity, tax_rate, food_output, money_output
+    def rearm_army(self, unit):
+        self.army.rearm(unit.name, unit.weapons, unit.armor)
 
     def make_capital(self):
         self.is_capital = True
@@ -512,7 +513,9 @@ class City:
 
     def handle_money(self):
         total_tax_rate = utility.product([cell.get_tax_rate() for cell in self.cells])
-        total_tax_rate *= self.nation.get_tax_rate()
+        final_tax_rate = total_tax_rate * self.nation.get_tax_rate()
+
+        # print(total_tax_rate, final_tax_rate, self.get_tax_score())
 
         self.nation.money += total_tax_rate * self.get_tax_score()
 
@@ -569,13 +572,13 @@ class City:
 
         if self.population < self.calculate_population_capacity():
             t = float(self.resources['food']) / self.population * self.population_capacity / self.population
-            rate = 1.0 / (1.0 + self.population**0.5 * e**(-t)) / 10.0
+            rate = 1.0 / (1.0 + self.population**0.5 * e**(-t)) / 25.0
             new_pop = self.population * (1.0 + rate/12.0)**12.0 + 1
             # print(self.resources['food'], self.population_capacity, self.population, t, rate, new_pop)
 
             self.population = int(new_pop)
 
-        if random.randint(0, len(self.cells)) < self.age // 2: #Add new surrounding land
+        if random.randint(0, len(self.cells)) < sqrt(self.age): #Add new surrounding land
             candidate_expansion_squares = self.get_expansion_candidates()
 
             if len(candidate_expansion_squares):
