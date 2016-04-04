@@ -435,7 +435,7 @@ class Nation:
         return self.tax_rate * utility.product([office.get_modifier('tax_rate') for office in self.offices])
 
     def get_army_spending(self):
-        return self.army_spending * utility.product([office.get_modifier('army_spending') for office in self.offices])
+        return min(1, self.army_spending * utility.product([office.get_modifier('army_spending') for office in self.offices]))
 
     def get_population(self):
         return sum([i.population for i in self.cities])
@@ -594,10 +594,19 @@ class Nation:
     def get_conscription_bonus(self):
         return GOVERNMENT_TYPE_BONUSES[self.name.government_type]['conscription']
 
-    def get_soldier_cost(self, name):
-        return SOLDIER_RECRUIT_COST
+    def get_soldier_cost(self, troop):
+        amount = SOLDIER_RECRUIT_COST
 
-    def get_soldier_upkeep(self, name):
+        for weapon in troop.weapons:
+            amount += weapon.cost
+
+        amount += troop.armor.cost
+
+        # print('{} ({},{},{}) costs {}'.format(troop.name, troop.tier, troop.weapons, troop.armor, amount))
+
+        return amount
+
+    def get_soldier_upkeep(self, troop):
         return SOLDIER_UPKEEP
 
     def mod_morale(self, amount):

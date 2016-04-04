@@ -1,9 +1,12 @@
 2016-04-04
 Major changes:
 - Nations now have a small pool of weapons and armor from which they can arm their soldiers.
+- Weapons and armor now make soldiers more expensive.
 
 Minor changes:
 - Some more optimizations.
+- Increased amount of upgraded troops.
+- Upgrading troops now costs money.
 - Added polehammer.
 - Decreased chance of adding new names to a nation's name.
 

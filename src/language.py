@@ -4,6 +4,28 @@ import random
 
 from math import *
 
+vowel_sounds = ['ah', 'ae', 'aa', 'uh', 'eh', 'ee', 'ar', 'er', 'ow', 'ih', 'aw', 'oi',
+                'oo', 'ou', 'or', 'our', 'i']
+consonant_sounds = ['b', 'k', 's', 'd', 'f', 'g', 'h', 'j', 'l', 'm', 'n', 'ng',
+                    'p', 'kw', 'r', 't', 'v', 'w', 'x', 'y', 'z', 'ch', 'sh', 'th']
+
+def generate_sound_word(length):
+    res = []
+    consonants = 0
+    for sound in xrange(length):
+        l = random.choice([vowel_sounds, consonant_sounds])
+
+        if random.choice([False, True]) or consonants > 1:
+            consonants = 0
+            res.append(random.choice(vowel_sounds))
+        else:
+            consonants += 1
+            res.append(random.choice(consonant_sounds))
+    return '-'.join(res)
+
+# for i in xrange(10):
+#     print(generate_sound_word(random.randint(2, 8)))
+
 class Language:
     def __init__(self, name_length=random.randint(4, 10), base_language = None):
         self.letters = []

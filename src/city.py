@@ -535,19 +535,19 @@ class City:
 
         #This is the number of recruits, it remains to be seen if we can pay for all of them
         conscripted = int(random.random() * (self.population)**(1.0/3.0) * self.nation.get_conscription_bonus())
-        max_soldiers = int(self.nation.money / self.nation.get_soldier_cost(self.army.name) * self.nation.get_army_spending())
+        max_soldiers = int(self.nation.money / self.nation.get_soldier_cost(self.army) * self.nation.get_army_spending())
 
         if conscripted > max_soldiers: #If we are recruiting more than we can afford, reduce the number
             conscripted = max_soldiers
 
-        #Pay for soldiers
-        self.nation.money -= conscripted * self.nation.get_soldier_cost(self.army.name)
+        #Pay for new conscripted soldiers
+        self.nation.money -= conscripted * self.nation.get_soldier_cost(self.army)
 
-        if self.nation.money > self.army.size() * self.nation.get_soldier_upkeep(self.army.name):
-            self.nation.money -= self.army.size() * self.nation.get_soldier_upkeep(self.army.name)
+        if self.nation.money > self.army.size() * self.nation.get_soldier_upkeep(self.army):
+            self.nation.money -= self.army.size() * self.nation.get_soldier_upkeep(self.army)
         else:
             # print('Not enough money for upkeep, removing {} soldiers!'.format(int((self.army.size() * self.nation.get_soldier_upkeep(self.army.name) - self.nation.money) / self.nation.get_soldier_upkeep(self.army.name))))
-            self.army.remove_number('', int((self.army.size() * self.nation.get_soldier_upkeep(self.army.name) - self.nation.money) / self.nation.get_soldier_upkeep(self.army.name)))
+            self.army.remove_number('', int((self.army.size() * self.nation.get_soldier_upkeep(self.army) - self.nation.money) / self.nation.get_soldier_upkeep(self.army.name)))
 
             self.nation.money = 0
 

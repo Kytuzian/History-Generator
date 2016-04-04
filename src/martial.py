@@ -186,12 +186,17 @@ class Troop:
 
         #Upgrade troops if possible.
         if self.number > (self.elite * self.tier) and len(self.upgrades) > 0:
-            upgrading = random.randint(1, self.number // self.elite // self.tier)
+            upgrading = random.randint(1, self.number // self.elite)
             self.number -= upgrading
 
             per_upgrade = upgrading // len(self.upgrades)
             for upgrade in self.upgrades:
-                upgrade.add_number(per_upgrade, nation)
+                total_cost = nation.get_soldier_cost(upgrade)
+
+                if nation.money > total_cost:
+                    upgrade.add_number(per_upgrade, nation)
+                else:
+                    self.number += per_upgrade #Add these people back, because they weren't actually upgraded.
 
         return self
 
