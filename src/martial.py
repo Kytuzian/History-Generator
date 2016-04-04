@@ -9,12 +9,7 @@ import utility
 from nation import *
 from language import *
 
-from research import all_melee_weapons, weapon_list,\
-                     basic_weapon_list,\
-                     all_ranged_weapons, ranged_weapon_list,\
-                     sidearm_list, basic_ranged_list,\
-                     all_armor_list, armor_list,\
-                     basic_armor_list, unarmed
+from research import all_ranged_weapons, unarmed
 
 PROJECTILE_MOVEMENT_SPEED = 6
 PROJECTILE_RADIUS = 3
@@ -33,7 +28,7 @@ BATTLE_SIZE = 250
 
 class Troop:
     @classmethod
-    def init_troop(cls, name):
+    def init_troop(cls, name, nation):
         strength = random.randint(1, 3)
         health = random.randint(1, 3)
         ranged = random.choice([False, True]) #Starting troops are always melee random.choice([False, True])
@@ -48,11 +43,11 @@ class Troop:
         elite = random.randint(2, 10)
 
         if ranged:
-            weapons = [random.choice(basic_ranged_list), random.choice(sidearm_list)]
+            weapons = [random.choice(nation.basic_ranged_weapon_list), random.choice(nation.sidearm_list)]
         else:
-            weapons = [random.choice(basic_weapon_list), random.choice(basic_weapon_list)]
+            weapons = [random.choice(nation.basic_weapon_list), random.choice(nation.basic_weapon_list)]
 
-        armor = random.choice(basic_armor_list)
+        armor = random.choice(nation.basic_armor_list)
 
         tier = 1
 
@@ -100,31 +95,31 @@ class Troop:
         ranks = random.randint(2, 6)
 
         if ranged:
-            weapons = [random.choice(ranged_weapon_list), random.choice(sidearm_list)]
+            weapons = [random.choice(nation.ranged_weapon_list), random.choice(nation.sidearm_list)]
         else:
-            weapons = [random.choice(weapon_list), random.choice(sidearm_list)]
+            weapons = [random.choice(nation.weapon_list), random.choice(nation.sidearm_list)]
 
-        armor = random.choice(armor_list)
+        armor = random.choice(nation.armor_list)
 
         elite = random.randint(2, 10)
 
         return cls(name, strength, health, 0, ranged, speed, discipline, rank_size, ranks, weapons, armor, elite, self.tier + 1, [])
 
-    def do_rearm(self):
+    def do_rearm(self, nation):
         if self.tier == 1:
             if self.ranged:
-                weapons = [random.choice(basic_ranged_list), random.choice(sidearm_list)]
+                weapons = [random.choice(nation.basic_ranged_weapon_list), random.choice(nation.sidearm_list)]
             else:
-                weapons = [random.choice(basic_weapon_list), random.choice(basic_weapon_list)]
+                weapons = [random.choice(nation.basic_weapon_list), random.choice(nation.basic_weapon_list)]
 
-            armor = random.choice(basic_armor_list)
+            armor = random.choice(nation.basic_armor_list)
         else:
             if self.ranged:
-                weapons = [random.choice(ranged_weapon_list), random.choice(sidearm_list)]
+                weapons = [random.choice(nation.ranged_weapon_list), random.choice(nation.sidearm_list)]
             else:
-                weapons = [random.choice(weapon_list), random.choice(sidearm_list)]
+                weapons = [random.choice(nation.weapon_list), random.choice(nation.sidearm_list)]
 
-            armor = random.choice(armor_list)
+            armor = random.choice(nation.armor_list)
 
         self.weapons = weapons
         self.armor = armor
@@ -415,11 +410,6 @@ class Soldier:
             return self.weapons[0]
         else:
             return None
-        # for weapon in self.weapons:
-        #     if weapon.name in map(lambda w: w.name, all_ranged_weapons):
-        #         return weapon
-        #
-        # return None
 
     def calculate_position(self):
         coords = self.canvas.coords(self.id)[:2]
@@ -617,7 +607,7 @@ class Battle:
 
         self.parent = Tk()
         self.parent.title("{}({}) vs. {}({})".format(self.a.name, self.a_army.size(), self.b.name, self.b_army.size()))
-        self.parent.geometry("1000x600+0+0")
+        self.parent.geometry("1000x600+330+0")
 
         if utility.START_BATTLES_MINIMIZED:
             self.parent.wm_state('iconic')

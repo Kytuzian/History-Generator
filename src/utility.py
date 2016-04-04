@@ -7,8 +7,8 @@ import sys
 
 START_BATTLES_MINIMIZED = False
 
-S_WIDTH = 600
-S_HEIGHT = 600
+S_WIDTH = 1000
+S_HEIGHT = 1000
 
 DISPLAY_WIDTH = 1280
 DISPLAY_HEIGHT = 720
@@ -74,7 +74,10 @@ def weighted_random_choice(col, weight=None, reverse=True):
     if weight == None:
         weight = lambda i, _: len(col) - i #Makes it more likely to select early indexes.
 
-    weight_calculate = lambda i, v: 1.0 / (weight(i, v) + 1.0)
+    if reverse:
+        weight_calculate = lambda i, v: 1.0 / (weight(i, v) + 1.0)
+    else:
+        weight_calculate = weight
 
     accum = 0
     total = sum(map(lambda i: weight_calculate(i[0], i[1]), enumerate(col)))

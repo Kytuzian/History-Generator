@@ -382,25 +382,38 @@ class Main:
 
             self.nations.append(Nation(self, revolted_cities))
 
-            self.nations[-1].army_structure = nation.army_structure.zero() #The actual army revolts are just the armies in the revolting cities
-            self.nations[-1].language = Language(base_language=nation.language)
+            #For readability
+            revolted_nation = self.nations[-1]
 
-            army_revolted = sum([city.army.size() for city in self.nations[-1].cities])
+            revolted_nation.army_structure = nation.army_structure.zero() #The actual army revolts are just the armies in the revolting cities
+            revolted_nation.language = Language(base_language=nation.language)
+
+            #Copy weapon choices over
+            #We don't want a shallow copy because they shouldn't share research
+            revolted_nation.sidearm_list = list(nation.sidearm_list)
+            revolted_nation.basic_weapon_list = list(nation.basic_weapon_list)
+            revolted_nation.weapon_list = list(nation.weapon_list)
+            revolted_nation.basic_ranged_weapon_list = list(nation.basic_ranged_weapon_list)
+            revolted_nation.ranged_weapon_list = list(nation.ranged_weapon_list)
+            revolted_nation.armor_list = list(nation.armor_list, 2)
+            revolted_nation.basic_armor_list = list(nation.basic_armor_list, 2)
+
+            army_revolted = sum([city.army.size() for city in revolted_nation.cities])
 
             #The revolting nation increases their morale because they're now free from whatever issues they saw with the old regime
-            self.nations[-1].mod_morale(MORALE_INCREMENT * cities_revolted_count * int(log(army_revolted + 2)))
+            revolted_nation.mod_morale(MORALE_INCREMENT * cities_revolted_count * int(log(army_revolted + 2)))
 
             #The old nation increases their morale because the haters are now gone.
             nation.mod_morale(cities_revolted_count * MORALE_INCREMENT * int(log(sum([city.army.size() for city in nation.cities]) + 2)))
 
             print('{}:'.format(self.get_current_date()))
-            print("There was a revolt in the nation of {}, resulting in the creation of the new nation state of {}.".format(nation.name, self.nations[-1].name))
+            print("There was a revolt in the nation of {}, resulting in the creation of the new nation state of {}.".format(nation.name, revolted_nation.name))
             print("The following cities joined the revolt, along with {} soldiers: {}".format(army_revolted, self.nations[-1].cities))
 
-            self.events.append(events.EventRevolt('Revolt', {'nation_a': nation.id, 'nation_b': self.nations[-1].id, 'cities': [city.name for city in self.nations[-1].cities]}, self.get_current_date()))
+            self.events.append(events.EventRevolt('Revolt', {'nation_a': nation.id, 'nation_b': revolted_nation.id, 'cities': [city.name for city in revolted_nation.cities]}, self.get_current_date()))
 
             #We don't have peaceful revolts, naturally a nation would attempt to put down the revolt.
-            self.start_war(nation, self.nations[-1])
+            self.start_war(nation, revolted_nation)
 
     def diplomacy(self):
         for i in self.nations:

@@ -96,13 +96,14 @@ flail = Weapon('Flail', 12, 1.2, 6, 0, 2, 0.5)
 falx = Weapon('Falx', 14, 1.8, 8, 1, 2, 0.8)
 
 #Long
+polehammer = Weapon('Polehammer', 15, 1.0, 8, 2, 2, 1)
 staff = Weapon('Staff', 15, 0, 3, 3, 2, 2)
 spear = Weapon('Spear', 20, 1.0, 4, 4, 1.5, 1.5)
 pike = Weapon('Pike', 25, 1.0, 5, 5, 1.5, 1.5)
 sarissa = Weapon('Sarissa', 35, 1.0, 7, 3, 2, 2)
 
-all_melee_weapons = [unarmed, kopis, mace, falx, club, hammer, dagger, rondel, dirk, shortsword, sword, bastard_sword, claymore, spear, staff, bill, pike, sarissa, axe, flail, morning_star]
-weapon_list = [sword, mace, falx, shortsword, bastard_sword, claymore, spear, staff, pike, sarissa, axe, flail, morning_star, bill]
+all_melee_weapons = [unarmed, polehammer, kopis, mace, falx, club, hammer, dagger, rondel, dirk, shortsword, sword, bastard_sword, claymore, spear, staff, bill, pike, sarissa, axe, flail, morning_star]
+weapon_list = [polehammer, sword, mace, falx, shortsword, bastard_sword, claymore, spear, staff, pike, sarissa, axe, flail, morning_star, bill]
 
 sidearm_list = [dagger, club, mace, kopis, hammer, rondel, dirk, staff, shortsword, axe, spear]
 basic_weapon_list = [club, mace, hammer, staff, shortsword, axe, spear]
@@ -120,7 +121,7 @@ sling_staff = Weapon('Sling Staff', 300, 0, 5, 2, 2, 1, reload_time=60, ammuniti
 all_ranged_weapons = [stones, atlatl, sling, shortbow, longbow, javelin, bow, crossbow, sling_staff]
 ranged_weapon_list = [sling, atlatl, javelin, shortbow, longbow, bow, crossbow, sling_staff]
 
-basic_ranged_list = [stones, sling, javelin, shortbow, bow]
+basic_ranged_weapon_list = [stones, sling, javelin, shortbow, bow]
 
 cloth_armor = Armor('Cloth Armor', 0, 2, 0.5)
 padded_armor = Armor('Padded Armor', 0, 3, 0.5)
@@ -157,6 +158,9 @@ def base_tech_tree():
                     Tech('Improved Agriculture', 'agriculture', 150, 1.1, [])
                 ])
 
+def tech_categories():
+    return ['agriculture', 'material', 'housing', 'mining']
+
 class Tech:
     def __init__(self, name, category, research_points, effect_strength, next_techs):
         self.name = name
@@ -168,6 +172,10 @@ class Tech:
         self.effect_strength = effect_strength
 
         self.next_techs = next_techs
+
+        self.best_techs = {}
+
+        self.get_best_in_categories()
 
     def is_unlocked(self):
         return self.current_research_points >= self.research_points
@@ -192,15 +200,22 @@ class Tech:
 
             return False
 
-    def get_best_in_category(self, category_name):
-        for i in self.next_techs:
-            if i.category == category_name and i.is_unlocked():
-                return i.get_best_in_category(category_name)
+    def get_best_in_categories(self):
+        for category in tech_categories():
+            self.best_techs[category] = self.get_best_in_category(category, True)
 
-        if self.category == category_name:
-            return self
+    def get_best_in_category(self, category_name, calc=False):
+        if calc:
+            for i in self.next_techs:
+                if i.category == category_name and i.is_unlocked():
+                    return i.get_best_in_category(category_name)
 
-        return None
+            if self.category == category_name:
+                return self
+
+            return None
+        else:
+            return self.best_techs[category_name]
 
     def get_available_research(self):
         if self.is_unlocked():
@@ -214,3 +229,5 @@ class Tech:
     def do_research(self, research_amount):
         if not self.is_unlocked():
             self.current_research_points += research_amount
+
+            self.get_best_in_categories()

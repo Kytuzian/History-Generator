@@ -1,3 +1,15 @@
+2016-04-04
+Major changes:
+- Nations now have a small pool of weapons and armor from which they can arm their soldiers.
+
+Minor changes:
+- Some more optimizations.
+- Added polehammer.
+- Decreased chance of adding new names to a nation's name.
+
+Bug fixes:
+- Fixed bug where weighted_random_choice always was weighted towards lower values.
+
 2016-04-03
 Major changes:
 - Units now carry a visual representation of their primary melee weapon (just a straight line thus far).

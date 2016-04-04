@@ -50,14 +50,14 @@ TAX_MULTIPLIER = 1
 
 AVERAGE_MAX_LIFE_EXPECTANCY = 60
 
-NAME_SWITCH_THRESHOLD = 20
+NAME_SWITCH_THRESHOLD = 30
 
 #Years
 MIN_TERM_LENGTH = 5
 MAX_TERM_LENGTH = 20
 
 #Chances (1 in x)
-LOSE_PLACE_CITY_NAME = 10 #Only applies if the nation no longer owns the city.
+LOSE_PLACE_CITY_NAME = 8 #Only applies if the nation no longer owns the city.
 LOSE_NAME_MODIFIER = 30 #Per modifier
 GAIN_NAME_MODIFIER = 30 #Per history step
 
@@ -159,7 +159,7 @@ class NationName:
         self.places = places
 
     def history_step(self, parent):
-        parent_cities_names= map(lambda city: city.name, parent.cities)
+        parent_cities_names = map(lambda city: city.name, parent.cities)
 
         for place in self.places:
             #We can't get rid of the last one.
@@ -244,7 +244,16 @@ class Nation:
 
         self.moving_armies = []
 
-        self.army_structure = Troop.init_troop(self.language.make_word(self.language.name_length, True))
+        self.sidearm_list = random.sample(sidearm_list, 3)
+        self.basic_weapon_list = random.sample(basic_weapon_list, 2)
+        self.weapon_list = random.sample(weapon_list, 4)
+        self.basic_ranged_weapon_list = random.sample(basic_ranged_weapon_list, 1)
+        self.ranged_weapon_list = random.sample(ranged_weapon_list, 2)
+
+        self.armor_list = random.sample(armor_list, 2)
+        self.basic_armor_list = random.sample(basic_armor_list, 2)
+
+        self.army_structure = Troop.init_troop(self.language.make_word(self.language.name_length, True), self)
 
         self.tech = base_tech_tree()
         self.current_research = None
@@ -604,7 +613,7 @@ class Nation:
             units = self.army_structure.make_upgrade_list()
 
             rearm_unit = random.choice(units)
-            rearm_unit.do_rearm()
+            rearm_unit.do_rearm(self)
 
             weapon_string = ','.join(map(lambda w: w.name, rearm_unit.weapons))
             e = events.EventRearmUnit('RearmUnit', {'nation_a': self.id, 'unit_a': rearm_unit.name, 'weapons': weapon_string, 'armor': rearm_unit.armor.name}, self.parent.get_current_date())
