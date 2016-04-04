@@ -2,16 +2,22 @@
 Major changes:
 - Nations now have a small pool of weapons and armor from which they can arm their soldiers.
 - Weapons and armor now make soldiers more expensive.
+- Projectiles now travel at different speeds.
 
 Minor changes:
 - Some more optimizations.
+- Nations are more likely to spawn closer to the center.
+- Made cities more likely to be founded.
 - Increased amount of upgraded troops.
 - Upgrading troops now costs money.
 - Added polehammer.
 - Decreased chance of adding new names to a nation's name.
+- Increased battle size.
+- Decreased food production.
 
 Bug fixes:
 - Fixed bug where weighted_random_choice always was weighted towards lower values.
+- Fixed bug where levies weren't properly sent home.
 
 2016-04-03
 Major changes:

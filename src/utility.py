@@ -72,7 +72,7 @@ def calculate_polar_vector((dx, dy)):
 #If reverse is false, then it selects heigher weights, if it's true, then it selects lower ones.
 def weighted_random_choice(col, weight=None, reverse=True):
     if weight == None:
-        weight = lambda i, _: len(col) - i #Makes it more likely to select early indexes.
+        weight = lambda i, _: i #Makes it more likely to select early indexes.
 
     if reverse:
         weight_calculate = lambda i, v: 1.0 / (weight(i, v) + 1.0)

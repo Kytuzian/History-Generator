@@ -17,7 +17,7 @@ from Tkinter import *
 
 CELL_POPULATION_CAPACITY = 10
 
-FOOD_PER_PERSON = 1
+FOOD_PER_PERSON = 2
 
 MORALE_NOT_ENOUGH_FOOD = 4
 CAPITAL_CITY_MORALE_BONUS = 2
@@ -25,9 +25,9 @@ MORALE_INCREMENT = 30
 
 #Building effects: population_capacity, tax_rate, food_output, money_output
 house_effects = {'population_capacity': 20, 'tax_score': 5, 'cost': 50, 'size': 5}
-farm_effects = {'population_capacity': 10, 'food_output': 100, 'cost': 200, 'size': 20}
-fishery_effects = {'population_capacity': 5, 'food_output': 150, 'cost': 200, 'size': 40}
-ranch_effects = {'population_capacity': 5, 'food_output': 200, 'cost': 300, 'size': 50}
+farm_effects = {'population_capacity': 10, 'food_output': 60, 'cost': 200, 'size': 20}
+fishery_effects = {'population_capacity': 5, 'food_output': 125, 'cost': 200, 'size': 40}
+ranch_effects = {'population_capacity': 5, 'food_output': 125, 'cost': 300, 'size': 50}
 leatherworker_effects = {'population_capacity': 5, 'money_output': 100, 'leather': 5, 'cost': 300, 'size': 5}
 weaver_effects = {'population_capacity': 5, 'money_output': 100, 'cloth': 5, 'cost': 300, 'size': 5}
 woodcutter_effects = {'population_capacity': 5, 'money_output': 100, 'wood': 5, 'cost': 300, 'size': 50}
@@ -325,7 +325,10 @@ class City:
 
         self.is_capital = False
 
-        if self.army.number > 0 and attacking_city != None: #This is just the number of levies, which need to be sent home now that we've conquered them.
+        self.army = attacking_army
+
+        #This is just the number of levies, which need to be sent home now that we've conquered the enemy.
+        if self.army.number > 0 and attacking_city != None:
             send_army = self.army.zero()
             send_army.add_to(send_army.name, self.army.number)
             self.army.number = 0
@@ -333,8 +336,6 @@ class City:
             self.nation.moving_armies.append(Group(self.nation.name, send_army, self.position, attacking_city.position, self.nation.color, lambda s, c: False, self.parent.return_levies(self.nation, attacking_city), self.parent.canvas))
 
             self.parent.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': self.nation.id, 'nation_b': self.nation.id, 'city_a': self.name, 'city_b': attacking_city.name, 'reason': 'return levies', 'army_size': send_army.size()}, self.parent.get_current_date()))
-
-        self.army = attacking_army
 
     def destroy_self(self):
         for cell in self.cells:

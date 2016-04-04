@@ -218,7 +218,10 @@ class Nation:
         #Take a color that hasn't already been used.
         self.color = random.choice(parent.available_colors())
 
-        x, y = random.randint(100, utility.S_WIDTH - 100), random.randint(100, utility.S_HEIGHT - 100)
+        CELLS_WIDTH = utility.S_WIDTH // utility.CELL_SIZE
+        CELLS_HEIGHT = utility.S_WIDTH // utility.CELL_SIZE
+        x = random.randint(int(CELLS_WIDTH * 0.1), int(CELLS_WIDTH * 0.9))
+        y = random.randint(int(CELLS_HEIGHT * 0.1), int(CELLS_HEIGHT * 0.9))
 
         if cities != None:
             self.cities = cities
@@ -537,8 +540,8 @@ class Nation:
 
         x, y = self.get_average_city_position()
         candidates = self.get_city_candidate_cells()
-        candidates = sorted(candidates, key=lambda cell: utility.distance_squared((cell.x, cell.y), (x, y)))
-        self.cities.append(City(self, name, utility.weighted_random_choice(candidates), self.parent))
+        candidate = utility.weighted_random_choice(candidates, lambda _,cell: utility.distance_squared((cell.x, cell.y), (x, y)))
+        self.cities.append(City(self, name, candidate, self.parent))
 
         self.chance_add_new_name(self.cities[-1].name)
 
@@ -656,14 +659,20 @@ class Nation:
         if not self.has_capital():
             #choose a new capital from our cities, utility.weighted by population
             if len(self.cities) > 0: #Just to be sure
-                new_capital = utility.weighted_random_choice(self.cities, weight=lambda i, v: v.population)
+                new_capital = utility.weighted_random_choice(self.cities, weight=lambda i, v: v.population, reverse=False)
 
                 new_capital.make_capital()
         else:
             self.mod_morale(CAPITAL_CITY_MORALE_BONUS)
 
         for city in self.cities:
-            if random.randint(0, max([1, len(self.cities)**10 / max([1, city.population])])) == 0 and (self.money > CITY_FOUND_COST * len(self.cities)): #We need enough money
+            #It's more likely to found a new city when this city is near population capacity
+            #Because as there's no more space, people want to go to a new city
+            try:
+                found_city_chance = max(1, int(len(self.cities)**4 * math.log(city.population_capacity - city.population)))
+            except: #Log is negative
+                found_city_chance = max(1, len(self.cities)**4)
+            if random.randint(0, found_city_chance) == 0 and self.money > CITY_FOUND_COST:
                 self.create_city()
 
             if self.current_research == None or self.current_research.is_unlocked():

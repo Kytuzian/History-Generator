@@ -24,7 +24,7 @@ CC_RANGE = 50
 SWITCH_TARGET_COUNT = 8
 
 #The maximum number of troops on either side of the battle
-BATTLE_SIZE = 250
+BATTLE_SIZE = 350
 
 class Troop:
     @classmethod
@@ -402,13 +402,14 @@ class Soldier:
             return self.weapons[1]
         else:
             return self.weapons[0]
-        # for weapon in self.weapons:
-        #     if weapon.name in map(lambda w: w.name, all_melee_weapons):
-        #         return weapon
-        #
-        #         break
-        #
-        # return None
+
+    def get_projectile_speed(self):
+        weapon = self.get_ranged_weapon()
+
+        if weapon != None:
+            return weapon.projectile_speed
+        else:
+            return 0
 
     def get_ranged_weapon(self):
         if self.unit.soldier_type.originally_ranged:
@@ -498,7 +499,7 @@ class Soldier:
             return random.randint(0, 1)
 
 class Projectile:
-    def __init__(self, (dx, dy), strength, target):
+    def __init__(self, (dx, dy), strength, target, speed):
         self.dx = dx
         self.dy = dy
 
@@ -513,6 +514,8 @@ class Projectile:
         self.id = -1
 
         self.target = target
+
+        self.speed = speed
 
 class Unit:
     def __init__(self, soldier_type, soldiers, canvas):
@@ -563,8 +566,8 @@ class Unit:
     def calculate_shoot_position(self):
         self.calculate_shoot_angle()
 
-        x = PROJECTILE_MOVEMENT_SPEED * math.cos(self.shoot_angle) * self.shoot_time
-        y = PROJECTILE_MOVEMENT_SPEED * math.sin(self.shoot_angle) * self.shoot_time
+        x = self.soldiers[0].get_projectile_speed() * math.cos(self.shoot_angle) * self.shoot_time
+        y = self.soldiers[0].get_projectile_speed() * math.sin(self.shoot_angle) * self.shoot_time
 
         self.shoot_position = (x, y)
 
@@ -574,7 +577,7 @@ class Unit:
         if self.target != None:
             speed, angle = self.target.get_movement_vector(vector_format='polar')
             # print((speed, PROJECTILE_MOVEMENT_SPEED, (self.target.x, self.target.y), (self.x, self.y), angle))
-            self.shoot_time, self.shoot_angle = utility.calculate_interception(speed, PROJECTILE_MOVEMENT_SPEED, (self.target.x, self.target.y), (self.x, self.y), angle)
+            self.shoot_time, self.shoot_angle = utility.calculate_interception(speed, self.soldiers[0].get_projectile_speed(), (self.target.x, self.target.y), (self.x, self.y), angle)
         else:
             self.shoot_angle = 0
 
@@ -709,7 +712,7 @@ class Battle:
         for p in proj:
             hit = False
 
-            self.canvas.move(p.id, p.dx * PROJECTILE_MOVEMENT_SPEED, p.dy * PROJECTILE_MOVEMENT_SPEED)
+            self.canvas.move(p.id, p.dx * p.speed, p.dy * p.speed)
 
             x,y = self.canvas.coords(p.id)[:2]
 
@@ -720,7 +723,7 @@ class Battle:
                     if p.kill_range > 0:
                         p.kill_range -= 1
 
-                        if utility.collided((x, y, PROJECTILE_RADIUS), (tx, ty, TROOP_RADIUS)):
+                        if utility.collided((x, y, p.speed), (tx, ty, TROOP_RADIUS)):
                             hit = True
 
                             damage = p.strength
@@ -846,7 +849,7 @@ class Battle:
                             m, tangle = current_unit.target.get_movement_vector(vector_format='polar')
 
                             if m > 0:
-                                t, angle = utility.calculate_interception(m, PROJECTILE_MOVEMENT_SPEED, (tx, ty), (x, y), tangle)
+                                t, angle = utility.calculate_interception(m, soldier.get_projectile_speed(), (tx, ty), (x, y), tangle)
 
                                 tx += math.cos(tangle) * t * m
                                 ty += math.sin(tangle) * t * m
@@ -854,11 +857,11 @@ class Battle:
                                 d = utility.distance((x, y), (tx, ty))
 
                             damage = soldier.get_ranged_attack(nation.tech.get_best_in_category('material'))
-                            proj.append(Projectile(((tx - x) / d, (ty - y) / d), damage, soldier.target))
+                            proj.append(Projectile(((tx - x) / d, (ty - y) / d), damage, soldier.target, soldier.get_projectile_speed()))
 
                             proj[-1].id = self.canvas.create_oval(x, y, x + PROJECTILE_RADIUS, y + PROJECTILE_RADIUS, width=0, fill=color)
-                            proj[-1].skip_step = d // PROJECTILE_MOVEMENT_SPEED // 2
-                            proj[-1].kill_range = d // PROJECTILE_MOVEMENT_SPEED * 2
+                            proj[-1].skip_step = d // soldier.get_projectile_speed() // 2
+                            proj[-1].kill_range = d // soldier.get_projectile_speed() * 2
 
                             soldier.shoot = 0
 
