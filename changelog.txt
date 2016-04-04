@@ -3,6 +3,7 @@ Major changes:
 - Units now carry a visual representation of their primary melee weapon (just a straight line thus far).
 - Nations will now periodically rearm their soldiers with different weapons (not necessarily better ones).
 - Armies will now always defend the city they are stationed in.
+- Units now move at different speeds.
 
 Minor changes:
 - Added new weapons (mace, shortbow, longbow, falx, kopis).

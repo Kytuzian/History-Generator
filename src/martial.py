@@ -38,6 +38,8 @@ class Troop:
         health = random.randint(1, 3)
         ranged = random.choice([False, True]) #Starting troops are always melee random.choice([False, True])
 
+        speed = random.randint(2, 4)
+
         discipline = random.randint(1, 2)
 
         rank_size = random.randint(2, 20)
@@ -54,13 +56,15 @@ class Troop:
 
         tier = 1
 
-        return cls(name, strength, health, 0, ranged, discipline, rank_size, ranks, weapons, armor, elite, tier, [])
+        return cls(name, strength, health, 0, ranged, speed, discipline, rank_size, ranks, weapons, armor, elite, tier, [])
 
-    def __init__(self, name, strength, health, number, ranged, discipline, rank_size, ranks, weapons, armor, elite, tier, upgrades):
+    def __init__(self, name, strength, health, number, ranged, speed, discipline, rank_size, ranks, weapons, armor, elite, tier, upgrades):
         self.name = name
         self.strength = strength
         self.health = health
         self.number = number
+
+        self.speed = speed
 
         self.originally_ranged = ranged #This one won't change when the unit swiches to melee mode.
         self.ranged = ranged
@@ -90,6 +94,8 @@ class Troop:
         health = self.health + random.randint(1, 6 if not ranged else 2)
         discipline = self.discipline + random.randint(1, 10)
 
+        speed = self.speed + random.randint(1, 4)
+
         rank_size = random.randint(2, 18)
         ranks = random.randint(2, 6)
 
@@ -102,7 +108,7 @@ class Troop:
 
         elite = random.randint(2, 10)
 
-        return cls(name, strength, health, 0, ranged, discipline, rank_size, ranks, weapons, armor, elite, self.tier + 1, [])
+        return cls(name, strength, health, 0, ranged, speed, discipline, rank_size, ranks, weapons, armor, elite, self.tier + 1, [])
 
     def do_rearm(self):
         if self.tier == 1:
@@ -228,7 +234,7 @@ class Troop:
         return sorted([self] + reduce(lambda a, b: a + b, [i.make_upgrade_list() for i in self.upgrades], []), key=lambda a: a.strength * a.health)
 
     def copy(self):
-        return Troop(self.name, self.strength, self.health, 0, self.ranged, self.discipline, self.rank_size, self.ranks, [i.copy() for i in self.weapons], self.armor.copy(), self.elite, self.tier, map(lambda i: i.copy(), self.upgrades))
+        return Troop(self.name, self.strength, self.health, 0, self.ranged, self.speed, self.discipline, self.rank_size, self.ranks, [i.copy() for i in self.weapons], self.armor.copy(), self.elite, self.tier, map(lambda i: i.copy(), self.upgrades))
 
     def is_empty(self):
         return all(map(lambda i: i.is_empty(), self.upgrades)) and self.number == 0
@@ -543,6 +549,9 @@ class Unit:
 
         self.canvas = canvas
 
+    def get_effective_speed(self):
+        return int(math.log(self.soldier_type.speed, 2)) * TROOP_MOVEMENT_SPEED
+
     def get_movement_vector(self, vector_format='xy'):
         if self.target != None and not self.soldier_type.ranged:
             d = utility.distance((self.x, self.y), (self.target.x, self.target.y))
@@ -550,9 +559,9 @@ class Unit:
             dy = self.target.y - self.y
 
             if vector_format == 'xy':
-                return (float(dx) / d * TROOP_MOVEMENT_SPEED, float(dy) / d * TROOP_MOVEMENT_SPEED)
+                return (float(dx) / d * self.get_effective_speed(), float(dy) / d * self.get_effective_speed())
             elif vector_format == 'polar': #Magnitude and angle
-                return (TROOP_MOVEMENT_SPEED, math.atan2(dy, dx))
+                return (self.get_effective_speed(), math.atan2(dy, dx))
         else:
             return (0, 0)
 
@@ -832,11 +841,11 @@ class Battle:
                 self.canvas.coords(soldier.weapon_id, cx, cy, cx + (tx - cx) / d * weapon_range, cy + (ty - cy) / d * weapon_range)
 
                 if soldier.ranged:
-                    if d < TROOP_MOVEMENT_SPEED * CC_RANGE:
+                    if d < soldier.target.unit.get_effective_speed() * CC_RANGE:
                         soldier.ranged = False
 
                     if d > soldier.get_ranged_weapon().range:
-                        self.canvas.move(soldier.id, (tx - x) / d * TROOP_MOVEMENT_SPEED, (ty - y) / d * TROOP_MOVEMENT_SPEED)
+                        self.canvas.move(soldier.id, (tx - x) / d * current_unit.get_effective_speed(), (ty - y) / d * current_unit.get_effective_speed())
                     elif soldier.shoot > soldier.shoot_counter:
                         if d > 0 and current_unit.ammunition > 0:
                             m, tangle = current_unit.target.get_movement_vector(vector_format='polar')
@@ -868,7 +877,7 @@ class Battle:
                         soldier.shoot += sqrt(soldier.discipline) / 2 + random.randint(0, 1) * log(soldier.discipline)
                 else:
                     #If the target moves out of range, then switch back to ranged.
-                    if d > TROOP_MOVEMENT_SPEED * CC_RANGE:
+                    if d > soldier.target.unit.get_effective_speed() * CC_RANGE:
                         if current_unit.soldier_type.ranged:
                             soldier.ranged = True
 
@@ -919,7 +928,7 @@ class Battle:
 
                                 self.canvas.delete(current_unit.name_id)
                     else: #Not in range, so we need to get closer.
-                        self.canvas.move(soldier.id, (tx - x) / d * TROOP_MOVEMENT_SPEED, (ty - y) / d * TROOP_MOVEMENT_SPEED)
+                        self.canvas.move(soldier.id, (tx - x) / d * current_unit.get_effective_speed(), (ty - y) / d * current_unit.get_effective_speed())
 
         return False
 
