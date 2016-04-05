@@ -254,7 +254,7 @@ class Cell:
 
     def update_self(self):
         if self.owner == None:
-            self.parent.canvas.itemconfig(self.id, fill='white')
+            self.parent.canvas.itemconfig(self.id, fill=self.terrain.color)
         else:
             self.parent.canvas.itemconfig(self.id, fill=self.owner.nation.color)
 

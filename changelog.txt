@@ -1,3 +1,13 @@
+2016-04-05
+Major changes:
+
+Minor changes:
+- Removed some more colors that were hard to see.
+
+Bug fixes:
+- Fixed bug where units were given the wrong amount of ammunition sometimes.
+- Fixed bug where abandoned city cells were white instead of their appropriate terrain color.
+
 2016-04-04
 Major changes:
 - Nations now have a small pool of weapons and armor from which they can arm their soldiers.

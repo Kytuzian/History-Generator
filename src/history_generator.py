@@ -13,6 +13,7 @@ import utility
 from nation import *
 from city import *
 from martial import *
+from battle import *
 from language import *
 import events
 import event_analysis

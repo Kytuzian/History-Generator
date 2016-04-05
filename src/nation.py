@@ -18,19 +18,17 @@ from Tkinter import *
 
 OFFICE_MORALE_BONUS = 4
 
-NATION_COLORS = ['dark orange', 'cadet blue', 'sea green', 'gold', 'deep sky blue',\
-                 'firebrick', 'dark salmon', 'maroon', 'sienna', 'dark slate blue',\
-                 'deep pink', 'dark orchid', 'slate gray', 'violet',\
-                 'navy', 'magenta', 'sandy brown', 'saddle brown', \
-                 'orchid', 'blue', 'violet red',\
-                 'medium slate blue', 'purple', 'blue violet',\
-                 'dark sea green', 'hot pink', 'orange', 'indian red', \
-                 'red', 'brown', 'dim gray', 'salmon',\
-                 'steel blue', 'royal blue', 'medium purple', \
-                 'dark slate gray', 'dark olive green', 'cyan', 'chocolate', 'orange red', \
-                 'tomato', 'gray', 'cornflower blue', 'goldenrod', \
-                 'midnight blue', 'rosy brown', 'plum', 'sky blue',\
-                 'dark violet', 'dark khaki', 'olive drab', 'medium turquoise',\
+NATION_COLORS = ['dark orange', 'cadet blue', 'gold', 'deep sky blue',
+                 'firebrick', 'maroon', 'sienna', 'dark slate blue',
+                 'deep pink', 'dark orchid', 'slate gray', 'violet',
+                 'navy', 'magenta', 'sandy brown', 'saddle brown',
+                 'orchid', 'violet red', 'medium slate blue', 'purple', 'blue violet',
+                 'dark sea green', 'hot pink', 'orange', 'indian red',
+                 'red', 'brown', 'salmon', 'steel blue', 'royal blue', 'medium purple',
+                 'dark slate gray', 'dark olive green', 'cyan', 'chocolate', 'orange red',
+                 'tomato', 'gray', 'cornflower blue', 'goldenrod',
+                 'midnight blue', 'rosy brown', 'plum', 'sky blue',
+                 'dark violet', 'dark khaki', 'olive drab', 'medium turquoise',
                  'slate blue', 'powder blue', 'aquamarine']
 
 OFFICE_MODIFIERS = ['tax_rate', 'army_spending', 'morale']
