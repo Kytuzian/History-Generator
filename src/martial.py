@@ -24,7 +24,7 @@ CC_RANGE = 50
 SWITCH_TARGET_COUNT = 8
 
 #The maximum number of troops on either side of the battle
-BATTLE_SIZE = 350
+BATTLE_SIZE = 400
 
 class Troop:
     @classmethod
@@ -637,6 +637,9 @@ class Battle:
         self.a_amount = 0
         self.b_amount = 0
 
+        self.a_original_size = self.a_army.size()
+        self.b_original_size = self.b_army.size()
+
         self.attacking_city = attacking_city
         self.city = city
 
@@ -977,6 +980,10 @@ class Battle:
                 unit.calculate_position()
                 unit.ammunition = len(unit.soldiers) * 10
                 unit.name_id = self.canvas.create_text(unit.x, unit.y - 20, text=("{} ({}; {}): {}, {}".format(unit.soldier_type.name, ', '.join(map(lambda w: w.name, unit.soldier_type.weapons)), unit.soldier_type.armor.name, unit.soldier_type.strength, unit.soldier_type.health)))
+
+        total = self.a_original_size + self.b_original_size
+        current = self.a_army.size() + self.b_army.size() + a_force_size + b_force_size
+        utility.show_bar(current, total, message='Soldiers Left: ', number_limit=True)
 
         if not self.over:
             self.after_id = self.parent.after(self.battle_speed.get(), self.main_phase)

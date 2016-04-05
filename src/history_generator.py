@@ -276,7 +276,7 @@ class Main:
                 for i in self.nations:
                     i.history_step()
 
-                    if len(i.cities) == 0 and len(i.moving_armies) == 0:
+                    if len(i.cities) == 0 and len(i.moving_armies) == 0 and len(self.battles) == 0:
                         self.remove_nation(i)
 
             if len(self.battles) == 0 or self.day == 30:
@@ -290,11 +290,11 @@ class Main:
                         if not (k in self.nations):
                             i.at_war.remove(k)
 
-                    if len(i.cities) == 0 and len(i.moving_armies) == 0:
+                    if len(i.cities) == 0 and len(i.moving_armies) == 0 and len(self.battles) == 0:
                         self.remove_nation(i)
 
                 #We can only have one nation per color
-                if random.randint(0, len(self.nations)**5 + 12) == 0 and len(self.nations) < len(NATION_COLORS):
+                if random.randint(0, len(self.nations)**3 + 12) == 0 and len(self.nations) < len(NATION_COLORS):
                     self.add_nation(Nation(self))
 
                 self.diplomacy()
@@ -395,8 +395,8 @@ class Main:
             revolted_nation.weapon_list = list(nation.weapon_list)
             revolted_nation.basic_ranged_weapon_list = list(nation.basic_ranged_weapon_list)
             revolted_nation.ranged_weapon_list = list(nation.ranged_weapon_list)
-            revolted_nation.armor_list = list(nation.armor_list, 2)
-            revolted_nation.basic_armor_list = list(nation.basic_armor_list, 2)
+            revolted_nation.armor_list = list(nation.armor_list)
+            revolted_nation.basic_armor_list = list(nation.basic_armor_list)
 
             army_revolted = sum([city.army.size() for city in revolted_nation.cities])
 
@@ -420,19 +420,19 @@ class Main:
             self.handle_revolt(i)
 
             #Let's go to war, but we can only do that if there is a nation other than us
-            # if random.randint(0, max([1, len(i.at_war) ** 11 + 100 - int(log(i.total_army() + 1)**4)])) == 0 and len(self.nations) > 1:
-            #     enemy = utility.weighted_random_choice(self.nations, weight=lambda _, v: utility.distance(i.get_average_city_position(), v.get_average_city_position()), reverse=True)
-            #
-            #     #We can't go to war twice, fight with a trading partner, or be war with ourselves
-            #     #Because doing any of those things would be really stupid
-            #     if not enemy in i.at_war and not enemy in i.trading and enemy != i:
-            #         self.start_war(i, enemy)
-            # else:
-            for enemy in self.nations: #CHECK FOR THE HEATHEN BASTARDS
-                if enemy != i and enemy.religion != i.religion and random.randint(0, 100 * i.get_tolerance()) == 0:
-                    self.start_war(i, enemy)
+            if random.randint(0, max(1, len(i.at_war)**5 + i.get_tolerance())) == 0 and len(self.nations) > 1:
+                enemy = utility.weighted_random_choice(self.nations, weight=lambda _, v: utility.distance(i.get_average_city_position(), v.get_average_city_position()), reverse=True)
 
-                    break
+                #We can't go to war twice, fight with a trading partner, or be war with ourselves
+                #Because doing any of those things would be really stupid
+                if not enemy in i.at_war and not enemy in i.trading and enemy != i:
+                    self.start_war(i, enemy)
+            else:
+                for enemy in self.nations: #CHECK FOR THE HEATHEN BASTARDS
+                    if enemy != i and enemy.religion != i.religion and random.randint(0, 3 * i.get_tolerance()) == 0:
+                        self.start_war(i, enemy)
+
+                        break
 
             #Let's try not warring with them, and trade instead, perhaps?
             if random.randint(0, max(4, int(7**log(max(1, i.get_tolerance()))))) == 0: #Randomly start a new trade agreement. Change it later
@@ -456,15 +456,15 @@ class Main:
                 if len(enemy.cities) > 0 and enemy in self.nations:
                     attacking_city = utility.weighted_random_choice(enemy.cities, weight=lambda _, v: utility.distance(city.position, v.position), reverse=True)
 
-                    if random.randint(0, max(20, city.army.size() + city.population // 6 - attacking_city.population // 3 - attacking_city.army.size())) > 20 and random.randint(0, len(nation.moving_armies)**3) == 0:
+                    if random.randint(0, max(20, city.army.size() + city.population // 8 - attacking_city.population // 3 - attacking_city.army.size())) > 20 and random.randint(0, len(nation.moving_armies)**3) == 0:
                         fx, fy = city.position
 
                         dx, dy = attacking_city.position
 
                         #Conscript some levies to join the army.
                         if city.population // 3 > 1:
-                            conscript_max = max(city.population // 3, 3)
-                            conscript_min = min(city.population // 6, 2)
+                            conscript_max = max(city.population // 4, 3)
+                            conscript_min = min(city.population // 8, 2)
                             conscripted = int(random.randint(conscript_min, conscript_max) * nation.get_conscription_bonus())
                         else:
                             conscripted = 0

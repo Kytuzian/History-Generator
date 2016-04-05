@@ -14,10 +14,16 @@ Minor changes:
 - Decreased chance of adding new names to a nation's name.
 - Increased battle size.
 - Decreased food production.
+- Made religious wars much more likely.
+- Increased money productions.
+- Increased army recruitment.
 
 Bug fixes:
 - Fixed bug where weighted_random_choice always was weighted towards lower values.
 - Fixed bug where levies weren't properly sent home.
+- Fixed bug where person wouldn't be properly removed from office after his term was up.
+- Fixed bug where nation could be destroyed before actually being destroyed.
+- Fixed bug where buildings would stay in a tile even after it had been destroyed.
 
 2016-04-03
 Major changes:

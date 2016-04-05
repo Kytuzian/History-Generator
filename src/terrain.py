@@ -279,6 +279,7 @@ class Cell:
             self.owner.add_cell(self)
         else:
             self.new_type = '' #There is no cell type for an unowned cell.
+            self.buildings = city.base_buildings(None)
 
         self.update_self()
 

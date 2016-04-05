@@ -17,7 +17,7 @@ from Tkinter import *
 
 CELL_POPULATION_CAPACITY = 10
 
-FOOD_PER_PERSON = 2
+FOOD_PER_PERSON = 1
 
 MORALE_NOT_ENOUGH_FOOD = 4
 CAPITAL_CITY_MORALE_BONUS = 2
@@ -493,6 +493,8 @@ class City:
             losses = -self.resources['food'] // FOOD_PER_PERSON
             army_losses = random.randint(1, int(sqrt(losses) + 1))
 
+            # print('{} of the army starved.'.format(army_losses))
+
             #Remove some random amount of troops.
             #Not all desert, because they're hopefully more disciplined than that.
             self.army.remove_number('', army_losses)
@@ -500,7 +502,7 @@ class City:
             losses -= army_losses
 
             if losses > 0:
-                population_losses = random.randint(0, losses) #Not everybody immediately starves when there isn't enough food.
+                population_losses = random.randint(1, losses) #Not everybody immediately starves when there isn't enough food.
 
                 self.population = utility.clamp(self.population - population_losses, self.population, 1) #can't be fewer than one person
 
@@ -535,8 +537,10 @@ class City:
             self.army = nation.army_structure.zero()
 
         #This is the number of recruits, it remains to be seen if we can pay for all of them
-        conscripted = int(random.random() * (self.population)**(1.0/3.0) * self.nation.get_conscription_bonus())
+        conscripted = int((random.random() * 0.2 + 0.2) * self.population**(2.0/3.0) * self.nation.get_conscription_bonus())
         max_soldiers = int(self.nation.money / self.nation.get_soldier_cost(self.army) * self.nation.get_army_spending())
+
+        # print(self.population, conscripted, max_soldiers)
 
         if conscripted > max_soldiers: #If we are recruiting more than we can afford, reduce the number
             conscripted = max_soldiers
@@ -573,7 +577,7 @@ class City:
 
         if self.population < self.calculate_population_capacity():
             t = float(self.resources['food']) / self.population * self.population_capacity / self.population
-            rate = 1.0 / (1.0 + self.population**0.5 * e**(-t)) / 25.0
+            rate = 1.0 / (1.0 + self.population**0.5 * e**(-t)) / 10.0
             new_pop = self.population * (1.0 + rate/12.0)**12.0 + 1
             # print(self.resources['food'], self.population_capacity, self.population, t, rate, new_pop)
 

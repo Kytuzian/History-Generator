@@ -41,12 +41,14 @@ GOVERNMENT_TYPES = ["Principality", "Commonwealth", "Kingdom", "Hegemony", "Khan
 INIT_CITY_COUNT = 1
 
 CITY_FOUND_COST = 100000
-SOLDIER_RECRUIT_COST = 2000
-SOLDIER_UPKEEP = 200
+SOLDIER_RECRUIT_COST = 500
+SOLDIER_UPKEEP = 50
+
+PEOPLE_LIMIT = 20
 
 REARM_CHANCE = 5
 
-TAX_MULTIPLIER = 1
+TAX_MULTIPLIER = 2
 
 AVERAGE_MAX_LIFE_EXPECTANCY = 60
 
@@ -97,7 +99,10 @@ class Person:
         self.offices.append(office)
 
     def remove_office(self, office):
-        self.offices.remove(office)
+        if office in self.offices:
+            self.offices.remove(office)
+        else:
+            raise Exception('Office not in list of held offices for {}'.format(self.name))
 
     def handle_death(self):
         for office in self.offices:
@@ -118,7 +123,8 @@ class Office:
         self.language = self.nation.language
         self.name = self.language.make_word(self.language.name_length, True)
 
-        self.holder = Person(self.language.generate_name())
+        self.holder = None
+        self.fill_office()
 
         self.modifiers = {}
 
@@ -135,6 +141,9 @@ class Office:
 
     def fill_office(self):
         self.current_term = 0
+
+        if self.holder != None:
+            self.holder.remove_office(self)
 
         self.holder = self.nation.get_qualified_person(self)
         self.holder.add_office(self)
@@ -235,9 +244,9 @@ class Nation:
 
         self.id = parent.get_next_id()
 
-        self.offices = [Office(self) for i in xrange(2)]
-
         self.people = []
+
+        self.offices = [Office(self) for i in xrange(2)]
 
         self.at_war = []
         self.allied = []
@@ -265,9 +274,8 @@ class Nation:
 
         self.morale = MORALE_INCREMENT * 4
 
-        self.army_spending = random.random()
-
-        self.elite = random.randint(2, 10)
+        self.army_spending = random.random() * 0.6 + 0.2
+        self.elite = random.randint(3, 6)
 
         self.religion = Religion(self.language, self.language.make_name_word())
 
@@ -401,13 +409,17 @@ class Nation:
         return sum([city.army.size() for city in self.cities])
 
     def get_qualified_person(self, office):
-        self.add_person() #So the first office isn't always filled by the same person.
+        #Don't want to have TOO many people
+        if len(self.people) < PEOPLE_LIMIT:
+            self.add_person() #So the first office isn't always filled by the same person.
         qualified_people = []
 
         for person in self.people:
             #Right now the only necessary qualification is that the same person can't hold the same office twice at the same time
             if not office in person.offices:
                 qualified_people.append(person)
+
+        # print(len(self.people), len(qualified_people))
 
         if len(qualified_people) == 0:
             return self.add_person()
@@ -438,7 +450,8 @@ class Nation:
         return self.tax_rate * utility.product([office.get_modifier('tax_rate') for office in self.offices])
 
     def get_army_spending(self):
-        return min(1, self.army_spending * utility.product([office.get_modifier('army_spending') for office in self.offices]))
+        # return min(1, self.army_spending * utility.product([office.get_modifier('army_spending') for office in self.offices]))
+        return self.army_spending
 
     def get_population(self):
         return sum([i.population for i in self.cities])
@@ -471,11 +484,11 @@ class Nation:
 
             #More money if we traded with somebody else
             if nation != self:
-                nation.money += 2000
+                nation.money += 20000
 
-                self.money += 2000
+                self.money += 20000
             else:
-                self.money += 1000
+                self.money += 10000
 
         return f
 
@@ -705,7 +718,7 @@ class Nation:
             self.mod_morale(int(office.get_modifier('morale') * OFFICE_MORALE_BONUS))
 
         #More cities means less happiness
-        self.mod_morale(-(len(self.cities) + 1))
+        self.mod_morale(-(len(self.cities) * 2 + 1))
 
     def __repr__(self):
         return '{} ({}): ${}; Pop: {}'.format(self.name.short_name(), self.color, int(self.money), sum([i.population for i in self.cities]))
