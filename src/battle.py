@@ -498,7 +498,7 @@ class Battle:
             army.number -= 1
 
             if limit <= 0:
-                return
+                break
 
         for unit in force:
             if unit.name_id == 0: #It was just created, set it up
@@ -514,6 +514,9 @@ class Battle:
                 unit.setup_ranks()
                 unit.setup_ammunition()
                 unit.name_id = self.canvas.create_text(unit.x, unit.y - 20, text=("{} ({}; {}): {}, {}".format(unit.soldier_type.name, ', '.join(map(lambda w: w.name, unit.soldier_type.weapons)), unit.soldier_type.armor.name, unit.soldier_type.strength, unit.soldier_type.health)))
+
+        if limit <= 0:
+            return
 
         if len(army.upgrades) > 0:
             for i in army.upgrades:
