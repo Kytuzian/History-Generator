@@ -21,7 +21,7 @@ CC_RANGE = 50
 SWITCH_TARGET_COUNT = 8
 
 #The maximum number of troops on either side of the battle
-BATTLE_SIZE = 400
+BATTLE_SIZE = 350
 
 class Soldier:
     def __init__(self, unit, name, health, strength, ranged, weapons, armor, discipline, canvas):
@@ -198,8 +198,8 @@ class Soldier:
                     speed = self.unit.get_effective_speed()
 
                     if d < speed: #If we're almost there, just jump exactly there
-                        self.x += dx / d
-                        self.y += dy / d
+                        self.x += dx
+                        self.y += dy
                     else:
                         self.x += dx / d * speed
                         self.y += dy / d * speed
@@ -229,7 +229,7 @@ class RankPosition:
         return self.soldier != None
 
     def calculate_position(self):
-        d1 = -self.rank * (TROOP_RADIUS + 1)
+        d1 = (len(self.unit.ranks[0]) / 2.0 - self.rank) * (TROOP_RADIUS + 1)
         d2 = -self.position * (TROOP_RADIUS + 1)
 
         t1 = math.atan2(self.unit.dy, self.unit.dx) + math.pi / 2.0
@@ -467,6 +467,7 @@ class Battle:
 
     def create_gui(self):
         self.battle_speed = Scale(self.parent, from_=1, to=200, orient=HORIZONTAL)
+        self.battle_speed.set(30)
         self.battle_speed.pack()
         self.battle_speed.place(x=10, y=30)
 
@@ -492,7 +493,9 @@ class Battle:
             force[-1].soldiers[-1].id = self.canvas.create_oval(x, y, x + TROOP_RADIUS, y + TROOP_RADIUS, fill=color)
 
             cx, cy = x + TROOP_RADIUS // 2, y + TROOP_RADIUS // 2
-            force[-1].soldiers[-1].weapon_id = self.canvas.create_line(cx, cy, cx + 1, cy + force[-1].soldiers[-1].get_melee_weapon().range)
+
+            if not force[-1].soldiers[-1].ranged:
+                force[-1].soldiers[-1].weapon_id = self.canvas.create_line(cx, cy, cx + 1, cy + force[-1].soldiers[-1].get_melee_weapon().range)
 
             limit -= 1
             army.number -= 1
@@ -511,9 +514,12 @@ class Battle:
                     unit.dx = 0
 
                 unit.calculate_position()
+                for soldier in unit.soldiers:
+                    soldier.move()
+
                 unit.setup_ranks()
                 unit.setup_ammunition()
-                unit.name_id = self.canvas.create_text(unit.x, unit.y - 20, text=("{} ({}; {}): {}, {}".format(unit.soldier_type.name, ', '.join(map(lambda w: w.name, unit.soldier_type.weapons)), unit.soldier_type.armor.name, unit.soldier_type.strength, unit.soldier_type.health)))
+                unit.name_id = self.canvas.create_text(unit.x, unit.y, text=("{} ({}; {}): {}, {}".format(unit.soldier_type.name, ', '.join(map(lambda w: w.name, unit.soldier_type.weapons)), unit.soldier_type.armor.name, unit.soldier_type.strength, unit.soldier_type.health)))
 
         if limit <= 0:
             return
@@ -627,7 +633,7 @@ class Battle:
 
                 continue
 
-            self.canvas.coords(current_unit.name_id, current_unit.x, current_unit.y - 20)
+            self.canvas.coords(current_unit.name_id, current_unit.x, current_unit.y)
 
             #Targeting stuff
             if current_unit.target != None: #if we have a target make sure it still exists
@@ -676,10 +682,18 @@ class Battle:
                 d = utility.distance((x, y), (tx, ty))
 
                 #Show the weapon
-                if d != 0:
+                if d != 0 and not soldier.ranged:
                     cx, cy = x + TROOP_RADIUS // 2, y + TROOP_RADIUS // 2
                     weapon_range = soldier.get_melee_weapon().range
-                    self.canvas.coords(soldier.weapon_id, cx, cy, cx + (tx - cx) / d * weapon_range, cy + (ty - cy) / d * weapon_range)
+
+                    if soldier.weapon_id == -1:
+                        soldier.weapon_id = self.canvas.create_line(cx, cy, cx + 1, cy + soldier.get_melee_weapon().range)
+                    else:
+                        self.canvas.coords(soldier.weapon_id, cx, cy, cx + (tx - cx) / d * weapon_range, cy + (ty - cy) / d * weapon_range)
+                elif soldier.ranged:
+                    if soldier.weapon_id != -1:
+                        self.canvas.delete(soldier.weapon_id)
+                        soldier.weapon_id = -1
 
                 if soldier.ranged:
                     if d < soldier.target.unit.get_effective_speed() * CC_RANGE:

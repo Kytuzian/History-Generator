@@ -295,7 +295,7 @@ class Main:
                         self.remove_nation(i)
 
                 #We can only have one nation per color
-                if random.randint(0, len(self.nations)**3 + 12) == 0 and len(self.nations) < len(NATION_COLORS):
+                if random.randint(0, len(self.nations)**3 + 5) == 0 and len(self.nations) < len(NATION_COLORS):
                     self.add_nation(Nation(self))
 
                 self.diplomacy()

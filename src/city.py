@@ -577,8 +577,8 @@ class City:
 
         if self.population < self.calculate_population_capacity():
             t = float(self.resources['food']) / self.population * self.population_capacity / self.population
-            rate = 1.0 / (1.0 + self.population**0.5 * e**(-t)) / 10.0
-            new_pop = self.population * (1.0 + rate/12.0)**12.0 + 1
+            rate = 1.0 / (1.0 + self.population**0.5 * e**(-t)) / 9.0
+            new_pop = self.population * (1.0 + rate/12.0)**12.0 + 2
             # print(self.resources['food'], self.population_capacity, self.population, t, rate, new_pop)
 
             self.population = int(new_pop)
