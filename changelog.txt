@@ -1,13 +1,17 @@
 2016-04-06
 Major changes:
 - Units now move and fight as a unit.
+- Cities now also have morale, in addition to nations, which determines their likeliness of seceding during a revolt.
 
 Minor changes:
 - Removed some more colors that were hard to see.
 - Changed default battle speed.
 - Slightly increased population growth rate.
+- Removed stones as a weapon.
 - Decreased battle size.
+- Made war rarer.
 - Ranged troops no longer display their weapons until they are within melee range.
+- Decreased morale increase and increased morale decrease.
 
 Bug fixes:
 - Fixed bug where units were given the wrong amount of ammunition sometimes.

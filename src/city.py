@@ -11,7 +11,7 @@ import ai
 import events
 import event_analysis
 
-from math import *
+import math
 
 from Tkinter import *
 
@@ -19,9 +19,12 @@ CELL_POPULATION_CAPACITY = 10
 
 FOOD_PER_PERSON = 1
 
-MORALE_NOT_ENOUGH_FOOD = 4
-CAPITAL_CITY_MORALE_BONUS = 2
+MORALE_NOT_ENOUGH_FOOD = 8
+MORALE_NOT_ENOUGH_HOUSING = 1
+MORALE_ENOUGH_FOOD = 4
+CAPITAL_CITY_MORALE_BONUS = 2 #Multiplier
 MORALE_INCREMENT = 30
+GARRISON_MORALE_BONUS = 3 #Multiplier
 
 #Building effects: population_capacity, tax_rate, food_output, money_output
 house_effects = {'population_capacity': 20, 'tax_score': 5, 'cost': 50, 'size': 5}
@@ -170,6 +173,8 @@ class City:
 
         self.age = 0
 
+        self.morale = 0
+
         self.cells = []
 
         self.position = (cell.x, cell.y)
@@ -220,6 +225,9 @@ class City:
         self.army_label = Label(self.gui_window, text='Army: {}'.format(self.army.size()))
         self.army_label.grid(row=4, sticky=W)
 
+        self.morale_label = Label(self.gui_window, text='Morale: {}'.format(self.morale))
+        self.morale_label.grid(row=5, sticky=W)
+
         self.buildings_display = Listbox(self.gui_window)
 
         self.building_counts = {}
@@ -234,13 +242,13 @@ class City:
         for building in self.building_counts:
             self.buildings_display.insert(END, '{}: {}'.format(building, self.building_counts[building]))
 
-        self.buildings_display.grid(row=4, column=1, columnspan=3, sticky=W+E)
+        self.buildings_display.grid(row=4, column=1, columnspan=3, rowspan=2, sticky=W+E)
 
         self.nation_label = Label(self.gui_window, text='Nation: ')
-        self.nation_label.grid(row=5, sticky=W)
+        self.nation_label.grid(row=6, sticky=W)
 
         self.nation_button = Button(self.gui_window, text=self.nation.name, command=self.nation.show_information_gui)
-        self.nation_button.grid(row=5, column=1, sticky=W)
+        self.nation_button.grid(row=6, column=1, sticky=W)
 
         all_events = event_analysis.find_city_mentions([self.name] + self.merges)
         all_events = all_events.search('name', r'Attack|CityFounded|CityMerged')
@@ -251,7 +259,7 @@ class City:
         for event in all_events:
             self.event_log_display.insert(END, event.text_version())
 
-        self.event_log_display.grid(row=6, column=0, columnspan=3, rowspan=10, sticky=W+E)
+        self.event_log_display.grid(row=7, column=0, columnspan=3, rowspan=10, sticky=W+E)
 
     def rearm_army(self, unit):
         self.army.rearm(unit.name, unit.weapons, unit.armor)
@@ -316,8 +324,10 @@ class City:
         #Gain twice as much morale for capturing the enemies capital
         if self.is_capital:
             self.nation.mod_morale(MORALE_INCREMENT * CAPITAL_CITY_MORALE_BONUS)
+            self.morale -= MORALE_INCREMENT * CAPITAL_CITY_MORALE_BONUS
         else:
             self.nation.mod_morale(MORALE_INCREMENT)
+            self.morale -= MORALE_INCREMENT
 
         #Switch the cells to the new color/anything else that needs to be done
         for cell in self.cells:
@@ -470,7 +480,7 @@ class City:
         self.resources[resource] = int(self.resources[resource] + amount * self.nation.get_resource_bonus('food'))
 
     def handle_food(self):
-        food_max_spoilage = int(sqrt(self.resources['food']) * sqrt(self.age) * sqrt(self.total_cell_count()))
+        food_max_spoilage = int(math.sqrt(self.resources['food']) * math.sqrt(self.age) * math.sqrt(self.total_cell_count()))
         if food_max_spoilage > 0:
             self.food = max(0, self.resources['food'] - random.randint(1, food_max_spoilage))
 
@@ -491,7 +501,7 @@ class City:
             #These people die. Or wander off. Who cares. They've gone.
             #Negative because the food value is less than zero
             losses = -self.resources['food'] // FOOD_PER_PERSON
-            army_losses = random.randint(1, int(sqrt(losses) + 1))
+            army_losses = random.randint(1, int(math.sqrt(losses) + 1))
 
             # print('{} of the army starved.'.format(army_losses))
 
@@ -510,9 +520,9 @@ class City:
 
             self.handle_abandonment()
 
-            self.nation.mod_morale(-MORALE_NOT_ENOUGH_FOOD)
+            self.morale -= MORALE_NOT_ENOUGH_FOOD
         else:
-            self.nation.mod_morale(MORALE_NOT_ENOUGH_FOOD)
+            self.morale += MORALE_ENOUGH_FOOD
 
     def handle_money(self):
         total_tax_rate = utility.product([cell.get_tax_rate() for cell in self.cells])
@@ -571,6 +581,20 @@ class City:
     def building_count(self):
         return sum([cell.building_count() for cell in self.cells])
 
+    def handle_morale(self):
+        if self.morale <= 0:
+            if self.army.size() > 0:
+                pop_log = math.log(self.population, 3)
+
+                if pop_log != 0:
+                    garrison_bonus = math.log(self.army.size(), 2) / pop_log
+                    garrison_bonus *= GARRISON_MORALE_BONUS
+
+                    self.morale += garrison_bonus
+
+        if self.population > self.population_capacity:
+            self.morale -= MORALE_NOT_ENOUGH_HOUSING
+
     def history_step(self):
         self.handle_display_name()
         self.handle_disconnected_cells()
@@ -583,7 +607,7 @@ class City:
 
             self.population = int(new_pop)
 
-        if random.randint(0, len(self.cells)) < sqrt(self.age): #Add new surrounding land
+        if random.randint(0, len(self.cells)) < math.sqrt(self.age): #Add new surrounding land
             candidate_expansion_squares = self.get_expansion_candidates()
 
             if len(candidate_expansion_squares):
@@ -598,6 +622,7 @@ class City:
         self.handle_money()
         self.handle_resources()
         self.handle_army()
+        self.handle_morale()
 
         self.calculate_population_capacity()
 

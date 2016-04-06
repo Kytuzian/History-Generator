@@ -113,8 +113,8 @@ weapon_list = [polehammer, sword, mace, falx, shortsword, bastard_sword, claymor
 sidearm_list = [dagger, club, mace, kopis, hammer, rondel, dirk, staff, shortsword, axe, spear]
 basic_weapon_list = [club, mace, hammer, staff, shortsword, axe, spear]
 
-stones = Weapon('Stones', 5, 90, 0, 1, 1, 1, 1, reload_time=20, ammunition=6, projectile_speed=3)
-sling = Weapon('Sling', 15, 250, 0, 3, 1, 1.8, 1, reload_time=50, ammunition=25, projectile_speed=7)
+# stones = Weapon('Stones', 5, 90, 0, 1, 1, 1, 1, reload_time=20, ammunition=6, projectile_speed=3)
+sling = Weapon('Sling', 15, 250, 0, 3, 1, 1.8, 1, reload_time=60, ammunition=25, projectile_speed=7)
 javelin = Weapon('Javelin', 100, 125, 0.5, 6, 2, 1.5, 1, reload_time=20, ammunition=3, projectile_speed=5)
 atlatl = Weapon('Atlatl', 150, 175, 0.5, 8, 1, 2.0, 1, reload_time=70, ammunition=8, projectile_speed=6)
 shortbow = Weapon('Shortbow', 75, 300, 0.5, 4, 1, 2, 1, reload_time=70, ammunition=15, projectile_speed=10)
@@ -123,10 +123,10 @@ longbow = Weapon('Longbow', 200, 400, 0.5, 6, 1, 2.5, 1, reload_time=90, ammunit
 crossbow = Weapon('Crossbow', 250, 450, 1.5, 10, 1, 1, 1, reload_time=200, ammunition=15, projectile_speed=20)
 sling_staff = Weapon('Sling Staff', 60, 300, 0, 5, 2, 2, 1, reload_time=60, ammunition=20, projectile_speed=12)
 
-all_ranged_weapons = [stones, atlatl, sling, shortbow, longbow, javelin, bow, crossbow, sling_staff]
+all_ranged_weapons = [atlatl, sling, shortbow, longbow, javelin, bow, crossbow, sling_staff]
 ranged_weapon_list = [sling, atlatl, javelin, shortbow, longbow, bow, crossbow, sling_staff]
 
-basic_ranged_weapon_list = [stones, sling, javelin, shortbow, bow]
+basic_ranged_weapon_list = [sling, javelin, shortbow, bow]
 
 cloth_armor = Armor('Cloth Armor', 100, 0, 2, 0.5)
 padded_armor = Armor('Padded Armor', 200, 0, 3, 0.5)

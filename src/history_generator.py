@@ -372,56 +372,70 @@ class Main:
                 self.events.append(events.EventDiplomacyTrade('DiplomacyTrade', {'nation_a': a.id, 'nation_b': b.id}, self.get_current_date()))
 
     def handle_revolt(self, nation):
-        #A revolt, higher chance with more cities. However, there have to be at least two cities. I mean, come on.
-        if random.randint(0, max([20, int(nation.morale * log(len(self.nations)))])) == 0 and len(nation.cities) > 1:
-            #Not EVERY city can revolt, because that's like, not actually different.
-            cities_revolted_count = random.randint(1, len(nation.cities) - 1)
-            revolted_cities = random.sample(filter(lambda i: not i.is_capital, nation.cities), cities_revolted_count)
+        #Not for realism, but this just can't happen, because then they'd be sharing colors.s
+        if len(self.nations) < len(NATION_COLORS):
+            #Need more than one city to revolt.
+            if len(nation.cities) > 1:
+                if random.randint(0, max(1, 50 + nation.morale)) == 0:
+                    revolted_cities = []
+                    for city in nation.cities:
+                        #Not all cities can revolt
+                        if random.randint(0, max(1, int(city.morale))) == 0 and len(nation.cities) > 1:
+                            revolted_cities.append(city)
+                            nation.remove_city(revolted_city)
 
-            for revolted_city in revolted_cities:
-                nation.remove_city(revolted_city)
+                    #At least one city has to revolt, we already decided a revolt was happening, dammit!
+                    if len(revolted_cities) == 0:
+                        min_morale = nation.cities[0].morale
+                        lowest_morale = nation.cities[0]
+                        for city in nation.cities:
+                            if city.morale < min_morale:
+                                min_morale = city.morale
+                                lowest_morale = city
+                        revolted_cities.append(lowest_morale)
+                        naton.remove_city(lowest_morale)
 
-            self.nations.append(Nation(self, revolted_cities))
+                    self.nations.append(Nation(self, revolted_cities))
 
-            #For readability
-            revolted_nation = self.nations[-1]
+                    #For readability
+                    revolted_nation = self.nations[-1]
 
-            revolted_nation.army_structure = nation.army_structure.zero() #The actual army revolts are just the armies in the revolting cities
-            revolted_nation.language = Language(base_language=nation.language)
+                    revolted_nation.army_structure = nation.army_structure.zero() #The actual army revolts are just the armies in the revolting cities
+                    revolted_nation.language = Language(base_language=nation.language)
 
-            #Copy weapon choices over
-            #We don't want a shallow copy because they shouldn't share research
-            revolted_nation.sidearm_list = list(nation.sidearm_list)
-            revolted_nation.basic_weapon_list = list(nation.basic_weapon_list)
-            revolted_nation.weapon_list = list(nation.weapon_list)
-            revolted_nation.basic_ranged_weapon_list = list(nation.basic_ranged_weapon_list)
-            revolted_nation.ranged_weapon_list = list(nation.ranged_weapon_list)
-            revolted_nation.armor_list = list(nation.armor_list)
-            revolted_nation.basic_armor_list = list(nation.basic_armor_list)
+                    #Copy weapon choices over
+                    #We don't want a shallow copy because they shouldn't share research
+                    revolted_nation.sidearm_list = list(nation.sidearm_list)
+                    revolted_nation.basic_weapon_list = list(nation.basic_weapon_list)
+                    revolted_nation.weapon_list = list(nation.weapon_list)
+                    revolted_nation.basic_ranged_weapon_list = list(nation.basic_ranged_weapon_list)
+                    revolted_nation.ranged_weapon_list = list(nation.ranged_weapon_list)
+                    revolted_nation.armor_list = list(nation.armor_list)
+                    revolted_nation.basic_armor_list = list(nation.basic_armor_list)
 
-            army_revolted = sum([city.army.size() for city in revolted_nation.cities])
+                    army_revolted = sum([city.army.size() for city in revolted_nation.cities])
 
-            #The revolting nation increases their morale because they're now free from whatever issues they saw with the old regime
-            revolted_nation.mod_morale(MORALE_INCREMENT * cities_revolted_count * int(log(army_revolted + 2)))
+                    #The revolting nation increases their morale because they're now free from whatever issues they saw with the old regime
+                    revolted_nation.mod_morale(MORALE_INCREMENT * cities_revolted_count * int(log(army_revolted + 2)))
 
-            #The old nation increases their morale because the haters are now gone.
-            nation.mod_morale(cities_revolted_count * MORALE_INCREMENT * int(log(sum([city.army.size() for city in nation.cities]) + 2)))
+                    #The old nation increases their morale because the haters are now gone.
+                    nation.mod_morale(cities_revolted_count * MORALE_INCREMENT * int(log(sum([city.army.size() for city in nation.cities]) + 2)))
 
-            print('{}:'.format(self.get_current_date()))
-            print("There was a revolt in the nation of {}, resulting in the creation of the new nation state of {}.".format(nation.name, revolted_nation.name))
-            print("The following cities joined the revolt, along with {} soldiers: {}".format(army_revolted, self.nations[-1].cities))
+                    print('{}:'.format(self.get_current_date()))
+                    print("There was a revolt in the nation of {}, resulting in the creation of the new nation state of {}.".format(nation.name, revolted_nation.name))
+                    print("The following cities joined the revolt, along with {} soldiers: {}".format(army_revolted, self.nations[-1].cities))
 
-            self.events.append(events.EventRevolt('Revolt', {'nation_a': nation.id, 'nation_b': revolted_nation.id, 'cities': [city.name for city in revolted_nation.cities]}, self.get_current_date()))
+                    self.events.append(events.EventRevolt('Revolt', {'nation_a': nation.id, 'nation_b': revolted_nation.id, 'cities': [city.name for city in revolted_nation.cities]}, self.get_current_date()))
 
-            #We don't have peaceful revolts, naturally a nation would attempt to put down the revolt.
-            self.start_war(nation, revolted_nation)
+                    #We don't have peaceful revolts, naturally a nation would attempt to put down the revolt.
+                    self.start_war(nation, revolted_nation)
 
     def diplomacy(self):
         for i in self.nations:
             self.handle_revolt(i)
 
             #Let's go to war, but we can only do that if there is a nation other than us
-            if random.randint(0, max(1, len(i.at_war)**5 + i.get_tolerance())) == 0 and len(self.nations) > 1:
+            if random.randint(0, max(12, (len(i.at_war) + 1)**5 + i.get_tolerance())) == 0 and len(self.nations) > 1:
                 enemy = utility.weighted_random_choice(self.nations, weight=lambda _, v: utility.distance(i.get_average_city_position(), v.get_average_city_position()), reverse=True)
 
                 #We can't go to war twice, fight with a trading partner, or be war with ourselves

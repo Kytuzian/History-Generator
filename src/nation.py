@@ -270,7 +270,7 @@ class Nation:
 
         self.tax_rate = random.random() * TAX_MULTIPLIER
 
-        self.morale = MORALE_INCREMENT * 4
+        self.morale = 0
 
         self.army_spending = random.random() * 0.6 + 0.2
         self.elite = random.randint(3, 6)
@@ -521,6 +521,20 @@ class Nation:
             if city.destroy:
                 city.destroy_self() #This method removes the city from the city list, so we don't need to do it again
 
+        #calculate net city morale, then use that to modify our own morale.
+        total = 0
+        for city in self.cities:
+            total += city.morale
+        if total != 0:
+            if total < 0:
+                # prev_morale = self.morale
+                self.mod_morale(-math.log(-total, 2))
+                # print(prev_morale, -math.log(-total, 2), self.morale)
+            else:
+                # prev_morale = self.morale
+                self.mod_morale(math.log(total, 2))
+                # print(prev_morale, math.log(total, 2), self.morale)
+
     def move_armies(self, armies):
         for moving_army in self.moving_armies:
             moving_army.step(armies)
@@ -716,7 +730,7 @@ class Nation:
             self.mod_morale(int(office.get_modifier('morale') * OFFICE_MORALE_BONUS))
 
         #More cities means less happiness
-        self.mod_morale(-(len(self.cities) * 2 + 1))
+        self.mod_morale(-(len(self.cities)**2 + 1))
 
     def __repr__(self):
         return '{} ({}): ${}; Pop: {}'.format(self.name.short_name(), self.color, int(self.money), sum([i.population for i in self.cities]))
