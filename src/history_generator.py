@@ -393,7 +393,7 @@ class Main:
                                 min_morale = city.morale
                                 lowest_morale = city
                         revolted_cities.append(lowest_morale)
-                        naton.remove_city(lowest_morale)
+                        nation.remove_city(lowest_morale)
 
                     self.nations.append(Nation(self, revolted_cities))
 
