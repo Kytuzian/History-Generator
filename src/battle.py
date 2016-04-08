@@ -229,8 +229,10 @@ class RankPosition:
         return self.soldier != None
 
     def calculate_position(self):
-        d1 = (len(self.unit.ranks[0]) / 2.0 - self.rank) * (TROOP_RADIUS + 1)
+        d1 = (len(self.unit.ranks) / 2.0 - self.rank) * (TROOP_RADIUS + 1)
         d2 = -self.position * (TROOP_RADIUS + 1)
+
+        # print(self.rank, len(self.unit.ranks[0]), d1, d2)
 
         t1 = math.atan2(self.unit.dy, self.unit.dx) + math.pi / 2.0
         t2 = t1 - math.pi / 2.0
@@ -633,7 +635,7 @@ class Battle:
 
                 continue
 
-            self.canvas.coords(current_unit.name_id, current_unit.x, current_unit.y)
+            self.canvas.coords(current_unit.name_id, current_unit.x, current_unit.y - 20)
 
             #Targeting stuff
             if current_unit.target != None: #if we have a target make sure it still exists

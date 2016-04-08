@@ -382,7 +382,7 @@ class Main:
                         #Not all cities can revolt
                         if random.randint(0, max(1, int(city.morale))) == 0 and len(nation.cities) > 1:
                             revolted_cities.append(city)
-                            nation.remove_city(revolted_city)
+                            nation.remove_city(city)
 
                     #At least one city has to revolt, we already decided a revolt was happening, dammit!
                     if len(revolted_cities) == 0:
@@ -416,10 +416,10 @@ class Main:
                     army_revolted = sum([city.army.size() for city in revolted_nation.cities])
 
                     #The revolting nation increases their morale because they're now free from whatever issues they saw with the old regime
-                    revolted_nation.mod_morale(MORALE_INCREMENT * cities_revolted_count * int(log(army_revolted + 2)))
+                    revolted_nation.mod_morale(MORALE_INCREMENT * len(revolted_cities) * int(log(army_revolted + 2)))
 
                     #The old nation increases their morale because the haters are now gone.
-                    nation.mod_morale(cities_revolted_count * MORALE_INCREMENT * int(log(sum([city.army.size() for city in nation.cities]) + 2)))
+                    nation.mod_morale(len(revolted_cities) * MORALE_INCREMENT * int(log(sum([city.army.size() for city in nation.cities]) + 2)))
 
                     print('{}:'.format(self.get_current_date()))
                     print("There was a revolt in the nation of {}, resulting in the creation of the new nation state of {}.".format(nation.name, revolted_nation.name))

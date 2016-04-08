@@ -1,3 +1,12 @@
+2016-04-07
+Major changes:
+
+Minor changes:
+
+Bug fixes:
+- Fixed some bugs with revolts (thanks Antsan).
+- Properly placed center of unit (in the center on the front rank).
+
 2016-04-06
 Major changes:
 - Units now move and fight as a unit.
