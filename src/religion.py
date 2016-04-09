@@ -28,7 +28,7 @@ TOLERANCE_MULTIPLIER = 1
 MAX_BASE_TOLERANCE = 100
 
 INTOLERANT_DOMAINS = ['war', 'fire', 'death', 'lightning', 'thunder',\
-                      'wind', 'chaos']
+                      'wind', 'chaos', 'the underworld']
 TOLERANT_DOMAINS = ['peace', 'wisdom', 'children', 'knowledge',\
                     'writing', 'music', 'storytelling', 'friendship'\
                     'the hearth', 'unity']
@@ -39,7 +39,7 @@ DOMAINS = ['fire', 'wind', 'water', 'air', 'lightning', 'death',\
            'knowledge', 'writing', 'music', 'storytelling',\
            'luck', 'thunder', 'friendship', 'wine', 'weaving',\
            'the sun', 'the hearth', 'the moon', 'the sky', 'messengers'\
-           'chaos', 'unity']
+           'chaos', 'unity', 'the underworld']
 
 class God:
     def __init__(self, name, religion, domains):

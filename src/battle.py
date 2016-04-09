@@ -195,7 +195,7 @@ class Soldier:
                     dx, dy = tx - self.x, ty - self.y
                     d = utility.distance((tx, ty), (self.x, self.y))
 
-                    speed = self.unit.get_effective_speed()
+                    speed = self.unit.get_effective_speed() + 0.5
 
                     if d < speed: #If we're almost there, just jump exactly there
                         self.x += dx
@@ -229,7 +229,7 @@ class RankPosition:
         return self.soldier != None
 
     def calculate_position(self):
-        d1 = (len(self.unit.ranks) / 2.0 - self.rank) * (TROOP_RADIUS + 1)
+        d1 = ((len(self.unit.ranks) - 1) / 2.0 - self.rank) * (TROOP_RADIUS + 1)
         d2 = -self.position * (TROOP_RADIUS + 1)
 
         # print(self.rank, len(self.unit.ranks[0]), d1, d2)
@@ -659,14 +659,13 @@ class Battle:
             for soldier in current_unit.soldiers:
                 #Targeting stuff
                 if current_unit.target == None:
-                    continue
+                    break
+                if len(current_unit.target.soldiers) == 0:
+                    break
 
                 if soldier.target != None: #If we have a target, make sure it still exists.
                     if not soldier.target in current_unit.target.soldiers:
                         soldier.target = None
-
-                if len(current_unit.target.soldiers) == 0:
-                    break
 
                 if soldier.ranged:
                     soldier.target = random.choice(current_unit.target.soldiers)
@@ -702,35 +701,36 @@ class Battle:
                         soldier.ranged = False
 
                     soldier.move()
-                    if soldier.in_range() and soldier.shoot > soldier.shoot_counter:
-                        if current_unit.ammunition > 0:
-                            m, tangle = current_unit.target.get_movement_vector(vector_format='polar')
+                    if soldier.in_range():
+                        if soldier.shoot > soldier.shoot_counter:
+                            if current_unit.ammunition > 0:
+                                m, tangle = current_unit.target.get_movement_vector(vector_format='polar')
 
-                            if m > 0:
-                                t, angle = utility.calculate_interception(m, soldier.get_projectile_speed(), (tx, ty), (x, y), tangle)
+                                if m > 0:
+                                    t, angle = utility.calculate_interception(m, soldier.get_projectile_speed(), (tx, ty), (x, y), tangle)
 
-                                tx += math.cos(tangle) * t * m
-                                ty += math.sin(tangle) * t * m
+                                    tx += math.cos(tangle) * t * m
+                                    ty += math.sin(tangle) * t * m
 
-                                d = utility.distance((x, y), (tx, ty))
+                                    d = utility.distance((x, y), (tx, ty))
 
-                            damage = soldier.get_ranged_attack(nation.tech.get_best_in_category('material'))
-                            proj.append(Projectile(((tx - x) / d, (ty - y) / d), damage, soldier.target, soldier.get_projectile_speed()))
+                                damage = soldier.get_ranged_attack(nation.tech.get_best_in_category('material'))
+                                proj.append(Projectile(((tx - x) / d, (ty - y) / d), damage, soldier.target, soldier.get_projectile_speed()))
 
-                            proj[-1].id = self.canvas.create_oval(x, y, x + PROJECTILE_RADIUS, y + PROJECTILE_RADIUS, width=0, fill=color)
-                            proj[-1].skip_step = d // soldier.get_projectile_speed() // 2
-                            proj[-1].kill_range = d // soldier.get_projectile_speed() * 2
+                                proj[-1].id = self.canvas.create_oval(x, y, x + PROJECTILE_RADIUS, y + PROJECTILE_RADIUS, width=0, fill=color)
+                                proj[-1].skip_step = d // soldier.get_projectile_speed() // 2
+                                proj[-1].kill_range = d // soldier.get_projectile_speed() * 2
 
-                            soldier.shoot = 0
+                                soldier.shoot = 0
 
-                            current_unit.ammunition -= 1
+                                current_unit.ammunition -= 1
+                            else:
+                                for s in current_unit.soldiers:
+                                    s.ranged = False
+
+                                current_unit.soldier_type.ranged = False
                         else:
-                            for s in current_unit.soldiers:
-                                s.ranged = False
-
-                            current_unit.soldier_type.ranged = False
-                    else:
-                        soldier.shoot += math.sqrt(soldier.discipline) / 2 + random.randint(0, 1) * math.log(soldier.discipline)
+                            soldier.shoot += math.sqrt(soldier.discipline) / 2 + random.randint(0, 1) * math.log(soldier.discipline)
                 else:
                     #If the target moves out of range, then switch back to ranged.
                     if d > soldier.target.unit.get_effective_speed() * CC_RANGE:
@@ -756,7 +756,6 @@ class Battle:
                         elif soldier.health <= 0:
                             current_unit.handle_death(soldier)
                     else: #Not in range, so we need to get closer.
-                        # self.canvas.move(soldier.id, (tx - x) / d * current_unit.get_effective_speed(), (ty - y) / d * current_unit.get_effective_speed())
                         soldier.move()
 
         return False

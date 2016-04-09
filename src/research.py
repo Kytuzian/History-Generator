@@ -113,7 +113,6 @@ weapon_list = [polehammer, sword, mace, falx, shortsword, bastard_sword, claymor
 sidearm_list = [dagger, club, mace, kopis, hammer, rondel, dirk, staff, shortsword, axe, spear]
 basic_weapon_list = [club, mace, hammer, staff, shortsword, axe, spear]
 
-# stones = Weapon('Stones', 5, 90, 0, 1, 1, 1, 1, reload_time=20, ammunition=6, projectile_speed=3)
 sling = Weapon('Sling', 15, 250, 0, 3, 1, 1.8, 1, reload_time=60, ammunition=25, projectile_speed=7)
 javelin = Weapon('Javelin', 100, 125, 0.5, 6, 2, 1.5, 1, reload_time=20, ammunition=3, projectile_speed=5)
 atlatl = Weapon('Atlatl', 150, 175, 0.5, 8, 1, 2.0, 1, reload_time=70, ammunition=8, projectile_speed=6)
@@ -145,7 +144,7 @@ basic_armor_list = [cloth_armor, leather_armor, wood_armor, padded_armor]
 def base_tech_tree():
     return Tech('Agriculture', 'agriculture', 0, 1.0,
                 [
-                    Tech('Stone Working', 'material', 100, 1.1,
+                    Tech('Stone Working', 'material', 200, 1.1,
                     [
                         Tech('Copper', 'material', 400, 1.5,
                         [
@@ -158,9 +157,45 @@ def base_tech_tree():
                             ])
                         ])
                     ]),
-                    Tech('Improved Housing', 'housing', 200, 1.5, []),
-                    Tech('Improved Mining', 'mining', 400, 2.0, []),
-                    Tech('Improved Agriculture', 'agriculture', 150, 1.1, [])
+                    Tech('Housing I', 'housing', 200, 1.25,
+                    [
+                        Tech('Housing II', 'housing', 250, 1.5,
+                        [
+                            Tech('Housing III', 'housing', 300, 1.75,
+                            [
+                                Tech('Housing IV', 'housing', 350, 2.0,
+                                [
+                                    Tech('Housing V', 'housing', 400, 2.5, [])
+                                ])
+                            ])
+                        ])
+                    ]),
+                    Tech('Mining I', 'mining', 200, 1.25,
+                    [
+                        Tech('Mining II', 'mining', 250, 1.5,
+                        [
+                            Tech('Mining III', 'mining', 300, 1.75,
+                            [
+                                Tech('Mining IV', 'mining', 350, 2.0,
+                                [
+                                    Tech('Mining V', 'mining', 400, 2.5, [])
+                                ])
+                            ])
+                        ])
+                    ]),
+                    Tech('Agriculture I', 'agriculture', 200, 1.1,
+                    [
+                        Tech('Agriculture II', 'agriculture', 300, 1.2,
+                        [
+                            Tech('Agriculture III', 'agriculture', 400, 1.3,
+                            [
+                                Tech('Agriculture IV', 'agriculture', 600, 1.4,
+                                [
+                                    Tech('Agriculture V', 'agriculture', 800, 1.5, [])
+                                ])
+                            ])
+                        ])
+                    ]),
                 ])
 
 def tech_categories():

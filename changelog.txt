@@ -1,10 +1,17 @@
-2016-04-07
+2016-04-08
 Major changes:
+- Added significantly more researches.
 
 Minor changes:
+- Renamed some researches.
+- Decreased base population capacities.
+- Increased money productions.
+- Allowed individual soldiers to move slightly faster than their unit (so they can form up better).
 
 Bug fixes:
 - Fixed some bugs with revolts (thanks Antsan).
+- Fixed bug with the GUI showing army details.
+- Fixed bug where units would reload despite not being in range.
 - Properly placed center of unit (in the center on the front rank).
 
 2016-04-06

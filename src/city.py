@@ -27,15 +27,15 @@ MORALE_INCREMENT = 30
 GARRISON_MORALE_BONUS = 3 #Multiplier
 
 #Building effects: population_capacity, tax_rate, food_output, money_output
-house_effects = {'population_capacity': 20, 'tax_score': 5, 'cost': 50, 'size': 5}
-farm_effects = {'population_capacity': 10, 'food_output': 60, 'cost': 200, 'size': 20}
-fishery_effects = {'population_capacity': 5, 'food_output': 125, 'cost': 200, 'size': 40}
-ranch_effects = {'population_capacity': 5, 'food_output': 125, 'cost': 300, 'size': 50}
-leatherworker_effects = {'population_capacity': 5, 'money_output': 100, 'leather': 5, 'cost': 300, 'size': 5}
-weaver_effects = {'population_capacity': 5, 'money_output': 100, 'cloth': 5, 'cost': 300, 'size': 5}
-woodcutter_effects = {'population_capacity': 5, 'money_output': 100, 'wood': 5, 'cost': 300, 'size': 50}
-mine_effects = {'population_capacity': 20, 'money_output': 500, 'metal': 5, 'cost': 600, 'size': 90}
-lab_effects = {'population_capacity': 5, 'research_rate': 5, 'cost': 1000, 'size': 95}
+house_effects = {'population_capacity': 10, 'tax_score': 10, 'cost': 50, 'size': 5}
+farm_effects = {'population_capacity': 5, 'food_output': 60, 'cost': 200, 'size': 20}
+fishery_effects = {'population_capacity': 2, 'food_output': 125, 'cost': 200, 'size': 40}
+ranch_effects = {'population_capacity': 2, 'food_output': 125, 'cost': 300, 'size': 50}
+leatherworker_effects = {'population_capacity': 2, 'money_output': 200, 'leather': 5, 'cost': 300, 'size': 5}
+weaver_effects = {'population_capacity': 2, 'money_output': 200, 'cloth': 5, 'cost': 300, 'size': 5}
+woodcutter_effects = {'population_capacity': 2, 'money_output': 150, 'wood': 5, 'cost': 300, 'size': 50}
+mine_effects = {'population_capacity': 8, 'money_output': 1000, 'metal': 3, 'cost': 1000, 'size': 90}
+lab_effects = {'population_capacity': 2, 'research_rate': 5, 'cost': 1000, 'size': 95}
 market_effects = {'tax_score': 100, 'money_output': 1000, 'cost': 1500, 'size': 60}
 
 def base_resources():

@@ -527,13 +527,9 @@ class Nation:
             total += city.morale
         if total != 0:
             if total < 0:
-                # prev_morale = self.morale
                 self.mod_morale(-math.log(-total, 2))
-                # print(prev_morale, -math.log(-total, 2), self.morale)
             else:
-                # prev_morale = self.morale
                 self.mod_morale(math.log(total, 2))
-                # print(prev_morale, math.log(total, 2), self.morale)
 
     def move_armies(self, armies):
         for moving_army in self.moving_armies:

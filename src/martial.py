@@ -8,6 +8,7 @@ import utility
 
 from nation import *
 from language import *
+from battle import TROOP_RADIUS
 
 from research import all_ranged_weapons, unarmed
 
