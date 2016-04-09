@@ -489,7 +489,7 @@ class Main:
                         city.population -= conscripted
                         city.army.add_to(city.army.name, conscripted)
 
-                        nation.moving_armies.append(Group(nation.name, city.army, (fx, fy), (dx, dy), nation.color, lambda s, c: False, self.do_attack(nation, city, enemy, attacking_city), self.canvas))
+                        nation.moving_armies.append(Group(nation.name, city.army, (fx, fy), (dx, dy), nation.color, lambda s: False, self.do_attack(nation, city, enemy, attacking_city), self.canvas))
 
                         self.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': nation.id, 'nation_b': enemy.id, 'city_a': city.name, 'city_b': attacking_city.name, 'reason': 'attack', 'army_size': city.army.size()}, self.get_current_date()))
 
@@ -527,7 +527,7 @@ class Main:
                 self.attack(sender, reinforcing.members, reinforce_city.nation, None, reinforce_city)
             else: #if a third party is involved, let's just return back home
                 return_destination = random.choice(sender.cities)
-                sender.moving_armies.append(Group(sender.name, reinforcing.members, reinforce_city.position, return_destination.position, sender.color, lambda s, c: False, self.reinforce(sender, return_destination), self.canvas))
+                sender.moving_armies.append(Group(sender.name, reinforcing.members, reinforce_city.position, return_destination.position, sender.color, lambda s: False, self.reinforce(sender, return_destination), self.canvas))
 
                 self.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': sender.id, 'nation_b': sender.id, 'city_a': reinforce_city.name, 'city_b': return_destination.name, 'reason': 'reinforce', 'army_size': reinforcing.members.size()}, self.get_current_date()))
 
@@ -545,7 +545,7 @@ class Main:
                 self.attack(sender, reinforcing.members, reinforce_city.nation, None, reinforce_city)
             else: #if a third party is involved, let's just return back home
                 return_destination = random.choice(sender.cities)
-                sender.moving_armies.append(Group(sender.name, reinforcing.members, reinforce_city.position, return_destination.position, sender.color, lambda s, c: False, self.reinforce(sender, return_destination), self.canvas))
+                sender.moving_armies.append(Group(sender.name, reinforcing.members, reinforce_city.position, return_destination.position, sender.color, lambda s: False, self.reinforce(sender, return_destination), self.canvas))
 
                 self.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': sender.id, 'nation_b': sender.id, 'city_a': reinforce_city.name, 'city_b': return_destination.name, 'reason': 'reinforce', 'army_size': reinforcing.members.size()}, self.get_current_date()))
 
@@ -596,7 +596,7 @@ class Main:
         else: #If somebody other than us or the person we intended to attack owns this city, just go back to reinforce one of our cities.
             if len(attacker.cities) > 0: #It really ought to be, but it could happen that we lose all our cities before we can go back.
                 return_destination = random.choice(attacker.cities)
-                attacker.moving_armies.append(Group(attacker.name, attacking_army, city.position, return_destination.position, attacker.color, lambda s, c: False, self.reinforce(attacker, return_destination), self.canvas))
+                attacker.moving_armies.append(Group(attacker.name, attacking_army, city.position, return_destination.position, attacker.color, lambda s: False, self.reinforce(attacker, return_destination), self.canvas))
 
                 self.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': attacker.id, 'nation_b': attacker.id, 'city_a': city.name, 'city_b': return_destination.name, 'reason': 'reinforce', 'army_size': attacking_army.size()}, self.get_current_date()))
 

@@ -4,13 +4,12 @@ GROUP_SPEED_MULTIPLIER = 10
 
 #A group some band of people, who go to some place, and do something when they get there
 class Group:
-    def __init__(self, name, members, start_position, end_position, color, collision, on_end, canvas):
+    def __init__(self, name, members, start_position, end_position, color, on_step, on_end, canvas):
         self.name = name
 
         self.members = members
 
-        #Both of these should be functions to call when this group reaches it's destination
-        self.collision = collision
+        self.on_step = on_step
         self.on_end = on_end
 
         self.canvas = canvas
@@ -28,9 +27,7 @@ class Group:
 
             return True
 
-        for group in groups:
-            if utility.rough_match(self.x, group.x, GROUP_SPEED_MULTIPLIER) and utility.rough_match(self.y, group.y, GROUP_SPEED_MULTIPLIER):
-                self.collision(self, group)
+        self.on_step(self)
 
         dist = utility.distance((self.x, self.y), (self.end_x, self.end_y))
         self.x += float(self.end_x - self.x) / dist * GROUP_SPEED_MULTIPLIER

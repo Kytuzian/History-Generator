@@ -4,10 +4,18 @@
 - Priests/oracles/seers
 - Kings/dukes/leaders
 - Artists/writers/intellectuals
-- Revolt leaders
+- Revolutionaries
+- Scientists
+- Heroes (achilles, cu chulainn, odysseus, et cetera)
+
+#Military
+- Officers (centurions, colonels, whatever)
+- Specialized units (infiltration, artillery)
+- Military doctrines
 
 #Battle
 - Tactics
+- Deploying more than one kind of troop at a time (not all the levies first).
 - Morale
 - Walls
 - Defenses (caltrops, stakes)
@@ -32,6 +40,9 @@
     - Birth of gods
 - Fables
 - Fiction
+    - Historical
+    - Science fiction
+    - Romance
 - Poetry
 - History
 - Theologic
@@ -64,7 +75,7 @@
 
 #Celebrations
 - Religious
-- Independence days
+- Independence days/founding days
 - Birthdays
 
 #Superstitions
@@ -77,5 +88,6 @@
 - Buildings available based on research
 
 #Miscellaneous
+- Duels
 - Intellectual movements (great awakening, enlightenment, art movements)
 - Saving/loading

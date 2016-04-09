@@ -1,8 +1,16 @@
 2016-04-09
 Major changes:
+- Added famous people (full list of roles below), which replace the old office system. Some currently have no purpose other than for flavor text.
+    - Rulers: Increase morale of nation
+    - Administrators: Increase tax rate of nation
+    - Scientists: Increase research rate of nation
+    - Revolutionary: Decrease morale of nation
+    - Philosopher, writer, artist, oracle, priest, hero, general: Nothing yet
 
 Minor changes:
 - Added hunting lodge.
+- Added ability to view notable people of a nation.
+- Some small optimizations.
 
 Bug fixes:
 

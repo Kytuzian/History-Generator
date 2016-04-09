@@ -6,6 +6,7 @@ from language import *
 from group import *
 from religion import *
 from research import *
+from people import *
 
 import events
 import event_analysis
@@ -34,7 +35,6 @@ NATION_COLORS = ['dark orange', 'cadet blue', 'gold', 'deep sky blue',
 OFFICE_MODIFIERS = ['tax_rate', 'army_spending', 'morale']
 OFFICE_MODIFIER_MAX = 2
 
-MODIFIERS = ["Grand", "Federated", "Democratic", "People's", "Free", "Illustrious", "Glorious", "United"]
 GOVERNMENT_TYPES = ["Principality", "Commonwealth", "Kingdom", "Hegemony", "Khanate", "Socialist State", "Sultanate", "Republic", "Democracy", "Theocracy", "Confederacy", "Oligarchy", "Aristocracy", "Meritocracy", "States"]
 INIT_CITY_COUNT = 1
 
@@ -48,18 +48,11 @@ REARM_CHANCE = 5
 
 TAX_MULTIPLIER = 2
 
-AVERAGE_MAX_LIFE_EXPECTANCY = 60
-
 NAME_SWITCH_THRESHOLD = 30
 
-#Years
-MIN_TERM_LENGTH = 5
-MAX_TERM_LENGTH = 20
+NOTABLE_PERSON_BIRTH_CHANCE = 24
 
-#Chances (1 in x)
-LOSE_PLACE_CITY_NAME = 8 #Only applies if the nation no longer owns the city.
-LOSE_NAME_MODIFIER = 30 #Per modifier
-GAIN_NAME_MODIFIER = 30 #Per history step
+SCIENTIST_RESEARCH_BONUS = 10
 
 GOVERNMENT_TYPE_BONUSES = {}
 GOVERNMENT_TYPE_BONUSES["Principality"] = {'food': 1, 'morale': 0.75, 'efficiency': 1, 'tolerance': 1, 'conscription': 1.5}
@@ -77,142 +70,6 @@ GOVERNMENT_TYPE_BONUSES["Meritocracy"] = {'food': 1, 'morale': 0.75, 'efficiency
 GOVERNMENT_TYPE_BONUSES["Aristocracy"] = {'food': 1, 'morale': 1, 'efficiency': 0.75, 'tolerance': 1, 'conscription': 1.5}
 GOVERNMENT_TYPE_BONUSES["Oligarchy"] = {'food': 1, 'morale': 1, 'efficiency': 0.75, 'tolerance': 1, 'conscription': 1.5}
 GOVERNMENT_TYPE_BONUSES["Hegemony"] = {'food': 1, 'morale': 0.5, 'efficiency': 1, 'tolerance': 1, 'conscription': 2}
-
-class Person:
-    def __init__(self, name):
-        self.name = name
-
-        self.age = 1
-
-        self.effectiveness = random.random() * 2
-
-        self.alive = True
-
-        self.offices = []
-
-    def get_effectiveness(self):
-        return self.effectiveness
-
-    def add_office(self, office):
-        self.offices.append(office)
-
-    def remove_office(self, office):
-        if office in self.offices:
-            self.offices.remove(office)
-        else:
-            raise Exception('Office not in list of held offices for {}'.format(self.name))
-
-    def handle_death(self):
-        for office in self.offices:
-            office.handle_death(self)
-
-    def history_step(self):
-        self.age += 1
-
-        if random.randint(0, AVERAGE_MAX_LIFE_EXPECTANCY) == 0: #The person died
-            self.alive = False
-
-    def __repr__(self):
-        return "{}({})".format(self.name, self.age)
-
-class Office:
-    def __init__(self, nation):
-        self.nation = nation
-        self.language = self.nation.language
-        self.name = self.language.make_word(self.language.name_length, True)
-
-        self.holder = None
-        self.fill_office()
-
-        self.modifiers = {}
-
-        for modifier in OFFICE_MODIFIERS:
-            self.modifiers[modifier] = random.random() * OFFICE_MODIFIER_MAX
-
-        self.term_length = random.randint(MIN_TERM_LENGTH, MAX_TERM_LENGTH)
-        self.current_term = 0
-
-        self.age = 0
-
-    def get_modifier(self, modifier):
-        return self.modifiers[modifier] * self.holder.get_effectiveness() * self.nation.get_efficiency_bonus()
-
-    def fill_office(self):
-        self.current_term = 0
-
-        if self.holder != None:
-            self.holder.remove_office(self)
-
-        self.holder = self.nation.get_qualified_person(self)
-        self.holder.add_office(self)
-
-    def handle_death(self, person):
-        self.fill_office()
-
-    def history_step(self, parent):
-        self.age += 1
-
-        self.current_term += 1
-        if self.current_term == self.term_length:
-            self.fill_office()
-
-    def __repr__(self):
-        return "{}: {}: [{}]".format(self.name, self.holder, self.modifiers)
-
-class NationName:
-    def __init__(self, modifiers, government_type, places):
-        self.modifiers = modifiers
-        self.government_type = government_type
-        self.places = places
-
-    def history_step(self, parent):
-        parent_cities_names = map(lambda city: city.name, parent.cities)
-
-        for place in self.places:
-            #We can't get rid of the last one.
-            if not place in parent_cities_names and len(self.places) > 1:
-                if random.randint(0, LOSE_PLACE_CITY_NAME) == 0:
-                    self.remove_place(place)
-
-        for modifier in self.modifiers:
-            if random.randint(0, LOSE_NAME_MODIFIER) == 0:
-                self.remove_modifier(modifier)
-
-        if random.randint(0, GAIN_NAME_MODIFIER) == 0:
-            self.add_modifier(random.choice(MODIFIERS))
-
-    def add_modifier(self, modifier_name):
-        self.modifiers.append(modifier_name)
-
-    def remove_modifier(self, modifier_name):
-        self.modifiers.remove(modifier_name)
-
-    def add_place(self, place_name):
-        self.places.append(place_name)
-
-    def remove_place(self, place_name):
-        self.places.remove(place_name)
-
-    def short_name(self):
-        return self.places[0]
-
-    def get_name(self):
-        modifier_part = ' '.join(self.modifiers)
-
-        if len(self.places) > 2:
-            place_part = '{}, and {}'.format(', '.join(self.places[:-1]), self.places[-1])
-        elif len(self.places) == 2:
-            place_part = '{} and {}'.format(self.places[0], self.places[1])
-        else:
-            place_part = self.places[0]
-
-        if len(self.modifiers) > 0:
-            return 'The {} {} of {}'.format(modifier_part, self.government_type, place_part)
-        else:
-            return 'The {} of {}'.format(self.government_type, place_part)
-
-    def __repr__(self):
-        return self.get_name()
 
 class Nation:
     def __init__(self, parent, cities=None):
@@ -245,9 +102,9 @@ class Nation:
 
         self.id = parent.get_next_id()
 
-        self.people = []
+        self.notable_people = []
 
-        self.offices = [Office(self) for i in xrange(2)]
+        self.ruler = None
 
         self.at_war = []
         self.allied = []
@@ -326,8 +183,8 @@ class Nation:
         self.event_display_button = Button(self.gui_window, text='Events', command=self.display_events)
         self.event_display_button.grid(row=7, column=0, sticky=W)
 
-        self.office_display_button = Button(self.gui_window, text='Offices', command=self.display_offices)
-        self.office_display_button.grid(row=7, column=1, sticky=W)
+        self.people_display_button = Button(self.gui_window, text='People', command=self.display_people)
+        self.people_display_button.grid(row=7, column=1, sticky=W)
 
         self.city_display_button = Button(self.gui_window, text='Cities', command=self.display_cities)
         self.city_display_button.grid(row=7, column=2, sticky=W)
@@ -374,6 +231,13 @@ class Nation:
 
         self.displaying = 'event'
 
+    def display_people(self):
+        self.listbox_display.delete(0, END)
+        for person in self.notable_people:
+            self.listbox_display.insert(END, person)
+
+        self.displaying = 'people'
+
     def display_war(self):
         self.listbox_display.delete(0, END)
         for warring in self.at_war:
@@ -387,13 +251,6 @@ class Nation:
             self.listbox_display.insert(END, trade)
 
         self.displaying = 'trade'
-
-    def display_offices(self):
-        self.listbox_display.delete(0, END)
-        for office in self.offices:
-            self.listbox_display.insert(END, office)
-
-        self.displaying = 'office'
 
     def display_cities(self):
         self.listbox_display.delete(0, END)
@@ -409,27 +266,9 @@ class Nation:
 
         return sum([city.army.size() for city in self.cities])
 
-    def get_qualified_person(self, office):
-        #Don't want to have TOO many people
-        if len(self.people) < PEOPLE_LIMIT:
-            self.add_person() #So the first office isn't always filled by the same person.
-        qualified_people = []
-
-        for person in self.people:
-            #Right now the only necessary qualification is that the same person can't hold the same office twice at the same time
-            if not office in person.offices:
-                qualified_people.append(person)
-
-        # print(len(self.people), len(qualified_people))
-
-        if len(qualified_people) == 0:
-            return self.add_person()
-        else:
-            return random.choice(qualified_people)
-
     def add_person(self):
-        new_person = Person(self.language.make_name_word())
-        self.people.append(new_person)
+        new_person = Person(self, self.language.make_name_word())
+        self.notable_people.append(new_person)
 
         return new_person
 
@@ -447,11 +286,13 @@ class Nation:
             city.population += per_city
 
     def get_tax_rate(self):
-        # print(self.tax_rate, utility.product([office.get_modifier('tax_rate') for office in self.offices]))
-        return self.tax_rate * utility.product([office.get_modifier('tax_rate') for office in self.offices])
+        multiplier = 1.0
+        for person in self.notable_people:
+            if person.role == 'administrator':
+                multiplier *= person.effectiveness
+        return self.tax_rate * multiplier
 
     def get_army_spending(self):
-        # return min(1, self.army_spending * utility.product([office.get_modifier('army_spending') for office in self.offices]))
         return self.army_spending
 
     def get_population(self):
@@ -497,6 +338,24 @@ class Nation:
         for caravan in self.caravans:
             caravan.step(self.caravans)
 
+    def handle_people_monthly(self):
+        if self.ruler == None or not self.ruler.alive:
+            self.ruler = self.add_person()
+
+        if random.randint(0, NOTABLE_PERSON_BIRTH_CHANCE) == 0:
+            self.add_person()
+
+        self.mod_morale(self.ruler.effectiveness**2)
+
+        for person in self.notable_people:
+            if person.alive:
+                if person.role == 'scientist':
+                    amount = person.effectiveness**2 * SCIENTIST_RESEARCH_BONUS
+                    if self.current_research != None:
+                        self.current_research.do_research(amount)
+                elif person.role == 'revolutionary':
+                    self.mod_morale(-person.effectiveness**2)
+
     def grow_population(self):
         for city in self.cities:
             if not city.destroy: #Don't simulate cities that are marked for destruction
@@ -509,7 +368,7 @@ class Nation:
                         trade_city = random.choice(self.cities)
                         dx, dy = trade_city.position #Send it to a random city
 
-                        self.caravans.append(Group("caravan", [], (cx, cy), (dx, dy), self.color, lambda s, g: False, self.receive_caravan(self), self.parent.canvas))
+                        self.caravans.append(Group("caravan", [], (cx, cy), (dx, dy), self.color, lambda s: False, self.receive_caravan(self), self.parent.canvas))
                     elif len(self.trading) > 0: #We have trading partners to trade with
                         partner = random.choice(self.trading)
 
@@ -517,7 +376,7 @@ class Nation:
                             trade_city = random.choice(partner.cities)
                             dx, dy = trade_city.position #Send it to a random city
 
-                            self.caravans.append(Group("caravan", [], (cx, cy), (dx, dy), self.color, lambda s, g: False, partner.receive_caravan(self), self.parent.canvas))
+                            self.caravans.append(Group("caravan", [], (cx, cy), (dx, dy), self.color, lambda s: False, partner.receive_caravan(self), self.parent.canvas))
 
         #Destroy cities if they been set to be destroyed.
         for city in self.cities:
@@ -533,6 +392,8 @@ class Nation:
                 self.mod_morale(-math.log(-total, 2))
             else:
                 self.mod_morale(math.log(total, 2))
+
+        self.handle_people_monthly()
 
     def move_armies(self, armies):
         for moving_army in self.moving_armies:
@@ -660,24 +521,15 @@ class Nation:
             for city in self.cities:
                 city.rearm_army(rearm_unit)
 
-    def history_step(self):
-        self.name.history_step(self)
-
-        for person in self.people:
+    def handle_people(self):
+        for person in self.notable_people:
             person.history_step()
 
             if not person.alive:
                 person.handle_death()
 
-        #Remove old, redundant offices
-        for office in self.offices:
-            office.history_step(self)
-
-            if random.randint(0, office.age) > 10:
-                self.offices.remove(office)
-
-            if random.randint(0, len(self.offices)**3) == 0:
-                self.offices.append(Office(self))
+    def history_step(self):
+        self.name.history_step(self)
 
         #we lost our capital somehow
         if not self.has_capital():
@@ -722,11 +574,9 @@ class Nation:
 
         self.religion.history_step(self.parent)
         self.handle_rearming()
+        self.handle_people()
 
         self.age += 1
-
-        for office in self.offices:
-            self.mod_morale(int(office.get_modifier('morale') * OFFICE_MORALE_BONUS))
 
         #More cities means less happiness
         self.mod_morale(-(len(self.cities)**2 + 1))

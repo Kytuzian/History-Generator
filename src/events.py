@@ -65,6 +65,10 @@ class Event:
             return EventTechResearch(dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'RearmUnit':
             return EventRearmUnit(dict['name'], dict['event_data'], dict['date'])
+        elif dict['name'] == 'NotablePersonBirth':
+            return EventNotablePersonBirth(dict['name'], dict['event_data'], dict['date'])
+        elif dict['name'] == 'NotablePersonDeath':
+            return EventNotablePersonDeath(dict['name'], dict['event_data'], dict['date'])
         else:
             return Event(dict['name'], dict['event_data'], dict['date'])
 
@@ -211,3 +215,21 @@ class EventRearmUnit(Event):
 
     def text_version(self):
         return '{}: The nation of {} has rearmed it\'s unit of {} with {} and {}.'.format(self.date, get_nation_name(self.nation_a), self.unit_name, self.new_weapons, self.new_armor)
+
+class EventNotablePersonBirth(Event):
+    def setup(self):
+        self.nation_a = self.event_data['nation_a']
+        self.person_name = self.event_data['person_a']
+        self.person_role = self.event_data['person_a_role']
+
+    def text_version(self):
+        return '{}: {}, a {}, was born in the nation of {}'.format(self.date, self.person_name, self.person_role, get_nation_name(self.nation_a))
+
+class EventNotablePersonDeath(Event):
+    def setup(self):
+        self.nation_a = self.event_data['nation_a']
+        self.person_name = self.event_data['person_a']
+        self.person_role = self.event_data['person_a_role']
+
+    def text_version(self):
+        return '{}: {}, a {} from the nation of {}, has died.'.format(self.date, self.person_name, self.person_role, get_nation_name(self.nation_a))
