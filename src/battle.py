@@ -229,8 +229,8 @@ class RankPosition:
         return self.soldier != None
 
     def calculate_position(self):
-        d1 = ((len(self.unit.ranks) - 1) / 2.0 - self.rank) * (TROOP_RADIUS + 1)
-        d2 = -self.position * (TROOP_RADIUS + 1)
+        d1 = ((len(self.unit.ranks[0]) - 1) / 2.0 - self.position) * (TROOP_RADIUS + 1)
+        d2 = -self.rank * (TROOP_RADIUS + 1)
 
         # print(self.rank, len(self.unit.ranks[0]), d1, d2)
 
@@ -298,9 +298,9 @@ class Unit:
         self.ranks = []
 
         i = 0
-        for rank in xrange(self.soldier_type.rank_size):
+        for rank in xrange(self.soldier_type.ranks):
             self.ranks.append([])
-            for rank_position in xrange(self.soldier_type.ranks):
+            for rank_position in xrange(self.soldier_type.rank_size):
                 self.ranks[-1].append(RankPosition(self, rank, rank_position, self.canvas))
 
                 if len(self.soldiers) > i:

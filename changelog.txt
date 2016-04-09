@@ -10,6 +10,8 @@ Major changes:
 Minor changes:
 - Added hunting lodge.
 - Added ability to view notable people of a nation.
+- Increased probability of sending caravans.
+- Added ruler to nation's information GUI.
 - Some small optimizations.
 
 Bug fixes:
