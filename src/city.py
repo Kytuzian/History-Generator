@@ -31,6 +31,7 @@ house_effects = {'population_capacity': 10, 'tax_score': 10, 'cost': 50, 'size':
 farm_effects = {'population_capacity': 5, 'food_output': 60, 'cost': 200, 'size': 20}
 fishery_effects = {'population_capacity': 2, 'food_output': 125, 'cost': 200, 'size': 40}
 ranch_effects = {'population_capacity': 2, 'food_output': 125, 'cost': 300, 'size': 50}
+hunting_lodge_effects = {'population_capacity': 2, 'food_output': 50, 'cost': 50, 'size': 20}
 leatherworker_effects = {'population_capacity': 2, 'money_output': 200, 'leather': 5, 'cost': 300, 'size': 5}
 weaver_effects = {'population_capacity': 2, 'money_output': 200, 'cloth': 5, 'cost': 300, 'size': 5}
 woodcutter_effects = {'population_capacity': 2, 'money_output': 150, 'wood': 5, 'cost': 300, 'size': 50}
@@ -149,6 +150,7 @@ def base_buildings(city):
     buildings = []
     buildings.append(Building('House', city, house_effects, 0))
     buildings.append(Building('Farm', city, farm_effects, 0))
+    buildings.append(Building('Hunting Lodge', city, hunting_lodge_effects, 0))
     buildings.append(Building('Fishery', city, fishery_effects, 0))
     buildings.append(Building('Ranch', city, ranch_effects, 0))
     buildings.append(Building('Mine', city, mine_effects, 0))

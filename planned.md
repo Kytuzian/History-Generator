@@ -10,12 +10,15 @@
 - Tactics
 - Morale
 - Walls
-- Defenses
-- Terrain
+- Defenses (caltrops, stakes)
+- Terrain (hills, rivers, bridges, valleys)
 
 #Art
 - Music (see below)
-- Visual art
+- Paintings
+- Frescoes
+- Tapestries
+- Statues
 
 #Natural disasters
 - Earthquakes
@@ -23,33 +26,41 @@
 - Droughts/floods
 
 #Literature
-- Myths (creation, causes of natural events)
+- Myths
+    - Creation
+    - Natural events
+    - Birth of gods
 - Fables
 - Fiction
 - Poetry
 - History
 - Theologic
 - Essay
+- Plays
 
 #Non-human life
 - Wildlife
-- Domesticated
+- Hunting
+- Domesticated animals
 - Beasts of burden
 - Plants (edible, poisonous, et cetera)
+- Randomly generated animals/plants
 
 #Food
 - Vegan/Vegetarian/whatever
 - Staple foods
 - Common foods
 - "High class" foods
-- Taboo foods
+- Taboo foods (such as dog and horse meat in the US)
 
 #Religion
 - Rituals (specific to gods, and the whole religion in general)
+    - Sacrifices: Animal, human
 
 #Music
 - Instruments
 - Songs
+- Musicals
 
 #Celebrations
 - Religious
@@ -64,3 +75,7 @@
 #Research
 - Weapons/armor available based on research
 - Buildings available based on research
+
+#Miscellaneous
+- Intellectual movements (great awakening, enlightenment, art movements)
+- Saving/loading
