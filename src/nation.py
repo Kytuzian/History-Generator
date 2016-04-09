@@ -235,6 +235,9 @@ class Nation:
 
             for city in self.cities:
                 city.nation = self
+
+                for cell in city.cells:
+                    cell.update_self()
         else:
             self.cities = []
 

@@ -19,12 +19,12 @@ CELL_POPULATION_CAPACITY = 10
 
 FOOD_PER_PERSON = 1
 
-MORALE_NOT_ENOUGH_FOOD = 8
-MORALE_NOT_ENOUGH_HOUSING = 1
-MORALE_ENOUGH_FOOD = 4
+MORALE_NOT_ENOUGH_FOOD = 12
+MORALE_NOT_ENOUGH_HOUSING = 2
+MORALE_ENOUGH_FOOD = 2
 CAPITAL_CITY_MORALE_BONUS = 2 #Multiplier
 MORALE_INCREMENT = 30
-GARRISON_MORALE_BONUS = 3 #Multiplier
+GARRISON_MORALE_BONUS = 2.5 #Multiplier
 
 #Building effects: population_capacity, tax_rate, food_output, money_output
 house_effects = {'population_capacity': 10, 'tax_score': 10, 'cost': 50, 'size': 5}
