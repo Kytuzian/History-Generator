@@ -13,6 +13,7 @@ Minor changes:
 - Increased probability of sending caravans.
 - Added ruler to nation's information GUI.
 - Some small optimizations.
+- Re-added "run continuously" option.
 
 Bug fixes:
 

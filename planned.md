@@ -11,6 +11,7 @@
 #Military
 - Officers (centurions, colonels, whatever)
 - Specialized units (infiltration, artillery)
+- Specialized formations
 - Military doctrines
 
 #Battle
@@ -76,7 +77,7 @@
 #Celebrations
 - Religious
 - Independence days/founding days
-- Birthdays
+- Birthdays of notable people
 
 #Superstitions
 - Lucky days
@@ -88,6 +89,6 @@
 - Buildings available based on research
 
 #Miscellaneous
-- Duels
+- Duels between notable people
 - Intellectual movements (great awakening, enlightenment, art movements)
 - Saving/loading

@@ -58,6 +58,7 @@ class Main:
         self.nations = []
 
         self.is_continuous = False
+        self.run_until_battle = False
         self.advancing = False
 
         self.setup()
@@ -139,7 +140,7 @@ class Main:
         self.parent.columnconfigure(3, weight=1)
         self.parent.rowconfigure(11, weight=1)
 
-        self.continuous = Button(self.parent, text="Run until battle", command=self.toggle_continuous)
+        self.continuous = Button(self.parent, text="Run until battle", command=self.toggle_run_until_battle)
         self.continuous.grid(row=0, sticky=W)
 
         self.minimize_battles = Checkbutton(self.parent, text='Minimize battle windows', command=self.toggle_minimize_battles)
@@ -161,6 +162,9 @@ class Main:
 
         self.advance_button = Button(self.parent, text="Advance Step", command=self.main_loop)
         self.advance_button.grid(row=5, sticky=W)
+
+        self.run_continuously_checkbutton = Checkbutton(self.parent, text='Run continuously', command=self.toggle_continuous)
+        self.run_continuously_checkbutton.grid(row=5, column=1, sticky=W)
 
         self.simulation_speed_label = Label(self.parent, text='Simulation Speed (ms):')
         self.simulation_speed_label.grid(row=6, column=0, sticky=W)
@@ -254,6 +258,12 @@ class Main:
 
         self.after_id = self.parent.after(self.delay.get(), self.main_loop)
 
+    def toggle_run_until_battle(self):
+        self.run_until_battle = not self.run_until_battle
+
+        if self.run_until_battle and not self.is_continuous: #This mean we weren't just running continuously, so start
+            self.after_id = self.parent.after(self.delay.get(), self.main_loop)
+
     def toggle_continuous(self):
         self.is_continuous = not self.is_continuous
 
@@ -307,9 +317,9 @@ class Main:
                 self.month += 1
 
             if len(self.battles) > 0:
-                self.is_continuous = False
+                self.run_until_battle = False
 
-            if self.is_continuous:
+            if self.is_continuous or self.run_until_battle:
                 self.after_id = self.parent.after(self.delay.get(), self.main_loop)
             elif self.advancing:
                 if self.year < self.end_year:
