@@ -39,7 +39,7 @@ DOMAINS = ['fire', 'wind', 'water', 'air', 'lightning', 'death',\
            'knowledge', 'writing', 'music', 'storytelling',\
            'luck', 'thunder', 'friendship', 'wine', 'weaving',\
            'the sun', 'the hearth', 'the moon', 'the sky', 'messengers'\
-           'chaos', 'unity', 'the underworld']
+           'chaos', 'unity', 'the underworld', 'creation']
 
 class God:
     def __init__(self, name, religion, domains):

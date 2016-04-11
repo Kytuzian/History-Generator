@@ -23,10 +23,10 @@ class Troop:
 
         discipline = random.randint(1, 2)
 
-        rank_size = random.randint(2, 20)
-        ranks = random.randint(2, 5)
+        rank_size = random.randint(4, 15)
+        ranks = random.randint(4, 6)
 
-        elite = random.randint(2, 10)
+        elite = random.randint(2, 6)
 
         if ranged:
             weapons = [random.choice(nation.basic_ranged_weapon_list), random.choice(nation.sidearm_list)]
@@ -71,14 +71,14 @@ class Troop:
 
         ranged = random.choice([False, True])
 
-        strength = self.strength + random.randint(1, 20 if not ranged else 10)
-        health = self.health + random.randint(1, 6 if not ranged else 2)
-        discipline = self.discipline + random.randint(1, 10)
+        strength = self.strength + random.randint(1, 10 if not ranged else 5)
+        health = self.health + random.randint(1, 4 if not ranged else 2)
+        discipline = self.discipline + random.randint(0, 2)
 
-        speed = self.speed + random.randint(1, 4)
+        speed = self.speed + random.randint(1, 2)
 
-        rank_size = random.randint(2, 18)
-        ranks = random.randint(2, 6)
+        rank_size = random.randint(3, 15)
+        ranks = random.randint(3, 5)
 
         if ranged:
             weapons = [random.choice(nation.ranged_weapon_list), random.choice(nation.sidearm_list)]
@@ -87,7 +87,7 @@ class Troop:
 
         armor = random.choice(nation.armor_list)
 
-        elite = random.randint(2, 10)
+        elite = random.randint(2, 6)
 
         return cls(name, strength, health, 0, ranged, speed, discipline, rank_size, ranks, weapons, armor, elite, self.tier + 1, [])
 

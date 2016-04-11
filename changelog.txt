@@ -1,4 +1,13 @@
-2016-04-09
+2016-04-11
+Major changes:
+- All weapons now have a reload time, which reflects how quickly a soldier can attack with them.
+
+Minor changes:
+- Troops no longer increase strength, health, and discipline by as much as they go up tiers.
+
+Bug fixes:
+
+2016-04-10
 Major changes:
 - Added famous people (full list of roles below), which replace the old office system. Some currently have no purpose other than for flavor text.
     - Rulers: Increase morale of nation

@@ -36,15 +36,18 @@ class Soldier:
         self.weapons = weapons
         self.armor = armor
 
-        use_weapon = self.get_ranged_weapon()
+        if self.ranged:
+            use_weapon = self.get_ranged_weapon()
+        else:
+            use_weapon = self.get_melee_weapon()
 
         if use_weapon == None:
-            self.shoot = 0
-            self.shoot_counter = 0
+            self.reload = 0
+            self.reload_counter = 0
         else:
             # print('Reload time: {}'.format(use_weapon.reload_time))
-            self.shoot = 0
-            self.shoot_counter = use_weapon.reload_time
+            self.reload = 0
+            self.reload_counter = use_weapon.reload_time
 
         self.discipline = discipline
 
@@ -64,6 +67,117 @@ class Soldier:
         self.canvas = canvas
 
         self.rank_position = None
+
+    def step(self, proj, best_material, best_enemy_material):
+        if self.target != None: #If we have a target, make sure it still exists.
+            if not self.target in self.unit.target.soldiers:
+                self.target = None
+
+        if self.ranged:
+            self.target = random.choice(self.unit.target.soldiers)
+        else:
+            self.target = utility.get_nearest_enemy(self, self.unit.target.soldiers)
+
+        if self.target != None:
+            self.target.targeted = self
+        else:
+            return
+
+        tx, ty = self.target.x, self.target.y
+
+        d = utility.distance((self.x, self.y), (tx, ty))
+
+        if self.reload < self.reload_counter:
+            if self.in_range():
+                self.reload += random.randint(self.discipline // 2, self.discipline + 1)
+
+        #Show the weapon
+        if d != 0 and not self.ranged:
+            cx, cy = self.x + TROOP_RADIUS // 2, self.y + TROOP_RADIUS // 2
+            weapon_range = self.get_melee_weapon().range
+
+            if self.weapon_id == -1:
+                self.weapon_id = self.canvas.create_line(cx, cy, cx, cy + weapon_range)
+            else:
+                self.canvas.coords(self.weapon_id, cx, cy, cx + (tx - cx) / d * weapon_range, cy + (ty - cy) / d * weapon_range)
+        elif self.ranged:
+            if self.weapon_id != -1:
+                self.canvas.delete(self.weapon_id)
+                self.weapon_id = -1
+
+        if self.ranged:
+            self.handle_ranged(d, proj, best_material)
+        else:
+            self.handle_melee(d, best_material, best_enemy_material)
+
+    def handle_melee(self, d, best_material, best_enemy_material):
+        #If the target moves out of range, then switch back to ranged.
+        if d > self.target.unit.get_effective_speed() * CC_RANGE:
+            if self.unit.soldier_type.ranged:
+                self.ranged = True
+                return
+
+        # print(self.reload, self.reload_counter)
+
+        if self.in_range() and self.reload >= self.reload_counter:
+            attack = self.get_melee_attack(best_material)
+            defense = self.target.get_melee_defense(best_enemy_material)
+
+            if random.randint(0, self.discipline) == 0:
+                self.fatigue += 1
+            if random.randint(0, self.target.discipline) == 0:
+                self.target.fatigue += 1
+
+            if attack > defense:
+                self.target.health -= 1
+            # elif defense > attack and d < self.target.get_melee_weapon().range:
+            #     self.health -= 1
+
+            if self.target.health <= 0:
+                self.target.unit.handle_death(self.target)
+            elif self.health <= 0:
+                self.unit.handle_death(self)
+
+            self.reload = 0
+        else: #Not in range, so we need to get closer.
+            self.move()
+
+    def handle_ranged(self, d, proj, best_material):
+        if d < self.target.unit.get_effective_speed() * CC_RANGE:
+            self.ranged = False
+            return
+
+        self.move()
+        if self.in_range() and self.reload >= self.reload_counter:
+            if self.unit.ammunition > 0:
+                m, tangle = self.unit.target.get_movement_vector(vector_format='polar')
+
+                tx, ty = self.target.x, self.target.y
+
+                if m > 0:
+                    t, angle = utility.calculate_interception(m, self.get_projectile_speed(), (tx, ty), (self.x, self.y), tangle)
+
+                    tx += math.cos(tangle) * t * m
+                    ty += math.sin(tangle) * t * m
+
+                    d = utility.distance((self.x, self.y), (tx, ty))
+
+                damage = self.get_ranged_attack(best_material)
+                proj.append(Projectile(((tx - self.x) / d, (ty - self.y) / d), damage, self.target, self.get_projectile_speed()))
+
+                color = self.canvas.itemcget(self.id, 'fill')
+                proj[-1].id = self.canvas.create_oval(self.x, self.y, self.x + PROJECTILE_RADIUS, self.y + PROJECTILE_RADIUS, width=0, fill=color)
+                proj[-1].skip_step = d // self.get_projectile_speed() // 2
+                proj[-1].kill_range = d // self.get_projectile_speed() * 2
+
+                self.reload = 0
+
+                self.unit.ammunition -= 1
+            else:
+                for s in self.unit.soldiers:
+                    s.ranged = False
+
+                self.unit.soldier_type.ranged = False
 
     def get_melee_weapon(self):
         if self.unit.soldier_type.originally_ranged:
@@ -276,10 +390,6 @@ class Unit:
         self.dx, self.dy = 0, 0
 
         self.name_id = 0
-
-        self.shoot_angle = 0
-        self.shoot_time = 0
-        self.shoot_position = (0, 0)
 
         self.canvas = canvas
 
@@ -541,21 +651,6 @@ class Battle:
         self.setup_army(self.a_army, self.force_a, self.a.color, (100, 900), (50, 300), self.a_amount)
         self.setup_army(self.b_army, self.force_b, self.b.color, (100, 900), (300, 550), self.b_amount)
 
-    def get_nearest_enemy(self, unit, check, check_unit = None):
-        min_distance = 1000000000
-
-        target = None
-
-        for i in check:
-            d = utility.distance_squared((unit.x, unit.y), (i.x, i.y))
-
-            if d < min_distance:
-                target = i
-
-                min_distance = d
-
-        return target
-
     def handle_projectiles(self, owner_nation, proj, enemy, enemy_force):
         i = 0
         for p in proj:
@@ -623,6 +718,8 @@ class Battle:
             return False
 
     def handle_units(self, force, nation, proj, enemy_force, enemy_nation, color):
+        best_material = nation.tech.get_best_in_category('material')
+        best_enemy_material = enemy_nation.tech.get_best_in_category('material')
         for current_unit in force:
             if self.check_end_battle():
                 return True
@@ -646,7 +743,7 @@ class Battle:
 
             #If we don't have a target, target the closest unit.
             if current_unit.target == None or random.randint(0, SWITCH_TARGET_COUNT) == 0:
-                current_unit.target = self.get_nearest_enemy(current_unit, enemy_force)
+                current_unit.target = utility.get_nearest_enemy(current_unit, enemy_force)
 
                 if current_unit.target != None:
                     current_unit.target.targeted = current_unit
@@ -663,100 +760,7 @@ class Battle:
                 if len(current_unit.target.soldiers) == 0:
                     break
 
-                if soldier.target != None: #If we have a target, make sure it still exists.
-                    if not soldier.target in current_unit.target.soldiers:
-                        soldier.target = None
-
-                if soldier.ranged:
-                    soldier.target = random.choice(current_unit.target.soldiers)
-                else:
-                    soldier.target = self.get_nearest_enemy(soldier, current_unit.target.soldiers)
-
-                if soldier.target != None:
-                    soldier.target.targeted = soldier
-                else:
-                    continue
-
-                x, y = soldier.x, soldier.y
-                tx, ty = soldier.target.x, soldier.target.y
-
-                d = utility.distance((x, y), (tx, ty))
-
-                #Show the weapon
-                if d != 0 and not soldier.ranged:
-                    cx, cy = x + TROOP_RADIUS // 2, y + TROOP_RADIUS // 2
-                    weapon_range = soldier.get_melee_weapon().range
-
-                    if soldier.weapon_id == -1:
-                        soldier.weapon_id = self.canvas.create_line(cx, cy, cx + 1, cy + soldier.get_melee_weapon().range)
-                    else:
-                        self.canvas.coords(soldier.weapon_id, cx, cy, cx + (tx - cx) / d * weapon_range, cy + (ty - cy) / d * weapon_range)
-                elif soldier.ranged:
-                    if soldier.weapon_id != -1:
-                        self.canvas.delete(soldier.weapon_id)
-                        soldier.weapon_id = -1
-
-                if soldier.ranged:
-                    if d < soldier.target.unit.get_effective_speed() * CC_RANGE:
-                        soldier.ranged = False
-
-                    soldier.move()
-                    if soldier.in_range():
-                        if soldier.shoot > soldier.shoot_counter:
-                            if current_unit.ammunition > 0:
-                                m, tangle = current_unit.target.get_movement_vector(vector_format='polar')
-
-                                if m > 0:
-                                    t, angle = utility.calculate_interception(m, soldier.get_projectile_speed(), (tx, ty), (x, y), tangle)
-
-                                    tx += math.cos(tangle) * t * m
-                                    ty += math.sin(tangle) * t * m
-
-                                    d = utility.distance((x, y), (tx, ty))
-
-                                damage = soldier.get_ranged_attack(nation.tech.get_best_in_category('material'))
-                                proj.append(Projectile(((tx - x) / d, (ty - y) / d), damage, soldier.target, soldier.get_projectile_speed()))
-
-                                proj[-1].id = self.canvas.create_oval(x, y, x + PROJECTILE_RADIUS, y + PROJECTILE_RADIUS, width=0, fill=color)
-                                proj[-1].skip_step = d // soldier.get_projectile_speed() // 2
-                                proj[-1].kill_range = d // soldier.get_projectile_speed() * 2
-
-                                soldier.shoot = 0
-
-                                current_unit.ammunition -= 1
-                            else:
-                                for s in current_unit.soldiers:
-                                    s.ranged = False
-
-                                current_unit.soldier_type.ranged = False
-                        else:
-                            soldier.shoot += math.sqrt(soldier.discipline) / 2 + random.randint(0, 1) * math.log(soldier.discipline)
-                else:
-                    #If the target moves out of range, then switch back to ranged.
-                    if d > soldier.target.unit.get_effective_speed() * CC_RANGE:
-                        if current_unit.soldier_type.ranged:
-                            soldier.ranged = True
-
-                    if soldier.in_range():
-                        attack = soldier.get_melee_attack(nation.tech.get_best_in_category('material'))
-                        defense = soldier.target.get_melee_defense(enemy_nation.tech.get_best_in_category('material'))
-
-                        if random.randint(0, soldier.discipline) == 0:
-                            soldier.fatigue += 1
-                        if random.randint(0, soldier.target.discipline) == 0:
-                            soldier.target.fatigue += 1
-
-                        if attack > defense:
-                            soldier.target.health -= 1
-                        elif defense > attack:
-                            soldier.health -= 1
-
-                        if soldier.target.health <= 0:
-                            soldier.target.unit.handle_death(soldier.target)
-                        elif soldier.health <= 0:
-                            current_unit.handle_death(soldier)
-                    else: #Not in range, so we need to get closer.
-                        soldier.move()
+                soldier.step(proj, best_material, best_enemy_material)
 
         return False
 

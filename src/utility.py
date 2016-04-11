@@ -15,6 +15,21 @@ DISPLAY_HEIGHT = 720
 
 CELL_SIZE = 6 #cells are squares, this is the side length
 
+def get_nearest_enemy(unit, check, check_unit = None):
+    min_distance = 1000000000
+
+    target = None
+
+    for i in check:
+        d = distance_squared((unit.x, unit.y), (i.x, i.y))
+
+        if d < min_distance:
+            target = i
+
+            min_distance = d
+
+    return target
+
 def rgb_color(r, g, b):
     return '#{}{}{}'.format(hex(r)[2:].ljust(2, '0'), hex(g)[2:].ljust(2, '0'), hex(b)[2:].ljust(2, '0'))
 

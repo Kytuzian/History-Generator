@@ -382,7 +382,7 @@ class Main:
                 self.events.append(events.EventDiplomacyTrade('DiplomacyTrade', {'nation_a': a.id, 'nation_b': b.id}, self.get_current_date()))
 
     def handle_revolt(self, nation):
-        #Not for realism, but this just can't happen, because then they'd be sharing colors.s
+        #Not for realism, but this just can't happen, because then they'd be sharing colors.
         if len(self.nations) < len(NATION_COLORS):
             #Need more than one city to revolt.
             if len(nation.cities) > 1:

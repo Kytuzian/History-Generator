@@ -7,6 +7,7 @@
 - Revolutionaries
 - Scientists
 - Heroes (achilles, cu chulainn, odysseus, et cetera)
+- People should live in cities, rather than just existing in the nation
 
 #Military
 - Officers (centurions, colonels, whatever)
@@ -90,5 +91,6 @@
 
 #Miscellaneous
 - Duels between notable people
+- Assassination plots
 - Intellectual movements (great awakening, enlightenment, art movements)
 - Saving/loading

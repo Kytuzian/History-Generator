@@ -80,32 +80,32 @@ class Armor:
 #------------------------------
 
 #Short
-unarmed = Weapon('Unarmed', 0, 5, 0, 1, 1, 1, 1)
-dagger = Weapon('Dagger', 10, 5, 1.5, 2, 2, 1.1, 1)
-rondel = Weapon('Rondel', 25, 5, 1.6, 3, 1, 1.5, 1)
-dirk = Weapon('Dirk', 25, 5, 1.6, 3, 1, 1.5, 1)
-kopis = Weapon('Kopis', 40, 6, 1.8, 6, 1, 2, 1)
-shortsword = Weapon('Shortsword', 50, 7, 1.8, 5, 2, 2, 1.1)
-club = Weapon('Club', 10, 7, 0, 5, 2, 1, 1)
-hammer = Weapon('Hammer', 25, 7, 1.3, 6, 1, 1.5, 0.8)
-mace = Weapon('Mace', 40, 7, 1.5, 6, 1, 1.8, 1.0)
-axe = Weapon('Axe', 30, 7, 1.8, 8, 2, 2.5, 0.8)
-morning_star = Weapon('Morning Star', 200, 7, 1.5, 8, 0, 2, 0.2)
+unarmed = Weapon('Unarmed', 0, 5, 0, 1, 1, 1, 1, reload_time=1)
+dagger = Weapon('Dagger', 10, 5, 1.5, 2, 2, 1.1, 1, reload_time=2)
+rondel = Weapon('Rondel', 25, 5, 1.6, 3, 1, 1.5, 1, reload_time=2)
+dirk = Weapon('Dirk', 25, 5, 1.6, 3, 1, 1.5, 1, reload_time=2)
+kopis = Weapon('Kopis', 40, 6, 1.8, 6, 1, 2, 1, reload_time=3)
+shortsword = Weapon('Shortsword', 50, 7, 1.8, 5, 2, 2, 1.1, reload_time=4)
+club = Weapon('Club', 10, 7, 0, 5, 2, 1, 1, reload_time=6)
+hammer = Weapon('Hammer', 25, 7, 1.3, 6, 1, 1.5, 0.8, reload_time=5)
+mace = Weapon('Mace', 40, 7, 1.5, 6, 1, 1.8, 1.0, reload_time=5)
+axe = Weapon('Axe', 30, 7, 1.8, 8, 2, 2.5, 0.8, reload_time=7)
+morning_star = Weapon('Morning Star', 200, 7, 1.5, 8, 0, 2, 0.2, reload_time=10)
 
 #Medium
-sword = Weapon('Sword', 100, 10, 2, 6, 3, 2, 1.1)
-bastard_sword = Weapon('Bastard Sword', 150, 12, 2.3, 7, 2, 2, 1.5)
-claymore = Weapon('Claymore', 200, 15, 2.5, 10, 1, 2.5, 0.5)
-bill = Weapon('Bill', 50, 12, 1.5, 6, 4, 1.5, 1.5)
-flail = Weapon('Flail', 50, 12, 1.2, 6, 0, 2, 0.5)
-falx = Weapon('Falx', 75, 14, 1.8, 8, 1, 2, 0.8)
+sword = Weapon('Sword', 100, 10, 2, 6, 3, 2, 1.1, reload_time=5)
+bastard_sword = Weapon('Bastard Sword', 150, 12, 2.3, 7, 2, 2, 1.5, reload_time=6)
+claymore = Weapon('Claymore', 200, 15, 2.5, 10, 1, 2.5, 0.5, reload_time=7)
+bill = Weapon('Bill', 50, 12, 1.5, 6, 4, 1.5, 1.5, reload_time=8)
+flail = Weapon('Flail', 50, 12, 1.2, 6, 0, 2, 0.5, reload_time=12)
+falx = Weapon('Falx', 75, 14, 1.8, 8, 1, 2, 0.8, reload_time=7)
 
 #Long
-polehammer = Weapon('Polehammer', 100, 15, 1.0, 8, 2, 2, 1)
-staff = Weapon('Staff', 10, 15, 0, 3, 3, 2, 2)
-spear = Weapon('Spear', 40, 20, 1.0, 4, 4, 1.5, 1.5)
-pike = Weapon('Pike', 80, 25, 1.0, 5, 5, 1.5, 1.5)
-sarissa = Weapon('Sarissa', 160, 35, 1.0, 7, 3, 2, 2)
+polehammer = Weapon('Polehammer', 100, 15, 1.0, 8, 2, 2, 1, reload_time=11)
+staff = Weapon('Staff', 10, 15, 0, 3, 3, 2, 2, reload_time=7)
+spear = Weapon('Spear', 40, 20, 1.0, 4, 4, 1.5, 1.5, reload_time=7)
+pike = Weapon('Pike', 80, 25, 1.0, 5, 5, 1.5, 1.5, reload_time=9)
+sarissa = Weapon('Sarissa', 160, 35, 1.0, 7, 3, 2, 2, reload_time=12)
 
 all_melee_weapons = [unarmed, polehammer, kopis, mace, falx, club, hammer, dagger, rondel, dirk, shortsword, sword, bastard_sword, claymore, spear, staff, bill, pike, sarissa, axe, flail, morning_star]
 weapon_list = [polehammer, sword, mace, falx, shortsword, bastard_sword, claymore, spear, staff, pike, sarissa, axe, flail, morning_star, bill]
