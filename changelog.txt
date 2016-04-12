@@ -4,8 +4,11 @@ Major changes:
 
 Minor changes:
 - Troops no longer increase strength, health, and discipline by as much as they go up tiers.
+- Changed reloading speed.
+- Dramatically decreased the chance of a notable person being born.
 
 Bug fixes:
+- Fixed bug with ranged units and aiming ahead.
 
 2016-04-10
 Major changes:

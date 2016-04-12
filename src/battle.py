@@ -88,10 +88,10 @@ class Soldier:
         d = utility.distance((self.x, self.y), (tx, ty))
 
         if self.reload < self.reload_counter:
-            if self.in_range():
-                self.reload += random.randint(self.discipline // 2, self.discipline + 1)
+            if not self.ranged or self.in_range(): #Melee units always reload, because their first attack is like a "charge"
+                self.reload += math.sqrt(self.discipline) // 2 + random.randint(1, 3)
 
-        #Show the weapon
+        #Show the weapon if we are currently in melee mode
         if d != 0 and not self.ranged:
             cx, cy = self.x + TROOP_RADIUS // 2, self.y + TROOP_RADIUS // 2
             weapon_range = self.get_melee_weapon().range
@@ -475,14 +475,17 @@ class Unit:
 
     def get_movement_vector(self, vector_format='xy'):
         if self.target != None and not self.soldier_type.ranged:
-            d = utility.distance((self.x, self.y), (self.target.x, self.target.y))
-            dx = self.target.x - self.x
-            dy = self.target.y - self.y
+            if not self.in_range():
+                d = utility.distance((self.x, self.y), (self.target.x, self.target.y))
+                dx = self.target.x - self.x
+                dy = self.target.y - self.y
 
-            if vector_format == 'xy':
-                return (float(dx) / d * self.get_effective_speed(), float(dy) / d * self.get_effective_speed())
-            elif vector_format == 'polar': #Magnitude and angle
-                return (self.get_effective_speed(), math.atan2(dy, dx))
+                if vector_format == 'xy':
+                    return (float(dx) / d * self.get_effective_speed(), float(dy) / d * self.get_effective_speed())
+                elif vector_format == 'polar': #Magnitude and angle
+                    return (self.get_effective_speed(), math.atan2(dy, dx))
+            else:
+                return (0, 0)
         else:
             return (0, 0)
 
