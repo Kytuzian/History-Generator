@@ -1,6 +1,7 @@
 2016-04-11
 Major changes:
 - All weapons now have a reload time, which reflects how quickly a soldier can attack with them.
+- Restructured and properly applied technology bonuses to resource production.
 
 Minor changes:
 - Troops no longer increase strength, health, and discipline by as much as they go up tiers.

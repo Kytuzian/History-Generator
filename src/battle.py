@@ -89,7 +89,7 @@ class Soldier:
 
         if self.reload < self.reload_counter:
             if not self.ranged or self.in_range(): #Melee units always reload, because their first attack is like a "charge"
-                self.reload += math.sqrt(self.discipline) // 2 + random.randint(1, 3)
+                self.reload += math.sqrt(self.discipline) // 2 + random.randint(0, 1)
 
         #Show the weapon if we are currently in melee mode
         if d != 0 and not self.ranged:

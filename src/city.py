@@ -6,8 +6,6 @@ from group import *
 from religion import *
 from research import *
 
-import ai
-
 import events
 import event_analysis
 
@@ -26,12 +24,11 @@ CAPITAL_CITY_MORALE_BONUS = 2 #Multiplier
 MORALE_INCREMENT = 30
 GARRISON_MORALE_BONUS = 2.5 #Multiplier
 
-#Building effects: population_capacity, tax_rate, food_output, money_output
 house_effects = {'population_capacity': 10, 'tax_score': 10, 'cost': 50, 'size': 5}
-farm_effects = {'population_capacity': 5, 'food_output': 60, 'cost': 200, 'size': 20}
-fishery_effects = {'population_capacity': 2, 'food_output': 125, 'cost': 200, 'size': 40}
-ranch_effects = {'population_capacity': 2, 'food_output': 125, 'cost': 300, 'size': 50}
-hunting_lodge_effects = {'population_capacity': 2, 'food_output': 50, 'cost': 50, 'size': 20}
+farm_effects = {'population_capacity': 5, 'food': 60, 'cost': 200, 'size': 20}
+fishery_effects = {'population_capacity': 2, 'food': 125, 'cost': 200, 'size': 40}
+ranch_effects = {'population_capacity': 2, 'food': 125, 'cost': 300, 'size': 50}
+hunting_lodge_effects = {'population_capacity': 2, 'food': 50, 'cost': 50, 'size': 20}
 leatherworker_effects = {'population_capacity': 2, 'money_output': 200, 'leather': 5, 'cost': 300, 'size': 5}
 weaver_effects = {'population_capacity': 2, 'money_output': 200, 'cloth': 5, 'cost': 300, 'size': 5}
 woodcutter_effects = {'population_capacity': 2, 'money_output': 150, 'wood': 5, 'cost': 300, 'size': 50}
@@ -106,19 +103,6 @@ class Building:
         else:
             return 1
 
-    def get_food_output(self):
-        if 'food_output' in self.effects:
-            amount = self.effects['food_output'] * self.number
-
-            multiplier = self.city.nation.tech.get_best_in_category('agriculture')
-
-            if multiplier != None:
-                amount *= multiplier.effect_strength
-
-            return amount
-        else:
-            return 0
-
     def get_money_output(self):
         if 'money_output' in self.effects:
             amount = self.effects['money_output'] * self.number
@@ -136,12 +120,6 @@ class Building:
 
         for effect in self.effects:
             if effect in production:
-                if effect == 'metal':
-                    multiplier = self.city.nation.tech.get_best_in_category('mining')
-
-                    if multiplier != None:
-                        production[effect] = int(self.effects[effect] * self.number * multiplier.effect_strength)
-
                 production[effect] = self.effects[effect] * self.number
 
         return production
@@ -184,8 +162,8 @@ class City:
         self.army = None
 
         self.resources = base_resources()
-
-        # self.ai = ai.SupplyDemand(base_resources(), self.buildings, )
+        self.consumed_resources = base_resources()
+        self.produced_resources = base_resources()
 
         if self.parent.cells[self.position[0]][self.position[1]].owner != None:
             self.destroy = True
@@ -403,7 +381,7 @@ class City:
                             #Those heathen scum must die.
                             if random.randint(0, 10 * self.nation.get_tolerance()) == 0:
                                 self.parent.start_war(self.nation, neighbor.owner.nation, is_holy_war=True)
-                            elif random.randint(0, 2) == 0: #Those bastards have stuff we want
+                            elif random.randint(0, 3) == 0: #Those bastards have stuff we want
                                 self.parent.start_war(self.nation, neighbor.owner.nation, is_holy_war=False)
                             else: #Nah jk let's just trade.
                                 self.parent.start_trade_agreement(self.nation, neighbor.owner.nation)
@@ -479,7 +457,27 @@ class City:
                 cell.change_owner(None)
 
     def mod_resource(self, resource, amount):
-        self.resources[resource] = int(self.resources[resource] + amount * self.nation.get_resource_bonus('food'))
+        multiplier = None
+        if resource == 'metal':
+            multiplier = self.nation.tech.get_best_in_category('mining')
+            if multiplier != None:
+                multiplier = multiplier.effect_strength
+        elif resource == 'food':
+            multiplier = self.nation.tech.get_best_in_category('agriculture')
+
+            if multiplier != None:
+                multiplier = multiplier.effect_strength * self.nation.get_resource_bonus('food')
+
+        if multiplier == None:
+            multiplier = 1.0
+
+        if amount > 0:
+            actual_mod = int(multiplier * amount)
+            self.produced_resources[resource] += actual_mod
+        else:
+            actual_mod = int(amount)
+            self.consumed_resources[resource] += -actual_mod
+        self.resources[resource] += actual_mod
 
     def handle_food(self):
         food_max_spoilage = int(math.sqrt(self.resources['food']) * math.sqrt(self.age) * math.sqrt(self.total_cell_count()))
@@ -493,10 +491,10 @@ class City:
             self.mod_resource('food', food_amount)
 
         #It takes 1 food to feed each person
-        self.resources['food'] -= self.population * FOOD_PER_PERSON
+        self.mod_resource('food', -self.population * FOOD_PER_PERSON)
 
         if self.army != None:
-            self.resources['food'] -= self.army.size() * FOOD_PER_PERSON
+            self.mod_resource('food', -self.army.size() * FOOD_PER_PERSON)
 
         #There wasn't enough food for everybody.
         if self.resources['food'] < 0:
@@ -504,8 +502,6 @@ class City:
             #Negative because the food value is less than zero
             losses = -self.resources['food'] // FOOD_PER_PERSON
             army_losses = random.randint(1, int(math.sqrt(losses) + 1))
-
-            # print('{} of the army starved.'.format(army_losses))
 
             #Remove some random amount of troops.
             #Not all desert, because they're hopefully more disciplined than that.
@@ -530,8 +526,6 @@ class City:
         total_tax_rate = utility.product([cell.get_tax_rate() for cell in self.cells])
         final_tax_rate = total_tax_rate * self.nation.get_tax_rate()
 
-        # print(total_tax_rate, final_tax_rate, self.get_tax_score())
-
         self.nation.money += total_tax_rate * self.get_tax_score()
 
         for cell in self.cells:
@@ -542,7 +536,7 @@ class City:
             production = cell.get_resource_productions()
 
             for resource in production:
-                self.resources[resource] += production[resource]
+                self.mod_resource(resource, production[resource])
 
     def handle_army(self):
         if not self.army:
@@ -598,6 +592,9 @@ class City:
             self.morale -= MORALE_NOT_ENOUGH_HOUSING
 
     def history_step(self):
+        self.consumed_resources = base_resources()
+        self.produced_resources = base_resources()
+
         self.handle_display_name()
         self.handle_disconnected_cells()
 
@@ -617,14 +614,15 @@ class City:
 
                 new_square.change_owner(self, 'city')
 
-        for cell in self.cells:
-            cell.build_buildings()
-
+        self.handle_resources()
         self.handle_food()
         self.handle_money()
-        self.handle_resources()
         self.handle_army()
         self.handle_morale()
+
+        #Because we need to know our producions in order to know what we need to build.
+        for cell in self.cells:
+            cell.build_buildings()
 
         self.calculate_population_capacity()
 

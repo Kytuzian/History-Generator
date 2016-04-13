@@ -15,6 +15,14 @@ DISPLAY_HEIGHT = 720
 
 CELL_SIZE = 6 #cells are squares, this is the side length
 
+#Finds the corresponding keys in a dictionary and applies the function to both, creating a new dictionary
+def zip_dict_with(f, a, b):
+    res = {}
+    for k in a:
+        if k in b:
+            res[k] = f(a[k], b[k])
+    return res
+
 def get_nearest_enemy(unit, check, check_unit = None):
     min_distance = 1000000000
 

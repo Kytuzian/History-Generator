@@ -52,7 +52,7 @@ NAME_SWITCH_THRESHOLD = 30
 
 NOTABLE_PERSON_BIRTH_CHANCE = 200
 
-SCIENTIST_RESEARCH_BONUS = 10
+SCIENTIST_RESEARCH_BONUS = 20
 
 GOVERNMENT_TYPE_BONUSES = {}
 GOVERNMENT_TYPE_BONUSES["Principality"] = {'food': 1, 'morale': 0.75, 'efficiency': 1, 'tolerance': 1, 'conscription': 1.5}
@@ -466,13 +466,8 @@ class Nation:
         return GOVERNMENT_TYPE_BONUSES[self.name.government_type]['tolerance']
 
     def get_resource_bonus(self, resource):
-        if resource == 'food':
-            mult_mod = 1.0
-            add_mod = 0.0
-            res = self.tech.get_tech('Improved Agriculture')
-            if res != None:
-                mult_mod *= res.effect_strength
-            return GOVERNMENT_TYPE_BONUSES[self.name.government_type]['food'] * mult_mod + add_mod
+        if resource in GOVERNMENT_TYPE_BONUSES[self.name.government_type]:
+            return GOVERNMENT_TYPE_BONUSES[self.name.government_type][resource]
         else:
             return 1.0
 

@@ -144,41 +144,41 @@ basic_armor_list = [cloth_armor, leather_armor, wood_armor, padded_armor]
 def base_tech_tree():
     return Tech('Agriculture', 'agriculture', 0, 1.0,
                 [
-                    Tech('Stone Working', 'material', 200, 1.1,
+                    Tech('Stone Working', 'material', 400, 1.1,
                     [
-                        Tech('Copper', 'material', 400, 1.5,
+                        Tech('Copper', 'material', 1600, 1.5,
                         [
-                            Tech('Bronze', 'material', 800, 2.0,
+                            Tech('Bronze', 'material', 3200, 2.0,
                             [
-                                Tech('Iron', 'material', 1600, 2.5,
+                                Tech('Iron', 'material', 6400, 2.5,
                                 [
-                                    Tech('Steel', 'material', 3200, 3.0, [])
+                                    Tech('Steel', 'material', 12800, 3.0, [])
                                 ])
                             ])
                         ])
                     ]),
-                    Tech('Housing I', 'housing', 200, 1.25,
+                    Tech('Housing I', 'housing', 250, 1.25,
                     [
-                        Tech('Housing II', 'housing', 250, 1.5,
+                        Tech('Housing II', 'housing', 400, 1.5,
                         [
-                            Tech('Housing III', 'housing', 300, 1.75,
+                            Tech('Housing III', 'housing', 600, 1.75,
                             [
-                                Tech('Housing IV', 'housing', 350, 2.0,
+                                Tech('Housing IV', 'housing', 800, 2.0,
                                 [
-                                    Tech('Housing V', 'housing', 400, 2.5, [])
+                                    Tech('Housing V', 'housing', 1200, 2.5, [])
                                 ])
                             ])
                         ])
                     ]),
-                    Tech('Mining I', 'mining', 200, 1.25,
+                    Tech('Mining I', 'mining', 400, 1.25,
                     [
-                        Tech('Mining II', 'mining', 250, 1.5,
+                        Tech('Mining II', 'mining', 600, 1.5,
                         [
-                            Tech('Mining III', 'mining', 300, 1.75,
+                            Tech('Mining III', 'mining', 700, 1.75,
                             [
-                                Tech('Mining IV', 'mining', 350, 2.0,
+                                Tech('Mining IV', 'mining', 900, 2.0,
                                 [
-                                    Tech('Mining V', 'mining', 400, 2.5, [])
+                                    Tech('Mining V', 'mining', 1200, 2.5, [])
                                 ])
                             ])
                         ])

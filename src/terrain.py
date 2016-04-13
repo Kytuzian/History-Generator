@@ -103,10 +103,6 @@ class Cell:
 
     def get_food_output(self):
         result = random.randint(BASE_CELL_MIN_FOOD_PRODUCTION, BASE_CELL_FOOD_PRODUCTION)
-
-        for building in self.buildings:
-            result += building.get_food_output()
-
         result *= self.food_production_multiplier()
 
         return result
