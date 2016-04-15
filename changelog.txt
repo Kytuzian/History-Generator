@@ -1,10 +1,12 @@
-2016-04-11
+2016-04-15
 Major changes:
 - All weapons now have a reload time, which reflects how quickly a soldier can attack with them.
 - Restructured and properly applied technology bonuses to resource production.
 
 Minor changes:
 - Troops no longer increase strength, health, and discipline by as much as they go up tiers.
+- Priests can now make a religion more or less tolerance (if effectiveness is greater than 1, more tolerant, if less than 1, less tolerant.)
+- Ruler no longer adds any bonus to nation other than morale.
 - Changed reloading speed.
 - Dramatically decreased the chance of a notable person being born.
 

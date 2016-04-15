@@ -135,7 +135,7 @@ class Nation:
         self.army_spending = random.random() * 0.6 + 0.2
         self.elite = random.randint(3, 6)
 
-        self.religion = Religion(self.language, self.language.make_name_word())
+        self.religion = Religion(self.language, self.language.make_name_word(), self)
 
         if len(self.cities) > 0:
             place_name = self.cities[0].name
@@ -351,7 +351,7 @@ class Nation:
         self.mod_morale(self.ruler.effectiveness**2)
 
         for person in self.notable_people:
-            if person.alive:
+            if person.alive or not person == self.ruler:
                 if person.role == 'scientist':
                     amount = person.effectiveness**2 * SCIENTIST_RESEARCH_BONUS
                     if self.current_research != None:
