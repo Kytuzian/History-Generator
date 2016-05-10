@@ -1,3 +1,11 @@
+2016-05-10
+Major changes:
+
+Minor changes:
+
+Bug fixes:
+- Fixed a stupid bug.
+
 2016-04-15
 Major changes:
 - All weapons now have a reload time, which reflects how quickly a soldier can attack with them.

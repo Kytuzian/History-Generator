@@ -124,6 +124,8 @@ class Religion:
         #Lower tolerance means more tolerant
         self.tolerance = random.randint(1, MAX_BASE_TOLERANCE)
 
+        self.nation = nation
+
         self.age = 0
 
     def add_god(self, domains=None):
