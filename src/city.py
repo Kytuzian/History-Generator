@@ -24,8 +24,13 @@ CAPITAL_CITY_MORALE_BONUS = 2 #Multiplier
 MORALE_INCREMENT = 30
 GARRISON_MORALE_BONUS = 2.5 #Multiplier
 
+SEND_CARAVAN_CHANCE = 10
+
+TRADE_GOOD_PRICE = 10
+
 house_effects = {'population_capacity': 10, 'tax_score': 10, 'cost': 50, 'size': 5}
 farm_effects = {'population_capacity': 5, 'food': 60, 'cost': 200, 'size': 20}
+tavern_effects = {'population_capacity': 5, 'cost': 500, 'money_output': 1200, 'size': 50}
 fishery_effects = {'population_capacity': 2, 'food': 125, 'cost': 200, 'size': 40}
 ranch_effects = {'population_capacity': 2, 'food': 125, 'cost': 300, 'size': 50}
 hunting_lodge_effects = {'population_capacity': 2, 'food': 50, 'cost': 50, 'size': 20}
@@ -33,11 +38,16 @@ leatherworker_effects = {'population_capacity': 2, 'money_output': 200, 'leather
 weaver_effects = {'population_capacity': 2, 'money_output': 200, 'cloth': 5, 'cost': 300, 'size': 5}
 woodcutter_effects = {'population_capacity': 2, 'money_output': 150, 'wood': 5, 'cost': 300, 'size': 50}
 mine_effects = {'population_capacity': 8, 'money_output': 1000, 'metal': 3, 'cost': 1000, 'size': 90}
-lab_effects = {'population_capacity': 2, 'research_rate': 5, 'cost': 1000, 'size': 95}
+library_effects = {'population': 4, 'research_rate': 2, 'cost': 1000, 'size': 90}
+lab_effects = {'population_capacity': 2, 'research_rate': 5, 'cost': 1000, 'size': 75}
 market_effects = {'tax_score': 100, 'money_output': 1000, 'cost': 1500, 'size': 60}
+caravansary_effects = {'population_capacity': 5, 'caravan_chance': 20, 'cost': 2000, 'size': 90}
 
 def base_resources():
     return {'leather': 0, 'wood': 0, 'cloth': 0, 'metal': 0, 'food': 0}
+
+def base_resource_prices():
+    return {'leather': 50, 'wood': 75, 'cloth': 50, 'metal': 150, 'food': 10}
 
 class Building:
     def __init__(self, name, city, effects, number):
@@ -71,6 +81,16 @@ class Building:
 
     def get_size(self):
         return self.effects['size']
+
+    def send_caravans(self):
+        if 'caravan_chance' in self.effects:
+            c = 0
+            for i in xrange(self.number):
+                if random.randint(0, self.effects['caravan_chance']) == 0:
+                    c += 1
+            return c
+        else:
+            return 0
 
     def get_tax_score(self):
         if 'tax_score' in self.effects:
@@ -131,12 +151,15 @@ def base_buildings(city):
     buildings.append(Building('Hunting Lodge', city, hunting_lodge_effects, 0))
     buildings.append(Building('Fishery', city, fishery_effects, 0))
     buildings.append(Building('Ranch', city, ranch_effects, 0))
+    buildings.append(Building('Tavern', city, tavern_effects, 0))
     buildings.append(Building('Mine', city, mine_effects, 0))
     buildings.append(Building('Leatherworker', city, leatherworker_effects, 0))
     buildings.append(Building('Weaver', city, weaver_effects, 0))
     buildings.append(Building('Woodcutter', city, woodcutter_effects, 0))
+    buildings.append(Building('Library', city, library_effects, 0))
     buildings.append(Building('Lab', city, lab_effects, 0))
     buildings.append(Building('Market', city, market_effects, 0))
+    buildings.append(Building('Caravansary', city, caravansary_effects,0 ))
     return buildings
 
 class City:
@@ -162,6 +185,7 @@ class City:
         self.army = None
 
         self.resources = base_resources()
+        self.resource_prices = base_resource_prices()
         self.consumed_resources = base_resources()
         self.produced_resources = base_resources()
 
@@ -175,6 +199,8 @@ class City:
         self.gui_window = None
 
         self.merges = []
+
+        self.caravans = []
 
     #Creates a new window showing basic information about itself
     def show_information_gui(self):
@@ -240,6 +266,82 @@ class City:
             self.event_log_display.insert(END, event.text_version())
 
         self.event_log_display.grid(row=7, column=0, columnspan=3, rowspan=10, sticky=W+E)
+
+    def handle_caravans(self):
+        if random.randint(0, SEND_CARAVAN_CHANCE) == 0:
+            self.send_caravan()
+
+        for cell in self.cells:
+            for building in cell.buildings:
+                for caravan in xrange(building.send_caravans()):
+                    self.send_caravan()
+
+    def get_resource_differences(self, other):
+        res = {}
+
+        for resource in self.resources:
+            res[resource] = self.resources[resource] - other.resources[resource]
+
+        return res
+
+    def send_caravan(self):
+        cx, cy = self.position
+
+        if len(self.nation.trading) > 0 and random.randint(0, 2) == 0:
+            partner = random.choice(self.nation.trading)
+
+            if len(partner.cities) > 0:
+                trade_city = random.choice(partner.cities)
+            else: # There was a problem, just exit the function.
+                return
+        else:
+            trade_city = random.choice(self.nation.cities)
+
+        # We obviously don't need to send them something if they have more of it than we do.
+        resource_diff = self.get_resource_differences(trade_city)
+        resource_send = {}
+
+        for resource in resource_diff:
+            if resource_diff[resource] > 0:
+                resource_send[resource] = random.randint(1, int(resource_diff[resource]))
+
+        # This is to ensure that all caravans make at least some money
+        resource_send['trade_goods'] = random.randint(1, int(math.log(self.population))**2 + 1)
+
+        dx, dy = trade_city.position #Send it to a random city
+        self.caravans.append(Group("caravan", resource_send, (cx, cy), (dx, dy), self.nation.color, lambda s: False, trade_city.receive_caravan(self), self.nation.parent.canvas))
+
+    def receive_caravan(self, city):
+        def f(caravan):
+            city.caravans.remove(caravan)
+
+            # Construct a demand ranking
+
+            consumption_ranking = sorted(self.consumed_resources.items(), key=utility.snd)
+            res_count = float(len(consumption_ranking))
+            resource_mults = {k: (res_count / 2.0 - i) / res_count for i, (k, v) in enumerate(consumption_ranking)}
+            prices = base_resource_prices()
+
+            for resource in prices:
+                prices[resource] *= resource_mults[resource]
+
+            profit = 0
+            for resource in caravan.members:
+                if resource in prices:
+                    profit += caravan.members[resource] * prices[resource]
+                elif resource == 'trade_goods':
+                    profit += TRADE_GOOD_PRICE * caravan.members[resource]
+
+            profit = int(profit)
+
+            # print('{} made a profit of {} while trading {} with {}'.format(city.nation.name.short_name(), profit, caravan.members, self.nation.name.short_name()))
+
+            self.nation.money += profit
+
+            if city.nation != self.nation: # Trading with ourselves doesn't give any bonus
+                city.nation.money += profit // 2 # The other party only makes half as much
+
+        return f
 
     def rearm_army(self, unit):
         self.army.rearm(unit.name, unit.weapons, unit.armor)
@@ -619,6 +721,7 @@ class City:
         self.handle_money()
         self.handle_army()
         self.handle_morale()
+        self.handle_caravans()
 
         #Because we need to know our producions in order to know what we need to build.
         for cell in self.cells:

@@ -323,23 +323,10 @@ class Nation:
             if i.name == name:
                 return i
 
-    def receive_caravan(self, nation):
-        def f(caravan):
-            nation.caravans.remove(caravan)
-
-            #More money if we traded with somebody else
-            if nation != self:
-                nation.money += 20000
-
-                self.money += 20000
-            else:
-                self.money += 10000
-
-        return f
-
     def group_step(self):
-        for caravan in self.caravans:
-            caravan.step(self.caravans)
+        for city in self.cities:
+            for caravan in city.caravans:
+                caravan.step(None)
 
     def handle_people_monthly(self):
         if self.ruler == None or not self.ruler.alive:
@@ -363,23 +350,6 @@ class Nation:
         for city in self.cities:
             if not city.destroy: #Don't simulate cities that are marked for destruction
                 city.history_step()
-
-                if random.randint(0, 10) == 0: #Send a caravan
-                    cx, cy = city.position
-
-                    if random.randint(0, 2) < 2: #Send to one of our cities
-                        trade_city = random.choice(self.cities)
-                        dx, dy = trade_city.position #Send it to a random city
-
-                        self.caravans.append(Group("caravan", [], (cx, cy), (dx, dy), self.color, lambda s: False, self.receive_caravan(self), self.parent.canvas))
-                    elif len(self.trading) > 0: #We have trading partners to trade with
-                        partner = random.choice(self.trading)
-
-                        if len(partner.cities) > 0:
-                            trade_city = random.choice(partner.cities)
-                            dx, dy = trade_city.position #Send it to a random city
-
-                            self.caravans.append(Group("caravan", [], (cx, cy), (dx, dy), self.color, lambda s: False, partner.receive_caravan(self), self.parent.canvas))
 
         #Destroy cities if they been set to be destroyed.
         for city in self.cities:

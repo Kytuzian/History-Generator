@@ -168,6 +168,10 @@ def base_tech_tree():
                                     Tech('Housing V', 'housing', 1200, 2.5, [])
                                 ])
                             ])
+                        ]),
+                        Tech('Compact Building I', 'compact_building', 800, 1.15,
+                        [
+                            Tech('Compact Building II', 'compact_building', 1600, 1.5, [])
                         ])
                     ]),
                     Tech('Mining I', 'mining', 400, 1.25,
@@ -245,7 +249,7 @@ class Tech:
             self.best_techs[category] = self.get_best_in_category(category, True)
 
     def get_best_in_category(self, category_name, calc=False):
-        if calc:
+        if calc or not category_name in self.best_techs:
             for i in self.next_techs:
                 if i.category == category_name and i.is_unlocked():
                     return i.get_best_in_category(category_name)

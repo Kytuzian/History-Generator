@@ -293,7 +293,6 @@ class Main:
             if len(self.battles) == 0 or self.day == 30:
                 for i in self.nations:
                     i.grow_population()
-                    i.group_step()
 
                     i.move_armies(utility.flatten([nation.moving_armies for nation in self.nations if nation != i]))
 
@@ -303,6 +302,12 @@ class Main:
 
                     if len(i.cities) == 0 and len(i.moving_armies) == 0 and len(self.battles) == 0:
                         self.remove_nation(i)
+
+                # We only want to handle moving the groups after we handle each city.
+                # This is because the groups involve caravans, which need to know
+                # about a city's production in the last month, so that we can calculate prices
+                for i in self.nations:
+                    i.group_step()
 
                 #We can only have one nation per color
                 if random.randint(0, len(self.nations)**3 + 5) == 0 and len(self.nations) < len(NATION_COLORS):
@@ -445,7 +450,7 @@ class Main:
             self.handle_revolt(i)
 
             #Let's go to war, but we can only do that if there is a nation other than us
-            if random.randint(0, max(12, (len(i.at_war) + 1)**5 + i.get_tolerance())) == 0 and len(self.nations) > 1:
+            if random.randint(0, max(15, (len(i.at_war) + 1)**5 + 2*i.get_tolerance())) == 0 and len(self.nations) > 1:
                 enemy = utility.weighted_random_choice(self.nations, weight=lambda _, v: utility.distance(i.get_average_city_position(), v.get_average_city_position()), reverse=True)
 
                 #We can't go to war twice, fight with a trading partner, or be war with ourselves

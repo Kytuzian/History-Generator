@@ -1,3 +1,16 @@
+2016-05-13
+Major changes:
+- Caravans now actually carrying goods from place to place (food, leather, et cetera), as well as a generic "trade goods" (so that caravans always make at least some money).
+- Added fluctuating prices for goods in cities.
+
+Minor changes:
+- Added taverns, libraries, and caravansaries (increases the chances of sending out a caravan).
+- Tweaked some building stats.
+- Added a research that increases the amount of building space available.
+- Decreased chance of war declarations.
+
+Bug fixes:
+
 2016-05-10
 Major changes:
 

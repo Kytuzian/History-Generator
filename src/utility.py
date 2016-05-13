@@ -15,6 +15,12 @@ DISPLAY_HEIGHT = 720
 
 CELL_SIZE = 6 #cells are squares, this is the side length
 
+def fst(t):
+    return t[0]
+
+def snd(t):
+    return t[1]
+
 #Finds the corresponding keys in a dictionary and applies the function to both, creating a new dictionary
 def zip_dict_with(f, a, b):
     res = {}

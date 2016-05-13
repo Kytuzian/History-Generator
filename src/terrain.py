@@ -114,7 +114,14 @@ class Cell:
         return sum([building.get_size() * building.number for building in self.buildings])
 
     def get_available_building_capacity(self):
-        return self.building_capacity - self.get_total_buiding_size()
+        multiplier = 1.0
+        if self.owner != None:
+            best = self.owner.nation.tech.get_best_in_category('compact_building')
+
+            if best != None:
+                multiplier = best.multiplier
+
+        return multiplier * self.building_capacity - self.get_total_buiding_size()
 
     def build_buildings(self):
         improvement_chance = int((self.building_count() + 1) / (math.sqrt(self.owner.population) + 1))
