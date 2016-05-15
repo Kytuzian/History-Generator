@@ -69,6 +69,8 @@ class Event:
             return EventNotablePersonBirth(dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'NotablePersonDeath':
             return EventNotablePersonDeath(dict['name'], dict['event_data'], dict['date'])
+        elif dict['name'] == 'ArtCreated':
+            return EventArtCreated(dict['name'], dict['event_data'], dict['date'])
         else:
             return Event(dict['name'], dict['event_data'], dict['date'])
 
@@ -233,3 +235,14 @@ class EventNotablePersonDeath(Event):
 
     def text_version(self):
         return '{}: {}, a {} from the nation of {}, has died.'.format(self.date, self.person_name, self.person_role, get_nation_name(self.nation_a))
+
+class EventArtCreated(Event):
+    def setup(self):
+        self.nation_a = self.event_data['nation_a']
+        self.person_name = self.event_data['person_a']
+        self.person_role = self.event_data['person_a_role']
+
+        self.art = self.event_data['art']
+
+    def text_version(self):
+        return '{}: In the nation of {}, the {} {} created: {}'.format(self.date, get_nation_name(self.nation_a), self.person_role, self.person_name, self.art)

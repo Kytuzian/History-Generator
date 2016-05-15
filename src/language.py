@@ -264,7 +264,7 @@ class Language:
     def translateToLanguage(self, otherWord):
         if otherWord in self.toDictionary:
             return self.toDictionary[otherWord]
-        elif otherWord in self.firstNames or otherWord in self.middleNames or otherWord in self.lastNames:
+        elif otherWord in self.first_names or otherWord in self.last_names:
             return otherWord
         else:
             result = self.make_word(len(otherWord))
@@ -297,4 +297,4 @@ class Language:
         for i in sentence.split():
             result += f(i) + " "
 
-        return result[:-1] + "."
+        return result[:-1]

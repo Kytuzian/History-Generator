@@ -8,6 +8,8 @@ from religion import *
 from research import *
 from people import *
 
+import culture
+
 import events
 import event_analysis
 
@@ -53,6 +55,8 @@ NAME_SWITCH_THRESHOLD = 30
 NOTABLE_PERSON_BIRTH_CHANCE = 200
 
 SCIENTIST_RESEARCH_BONUS = 20
+
+ART_CREATE_CHANCE = 25
 
 GOVERNMENT_TYPE_BONUSES = {}
 GOVERNMENT_TYPE_BONUSES["Principality"] = {'food': 1, 'morale': 0.75, 'efficiency': 1, 'tolerance': 1, 'conscription': 1.5}
@@ -109,6 +113,8 @@ class Nation:
         self.at_war = []
         self.allied = []
         self.trading = []
+
+        self.art = []
 
         self.caravans = []
 
@@ -270,7 +276,7 @@ class Nation:
         return sum([city.army.size() for city in self.cities])
 
     def add_person(self):
-        new_person = Person(self, self.language.make_name_word())
+        new_person = Person(self, self.language.generate_name())
         self.notable_people.append(new_person)
 
         return new_person
@@ -345,6 +351,16 @@ class Nation:
                         self.current_research.do_research(amount)
                 elif person.role == 'revolutionary':
                     self.mod_morale(-person.effectiveness**2)
+                elif person.role in ['artist', 'writer', 'composer']:
+                    if random.randint(0, ART_CREATE_CHANCE) == 0:
+                        self.art.append(culture.create_art(self, person))
+
+                        person.art.append(self.art[-1])
+
+                        e = events.EventArtCreated('ArtCreated', {'nation_a': self.id, 'person_a': person.name, 'person_a_role': person.role, 'art': str(self.art[-1])}, self.parent.get_current_date())
+                        self.parent.events.append(e)
+
+                        print(self.parent.events[-1].text_version())
 
     def grow_population(self):
         for city in self.cities:

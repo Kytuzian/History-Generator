@@ -26,7 +26,7 @@ GARRISON_MORALE_BONUS = 2.5 #Multiplier
 
 SEND_CARAVAN_CHANCE = 10
 
-TRADE_GOOD_PRICE = 10
+TRADE_GOOD_PRICE = 25
 
 house_effects = {'population_capacity': 10, 'tax_score': 10, 'cost': 50, 'size': 5}
 farm_effects = {'population_capacity': 5, 'food': 60, 'cost': 200, 'size': 20}

@@ -1,13 +1,16 @@
-2016-05-13
+2016-05-15
 Major changes:
 - Caravans now actually carrying goods from place to place (food, leather, et cetera), as well as a generic "trade goods" (so that caravans always make at least some money).
 - Added fluctuating prices for goods in cities.
+- Artists, writers, and composers now create works of art.
 
 Minor changes:
 - Added taverns, libraries, and caravansaries (increases the chances of sending out a caravan).
 - Tweaked some building stats.
 - Added a research that increases the amount of building space available.
 - Decreased chance of war declarations.
+- Added composers.
+- Changed the rainfall generation print out to a progress bar.
 
 Bug fixes:
 

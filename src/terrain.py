@@ -440,11 +440,8 @@ class Weather:
                         self.clouds[int(cloud.x)][int(cloud.y)].append(cloud)
 
     def step(self):
-        print('Handling wind.')
         self.handle_wind()
-        print('Handling clouds.')
         self.handle_clouds()
-        print('Handling evaporation.')
         self.handle_evaporation()
 
     def normalize_moistures(self):
@@ -458,7 +455,7 @@ class Weather:
 
     def run(self, steps):
         for step in xrange(steps + 1):
-            print('Step {} of {}'.format(step, steps))
+            utility.show_bar(step, steps + 1, message='Generating rainfall patterns: ', number_limit=True)
             self.step()
 
             data = reduce(lambda a, b: a + b, map(lambda row: map(lambda cell: cell.terrain.moisture, row), self.cells))
