@@ -1,4 +1,4 @@
-2016-05-15
+2016-05-16
 Major changes:
 - Caravans now actually carrying goods from place to place (food, leather, et cetera), as well as a generic "trade goods" (so that caravans always make at least some money).
 - Added fluctuating prices for goods in cities.

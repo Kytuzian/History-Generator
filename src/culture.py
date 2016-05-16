@@ -21,17 +21,27 @@ ART_SUBJECTS = {'landscape': ['<cap><nature>'],
                 'statue': ['<cap><god|animal|notable_person|notable_person_role>'],
                 'song': ['Song'],
                 'musical': ['<Sir,> <name>', 'The <Tale|Story|Song> of <notable_person|god|notable_person_role>',
-                            'The <Song|Story> of the <cap><animal>'],
+                            'The <Song|Story> of the <cap><animal>',
+                            '<name|notable_person|notable_person_role>',
+                            'The <cap><n> of <name|notable_person|notable_person_role>'],
                 'play': ['The Tale of <notable_person|god|notable_person_role>',
-                         'The Story of the <cap><animal>'],
+                         'The Story of the <cap><animal>',
+                         '<name|notable_person|notable_person_role>',
+                         'The <cap><n> of <name|notable_person|notable_person_role>'],
                 'novel': ['The Tale of <notable_person|god|notable_person_role>',
-                          'The Story of the <cap><animal>', '<cap><article> <adj,> <n>',
-                          '<cap><article> <gerund,> <n>'],
+                          'The Story of the <cap><animal>', '<cap><article> <adj,> <cap><n>',
+                          '<cap><article> <gerund,> <cap><n>',
+                          '<name|notable_person|notable_person_role>',
+                          'The <cap><n> of <name|notable_person|notable_person_role>'],
                 'essay': ['<On|Concerning> the <cap><animal|nature|philosophy>',
                           'A Critique of <cap><philosophy|art>',
+                          '<cap><philosophy> in <art|art_creator|philosophy|art>',
                           '<Defending|Against> <cap><art|art_creator|philosophy>'],
-                'poem': ['<cap><animal|nature>', '<Ode|Song> <on|to> <article> <notable_person|animal|nature|god>',
-                         '<cap><gerund> <indef> <n>', '<cap><article> <adj,> <n>']}
+                'poem': ['<cap><animal|nature>', '<Ode|Song> <on|to> <notable_person|god>',
+                         '<Ode|Song> <on|to> <article> <animal|nature>'
+                         '<cap><gerund> <indef> <cap><n>', '<cap><article> <adj,> <cap><n>',
+                         '<name|notable_person|notable_person_role>',
+                         'The <cap><n> of <name|notable_person|notable_person_role>']}
 
 MEDIUMS = ['canvas', 'canvas', 'beaverboard', 'wood', 'paper']
 PAINTS = ['tempera', 'oil', 'watercolor']
@@ -80,17 +90,32 @@ BEGINNING_FORMS = ['<article> <adj,adj,gerund> <n> <v,>']
 
 CONJUCTIONS = ['and', 'or', 'while', 'because']
 
+def is_valid(nation):
+    def f(choice):
+        if choice in ['god', 'notable_person', 'notable_person_role', 'name', 'art',
+                 'art_creator']:
+            if nation != None:
+                if choice in ['art', 'art_creator']:
+                    if len(nation.art) == 0:
+                        return False
+            else:
+                return False
+        return True
+    return f
+
 def gen_form(form, nation=None):
     choiceTags = filter(lambda i: len(i) > 1, map(lambda i: i.split('|'), re.findall(r'<(.*?)>', form)))
 
     for choice in choiceTags:
-        form = form.replace('|'.join(choice), random.choice(choice), 1)
+        valid_choice = filter(is_valid(nation), choice)
+        form = form.replace('|'.join(choice), random.choice(valid_choice), 1)
 
     selectTags = filter(lambda i: len(i) > 1, map(lambda i: i.split(','), re.findall(r'<(.*?)>', form)))
 
     for select in selectTags:
+        valid_select = filter(is_valid(nation), select)
         search = '<' + ','.join(select) + '>'
-        replacement = '<{}>'.format('> <'.join(random.sample(select, random.randint(0, len(select)))))
+        replacement = '<{}>'.format('> <'.join(random.sample(valid_select, random.randint(0, len(valid_select)))))
 
         form = form.replace(search, replacement, 1)
 
@@ -133,12 +158,12 @@ def gen_form(form, nation=None):
         else:
             form = form.replace('<name>', '')
     while '<art>' in form:
-        if nation != None:
+        if nation != None and len(nation.art) > 0:
             form = form.replace('<art>', '\'{}\''.format(random.choice(nation.art).subject), 1)
         else:
             form = form.replace('<art>', '')
     while '<art_creator>' in form:
-        if nation != None:
+        if nation != None and len(nation.art) > 0:
             art = random.choice(nation.art)
             form = form.replace('<art_creator>', '{}\'s \'{}\''.format(art.creator.name, art.subject), 1)
         else:
@@ -232,10 +257,14 @@ def create_art(nation, creator):
         else:
             subject = gen_form(random.choice(ART_SUBJECTS[sub_category]), nation=nation)
     else:
-        subject = gen_form(random.choice(ART_SUBJECTS[category]), nation=nation)
+        form = random.choice(ART_SUBJECTS[category])
+        subject = gen_form(form, nation=nation)
+        # print(form, subject)
 
     if style in ART_MATERIALS:
         material = gen_form(random.choice(ART_MATERIALS[style]), nation=nation)
+    elif category in ART_MATERIALS:
+        material = gen_form(random.choice(ART_MATERIALS[category]), nation=nation)
 
     name = nation.language.translateTo(subject)
 

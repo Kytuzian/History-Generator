@@ -32,26 +32,67 @@ The process is the same for defense, except with defense values instead of attac
 For armor, the process is also the same, and armor, naturally, does not contribute to attack.
 
 #Nation
-A group of cities all joined together with armies to attack and trade with other nations.
-
+A group of cities all joined together with armies to attack and carvans to trade with other nations.
 The nation also shares a common religion (and this doesn't change, there is no conversion yet) and language.
-
-Nations have government offices and people in those offices. Currently, all offices last for life, and they modify the following three stats in varying degrees (the people in office also affect the office, increasing or decreasing the multipliers): tax rate, army spending, and morale.
+Nations also have a collection of notable people, and a collection of works of art.
 
 Nations have a capital city which will give more morale to the enemy when captured. Additionally, when a nation loses its capital, it will lose more morale, but while it owns its capital, it will gain morale every year.
 
-#City
-Cities are the building blocks of nations. Each city contains some amount of people, some amount of land (organized into cells), produces and consumes food, and builds buildings.
+Nations also have a technology level. The full tech tree is described in the Tech section.
 
-There are two types of cells. They can either be a "city" cell or a "surrounding" cell. City cells can support 1000 people, and represent the inner part of cities where all the houses, markets, et cetera, are. They look like a square with a border around it. Surrounding cells are the surrounding countryside, where all the farms, and other agricultural buildings are located. They can support 10 people each. Naturally, it takes a lot of surrounding farmland to support one city tile, which is why the vast majority of tiles are surrounding cells.
+#Notable People
+Notable people can be any of the following:
+
+- General: Currently no purpose.
+- Priest: Can increase of decrease the tolerance of the nation's religio.
+- Oracle: Currently no purpose.
+- Artist: Creates works of art: both drawings and statues.
+- Writer: Creates works of literature (which counts as art): plays, novels, essays, and poems.
+- Composer: Creates works of art: both songs and musicals.
+- Philosopher: Creates works of art: just essays.
+- Scientist: Increases the nation's research rate.
+- Revolutionary: Decreases the morale of the nation, increasing the chance for a rebellion.
+- Hero: Currently no purpose.
+- Administrator: Increase the tax rate.
+
+#Art
+This includes literature, music, as well as "normal" visual arts (paintings, statues, et cetera).
+
+See the Art Detail section for...details about art.
+
+- Drawings
+    - Paintings
+    - Frescoes
+    - Woodblock prints
+    - Sketches
+- Statues
+- Plays
+- Musicals
+- Essays
+- Poems
+
+#City
+Cities are the building blocks of nations. Each city contains some amount of people, some amount of land (organized into cells), produces and consumes food and other resources (leather, cloth, metal, and wood), and builds buildings.
+
+Cells can only contain a certain number of buildings in them, although this limit can be increased by researches (see the Tech section for more details). Cells by default can contain a total of 100.
 
 Cities contain buildings as well. There following are the types of buildings and their associated bonuses/costs:
-- Houses: Population capacity: 100, Tax rate: x1.001, Cost: 100
-- Farm: Population capacity: 10, Food output: 100, Cost: 200
-- Fishery: Population capacity: 5, Food output: 150, Cost: 200
-- Ranch: Population capacity: 5, Food output: 200, Cost: 300
-- Mine: Population capacity: 20, Money output: 500, Cost: 600
-- Market: Tax rate: x1.01, Money output: 1000, Cost: 1500
+| Name          | Population | Tax Score | Food | Wood | Leather | Cloth | Metal | Money | Caravan Chance | Size | Cost | Research Rate |
+|---------------|------------|-----------|------|------|---------|-------|-------|-------|----------------|------|------|---------------|
+| House         | 10         | 10        |      |      |         |       |       |       |                | 5    | 50   |               |
+| Farm          | 5          |           | 60   |      |         |       |       |       |                | 20   | 200  |               |
+| Tavern        | 5          |           |      |      |         |       |       | 1200  |                | 50   | 500  |               |
+| Fishery       | 2          |           | 125  |      |         |       |       |       |                | 40   | 200  |               |
+| Ranch         | 2          |           | 125  |      |         |       |       |       |                | 50   | 300  |               |
+| Hunting Lodge | 2          |           | 50   |      |         |       |       |       |                | 20   | 50   |               |
+| Leatherworker | 2          |           |      |      | 5       |       |       | 200   |                | 5    | 300  |               |
+| Weaver        | 2          |           |      |      |         | 5     |       | 200   |                | 5    | 300  |               |
+| Woodcutter    | 2          |           |      | 5    |         |       |       | 200   |                | 50   | 300  |               |
+| Mine          | 8          |           |      |      |         |       | 3     | 1000  |                | 90   | 1000 |               |
+| Library       | 4          |           |      |      |         |       |       |       |                | 90   | 1000 | 2             |
+| Lab           | 2          |           |      |      |         |       |       |       |                | 75   | 1000 | 5             |
+| Market        |            | 100       |      |      |         |       |       | 1000  |                | 60   | 1500 |               |
+| Caravansary   | 5          |           |      |      |         |       |       |       | 20             | 90   | 2000 |               |
 
 #Army
 A tree of unit types/numbers.
