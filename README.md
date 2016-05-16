@@ -79,7 +79,8 @@ Cells can only contain a certain number of buildings in them, although this limi
 Cities contain buildings as well. There following are the types of buildings and their associated bonuses/costs:
 <| Header One     | Header Two     |
 | :------------- | :------------- |
-| Item One       | Item Two       |
+| Item One       | Item Two       |>
+
 | Name          	| Population 	| Tax Score 	| Food 	| Wood 	| Leather 	| Cloth 	| Metal 	| Money 	| Caravan Chance 	| Size 	| Cost 	| Research Rate 	|
 |---------------	|------------	|-----------	|------	|------	|---------	|-------	|-------	|-------	|----------------	|------	|------	|---------------	|
 | House         	| 10         	| 10        	|      	|      	|         	|       	|       	|       	|                	| 5    	| 50   	|               	|
