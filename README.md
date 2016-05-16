@@ -101,7 +101,52 @@ A tree of unit types/numbers.
 
 Units have three main stats, strength, health, and discipline. Additionally, they can either be ranged, or not ranged. Discipline only currently affects ranged units (higher disciplines means soldiers will tend to shoot faster).
 
-Ranged unit do not move until they are out of ammo, at which point they switch to melee. If you see projectiles flying through large amounts of enemies, this is because the projectile is only targeting one enemy (runs WAY faster this way). Just imagine it was a really bad shot.
+Ranged unit do not move until they are out of ammo, or when their targets are too close to them (as in, charging them), at which point they switch to melee. If you see projectiles flying through large amounts of enemies, this is because the projectile is only targeting one enemy (runs WAY faster this way). Just imagine it was a really bad shot, although this should be relatively rare, as soldiers should aim ahead.
+
+Each weapon and armor has it's own stats, which are listed in the Weapons section below.
+
+#Weapons and Armor
+
+
+| Name          | Cost | Range | Material Multiplier | Attack | Defense | Attack Multiplier | Defense Mutliplier | Reload Time | Ammo | Projectile Speed |
+|---------------|------|-------|---------------------|--------|---------|-------------------|--------------------|-------------|------|------------------|
+| Unarmed       | 0    | 5     | 0                   | 1      | 1       | 1                 | 1                  | 1           |      |                  |
+| Dagger        | 10   | 5     | 1.5                 | 2      | 2       | 1.1               | 1                  | 2           |      |                  |
+| Rondel        | 25   | 5     | 1.6                 | 3      | 1       | 1.5               | 1                  | 2           |      |                  |
+| Dirk          | 25   | 5     | 1.6                 | 3      | 1       | 1.5               | 1                  | 2           |      |                  |
+| Kopis         | 40   | 6     | 1.8                 | 6      | 1       | 2                 | 1                  | 3           |      |                  |
+| Shortsword    | 50   | 7     | 1.8                 | 5      | 2       | 2                 | 1.1                | 4           |      |                  |
+| Club          | 10   | 7     | 0                   | 5      | 2       | 1                 | 1                  | 6           |      |                  |
+| Hammer        | 25   | 7     | 1.3                 | 6      | 1       | 1.5               | 0.8                | 5           |      |                  |
+| Mace          | 40   | 7     | 1.5                 | 6      | 1       | 1.8               | 1                  | 5           |      |                  |
+| Axe           | 30   | 7     | 1.8                 | 8      | 2       | 2.5               | 0.8                | 7           |      |                  |
+| Morning Star  | 200  | 7     | 1.5                 | 8      | 0       | 2                 | 0.2                | 10          |      |                  |
+| Sword         | 100  | 10    | 2                   | 6      | 3       | 2                 | 1.1                | 5           |      |                  |
+| Bastard Sword | 150  | 12    | 2.3                 | 7      | 2       | 2                 | 1.5                | 6           |      |                  |
+| Claymore      | 200  | 15    | 2.5                 | 10     | 1       | 2.5               | 0.5                | 7           |      |                  |
+| Bill          | 50   | 12    | 1.5                 | 6      | 4       | 1.5               | 1.5                | 8           |      |                  |
+| Flail         | 50   | 12    | 1.2                 | 6      | 0       | 2                 | 0.5                | 12          |      |                  |
+| Falx          | 75   | 14    | 1.8                 | 8      | 1       | 2                 | 0.8                | 7           |      |                  |
+| Polehammer    | 100  | 15    | 1                   | 8      | 2       | 2                 | 1                  | 11          |      |                  |
+| Staff         | 10   | 15    | 0                   | 3      | 3       | 2                 | 2                  | 7           |      |                  |
+| Spear         | 40   | 20    | 1                   | 4      | 4       | 1.5               | 1.5                | 7           |      |                  |
+| Pike          | 80   | 25    | 1                   | 5      | 5       | 1.5               | 1.5                | 9           |      |                  |
+| Sarissa       | 160  | 35    | 1                   | 7      | 3       | 2                 | 2                  | 12          |      |                  |
+| Sling         | 15   | 250   | 0                   | 3      | 1       | 1.8               | 1                  | 60          | 25   | 7                |
+| Javelin       | 100  | 125   | 0.5                 | 6      | 2       | 1.5               | 1                  | 20          | 3    | 5                |
+| Atlatl        | 150  | 175   | 0.5                 | 8      | 1       | 2                 | 1                  | 70          | 8    | 6                |
+| Shortbow      | 75   | 300   | 0.5                 | 4      | 1       | 2                 | 1                  | 70          | 15   | 10               |
+| Bow           | 125  | 350   | 0.5                 | 5      | 1       | 2                 | 1                  | 80          | 15   | 12               |
+| Longbow       | 200  | 400   | 0.5                 | 6      | 1       | 2.5               | 1                  | 90          | 15   | 14               |
+| Crossbow      | 250  | 450   | 1.5                 | 10     | 1       | 1                 | 1                  | 200         | 15   | 20               |
+| Sling Staff   | 60   | 300   | 0                   | 5      | 2       | 2                 | 1                  | 60          | 20   | 12               |
+| Cloth Armor   | 100  |       | 0                   |        | 2       |                   | 0.5                |             |      |                  |
+| Padded Armor  | 200  |       | 0                   |        | 3       |                   | 0.5                |             |      |                  |
+| Leather Armor | 300  |       | 0                   |        | 4       |                   | 0.4                |             |      |                  |
+| Wood Armor    | 300  |       | 0                   |        | 5       |                   | 0.3                |             |      |                  |
+| Chainmail     | 1000 |       | 1                   |        | 8       |                   | 0.25               |             |      |                  |
+| Plate         | 2000 |       | 2                   |        | 12      |                   | 0.15               |             |      |                  |
+|               |      |       |                     |        |         |                   |                    |             |      |                  |
 
 #Religion
 Religions can be either monotheistic or polytheistic, but this affects nothing game mechanics wise.
