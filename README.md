@@ -77,9 +77,7 @@ Cities are the building blocks of nations. Each city contains some amount of peo
 Cells can only contain a certain number of buildings in them, although this limit can be increased by researches (see the Tech section for more details). Cells by default can contain a total of 100.
 
 Cities contain buildings as well. There following are the types of buildings and their associated bonuses/costs:
-<| Header One     | Header Two     |
-| :------------- | :------------- |
-| Item One       | Item Two       |>
+
 
 | Name          	| Population 	| Tax Score 	| Food 	| Wood 	| Leather 	| Cloth 	| Metal 	| Money 	| Caravan Chance 	| Size 	| Cost 	| Research Rate 	|
 |---------------	|------------	|-----------	|------	|------	|---------	|-------	|-------	|-------	|----------------	|------	|------	|---------------	|
