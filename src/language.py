@@ -170,13 +170,13 @@ class Language:
         if len(self.last_names) == 0:
             self.last_names.append(self.make_word(self.name_length, True))
 
-        if random.randint(0, 10) == 0:
+        if random.randint(0, 2) == 0:
             first_name = self.make_word(self.name_length, True)
             self.first_names.append(first_name)
         else:
             first_name = random.choice(self.first_names)
 
-        if random.randint(0, 10) == 0:
+        if random.randint(0, 2) == 0:
             last_name = self.make_word(self.name_length, True)
             self.last_names.append(last_name)
         else:
@@ -264,7 +264,7 @@ class Language:
     def translateToLanguage(self, otherWord):
         if otherWord in self.toDictionary:
             return self.toDictionary[otherWord]
-        elif otherWord in self.first_names or otherWord in self.last_names:
+        elif otherWord in map(lambda i: i.lower(), self.first_names) or otherWord in map(lambda i: i.lower(), self.last_names):
             return otherWord
         else:
             result = self.make_word(len(otherWord))

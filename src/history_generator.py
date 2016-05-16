@@ -337,7 +337,7 @@ class Main:
             self.write_out_events('event_log.txt')
 
     def get_current_date(self):
-        return (self.year, self.month, self.day, self.hour, self.minute)
+        return (self.year, self.month, self.day)
 
     def write_out_events(self, filename):
         with open(filename, 'w' if self.month == 1 and self.year == 1 else 'a') as f:
@@ -366,7 +366,7 @@ class Main:
 
                 distance_to_enemy = utility.distance(a.get_average_city_position(), b.get_average_city_position())
 
-                print('Declared war on enemy who is: {} away'.format(distance_to_enemy))
+                # print('Declared war on enemy who is: {} away'.format(distance_to_enemy))
 
                 if is_holy_war:
                     print("{}: {} has started a holy war with {} because of religious differences.".format(self.get_current_date, a.name, b.name))

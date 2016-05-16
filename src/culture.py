@@ -4,28 +4,48 @@ import re
 
 ART_CATEGORIES = {'artist': ['drawing', 'statue'],
                   'writer': ['play', 'novel', 'essay', 'poem'],
-                  'composer': ['song', 'musical']}
+                  'composer': ['song', 'musical'],
+                  'philosopher': ['essay']}
 
 # Painting intentionally included twice, because it makes art more likely to be a painting.
 ART_STYLES = {'drawing': ['painting', 'painting', 'fresco', 'woodblock print', 'sketch']}
 ART_SUBCATEGORIES = {'drawing': ['portrait', 'landscape', 'allegorical', 'abstract']}
 
+ART_MATERIALS = {'painting': ['<paint> on <medium>'],
+                 'sketch': ['<sketch> on <medium>'],
+                 'statue': ['<material>']}
+
 ART_SUBJECTS = {'landscape': ['<cap><nature>'],
-                'portrait': ['<cap><notable_person>'],
+                'portrait': ['<cap><notable_person|notable_person_role>'],
                 'allegorical': ['<cap><taste|touch|smell|hearing|sight>'],
-                'statue': ['<cap><god|animal|notable_person>'],
+                'statue': ['<cap><god|animal|notable_person|notable_person_role>'],
                 'song': ['Song'],
-                'musical': ['Sir <name>', 'The <Tale|Story|Song> of <notable_person|god>', 'The <Song|Story> of the <cap><animal>'],
-                'play': ['The Tale of <notable_person|god>', 'The Story of the <cap><animal>'],
-                'novel': ['The Tale of <notable_person|god>', 'The Story of the <cap><animal>'],
-                'essay': ['<On|Concerning> the <cap><animal|nature|philosophy>', 'A Critique of <cap><philosophy>', 'Defending <cap><philosophy>'],
-                'poem': ['<cap><animal|nature>', '<Ode|Song> <on|to> <article> <notable_person|animal|nature|god>', '<cap><gerund> <indef> <n>']}
+                'musical': ['<Sir,> <name>', 'The <Tale|Story|Song> of <notable_person|god|notable_person_role>',
+                            'The <Song|Story> of the <cap><animal>'],
+                'play': ['The Tale of <notable_person|god|notable_person_role>',
+                         'The Story of the <cap><animal>'],
+                'novel': ['The Tale of <notable_person|god|notable_person_role>',
+                          'The Story of the <cap><animal>', '<cap><article> <adj,> <n>',
+                          '<cap><article> <gerund,> <n>'],
+                'essay': ['<On|Concerning> the <cap><animal|nature|philosophy>',
+                          'A Critique of <cap><philosophy|art>',
+                          '<Defending|Against> <cap><art|art_creator|philosophy>'],
+                'poem': ['<cap><animal|nature>', '<Ode|Song> <on|to> <article> <notable_person|animal|nature|god>',
+                         '<cap><gerund> <indef> <n>', '<cap><article> <adj,> <n>']}
+
+MEDIUMS = ['canvas', 'canvas', 'beaverboard', 'wood', 'paper']
+PAINTS = ['tempera', 'oil', 'watercolor']
+SKETCHING = ['charcoal', 'pencil']
+
+# For statues
+MATERIALS = ['marble', 'rock', 'bronze', 'copper', 'tin', 'wood', 'glass']
 
 ANIMALS = ['dog', 'cat', 'bear', 'wolf', 'bird', 'sparrow', 'hawk', 'eagle',
            'tiger', 'lion', 'elephant', 'alligator', 'pig', 'spider', 'ant',
            'bee', 'panther', 'snake', 'crocodile', 'worm', 'fish', 'shark']
 NATURE = ['tree', 'flower', 'rose', 'grass', 'trees', 'stump', 'cactus', 'wind',
-          'sky', 'ground', 'earth', 'sun']
+          'sky', 'ground', 'earth', 'sun', 'ocean', 'sea', 'lake', 'pond',
+          'water', 'mountain']
 PHILOSOPHIES = ['skepticism', 'romanticism', 'modernism', 'altruism']
 
 NOUNS = ['dog', 'cat', 'bear', 'wolf', 'cabinet', 'table', 'paper', 'light',
@@ -35,20 +55,20 @@ NOUNS = ['dog', 'cat', 'bear', 'wolf', 'cabinet', 'table', 'paper', 'light',
          'pomegranate', 'clock', 'warrior', 'fighter', 'soldier', 'artist',
          'tailor', 'king', 'queen', 'prince', 'princess', 'duke', 'merchant',
          'beggar', 'craftsman', 'spear', 'dagger', 'cart', 'wagon', 'horse',
-         'building', 'tower', 'castle']
+         'building', 'tower', 'castle', 'hail', 'water']
 ADJECTIVES = ['red', 'blue', 'green', 'yellow', 'orange', 'purple', 'white',
               'black', 'fast', 'intelligent', 'blank', 'empty', 'hollow',
               'poetic', 'short', 'tall', 'epic', 'scarlet', 'wide', 'long',
-              'narrow', 'grey']
+              'narrow', 'grey', 'violet', 'small', 'great']
 VERBS = ['runs', 'walks', 'looks', 'drops', 'causes', 'rains', 'flies', 'makes',
-         'precipitates', 'fights',
+         'precipitates', 'fights', 'takes', 'snows',
          'writes', 'reads', 'talks', 'speaks', 'transfixes', 'rolls']
 GERUNDS = ['running', 'walking', 'looking', 'causing', 'raining', 'flying', 'making',
            'precipitating', 'writing', 'reading', 'talking', 'speaking', 'rolling',
-           'fighting']
+           'fighting', 'taking', 'snowing']
 PAST_PARTICIPLES = ['ran', 'walked', 'looked', 'dropped', 'caused', 'rained', 'flown',
-              'made', 'precipitated', 'wrote', 'read', 'talked', 'spoken', 'rolled',
-              'fought']
+                    'made', 'precipitated', 'wrote', 'read', 'talked', 'spoken', 'rolled',
+                    'fought', 'taken', 'snowed']
 PREPOSITIONS = ['around', 'in', 'of', 'by', 'under', 'above', 'before', 'at', 'with']
 
 PREPOSITION_FORMS = ['<article> <gerund> <n>', '<article> <n>',
@@ -77,6 +97,14 @@ def gen_form(form, nation=None):
     form = form.replace('<> ', '')
     form = form.replace('<>', '')
 
+    while '<paint>' in form:
+        form = form.replace('<paint>', random.choice(PAINTS), 1)
+    while '<medium>' in form:
+        form = form.replace('<medium>', random.choice(MEDIUMS), 1)
+    while '<sketch>' in form:
+        form = form.replace('<sketch>', random.choice(SKETCHING), 1)
+    while '<material>' in form:
+        form = form.replace('<material>', random.choice(MATERIALS), 1)
     while '<animal>' in form:
         form = form.replace('<animal>', random.choice(ANIMALS), 1)
     while '<nature>' in form:
@@ -88,6 +116,12 @@ def gen_form(form, nation=None):
             form = form.replace('<notable_person>', random.choice(nation.notable_people).name, 1)
         else:
             form = form.replace('<notable_person>', '')
+    while '<notable_person_role>' in form:
+        if nation != None:
+            person = random.choice(nation.notable_people)
+            form = form.replace('<notable_person_role>', '{} the {}'.format(person.name, person.role), 1)
+        else:
+            form = form.replace('<notable_person_role>', '')
     while '<god>' in form:
         if nation != None:
             form = form.replace('<god>', random.choice(nation.religion.gods).name, 1)
@@ -98,6 +132,17 @@ def gen_form(form, nation=None):
             form = form.replace('<name>', nation.language.generate_name(), 1)
         else:
             form = form.replace('<name>', '')
+    while '<art>' in form:
+        if nation != None:
+            form = form.replace('<art>', '\'{}\''.format(random.choice(nation.art).subject), 1)
+        else:
+            form = form.replace('<art>', '')
+    while '<art_creator>' in form:
+        if nation != None:
+            art = random.choice(nation.art)
+            form = form.replace('<art_creator>', '{}\'s \'{}\''.format(art.creator.name, art.subject), 1)
+        else:
+            form = form.replace('<art_creator>', '')
     while '<n>' in form:
         form = form.replace('<n>', random.choice(NOUNS), 1)
     while '<v>' in form:
@@ -176,6 +221,7 @@ def create_art(nation, creator):
     style = ''
     sub_category = ''
     subject = ''
+    material = ''
 
     if category == 'drawing':
         style = random.choice(ART_STYLES[category])
@@ -188,12 +234,15 @@ def create_art(nation, creator):
     else:
         subject = gen_form(random.choice(ART_SUBJECTS[category]), nation=nation)
 
+    if style in ART_MATERIALS:
+        material = gen_form(random.choice(ART_MATERIALS[style]), nation=nation)
+
     name = nation.language.translateTo(subject)
 
-    return Art(nation, creator, name, subject, category, style, sub_category)
+    return Art(nation, creator, name, subject, category, style, sub_category, material)
 
 class Art:
-    def __init__(self, nation, creator, name, subject, category, style, sub_category):
+    def __init__(self, nation, creator, name, subject, category, style, sub_category, material):
         self.nation = nation
         self.creator = creator
 
@@ -206,11 +255,13 @@ class Art:
 
         self.subject = subject
 
+        self.material = material
+
     def __repr__(self):
         if self.category in ['drawing']:
-            return '{} ({}) by {}. It is a {} {}.'.format(self.name, self.subject, self.creator.name, self.sub_category, self.style)
+            return '{} ({}) by {}. It is a {} {}, made with {}.'.format(self.name, self.subject, self.creator.name, self.sub_category, self.style, self.material)
         elif self.category in ['statue']:
-            return '{} ({}) by {}. This {} is a {}.'.format(self.name, self.subject, self.creator.name, self.category, self.category)
+            return '{} ({}) by {}. It is a {}, made of {}.'.format(self.name, self.subject, self.creator.name, self.category, self.material)
         elif self.category in ['song', 'musical']:
             return '{} ({}) by {}. It is a {}.'.format(self.name, self.subject, self.creator.name, self.category)
         elif self.category in ['play', 'novel', 'essay', 'poem']:

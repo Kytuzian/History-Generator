@@ -344,14 +344,15 @@ class Nation:
         self.mod_morale(self.ruler.effectiveness**2)
 
         for person in self.notable_people:
-            if person.alive or not person == self.ruler:
-                if person.role == 'scientist':
-                    amount = person.effectiveness**2 * SCIENTIST_RESEARCH_BONUS
-                    if self.current_research != None:
-                        self.current_research.do_research(amount)
-                elif person.role == 'revolutionary':
-                    self.mod_morale(-person.effectiveness**2)
-                elif person.role in ['artist', 'writer', 'composer']:
+            if person.alive:
+                if not person == self.ruler:
+                    if person.role == 'scientist':
+                        amount = person.effectiveness**2 * SCIENTIST_RESEARCH_BONUS
+                        if self.current_research != None:
+                            self.current_research.do_research(amount)
+                    elif person.role == 'revolutionary':
+                        self.mod_morale(-person.effectiveness**2)
+                if person.role in ['artist', 'writer', 'composer', 'philosopher']:
                     if random.randint(0, ART_CREATE_CHANCE) == 0:
                         self.art.append(culture.create_art(self, person))
 

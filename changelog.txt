@@ -10,9 +10,11 @@ Minor changes:
 - Added a research that increases the amount of building space available.
 - Decreased chance of war declarations.
 - Added composers.
+- Simplified date to (year, month, day) (instead of (year, month, day, hour, minute)).
 - Changed the rainfall generation print out to a progress bar.
 
 Bug fixes:
+- Fixed bug where dead people still did things.
 
 2016-05-10
 Major changes:
