@@ -77,22 +77,22 @@ Cities are the building blocks of nations. Each city contains some amount of peo
 Cells can only contain a certain number of buildings in them, although this limit can be increased by researches (see the Tech section for more details). Cells by default can contain a total of 100.
 
 Cities contain buildings as well. There following are the types of buildings and their associated bonuses/costs:
-| Name          | Population | Tax Score | Food | Wood | Leather | Cloth | Metal | Money | Caravan Chance | Size | Cost | Research Rate |
-|---------------|------------|-----------|------|------|---------|-------|-------|-------|----------------|------|------|---------------|
-| House         | 10         | 10        |      |      |         |       |       |       |                | 5    | 50   |               |
-| Farm          | 5          |           | 60   |      |         |       |       |       |                | 20   | 200  |               |
-| Tavern        | 5          |           |      |      |         |       |       | 1200  |                | 50   | 500  |               |
-| Fishery       | 2          |           | 125  |      |         |       |       |       |                | 40   | 200  |               |
-| Ranch         | 2          |           | 125  |      |         |       |       |       |                | 50   | 300  |               |
-| Hunting Lodge | 2          |           | 50   |      |         |       |       |       |                | 20   | 50   |               |
-| Leatherworker | 2          |           |      |      | 5       |       |       | 200   |                | 5    | 300  |               |
-| Weaver        | 2          |           |      |      |         | 5     |       | 200   |                | 5    | 300  |               |
-| Woodcutter    | 2          |           |      | 5    |         |       |       | 200   |                | 50   | 300  |               |
-| Mine          | 8          |           |      |      |         |       | 3     | 1000  |                | 90   | 1000 |               |
-| Library       | 4          |           |      |      |         |       |       |       |                | 90   | 1000 | 2             |
-| Lab           | 2          |           |      |      |         |       |       |       |                | 75   | 1000 | 5             |
-| Market        |            | 100       |      |      |         |       |       | 1000  |                | 60   | 1500 |               |
-| Caravansary   | 5          |           |      |      |         |       |       |       | 20             | 90   | 2000 |               |
+| Name          	| Population 	| Tax Score 	| Food 	| Wood 	| Leather 	| Cloth 	| Metal 	| Money 	| Caravan Chance 	| Size 	| Cost 	| Research Rate 	|
+|---------------	|------------	|-----------	|------	|------	|---------	|-------	|-------	|-------	|----------------	|------	|------	|---------------	|
+| House         	| 10         	| 10        	|      	|      	|         	|       	|       	|       	|                	| 5    	| 50   	|               	|
+| Farm          	| 5          	|           	| 60   	|      	|         	|       	|       	|       	|                	| 20   	| 200  	|               	|
+| Tavern        	| 5          	|           	|      	|      	|         	|       	|       	| 1200  	|                	| 50   	| 500  	|               	|
+| Fishery       	| 2          	|           	| 125  	|      	|         	|       	|       	|       	|                	| 40   	| 200  	|               	|
+| Ranch         	| 2          	|           	| 125  	|      	|         	|       	|       	|       	|                	| 50   	| 300  	|               	|
+| Hunting Lodge 	| 2          	|           	| 50   	|      	|         	|       	|       	|       	|                	| 20   	| 50   	|               	|
+| Leatherworker 	| 2          	|           	|      	|      	| 5       	|       	|       	| 200   	|                	| 5    	| 300  	|               	|
+| Weaver        	| 2          	|           	|      	|      	|         	| 5     	|       	| 200   	|                	| 5    	| 300  	|               	|
+| Woodcutter    	| 2          	|           	|      	| 5    	|         	|       	|       	| 200   	|                	| 50   	| 300  	|               	|
+| Mine          	| 8          	|           	|      	|      	|         	|       	| 3     	| 1000  	|                	| 90   	| 1000 	|               	|
+| Library       	| 4          	|           	|      	|      	|         	|       	|       	|       	|                	| 90   	| 1000 	| 2             	|
+| Lab           	| 2          	|           	|      	|      	|         	|       	|       	|       	|                	| 75   	| 1000 	| 5             	|
+| Market        	|            	| 100       	|      	|      	|         	|       	|       	| 1000  	|                	| 60   	| 1500 	|               	|
+| Caravansary   	| 5          	|           	|      	|      	|         	|       	|       	|       	| 20             	| 90   	| 2000 	|               	|
 
 #Army
 A tree of unit types/numbers.
