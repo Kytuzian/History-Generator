@@ -179,3 +179,122 @@ Steps to create a new word:
 2. Choose a starting letter from the above list. This is the first letter of the word
 3. Fill the middle of the words with either vowels or a letter section.
 4. End the word with one of the letters in the ending letters list
+
+#Art Details
+Each art type has an associated list of possible titles/subjects (they're the same thing, at the moment).
+The possibilities are listed below.
+
+Every word will either be a tag (enclosed in angle brackets), or some text not enclosed in angle brackets. Text that is not enclosed in angle brackets is simply whatever it says (for example 'hello' is just 'hello').
+
+Note: If anyone is interested in contributing to the lists of words, that would be pretty swell.
+Tags (most randomly choose between the options):
+
+<paint>
+: A type of paint, currently one of: tempera, oil, watercolor.
+<medium>
+: An artistic medium, such as canvas, wood, paper, et cetera.
+<sketch>
+: Either pencil or charcoal (sketching materials).
+<material>
+: A material that statues are commonly made of out (marble, wood, bronze)
+<animal>
+: An animal. This list is not extensive, and will frequently be extended.
+<nature>
+: Something that is not an animal in nature (includes things like wind, the ocean, and trees).
+<philosophy>
+: Philosophies (modernism, stoicism). Also not an extensive list.
+<notable_person>
+: A notable person from the same country as the artist.
+<notable_person_role>
+: A notable person from the same country as the artist, and also their role (ex. John the writer)
+<god>
+: A god from the pantheon of the artist's home country.
+<name>
+: A randomly generated name, created from the language of the artist's home country.
+<art>
+: A work of art from the artist's home country, not necessarily created by the artist himself, with the title in quotes.
+<art_creator>
+: Same as <art>, except includes the creator's name (ex. Botticelli's 'Birth of Venus', Dali's 'Persistence of Memory')
+<place>
+: The name of some city in the world.
+<nation_place>
+: The name of some city in the artists home country.
+<n>
+: A noun. This list is not extensive.
+<v>
+: A present tense verb, conjugated for singular subjects (ex. speaks, rather thank speak, spoke, spoken)
+<prep>
+: A preposition (in, with, around). Not extensive.
+<ppart>
+: A past participle (spoken, talked, sung). Not extensive.
+<gerund>
+: A gerund. (speaking, talking, singing). Not extensive.
+<adj>
+: An adjective.
+<article>
+: An article (definite or indefinite).
+<indef>
+: An indefinite article ('a' or 'an' depending on the first letter of the next word.)
+<cap>
+: Capitalizes the first letter of the next word.
+<option1|option2|option3>
+: Chooses one of the options.
+<option1,option2,option3>
+: Chooses at least one of the options. Options can be left empty, to leave a chance to choose nothing (<option1,,option2>).
+
+For example:
+<cap><article> <Tale|Story> of <notable_person|god|notable_person_role|place>
+
+Will generate an article, capitalize the first letter, then choose either 'Tale' or 'Story', then choose a notable person, god, notable person and their role, or a city from the world. It doesn't actually execute in that order, but that's not particularly important.
+
+This could generate (assuming Zeus is in the gods list, Robin Hood is in the notable person list, or London is in the place list):
+The Tale of Zeus OR
+A Story of Robin Hood OR
+The Story of London
+
+The possible titles for art are listed below:
+
+- Landscape
+    - <cap><nature>
+- Portrait
+    - <cap><god|notable_person|notable_person_role>
+- Allegorical
+    - <cap><taste|touch|smell|hearing|sight>
+- Statue
+    - <cap><god|animal|notable_person|notable_person_role>
+- Song
+    - <cap><animal|nature|n|god|name|notable_person|notable_person_role>
+- Musical
+    - <Sir,> <name>
+    - The <Tale|Story|Song> of <notable_person|god|notable_person_role|place>
+    - The <Song|Story> of the <cap><animal>
+    - <name|notable_person|notable_person_role> in <place>
+    - <name|notable_person|notable_person_role>
+    - The <cap><n> of <name|notable_person|notable_person_role>
+- Play
+    - The Tale of <notable_person|god|notable_person_role>
+    - The Story of the <cap><animal>
+    - <name|notable_person|notable_person_role>
+    - The <cap><n> of <name|notable_person|notable_person_role|place>
+- Novel
+    - <cap><article> <Tale|Story> of <notable_person|god|notable_person_role|place>
+    - The Story of the <cap><animal>
+    - <cap><article> <adj,> <cap><n>
+    - <cap><article> <gerund,> <cap><n>
+    - <name|notable_person|notable_person_role>
+    - <cap><place>
+    - The <cap><n> of <name|notable_person|notable_person_role>'
+    - <name|notable_person|notable_person_role> with <name|notable_person|notable_person_role>
+- Essay
+    - <On|Concerning> the <cap><animal|nature|philosophy>
+    - A Critique of <cap><philosophy|art>
+    - <cap><philosophy> in <cap><art|art_creator|philosophy|art>
+    - <Defending|Against> <cap><art|art_creator|philosophy>
+    - The <Rise|Fall> of <cap><philosophy>
+- Poem
+    - '<cap><animal|nature>
+    - <Ode|Song> <on|to> <notable_person|god|place>
+    - <Ode|Song> <on|to> <article> <animal|nature>
+    - <cap><gerund> <indef> <cap><n>', '<cap><article> <adj,> <cap><n>
+    - <name|notable_person|notable_person_role>
+    - The <cap><n> of <name|notable_person|notable_person_role>

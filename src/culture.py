@@ -16,34 +16,38 @@ ART_MATERIALS = {'painting': ['<paint> on <medium>'],
                  'statue': ['<material>']}
 
 ART_SUBJECTS = {'landscape': ['<cap><nature>'],
-                'portrait': ['<cap><notable_person|notable_person_role>'],
+                'portrait': ['<cap><god|notable_person|notable_person_role>'],
                 'allegorical': ['<cap><taste|touch|smell|hearing|sight>'],
                 'statue': ['<cap><god|animal|notable_person|notable_person_role>'],
-                'song': ['Song'],
-                'musical': ['<Sir,> <name>', 'The <Tale|Story|Song> of <notable_person|god|notable_person_role>',
+                'song': ['<cap><animal|nature|n|god|name|notable_person|notable_person_role>'],
+                'musical': ['<Sir,> <name>', 'The <Tale|Story|Song> of <notable_person|god|notable_person_role|place>',
                             'The <Song|Story> of the <cap><animal>',
+                            '<name|notable_person|notable_person_role> in <place>',
                             '<name|notable_person|notable_person_role>',
                             'The <cap><n> of <name|notable_person|notable_person_role>'],
                 'play': ['The Tale of <notable_person|god|notable_person_role>',
                          'The Story of the <cap><animal>',
                          '<name|notable_person|notable_person_role>',
-                         'The <cap><n> of <name|notable_person|notable_person_role>'],
-                'novel': ['The Tale of <notable_person|god|notable_person_role>',
+                         'The <cap><n> of <name|notable_person|notable_person_role|place>'],
+                'novel': ['<cap><article> <Tale|Story> of <notable_person|god|notable_person_role|place>',
                           'The Story of the <cap><animal>', '<cap><article> <adj,> <cap><n>',
                           '<cap><article> <gerund,> <cap><n>',
                           '<name|notable_person|notable_person_role>',
-                          'The <cap><n> of <name|notable_person|notable_person_role>'],
+                          '<cap><place>',
+                          'The <cap><n> of <name|notable_person|notable_person_role>',
+                          '<name|notable_person|notable_person_role> with <name|notable_person|notable_person_role>'],
                 'essay': ['<On|Concerning> the <cap><animal|nature|philosophy>',
                           'A Critique of <cap><philosophy|art>',
-                          '<cap><philosophy> in <art|art_creator|philosophy|art>',
-                          '<Defending|Against> <cap><art|art_creator|philosophy>'],
-                'poem': ['<cap><animal|nature>', '<Ode|Song> <on|to> <notable_person|god>',
+                          '<cap><philosophy> in <cap><art|art_creator|philosophy|art>',
+                          '<Defending|Against> <cap><art|art_creator|philosophy>',
+                          'The <Rise|Fall> of <cap><philosophy>'],
+                'poem': ['<cap><animal|nature>', '<Ode|Song> <on|to> <notable_person|god|place>',
                          '<Ode|Song> <on|to> <article> <animal|nature>'
                          '<cap><gerund> <indef> <cap><n>', '<cap><article> <adj,> <cap><n>',
                          '<name|notable_person|notable_person_role>',
                          'The <cap><n> of <name|notable_person|notable_person_role>']}
 
-MEDIUMS = ['canvas', 'canvas', 'beaverboard', 'wood', 'paper']
+MEDIUMS = ['canvas', 'canvas', 'beaverboard', 'wood', 'paper', 'panel']
 PAINTS = ['tempera', 'oil', 'watercolor']
 SKETCHING = ['charcoal', 'pencil']
 
@@ -56,20 +60,27 @@ ANIMALS = ['dog', 'cat', 'bear', 'wolf', 'bird', 'sparrow', 'hawk', 'eagle',
 NATURE = ['tree', 'flower', 'rose', 'grass', 'trees', 'stump', 'cactus', 'wind',
           'sky', 'ground', 'earth', 'sun', 'ocean', 'sea', 'lake', 'pond',
           'water', 'mountain']
-PHILOSOPHIES = ['skepticism', 'romanticism', 'modernism', 'altruism']
+PHILOSOPHIES = ['skepticism', 'romanticism', 'modernism', 'stoicism', 'altruism',
+                'capitalism', 'socialism']
 
 NOUNS = ['dog', 'cat', 'bear', 'wolf', 'cabinet', 'table', 'paper', 'light',
          'forest', 'trees', 'tree', 'time', 'society', 'bird', 'robin', 'sparrow',
          'snow', 'rain', 'library', 'python', 'sword', 'book', 'emptiness', 'hollowness',
-         'chair', 'shirt', 'dress', 'floor', 'bee', 'grapefruit',
+         'chair', 'shirt', 'dress', 'floor', 'bee', 'grapefruit', 'fight', 'battle',
+         'art',
          'pomegranate', 'clock', 'warrior', 'fighter', 'soldier', 'artist',
          'tailor', 'king', 'queen', 'prince', 'princess', 'duke', 'merchant',
          'beggar', 'craftsman', 'spear', 'dagger', 'cart', 'wagon', 'horse',
-         'building', 'tower', 'castle', 'hail', 'water']
+         'building', 'tower', 'castle', 'hail', 'water', 'skeptic', 'capital',
+         'altruist', 'romantic']
 ADJECTIVES = ['red', 'blue', 'green', 'yellow', 'orange', 'purple', 'white',
               'black', 'fast', 'intelligent', 'blank', 'empty', 'hollow',
               'poetic', 'short', 'tall', 'epic', 'scarlet', 'wide', 'long',
-              'narrow', 'grey', 'violet', 'small', 'great']
+              'narrow', 'grey', 'violet', 'small', 'great', 'strong', 'mighty',
+              'romantic', 'social', 'stoic', 'modern', ]
+BASE_VERBS = ['run', 'walk', 'look', 'drop', 'cause', 'rain', 'fly', 'make',
+              'precipitate', 'fight', 'take', 'snow',
+              'write', 'read', 'talk', 'speak', 'transfix', 'roll']
 VERBS = ['runs', 'walks', 'looks', 'drops', 'causes', 'rains', 'flies', 'makes',
          'precipitates', 'fights', 'takes', 'snows',
          'writes', 'reads', 'talks', 'speaks', 'transfixes', 'rolls']
@@ -89,6 +100,13 @@ PREPOSITION_FORMS = ['<article> <gerund> <n>', '<article> <n>',
 BEGINNING_FORMS = ['<article> <adj,adj,gerund> <n> <v,>']
 
 CONJUCTIONS = ['and', 'or', 'while', 'because']
+
+# This order matters.
+# Verbs, gerunds, and past participles must be after base verbs, to properly get the -ing suffix.
+# Philosophies must be at the end to get the -ism suffix.
+base_words = MEDIUMS + PAINTS + SKETCHING + MATERIALS + ANIMALS + NATURE +\
+             NOUNS + ADJECTIVES + BASE_VERBS + VERBS + GERUNDS + PAST_PARTICIPLES + PREPOSITIONS +\
+             CONJUCTIONS + PHILOSOPHIES
 
 def is_valid(nation):
     def f(choice):
@@ -115,7 +133,7 @@ def gen_form(form, nation=None):
     for select in selectTags:
         valid_select = filter(is_valid(nation), select)
         search = '<' + ','.join(select) + '>'
-        replacement = '<{}>'.format('> <'.join(random.sample(valid_select, random.randint(0, len(valid_select)))))
+        replacement = '<{}>'.format('> <'.join(random.sample(valid_select, random.randint(1, len(valid_select)))))
 
         form = form.replace(search, replacement, 1)
 
@@ -168,10 +186,22 @@ def gen_form(form, nation=None):
             form = form.replace('<art_creator>', '{}\'s \'{}\''.format(art.creator.name, art.subject), 1)
         else:
             form = form.replace('<art_creator>', '')
+    while '<place>' in form:
+        if nation != None:
+            form = form.replace('<place>', random.choice(nation.parent.get_all_cities()).name, 1)
+        else:
+            form = form.replace('<place>', '')
+    while '<nation_place>' in form:
+        if nation != None:
+            form = form.replace('<nation_place>', random.choice(nation.cities).name, 1)
+        else:
+            form = form.replace('<nation_place>', '')
     while '<n>' in form:
         form = form.replace('<n>', random.choice(NOUNS), 1)
     while '<v>' in form:
         form = form.replace('<v>', random.choice(VERBS), 1)
+    while '<prep>' in form:
+        form = form.replace('<prep>', random.choice(PREPOSITIONS), 1)
     while '<ppart>' in form:
         form = form.replace('<ppart>', random.choice(PAST_PARTICIPLES), 1)
     while '<gerund>' in form:

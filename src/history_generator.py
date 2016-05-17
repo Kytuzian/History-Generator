@@ -10,17 +10,19 @@ import sys
 import cProfile
 
 import utility
+
 from nation import *
 from city import *
 from martial import *
 from battle import *
 from language import *
+
+import culture
 import events
 import event_analysis
+import terrain
 
 import noise
-
-import terrain
 
 DEFAULT_SIMULATION_SPEED = 300 #ms
 
@@ -204,6 +206,12 @@ class Main:
                 nation.show_information_gui()
 
                 break
+
+    def get_all_cities(self):
+        res = []
+        for nation in self.nations:
+            res.extend(nation.cities)
+        return res
 
     def available_colors(self):
         #For the deep copy

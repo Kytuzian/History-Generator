@@ -1,11 +1,6 @@
 #People
 - Generals
 - Judges
-- Priests/oracles/seers
-- Kings/dukes/leaders
-- Artists/writers/intellectuals
-- Revolutionaries
-- Scientists
 - Heroes (achilles, cu chulainn, odysseus, et cetera)
 - People should live in cities, rather than just existing in the nation
 
@@ -23,33 +18,15 @@
 - Defenses (caltrops, stakes)
 - Terrain (hills, rivers, bridges, valleys)
 
-#Art
-- Music (see below)
-- Paintings
-- Frescoes
-- Tapestries
-- Statues
-
 #Natural disasters
 - Earthquakes
 - Tornadoes
 - Droughts/floods
 
 #Literature
-- Myths
-    - Creation
-    - Natural events
-    - Birth of gods
 - Fables
-- Fiction
-    - Historical
-    - Science fiction
-    - Romance
-- Poetry
 - History
 - Theologic
-- Essay
-- Plays
 
 #Non-human life
 - Wildlife
@@ -69,11 +46,6 @@
 #Religion
 - Rituals (specific to gods, and the whole religion in general)
     - Sacrifices: Animal, human
-
-#Music
-- Instruments
-- Songs
-- Musicals
 
 #Celebrations
 - Religious

@@ -3,6 +3,8 @@ from nation import *
 
 import random
 
+import culture
+
 from math import *
 
 vowel_sounds = ['ah', 'ae', 'aa', 'uh', 'eh', 'ee', 'ar', 'er', 'ow', 'ih', 'aw', 'oi',
@@ -92,7 +94,7 @@ class NationName:
         return self.get_name()
 
 class Language:
-    def __init__(self, name_length=random.randint(4, 10), base_language = None):
+    def __init__(self, start_words=culture.base_words, name_length=random.randint(4, 10), base_language = None):
         self.letters = []
         self.startLetters = []
         self.endLetters = []
@@ -102,8 +104,12 @@ class Language:
         self.first_names = []
         self.last_names = []
 
-        self.toDictionary = {}
-        self.fromDictionary = {}
+        self.to_dictionary = {}
+        self.to_prefix_dictionary = {}
+        self.to_suffix_dictionary = {}
+        self.from_dictionary = {}
+        self.from_prefix_dictionary = {}
+        self.from_suffix_dictionary = {}
 
         self.vowel_frequency = 0
 
@@ -113,6 +119,10 @@ class Language:
             self.create_from_language(base_language)
         else:
             self.create()
+
+        # Initialize it with all the base words.
+        for word in start_words:
+            print('{}: {}'.format(word, self.translateTo(word)))
 
     def __repr__(self):
         print("Letters", self.letters)
@@ -190,7 +200,7 @@ class Language:
     def chooseLetters(self):
         letters = "qwertyuiopasdfghjklzxcvbnm"
 
-        letterCount = random.randint(6, 2000)
+        letterCount = random.randint(6, 1000)
 
         result = []
 
@@ -210,7 +220,7 @@ class Language:
         return result
 
     def chooseLetterSections(self):
-        count = random.randint(10, 200)
+        count = random.randint(10, 100)
 
         result = []
 
@@ -230,17 +240,41 @@ class Language:
         return self.make_word(self.name_length, True)
 
     def make_word(self, rough_length, capitalize_first_letter=False):
+        # To make sure we don't have too many vowels in a row while creating a word.
+        def consec_vowels_at_end(word):
+            count = 0
+            for c in word[::-1]:
+                if c in 'aeiouy':
+                    count += 1
+                else:
+                    return count
+
+            return count
+        # To make sure we don't have too many consonants in a row while creating a word.
+        def consec_consonants_at_end(word):
+            count = 0
+            for c in word[::-1]:
+                if not (c in 'aeiouy'):
+                    count += 1
+                else:
+                    return count
+
+            return count
+
         result = ""
 
-        variance = random.randint(0, rough_length / 2)
-        length = random.randint(rough_length - variance, rough_length + variance)
+        variance = random.randint(0, rough_length + 1)
+        length = random.randint(rough_length - variance + 1, rough_length + variance + 1)
+
+        if rough_length > 1 and length == 1:
+            length = 2
 
         result += random.choice(self.startLetters)
 
-        for i in xrange(1, length - 1):
+        while len(result) < length:
             useSection = random.randint(0, 10)
 
-            if useSection > self.vowel_frequency:
+            if (useSection > self.vowel_frequency and consec_consonants_at_end(result) < 3) or (consec_vowels_at_end(result) > 2):
                 result += random.choice(self.letterSections)
             else:
                 result += random.choice(self.vowels)
@@ -261,22 +295,39 @@ class Language:
 
         return result
 
-    def translateToLanguage(self, otherWord):
-        if otherWord in self.toDictionary:
-            return self.toDictionary[otherWord]
-        elif otherWord in map(lambda i: i.lower(), self.first_names) or otherWord in map(lambda i: i.lower(), self.last_names):
-            return otherWord
+    def translateToLanguage(self, other_word):
+        if other_word in self.to_dictionary:
+            return self.to_dictionary[other_word]
+        elif other_word in map(lambda i: i.lower(), self.first_names) or other_word in map(lambda i: i.lower(), self.last_names):
+            return other_word
         else:
-            result = self.make_word(len(otherWord))
+            # Check for near matches (for example, jump might be in the dictionary, but jumping might not be).
+            # This should allow for more sensible plurals and possession.
 
-            self.toDictionary[otherWord] = result
-            self.fromDictionary[result] = otherWord
+            for word in self.to_dictionary:
+                if other_word.startswith(word):
+                    suffix = other_word[len(word):]
+                    if not suffix in self.to_suffix_dictionary:
+                        self.to_suffix_dictionary[suffix] = self.make_word(len(suffix))
+
+                    return self.to_dictionary[word] + self.to_suffix_dictionary[suffix]
+                # elif other_word.endswith(word):
+                #     prefix = other_word[:len(other_word) - len(word)]
+                #     if not prefix in self.to_prefix_dictionary:
+                #         self.to_prefix_dictionary[prefix] = self.make_word(len(prefix))
+                #
+                #     return self.to_prefix_dictionary[prefix] + self.to_dictionary[word]
+
+            result = self.make_word(len(other_word))
+
+            self.to_dictionary[other_word] = result
+            self.from_dictionary[result] = other_word
 
             return result
 
     def translateFromLanguage(self, word):
-        if word in self.fromDictionary:
-            return self.fromDictionary[word]
+        if word in self.from_dictionary:
+            return self.from_dictionary[word]
         else:
             print("Not a word!")
             return None
@@ -298,3 +349,5 @@ class Language:
             result += f(i) + " "
 
         return result[:-1]
+
+a = Language()
