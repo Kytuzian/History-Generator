@@ -189,58 +189,58 @@ Every word will either be a tag (enclosed in angle brackets), or some text not e
 Note: If anyone is interested in contributing to the lists of words, that would be pretty swell.
 Tags (most randomly choose between the options):
 
-`<paint>`
-: A type of paint, currently one of: tempera, oil, watercolor.
-`<medium>`
-: An artistic medium, such as canvas, wood, paper, et cetera.
-`<sketch>`
-: Either pencil or charcoal (sketching materials).
-`<material>`
-: A material that statues are commonly made of out (marble, wood, bronze)
-`<animal>`
-: An animal. This list is not extensive, and will frequently be extended.
-`<nature>`
-: Something that is not an animal in nature (includes things like wind, the ocean, and trees).
-`<philosophy>`
-: Philosophies (modernism, stoicism). Also not an extensive list.
-`<notable_person>`
-: A notable person from the same country as the artist.
-`<notable_person_role>`
-: A notable person from the same country as the artist, and also their role (ex. John the writer)
-`<god>`
-: A god from the pantheon of the artist's home country.
-`<name>`
-: A randomly generated name, created from the language of the artist's home country.
-`<art>`
-: A work of art from the artist's home country, not necessarily created by the artist himself, with the title in quotes.
-`<art_creator>`
-: Same as <art>, except includes the creator's name (ex. Botticelli's 'Birth of Venus', Dali's 'Persistence of Memory')
-`<place>`
-: The name of some city in the world.
-`<nation_place>`
-: The name of some city in the artists home country.
-`<n>`
-: A noun. This list is not extensive.
-`<v>`
-: A present tense verb, conjugated for singular subjects (ex. speaks, rather thank speak, spoke, spoken)
-`<prep>`
-: A preposition (in, with, around). Not extensive.
-`<ppart>`
-: A past participle (spoken, talked, sung). Not extensive.
-`<gerund>`
-: A gerund. (speaking, talking, singing). Not extensive.
-`<adj>`
-: An adjective.
-`<article>`
-: An article (definite or indefinite).
-`<indef>`
-: An indefinite article ('a' or 'an' depending on the first letter of the next word.)
-`<cap>`
-: Capitalizes the first letter of the next word.
-`<option1|option2|option3>`
-: Chooses one of the options.
-`<option1,option2,option3>`
-: Chooses at least one of the options. Options can be left empty, to leave a chance to choose nothing (`<option1,,option2>`).
+- `<paint>`
+    - A type of paint, currently one of: tempera, oil, watercolor.
+- `<medium>`
+    - An artistic medium, such as canvas, wood, paper, et cetera.
+- `<sketch>`
+    - Either pencil or charcoal (sketching materials).
+- `<material>`
+    - A material that statues are commonly made of out (marble, wood, bronze)
+- `<animal>`
+    - An animal. This list is not extensive, and will frequently be extended.
+- `<nature>`
+    - Something that is not an animal in nature (includes things like wind, the ocean, and trees).
+- `<philosophy>`
+    - Philosophies (modernism, stoicism). Also not an extensive list.
+- `<notable_person>`
+    - A notable person from the same country as the artist.
+- `<notable_person_role>`
+    - A notable person from the same country as the artist, and also their role (ex. John the writer)
+- `<god>`
+    - A god from the pantheon of the artist's home country.
+- `<name>`
+    - A randomly generated name, created from the language of the artist's home country.
+- `<art>`
+    - A work of art from the artist's home country, not necessarily created by the artist himself, with the title in quotes.
+- `<art_creator>`
+    - Same as <art>, except includes the creator's name (ex. Botticelli's 'Birth of Venus', Dali's 'Persistence of Memory')
+- `<place>`
+    - The name of some city in the world.
+- `<nation_place>`
+    - The name of some city in the artists home country.
+- `<n>`
+    - A noun. This list is not extensive.
+- `<v>`
+    - A present tense verb, conjugated for singular subjects (ex. speaks, rather thank speak, spoke, spoken)
+- `<prep>`
+    - A preposition (in, with, around). Not extensive.
+- `<ppart>`
+    - A past participle (spoken, talked, sung). Not extensive.
+- `<gerund>`
+    - A gerund. (speaking, talking, singing). Not extensive.
+- `<adj>`
+    - An adjective.
+- `<article>`
+    - An article (definite or indefinite).
+- `<indef>`
+    - An indefinite article ('a' or 'an' depending on the first letter of the next word.)
+- `<cap>`
+    - Capitalizes the first letter of the next word.
+- `<option1|option2|option3>`
+    - Chooses one of the options.
+- `<option1,option2,option3>`
+    - Chooses at least one of the options. Options can be left empty, to leave a chance to choose nothing (`<option1,,option2>`).
 
 For example:
 `<cap><article> <Tale|Story> of <notable_person|god|notable_person_role|place>`
