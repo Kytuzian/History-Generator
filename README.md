@@ -189,61 +189,61 @@ Every word will either be a tag (enclosed in angle brackets), or some text not e
 Note: If anyone is interested in contributing to the lists of words, that would be pretty swell.
 Tags (most randomly choose between the options):
 
-<paint>
+`<paint>`
 : A type of paint, currently one of: tempera, oil, watercolor.
-<medium>
+`<medium>`
 : An artistic medium, such as canvas, wood, paper, et cetera.
-<sketch>
+`<sketch>`
 : Either pencil or charcoal (sketching materials).
-<material>
+`<material>`
 : A material that statues are commonly made of out (marble, wood, bronze)
-<animal>
+`<animal>`
 : An animal. This list is not extensive, and will frequently be extended.
-<nature>
+`<nature>`
 : Something that is not an animal in nature (includes things like wind, the ocean, and trees).
-<philosophy>
+`<philosophy>`
 : Philosophies (modernism, stoicism). Also not an extensive list.
-<notable_person>
+`<notable_person>`
 : A notable person from the same country as the artist.
-<notable_person_role>
+`<notable_person_role>`
 : A notable person from the same country as the artist, and also their role (ex. John the writer)
-<god>
+`<god>`
 : A god from the pantheon of the artist's home country.
-<name>
+`<name>`
 : A randomly generated name, created from the language of the artist's home country.
-<art>
+`<art>`
 : A work of art from the artist's home country, not necessarily created by the artist himself, with the title in quotes.
-<art_creator>
+`<art_creator>`
 : Same as <art>, except includes the creator's name (ex. Botticelli's 'Birth of Venus', Dali's 'Persistence of Memory')
-<place>
+`<place>`
 : The name of some city in the world.
-<nation_place>
+`<nation_place>`
 : The name of some city in the artists home country.
-<n>
+`<n>`
 : A noun. This list is not extensive.
-<v>
+`<v>`
 : A present tense verb, conjugated for singular subjects (ex. speaks, rather thank speak, spoke, spoken)
-<prep>
+`<prep>`
 : A preposition (in, with, around). Not extensive.
-<ppart>
+`<ppart>`
 : A past participle (spoken, talked, sung). Not extensive.
-<gerund>
+`<gerund>`
 : A gerund. (speaking, talking, singing). Not extensive.
-<adj>
+`<adj>`
 : An adjective.
-<article>
+`<article>`
 : An article (definite or indefinite).
-<indef>
+`<indef>`
 : An indefinite article ('a' or 'an' depending on the first letter of the next word.)
-<cap>
+`<cap>`
 : Capitalizes the first letter of the next word.
-<option1|option2|option3>
+`<option1|option2|option3>`
 : Chooses one of the options.
-<option1,option2,option3>
-: Chooses at least one of the options. Options can be left empty, to leave a chance to choose nothing (<option1,,option2>).
+`<option1,option2,option3>`
+: Chooses at least one of the options. Options can be left empty, to leave a chance to choose nothing (`<option1,,option2>`).
 
 For example:
-<cap><article> <Tale|Story> of <notable_person|god|notable_person_role|place>
+`<cap><article> <Tale|Story> of <notable_person|god|notable_person_role|place>`
 
 Will generate an article, capitalize the first letter, then choose either 'Tale' or 'Story', then choose a notable person, god, notable person and their role, or a city from the world. It doesn't actually execute in that order, but that's not particularly important.
 
@@ -255,46 +255,47 @@ The Story of London
 The possible titles for art are listed below:
 
 - Landscape
-    - <cap><nature>
+    - `<cap><nature>`
 - Portrait
-    - <cap><god|notable_person|notable_person_role>
+    - `<cap><god|notable_person|notable_person_role>`
 - Allegorical
-    - <cap><taste|touch|smell|hearing|sight>
+    - `<cap><taste|touch|smell|hearing|sight>`
 - Statue
-    - <cap><god|animal|notable_person|notable_person_role>
+    - `<cap><god|animal|notable_person|notable_person_role>`
 - Song
-    - <cap><animal|nature|n|god|name|notable_person|notable_person_role>
+    - `<cap><animal|nature|n|god|name|notable_person|notable_person_role>`
 - Musical
-    - <Sir,> <name>
-    - The <Tale|Story|Song> of <notable_person|god|notable_person_role|place>
-    - The <Song|Story> of the <cap><animal>
-    - <name|notable_person|notable_person_role> in <place>
-    - <name|notable_person|notable_person_role>
-    - The <cap><n> of <name|notable_person|notable_person_role>
+    - `<Sir,> <name>`
+    - `The <Tale|Story|Song> of <notable_person|god|notable_person_role|place>`
+    - `The <Song|Story> of the <cap><animal>`
+    - `<name|notable_person|notable_person_role> in <place>`
+    - `<name|notable_person|notable_person_role>`
+    - `The <cap><n> of <name|notable_person|notable_person_role>`
 - Play
-    - The Tale of <notable_person|god|notable_person_role>
-    - The Story of the <cap><animal>
-    - <name|notable_person|notable_person_role>
-    - The <cap><n> of <name|notable_person|notable_person_role|place>
+    - `The Tale of <notable_person|god|notable_person_role>`
+    - `The Story of the <cap><animal>`
+    - `<name|notable_person|notable_person_role>`
+    - `The <cap><n> of <name|notable_person|notable_person_role|place>`
 - Novel
-    - <cap><article> <Tale|Story> of <notable_person|god|notable_person_role|place>
-    - The Story of the <cap><animal>
-    - <cap><article> <adj,> <cap><n>
-    - <cap><article> <gerund,> <cap><n>
-    - <name|notable_person|notable_person_role>
-    - <cap><place>
-    - The <cap><n> of <name|notable_person|notable_person_role>'
-    - <name|notable_person|notable_person_role> with <name|notable_person|notable_person_role>
+    - `<cap><article> <Tale|Story> of <notable_person|god|notable_person_role|place>`
+    - `The Story of the <cap><animal>`
+    - `<cap><article> <adj,> <cap><n>`
+    - `<cap><article> <gerund,> <cap><n>`
+    - `<name|notable_person|notable_person_role>`
+    - `<cap><place>`
+    - `The <cap><n> of <name|notable_person|notable_person_role>`
+    - `<name|notable_person|notable_person_role> with <name|notable_person|notable_person_role>`
 - Essay
-    - <On|Concerning> the <cap><animal|nature|philosophy>
-    - A Critique of <cap><philosophy|art>
-    - <cap><philosophy> in <cap><art|art_creator|philosophy|art>
-    - <Defending|Against> <cap><art|art_creator|philosophy>
-    - The <Rise|Fall> of <cap><philosophy>
+    - `<On|Concerning> the <cap><animal|nature|philosophy>`
+    - `A Critique of <cap><philosophy|art>`
+    - `<cap><philosophy> in <cap><art|art_creator|philosophy|art>`
+    - `<Defending|Against> <cap><art|art_creator|philosophy>`
+    - `The <Rise|Fall> of <cap><philosophy>`
 - Poem
-    - '<cap><animal|nature>
-    - <Ode|Song> <on|to> <notable_person|god|place>
-    - <Ode|Song> <on|to> <article> <animal|nature>
-    - <cap><gerund> <indef> <cap><n>', '<cap><article> <adj,> <cap><n>
-    - <name|notable_person|notable_person_role>
-    - The <cap><n> of <name|notable_person|notable_person_role>
+    - `<cap><animal|nature>`
+    - `<Ode|Song> <on|to> <notable_person|god|place>`
+    - `<Ode|Song> <on|to> <article> <animal|nature>`
+    - `<cap><gerund> <indef> <cap><n>`
+    - `<cap><article> <adj,> <cap><n>`
+    - `<name|notable_person|notable_person_role>`
+    - `The <cap><n> of <name|notable_person|notable_person_role>`
