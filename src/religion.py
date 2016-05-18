@@ -40,7 +40,7 @@ DOMAINS = ['fire', 'wind', 'water', 'air', 'lightning', 'death',\
            'smithing', 'animals', 'earth', 'rivers', 'peace',\
            'knowledge', 'writing', 'music', 'storytelling',\
            'luck', 'thunder', 'friendship', 'wine', 'weaving',\
-           'the sun', 'the hearth', 'the moon', 'the sky', 'messengers'\
+           'the sun', 'the hearth', 'the moon', 'the sky', 'messengers',\
            'chaos', 'unity', 'the underworld', 'creation']
 
 class God:

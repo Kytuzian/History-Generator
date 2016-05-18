@@ -2,6 +2,8 @@ from Tkinter import *
 
 import random
 
+import utility
+
 class Weapon:
     def __init__(self, name, cost, range, material_multiplier, attack, defense, attack_skill_multiplier, defense_skill_multiplier, reload_time=0, ammunition=0, projectile_speed=0):
         self.name = name
@@ -21,6 +23,8 @@ class Weapon:
         self.reload_time = reload_time
         self.ammunition = ammunition
         self.projectile_speed = projectile_speed
+
+        self.stats = utility.base_weapon_stats()
 
     def get_attack(self, material):
         effective_attack = self.attack

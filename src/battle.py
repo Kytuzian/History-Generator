@@ -120,14 +120,17 @@ class Soldier:
         # print(self.reload, self.reload_counter)
 
         if self.in_range() and self.reload >= self.reload_counter:
+            if not self.name in stats:
+                stats[self.name] = utility.base_soldier_stats()
             weapon = self.get_melee_weapon().name
-            if not weapon in stats:
-                stats[weapon] = base_weapon_stats()
+            if not weapon in stats[self.name]:
+                stats[self.name][weapon] = utility.base_weapon_stats()
 
             attack = self.get_melee_attack(best_material)
             defense = self.target.get_melee_defense(best_enemy_material)
 
-            stats[weapon]['attacks'] += 1
+            stats[self.name]['attacks'] += 1
+            stats[self.name][weapon]['attacks'] += 1
 
             if random.randint(0, self.discipline) == 0:
                 self.fatigue += 1
@@ -136,16 +139,18 @@ class Soldier:
 
             if attack > defense:
                 stats['attacks_won'] += 1
-                stats[weapon]['attacks_won'] += 1
+                stats[self.name]['attacks_won'] += 1
+                stats[self.name][weapon]['attacks_won'] += 1
 
                 self.target.health -= 1
             # elif defense > attack and d < self.target.get_melee_weapon().range:
             #     self.health -= 1
 
             if self.target.health <= 0:
-                stats[weapon]['kills'] += 1
-
                 stats['troops_killed'] += 1
+                stats[self.name]['kills'] += 1
+                stats[self.name][weapon]['kills'] += 1
+
                 enemy_stats['troops_lost'] += 1
                 self.target.unit.handle_death(self.target)
             elif self.health <= 0:
@@ -166,11 +171,14 @@ class Soldier:
         if self.in_range() and self.reload >= self.reload_counter:
             if self.unit.ammunition > 0:
                 weapon = self.get_ranged_weapon().name
-                if not weapon in stats:
-                    stats[weapon] = base_weapon_stats()
+                if not self.name in stats:
+                    stats[self.name] = utility.base_soldier_stats()
+                if not weapon in stats[self.name]:
+                    stats[self.name][weapon] = utility.base_weapon_stats()
 
                 stats['projectiles_launched'] += 1
-                stats[weapon]['attacks'] += 1
+                stats[self.name]['projectiles_launched'] += 1
+                stats[self.name][weapon]['attacks'] += 1
 
                 m, tangle = self.unit.target.get_movement_vector(vector_format='polar')
 
@@ -564,27 +572,6 @@ class Unit:
                         self.x += self.dx / d * speed
                         self.y += self.dy / d * speed
 
-def base_stats():
-    base = {}
-
-    base['troops'] = 0
-    base['troops_lost'] = 0
-    base['troops_killed'] = 0
-    base['projectiles_launched'] = 0
-    base['projectiles_hit'] = 0
-    base['attacks_won'] = 0
-
-    return base
-
-def base_weapon_stats():
-    base = {}
-
-    base['attacks'] = 0
-    base['attacks_won'] = 0
-    base['kills'] = 0
-
-    return base
-
 class Battle:
     def __init__(self, nation_a, a_army, nation_b, b_army, attacking_city, city, battle_over):
         self.a = nation_a
@@ -593,8 +580,8 @@ class Battle:
         self.a_army = a_army
         self.b_army = b_army
 
-        self.a_stats = base_stats()
-        self.b_stats = base_stats()
+        self.a_stats = utility.base_stats()
+        self.b_stats = utility.base_stats()
 
         self.a_stats['troops'] = a_army.size()
         self.b_stats['troops'] = b_army.size()
@@ -725,11 +712,13 @@ class Battle:
                             hit = True
 
                             stats['projectiles_hit'] += 1
-
                             weapon = p.launcher.get_ranged_weapon().name
-                            if not weapon in stats:
-                                stats[weapon] = base_weapon_stats()
-                            stats[weapon]['attacks_won'] += 1
+                            if not p.launcher.name in stats:
+                                stats[p.launcher.name] = utility.base_soldier_stats()
+                            if not weapon in stats[p.launcher.name]:
+                                stats[p.launcher.name][weapon] = utility.base_weapon_stats()
+                            stats[p.launcher.name]['projectiles_hit'] += 1
+                            stats[p.launcher.name][weapon]['attacks_won'] += 1
 
                             damage = p.strength
 
@@ -746,7 +735,8 @@ class Battle:
 
                             if p.target.health <= 0:
                                 stats['troops_killed'] += 1
-                                stats[weapon]['kills'] += 1
+                                stats[p.launcher.name]['kills'] += 1
+                                stats[p.launcher.name][weapon]['kills'] += 1
 
                                 enemy_stats['troops_lost'] += 1
 

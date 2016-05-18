@@ -11,10 +11,10 @@ import cProfile
 
 import utility
 
+from battle import *
 from nation import *
 from city import *
 from martial import *
-from battle import *
 from language import *
 
 import culture
@@ -636,21 +636,9 @@ class Main:
 
         print('Statistics:')
         print('{}:'.format(a.name))
-        for stat, v in sorted(battle.a_stats.items()):
-            if isinstance(v, dict):
-                print('\t{}:'.format(stat))
-                for s in v:
-                    print('\t\t{}: {}'.format(s, v[s]))
-            else:
-                print('\t{}: {}'.format(stat, v))
+        utility.show_dict(battle.a_stats)
         print('{}:'.format(b.name))
-        for stat, v in sorted(battle.b_stats.items()):
-            if isinstance(v, dict):
-                print('\t{}:'.format(stat))
-                for s in v:
-                    print('\t\t{}: {}'.format(s, v[s]))
-            else:
-                print('\t{}: {}'.format(stat, v))
+        utility.show_dict(battle.b_stats)
 
         #Determine the winner
         if battle.a_army.size() > 0:

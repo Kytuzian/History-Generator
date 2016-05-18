@@ -15,6 +15,47 @@ DISPLAY_HEIGHT = 720
 
 CELL_SIZE = 6 #cells are squares, this is the side length
 
+
+def base_stats():
+    base = {}
+
+    base['troops'] = 0
+    base['troops_lost'] = 0
+    base['troops_killed'] = 0
+    base['projectiles_launched'] = 0
+    base['projectiles_hit'] = 0
+    base['attacks_won'] = 0
+
+    return base
+
+def base_soldier_stats():
+    base = {}
+
+    base['attacks'] = 0
+    base['attacks_won'] = 0
+    base['kills'] = 0
+    base['projectiles_launched'] = 0
+    base['projectiles_hit'] = 0
+
+    return base
+
+def base_weapon_stats():
+    base = {}
+
+    base['attacks'] = 0
+    base['attacks_won'] = 0
+    base['kills'] = 0
+
+    return base
+
+def show_dict(d, depth=1):
+    for stat, v in sorted(d.items()):
+        if isinstance(v, dict):
+            print('{}{}:'.format('\t' * depth, stat))
+            show_dict(v, depth=depth + 1)
+        else:
+            print('{}{}: {}'.format('\t' * depth, stat, v))
+
 def fst(t):
     return t[0]
 

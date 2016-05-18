@@ -48,6 +48,7 @@ ART_SUBJECTS = {'landscape': ['<cap><nature>'],
                          '<name|notable_person|notable_person_role>',
                          'The <cap><n> of <name|notable_person|notable_person_role>']}
 
+# Canvas intentionally included twice, because it makes the medium more likely to be a canvas, which is more accurate
 MEDIUMS = ['canvas', 'canvas', 'beaverboard', 'wood', 'paper', 'panel']
 PAINTS = ['tempera', 'oil', 'watercolor']
 SKETCHING = ['charcoal', 'pencil']
