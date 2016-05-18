@@ -40,7 +40,8 @@ ART_SUBJECTS = {'landscape': ['<cap><nature>'],
                           'A Critique of <cap><philosophy|art>',
                           '<cap><philosophy> in <cap><art|art_creator|philosophy|art>',
                           '<Defending|Against> <cap><art|art_creator|philosophy>',
-                          'The <Rise|Fall> of <cap><philosophy>'],
+                          'The <Rise|Fall> of <cap><philosophy>',
+                          'Letter from <place>'],
                 'poem': ['<cap><animal|nature>', '<Ode|Song> <on|to> <notable_person|god|place>',
                          '<Ode|Song> <on|to> <article> <animal|nature>'
                          '<cap><gerund> <indef> <cap><n>', '<cap><article> <adj,> <cap><n>',
@@ -56,10 +57,11 @@ MATERIALS = ['marble', 'rock', 'bronze', 'copper', 'tin', 'wood', 'glass']
 
 ANIMALS = ['dog', 'cat', 'bear', 'wolf', 'bird', 'sparrow', 'hawk', 'eagle',
            'tiger', 'lion', 'elephant', 'alligator', 'pig', 'spider', 'ant',
-           'bee', 'panther', 'snake', 'crocodile', 'worm', 'fish', 'shark']
+           'bee', 'panther', 'snake', 'crocodile', 'worm', 'fish', 'shark', 'elk',
+           'fox', 'squirrel', 'cardinal', 'beetle']
 NATURE = ['tree', 'flower', 'rose', 'grass', 'trees', 'stump', 'cactus', 'wind',
           'sky', 'ground', 'earth', 'sun', 'ocean', 'sea', 'lake', 'pond',
-          'water', 'mountain']
+          'water', 'mountain', 'cliff', 'shore', 'bay', 'prairie', 'savannah']
 PHILOSOPHIES = ['skepticism', 'romanticism', 'modernism', 'stoicism', 'altruism',
                 'capitalism', 'socialism']
 
@@ -67,7 +69,7 @@ NOUNS = ['dog', 'cat', 'bear', 'wolf', 'cabinet', 'table', 'paper', 'light',
          'forest', 'trees', 'tree', 'time', 'society', 'bird', 'robin', 'sparrow',
          'snow', 'rain', 'library', 'python', 'sword', 'book', 'emptiness', 'hollowness',
          'chair', 'shirt', 'dress', 'floor', 'bee', 'grapefruit', 'fight', 'battle',
-         'art',
+         'art', 'anger', 'joy',
          'pomegranate', 'clock', 'warrior', 'fighter', 'soldier', 'artist',
          'tailor', 'king', 'queen', 'prince', 'princess', 'duke', 'merchant',
          'beggar', 'craftsman', 'spear', 'dagger', 'cart', 'wagon', 'horse',
@@ -94,8 +96,8 @@ PREPOSITIONS = ['around', 'in', 'of', 'by', 'under', 'above', 'before', 'at', 'w
 
 PREPOSITION_FORMS = ['<article> <gerund> <n>', '<article> <n>',
                      '<article> <adj> <n>',
-                     '<article> <ppart|gerund> <adj,adj,> <n>',
-                     '<article> <n>\'s <n>', '<article> <n>\'s <adj,gerund,ppart> <n>']
+                     '<article> <adj,adj,> <n>',
+                     '<article> <n>\'s <adj,> <n>']
 
 BEGINNING_FORMS = ['<article> <adj,adj,gerund> <n> <v,>']
 

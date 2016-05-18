@@ -68,7 +68,7 @@ class Soldier:
 
         self.rank_position = None
 
-    def step(self, proj, best_material, best_enemy_material):
+    def step(self, proj, best_material, best_enemy_material, stats, enemy_stats):
         if self.target != None: #If we have a target, make sure it still exists.
             if not self.target in self.unit.target.soldiers:
                 self.target = None
@@ -89,7 +89,7 @@ class Soldier:
 
         if self.reload < self.reload_counter:
             if not self.ranged or self.in_range(): #Melee units always reload, because their first attack is like a "charge"
-                self.reload += math.sqrt(self.discipline) // 2 + random.randint(0, 1)
+                self.reload += math.sqrt(self.discipline) // 2 + random.randint(0, 1) + 1
 
         #Show the weapon if we are currently in melee mode
         if d != 0 and not self.ranged:
@@ -106,11 +106,11 @@ class Soldier:
                 self.weapon_id = -1
 
         if self.ranged:
-            self.handle_ranged(d, proj, best_material)
+            self.handle_ranged(d, proj, best_material, stats, enemy_stats)
         else:
-            self.handle_melee(d, best_material, best_enemy_material)
+            self.handle_melee(d, best_material, best_enemy_material, stats, enemy_stats)
 
-    def handle_melee(self, d, best_material, best_enemy_material):
+    def handle_melee(self, d, best_material, best_enemy_material, stats, enemy_stats):
         #If the target moves out of range, then switch back to ranged.
         if d > self.target.unit.get_effective_speed() * CC_RANGE:
             if self.unit.soldier_type.ranged:
@@ -120,8 +120,14 @@ class Soldier:
         # print(self.reload, self.reload_counter)
 
         if self.in_range() and self.reload >= self.reload_counter:
+            weapon = self.get_melee_weapon().name
+            if not weapon in stats:
+                stats[weapon] = base_weapon_stats()
+
             attack = self.get_melee_attack(best_material)
             defense = self.target.get_melee_defense(best_enemy_material)
+
+            stats[weapon]['attacks'] += 1
 
             if random.randint(0, self.discipline) == 0:
                 self.fatigue += 1
@@ -129,20 +135,29 @@ class Soldier:
                 self.target.fatigue += 1
 
             if attack > defense:
+                stats['attacks_won'] += 1
+                stats[weapon]['attacks_won'] += 1
+
                 self.target.health -= 1
             # elif defense > attack and d < self.target.get_melee_weapon().range:
             #     self.health -= 1
 
             if self.target.health <= 0:
+                stats[weapon]['kills'] += 1
+
+                stats['troops_killed'] += 1
+                enemy_stats['troops_lost'] += 1
                 self.target.unit.handle_death(self.target)
             elif self.health <= 0:
+                stats['troops_lost'] += 1
+                enemy_stats['troops_killed'] += 1
                 self.unit.handle_death(self)
 
             self.reload = 0
         else: #Not in range, so we need to get closer.
             self.move()
 
-    def handle_ranged(self, d, proj, best_material):
+    def handle_ranged(self, d, proj, best_material, stats, enemy_stats):
         if d < self.target.unit.get_effective_speed() * CC_RANGE:
             self.ranged = False
             return
@@ -150,6 +165,13 @@ class Soldier:
         self.move()
         if self.in_range() and self.reload >= self.reload_counter:
             if self.unit.ammunition > 0:
+                weapon = self.get_ranged_weapon().name
+                if not weapon in stats:
+                    stats[weapon] = base_weapon_stats()
+
+                stats['projectiles_launched'] += 1
+                stats[weapon]['attacks'] += 1
+
                 m, tangle = self.unit.target.get_movement_vector(vector_format='polar')
 
                 tx, ty = self.target.x, self.target.y
@@ -163,7 +185,7 @@ class Soldier:
                     d = utility.distance((self.x, self.y), (tx, ty))
 
                 damage = self.get_ranged_attack(best_material)
-                proj.append(Projectile(((tx - self.x) / d, (ty - self.y) / d), damage, self.target, self.get_projectile_speed()))
+                proj.append(Projectile(((tx - self.x) / d, (ty - self.y) / d), self, damage, self.target, self.get_projectile_speed()))
 
                 color = self.canvas.itemcget(self.id, 'fill')
                 proj[-1].id = self.canvas.create_oval(self.x, self.y, self.x + PROJECTILE_RADIUS, self.y + PROJECTILE_RADIUS, width=0, fill=color)
@@ -356,9 +378,11 @@ class RankPosition:
         # print(self.rank, self.position, self.x, self.y, self.unit.x, self.unit.y)
 
 class Projectile:
-    def __init__(self, (dx, dy), strength, target, speed):
+    def __init__(self, (dx, dy), launcher, strength, target, speed):
         self.dx = dx
         self.dy = dy
+
+        self.launcher = launcher
 
         self.skip_step = 0
         self.kill_range = 1000
@@ -540,6 +564,27 @@ class Unit:
                         self.x += self.dx / d * speed
                         self.y += self.dy / d * speed
 
+def base_stats():
+    base = {}
+
+    base['troops'] = 0
+    base['troops_lost'] = 0
+    base['troops_killed'] = 0
+    base['projectiles_launched'] = 0
+    base['projectiles_hit'] = 0
+    base['attacks_won'] = 0
+
+    return base
+
+def base_weapon_stats():
+    base = {}
+
+    base['attacks'] = 0
+    base['attacks_won'] = 0
+    base['kills'] = 0
+
+    return base
+
 class Battle:
     def __init__(self, nation_a, a_army, nation_b, b_army, attacking_city, city, battle_over):
         self.a = nation_a
@@ -547,6 +592,12 @@ class Battle:
 
         self.a_army = a_army
         self.b_army = b_army
+
+        self.a_stats = base_stats()
+        self.b_stats = base_stats()
+
+        self.a_stats['troops'] = a_army.size()
+        self.b_stats['troops'] = b_army.size()
 
         self.parent = Tk()
         self.parent.title("{}({}) vs. {}({})".format(self.a.name, self.a_army.size(), self.b.name, self.b_army.size()))
@@ -654,7 +705,7 @@ class Battle:
         self.setup_army(self.a_army, self.force_a, self.a.color, (100, 900), (50, 300), self.a_amount)
         self.setup_army(self.b_army, self.force_b, self.b.color, (100, 900), (300, 550), self.b_amount)
 
-    def handle_projectiles(self, owner_nation, proj, enemy, enemy_force):
+    def handle_projectiles(self, owner_nation, proj, enemy, enemy_force, stats, enemy_stats):
         i = 0
         for p in proj:
             hit = False
@@ -673,6 +724,13 @@ class Battle:
                         if utility.collided((x, y, p.speed), (tx, ty, TROOP_RADIUS)):
                             hit = True
 
+                            stats['projectiles_hit'] += 1
+
+                            weapon = p.launcher.get_ranged_weapon().name
+                            if not weapon in stats:
+                                stats[weapon] = base_weapon_stats()
+                            stats[weapon]['attacks_won'] += 1
+
                             damage = p.strength
 
                             #Allow the troop being hit by the projectile to try and defend a little.
@@ -687,6 +745,11 @@ class Battle:
                             p.target.health -= total_damage
 
                             if p.target.health <= 0:
+                                stats['troops_killed'] += 1
+                                stats[weapon]['kills'] += 1
+
+                                enemy_stats['troops_lost'] += 1
+
                                 p.target.unit.handle_death(p.target)
                 else:
                     p.skip_step -= 1
@@ -720,7 +783,7 @@ class Battle:
         else:
             return False
 
-    def handle_units(self, force, nation, proj, enemy_force, enemy_nation, color):
+    def handle_units(self, force, nation, proj, enemy_force, enemy_nation, color, stats, enemy_stats):
         best_material = nation.tech.get_best_in_category('material')
         best_enemy_material = enemy_nation.tech.get_best_in_category('material')
         for current_unit in force:
@@ -763,7 +826,7 @@ class Battle:
                 if len(current_unit.target.soldiers) == 0:
                     break
 
-                soldier.step(proj, best_material, best_enemy_material)
+                soldier.step(proj, best_material, best_enemy_material, stats, enemy_stats)
 
         return False
 
@@ -781,14 +844,14 @@ class Battle:
 
         self.parent.title("Battle for {}: {}(Reinforcments: {}) vs. {}(Reinforcments: {})".format(self.city.name, self.a.name.short_name(), self.a_army.size(), self.b.name.short_name(), self.b_army.size()))
 
-        self.handle_projectiles(self.a, self.proj_a, self.b, self.force_b)
-        self.handle_projectiles(self.b, self.proj_b, self.a, self.force_a)
+        self.handle_projectiles(self.a, self.proj_a, self.b, self.force_b, self.a_stats, self.b_stats)
+        self.handle_projectiles(self.b, self.proj_b, self.a, self.force_a, self.b_stats, self.a_stats)
 
-        self.handle_units(self.force_a, self.a, self.proj_a, self.force_b, self.b, self.a.color)
+        self.handle_units(self.force_a, self.a, self.proj_a, self.force_b, self.b, self.a.color, self.a_stats, self.b_stats)
         if self.over:
             return
 
-        self.handle_units(self.force_b, self.b, self.proj_b, self.force_a, self.a, self.b.color)
+        self.handle_units(self.force_b, self.b, self.proj_b, self.force_a, self.a, self.b.color, self.b_stats, self.a_stats)
         if self.over:
             return
 

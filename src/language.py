@@ -121,8 +121,8 @@ class Language:
             self.create()
 
         # Initialize it with all the base words.
-        for word in start_words:
-            print('{}: {}'.format(word, self.translateTo(word)))
+        # for word in start_words:
+        #     print('{}: {}'.format(word, self.translateTo(word)))
 
     def __repr__(self):
         print("Letters", self.letters)
@@ -350,4 +350,4 @@ class Language:
 
         return result[:-1]
 
-a = Language()
+# a = Language()

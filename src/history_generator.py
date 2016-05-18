@@ -634,6 +634,24 @@ class Main:
 
         print("Battle ended.")
 
+        print('Statistics:')
+        print('{}:'.format(a.name))
+        for stat, v in sorted(battle.a_stats.items()):
+            if isinstance(v, dict):
+                print('\t{}:'.format(stat))
+                for s in v:
+                    print('\t\t{}: {}'.format(s, v[s]))
+            else:
+                print('\t{}: {}'.format(stat, v))
+        print('{}:'.format(b.name))
+        for stat, v in sorted(battle.b_stats.items()):
+            if isinstance(v, dict):
+                print('\t{}:'.format(stat))
+                for s in v:
+                    print('\t\t{}: {}'.format(s, v[s]))
+            else:
+                print('\t{}: {}'.format(stat, v))
+
         #Determine the winner
         if battle.a_army.size() > 0:
             print("{}: {} has triumphed with {} remaining troops!".format(self.get_current_date(), a.name, battle.a_army.size()))

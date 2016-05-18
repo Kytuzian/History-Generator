@@ -1,3 +1,12 @@
+2016-05-18
+Major changes:
+- Added statistics to battles (projectiles launched, projectiles hit, troops lost, troops killed, et cetera).
+
+Minor changes:
+- Improved languages so that words are more pronouncable.
+
+Bug fixes:
+
 2016-05-17
 Major changes:
 - Caravans now actually carrying goods from place to place (food, leather, et cetera), as well as a generic "trade goods" (so that caravans always make at least some money).
