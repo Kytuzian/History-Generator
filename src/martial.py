@@ -39,7 +39,7 @@ class Troop:
 
         return cls(name, strength, health, 0, ranged, speed, discipline, rank_size, ranks, weapons, armor, elite, tier, [])
 
-    def __init__(self, name, strength, health, number, ranged, speed, discipline, rank_size, ranks, weapons, armor, elite, tier, upgrades):
+    def __init__(self, name, strength, health, number, ranged, speed, discipline, rank_size, ranks, weapons, armor, elite, tier, upgrades, stats_history=[]):
         self.name = name
         self.strength = strength
         self.health = health
@@ -63,6 +63,11 @@ class Troop:
         self.elite = elite
 
         self.tier = tier
+
+        if stats_history == []:
+            self.stats_history = [utility.base_soldier_stats()]
+        else:
+            self.stats_history = stats_history
 
     #Creates another troop to add to the troop tree
     @classmethod
@@ -91,6 +96,9 @@ class Troop:
 
         return cls(name, strength, health, 0, ranged, speed, discipline, rank_size, ranks, weapons, armor, elite, self.tier + 1, [])
 
+    def handle_battle_end(self, stats):
+        self.stats_history[-1] = utility.zip_dict_with(lambda a,b: a + b, self.stats_history[-1], stats)
+
     def do_rearm(self, nation):
         if self.tier == 1:
             if self.ranged:
@@ -109,6 +117,8 @@ class Troop:
 
         self.weapons = weapons
         self.armor = armor
+
+        self.stats_history.append(utility.base_soldier_stats())
 
         return self
 
@@ -186,6 +196,14 @@ class Troop:
 
         return self
 
+    def reset(self):
+        return self.zero().reset_stats()
+
+    def reset_stats(self):
+        self.stats_history = [utility.base_soldier_stats()]
+
+        return self
+
     def zero(self):
         return self.copy().remove_number('', self.size())
 
@@ -220,7 +238,7 @@ class Troop:
         return sorted([self] + reduce(lambda a, b: a + b, [i.make_upgrade_list() for i in self.upgrades], []), key=lambda a: a.strength * a.health)
 
     def copy(self):
-        return Troop(self.name, self.strength, self.health, 0, self.ranged, self.speed, self.discipline, self.rank_size, self.ranks, [i.copy() for i in self.weapons], self.armor.copy(), self.elite, self.tier, map(lambda i: i.copy(), self.upgrades))
+        return Troop(self.name, self.strength, self.health, 0, self.ranged, self.speed, self.discipline, self.rank_size, self.ranks, [i.copy() for i in self.weapons], self.armor.copy(), self.elite, self.tier, map(lambda i: i.copy(), self.upgrades), stats_history=map(dict, self.stats_history))
 
     def is_empty(self):
         return all(map(lambda i: i.is_empty(), self.upgrades)) and self.number == 0

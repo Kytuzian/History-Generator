@@ -48,11 +48,12 @@ def base_weapon_stats():
 
     return base
 
-def show_dict(d, depth=1):
+def show_dict(d, depth=1, recurse=True):
     for stat, v in sorted(d.items()):
         if isinstance(v, dict):
-            print('{}{}:'.format('\t' * depth, stat))
-            show_dict(v, depth=depth + 1)
+            if recurse:
+                print('{}{}:'.format('\t' * depth, stat))
+                show_dict(v, depth=depth + 1, recurse=recurse)
         else:
             print('{}{}: {}'.format('\t' * depth, stat, v))
 

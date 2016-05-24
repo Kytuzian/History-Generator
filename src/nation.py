@@ -107,14 +107,13 @@ class Nation:
         self.id = parent.get_next_id()
 
         self.notable_people = []
+        self.culture = culture.Culture(self)
 
         self.ruler = None
 
         self.at_war = []
         self.allied = []
         self.trading = []
-
-        self.art = []
 
         self.caravans = []
 
@@ -184,7 +183,10 @@ class Nation:
         self.religion_button.grid(row=5, column=1, sticky=W)
 
         self.army_structure_button = Button(self.gui_window, text='Army', command=self.army_structure.show_information_gui)
-        self.army_structure_button.grid(row=6, sticky=W)
+        self.army_structure_button.grid(row=6, column=0, sticky=W)
+
+        self.culture_button = Button(self.gui_window, text='Culture', command=self.culture.show_information_gui)
+        self.culture_button.grid(row=6, column=1, sticky=W)
 
         self.display_selector_label = Label(self.gui_window, text='Display:')
         self.display_selector_label.grid(row=7, sticky=W)
@@ -354,11 +356,11 @@ class Nation:
                         self.mod_morale(-person.effectiveness**2)
                 if person.role in ['artist', 'writer', 'composer', 'philosopher']:
                     if random.randint(0, ART_CREATE_CHANCE) == 0:
-                        self.art.append(culture.create_art(self, person))
+                        self.culture.add_art(culture.create_art(self, person))
 
-                        person.art.append(self.art[-1])
+                        person.art.append(self.culture.art[-1])
 
-                        e = events.EventArtCreated('ArtCreated', {'nation_a': self.id, 'person_a': person.name, 'person_a_role': person.role, 'art': str(self.art[-1])}, self.parent.get_current_date())
+                        e = events.EventArtCreated('ArtCreated', {'nation_a': self.id, 'person_a': person.name, 'person_a_role': person.role, 'art': str(self.culture.art[-1])}, self.parent.get_current_date())
                         self.parent.events.append(e)
 
                         print(self.parent.events[-1].text_version())

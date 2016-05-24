@@ -1,3 +1,5 @@
+from Tkinter import *
+
 import random
 
 import re
@@ -6,7 +8,7 @@ ART_CATEGORIES = {'artist': ['drawing', 'statue'],
                   'writer': ['play', 'novel', 'essay', 'poem'],
                   'composer': ['song', 'musical'],
                   'philosopher': ['essay']}
-
+                  
 # Painting intentionally included twice, because it makes art more likely to be a painting.
 ART_STYLES = {'drawing': ['painting', 'painting', 'fresco', 'woodblock print', 'sketch']}
 ART_SUBCATEGORIES = {'drawing': ['portrait', 'landscape', 'allegorical', 'abstract']}
@@ -70,7 +72,7 @@ NOUNS = ['dog', 'cat', 'bear', 'wolf', 'cabinet', 'table', 'paper', 'light',
          'forest', 'trees', 'tree', 'time', 'society', 'bird', 'robin', 'sparrow',
          'snow', 'rain', 'library', 'python', 'sword', 'book', 'emptiness', 'hollowness',
          'chair', 'shirt', 'dress', 'floor', 'bee', 'grapefruit', 'fight', 'battle',
-         'art', 'anger', 'joy',
+         'art', 'anger', 'joy', 'sadness', 'jealousy',
          'pomegranate', 'clock', 'warrior', 'fighter', 'soldier', 'artist',
          'tailor', 'king', 'queen', 'prince', 'princess', 'duke', 'merchant',
          'beggar', 'craftsman', 'spear', 'dagger', 'cart', 'wagon', 'horse',
@@ -80,7 +82,7 @@ ADJECTIVES = ['red', 'blue', 'green', 'yellow', 'orange', 'purple', 'white',
               'black', 'fast', 'intelligent', 'blank', 'empty', 'hollow',
               'poetic', 'short', 'tall', 'epic', 'scarlet', 'wide', 'long',
               'narrow', 'grey', 'violet', 'small', 'great', 'strong', 'mighty',
-              'romantic', 'social', 'stoic', 'modern', ]
+              'romantic', 'social', 'stoic', 'modern', 'jealous']
 BASE_VERBS = ['run', 'walk', 'look', 'drop', 'cause', 'rain', 'fly', 'make',
               'precipitate', 'fight', 'take', 'snow',
               'write', 'read', 'talk', 'speak', 'transfix', 'roll']
@@ -117,7 +119,7 @@ def is_valid(nation):
                  'art_creator']:
             if nation != None:
                 if choice in ['art', 'art_creator']:
-                    if len(nation.art) == 0:
+                    if len(nation.culture.art) == 0:
                         return False
             else:
                 return False
@@ -179,13 +181,13 @@ def gen_form(form, nation=None):
         else:
             form = form.replace('<name>', '')
     while '<art>' in form:
-        if nation != None and len(nation.art) > 0:
-            form = form.replace('<art>', '\'{}\''.format(random.choice(nation.art).subject), 1)
+        if nation != None and len(nation.culture.art) > 0:
+            form = form.replace('<art>', '\'{}\''.format(random.choice(nation.culture.art).subject), 1)
         else:
             form = form.replace('<art>', '')
     while '<art_creator>' in form:
-        if nation != None and len(nation.art) > 0:
-            art = random.choice(nation.art)
+        if nation != None and len(nation.culture.art) > 0:
+            art = random.choice(nation.culture.art)
             form = form.replace('<art_creator>', '{}\'s \'{}\''.format(art.creator.name, art.subject), 1)
         else:
             form = form.replace('<art_creator>', '')
@@ -302,6 +304,44 @@ def create_art(nation, creator):
     name = nation.language.translateTo(subject)
 
     return Art(nation, creator, name, subject, category, style, sub_category, material)
+
+class Culture:
+    def __init__(self, nation, art=[]):
+        self.nation = nation
+
+        self.art = []
+
+        self.art_display = None
+
+    def show_information_gui(self):
+        self.gui_window = Tk()
+        self.gui_window.title('Culture of {}'.format(self.nation.name))
+        self.gui_window.geometry("500x400+0+0")
+
+        self.gui_window.columnconfigure(2, weight=1)
+
+        self.nation_label = Label(self.gui_window, text='Nation:')
+        self.nation_label.grid(row=0, column=0)
+
+        self.nation_button = Button(self.gui_window, text=self.nation.short_name(), command=self.nation.show_information_gui)
+        self.nation_button.grid(row=0, column=1)
+
+        self.art_label = Label(self.gui_window, text='Art:')
+        self.art_label.grid(row=1, column=0)
+
+        self.art_display = Listbox(self.gui_window)
+        self.art_display.grid(row=2, column=0, columnspan=3, sticky=E+W)
+
+    def update_art_display(self):
+        self.art_display.delete(0, END)
+        for art in self.art:
+            self.art_display.insert(END, self.art)
+
+    def add_art(self, work):
+        self.art.append(work)
+
+        if self.art_display != None:
+            self.update_art_display()
 
 class Art:
     def __init__(self, nation, creator, name, subject, category, style, sub_category, material):

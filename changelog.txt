@@ -1,9 +1,12 @@
-2016-05-18
+2016-05-24
 Major changes:
 - Added statistics to battles (projectiles launched, projectiles hit, troops lost, troops killed, et cetera).
+- Made units keep track of their stats, adding a new stats tracker every time they are rearmed.
+- Added information GUI for culture (just displays art for now).
 
 Minor changes:
-- Improved languages so that words are more pronouncable.
+- Improved languages so that words are more pronounceable.
+- Added culture button to nation's information GUI.
 
 Bug fixes:
 

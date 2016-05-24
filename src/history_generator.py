@@ -423,7 +423,8 @@ class Main:
                     #For readability
                     revolted_nation = self.nations[-1]
 
-                    revolted_nation.army_structure = nation.army_structure.zero() #The actual army revolts are just the armies in the revolting cities
+                    #The actual army revolts are just the armies in the revolting cities
+                    revolted_nation.army_structure = nation.army_structure.reset()
                     revolted_nation.language = Language(base_language=nation.language)
 
                     #Copy weapon choices over
@@ -636,9 +637,16 @@ class Main:
 
         print('Statistics:')
         print('{}:'.format(a.name))
-        utility.show_dict(battle.a_stats)
+        utility.show_dict(battle.a_stats, recurse=False)
         print('{}:'.format(b.name))
-        utility.show_dict(battle.b_stats)
+        utility.show_dict(battle.b_stats, recurse=False)
+
+        for unit in a.army_structure.make_upgrade_list():
+            if unit.name in battle.b_stats:
+                unit.handle_battle_end(battle.a_stats[unit.name])
+        for unit in b.army_structure.make_upgrade_list():
+            if unit.name in battle.b_stats:
+                unit.handle_battle_end(battle.b_stats[unit.name])
 
         #Determine the winner
         if battle.a_army.size() > 0:
