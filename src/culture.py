@@ -8,7 +8,7 @@ ART_CATEGORIES = {'artist': ['drawing', 'statue'],
                   'writer': ['play', 'novel', 'essay', 'poem'],
                   'composer': ['song', 'musical'],
                   'philosopher': ['essay']}
-                  
+
 # Painting intentionally included twice, because it makes art more likely to be a painting.
 ART_STYLES = {'drawing': ['painting', 'painting', 'fresco', 'woodblock print', 'sketch']}
 ART_SUBCATEGORIES = {'drawing': ['portrait', 'landscape', 'allegorical', 'abstract']}
@@ -323,7 +323,7 @@ class Culture:
         self.nation_label = Label(self.gui_window, text='Nation:')
         self.nation_label.grid(row=0, column=0)
 
-        self.nation_button = Button(self.gui_window, text=self.nation.short_name(), command=self.nation.show_information_gui)
+        self.nation_button = Button(self.gui_window, text=self.nation.name.short_name(), command=self.nation.show_information_gui)
         self.nation_button.grid(row=0, column=1)
 
         self.art_label = Label(self.gui_window, text='Art:')
@@ -331,6 +331,8 @@ class Culture:
 
         self.art_display = Listbox(self.gui_window)
         self.art_display.grid(row=2, column=0, columnspan=3, sticky=E+W)
+
+        self.update_art_display()
 
     def update_art_display(self):
         self.art_display.delete(0, END)

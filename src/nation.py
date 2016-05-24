@@ -168,13 +168,13 @@ class Nation:
         self.age_label.grid(row=1, sticky=W)
 
         self.ruler_label = Label(self.gui_window, text='Ruler: {}'.format(self.ruler))
-        self.ruler_label.grid(row=2, sticky=W)
+        self.ruler_label.grid(row=2, columnspan=6, sticky=W)
 
         self.money_label = Label(self.gui_window, text='Money: {}'.format(int(self.money)))
-        self.money_label.grid(row=3, sticky=W)
+        self.money_label.grid(row=3, columnspan=2, sticky=W)
 
         self.morale_label = Label(self.gui_window, text='Morale: {}'.format(self.morale))
-        self.morale_label.grid(row=4, sticky=W)
+        self.morale_label.grid(row=4, columnspan=2, sticky=W)
 
         self.religion_label = Label(self.gui_window, text='Religion: ')
         self.religion_label.grid(row=5, sticky=W)

@@ -642,7 +642,7 @@ class Main:
         utility.show_dict(battle.b_stats, recurse=False)
 
         for unit in a.army_structure.make_upgrade_list():
-            if unit.name in battle.b_stats:
+            if unit.name in battle.a_stats:
                 unit.handle_battle_end(battle.a_stats[unit.name])
         for unit in b.army_structure.make_upgrade_list():
             if unit.name in battle.b_stats:
