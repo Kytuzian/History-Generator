@@ -113,6 +113,7 @@ class Main:
                 utility.show_bar(x * cells_y + y, cells_x * cells_y, message='Generating world: ', number_limit=True)
                 self.cells[-1].append(terrain.Cell(self, '', x, y, data[x][y], random.random()**6, 0, None))
 
+        print('')
         self.weather = terrain.Weather(self.cells)
         self.weather.run(10)
 

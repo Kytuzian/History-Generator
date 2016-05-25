@@ -37,7 +37,9 @@ NATION_COLORS = ['dark orange', 'cadet blue', 'gold', 'deep sky blue',
 OFFICE_MODIFIERS = ['tax_rate', 'army_spending', 'morale']
 OFFICE_MODIFIER_MAX = 2
 
-GOVERNMENT_TYPES = ["Principality", "Commonwealth", "Kingdom", "Hegemony", "Khanate", "Socialist State", "Sultanate", "Republic", "Democracy", "Theocracy", "Confederacy", "Oligarchy", "Aristocracy", "Meritocracy", "States"]
+GOVERNMENT_TYPES = ["Principality", "Commonwealth", "Kingdom", "Hegemony", "Khanate",
+                    "Socialist State", "Sultanate", "Republic", "Democracy", "Theocracy",
+                    "Confederacy", "Oligarchy", "Aristocracy", "Meritocracy", "States"]
 INIT_CITY_COUNT = 1
 
 CITY_FOUND_COST = 100000

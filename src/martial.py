@@ -39,7 +39,7 @@ class Troop:
 
         return cls(name, strength, health, 0, ranged, speed, discipline, rank_size, ranks, weapons, armor, elite, tier, [])
 
-    def __init__(self, name, strength, health, number, ranged, speed, discipline, rank_size, ranks, weapons, armor, elite, tier, upgrades, stats_history=[]):
+    def __init__(self, name, strength, health, number, ranged, speed, discipline, rank_size, ranks, weapons, armor, elite, tier, upgrades, stats_history=[], arms_history=[]):
         self.name = name
         self.strength = strength
         self.health = health
@@ -63,6 +63,11 @@ class Troop:
         self.elite = elite
 
         self.tier = tier
+
+        if arms_history == []:
+            self.arms_history = [(self.weapons, self.armor)]
+        else:
+            self.arms_history = arms_history
 
         if stats_history == []:
             self.stats_history = [utility.base_soldier_stats()]
@@ -118,6 +123,7 @@ class Troop:
         self.weapons = weapons
         self.armor = armor
 
+        self.arms_history.append((self.weapons, self.armor))
         self.stats_history.append(utility.base_soldier_stats())
 
         return self
@@ -167,6 +173,35 @@ class Troop:
             new_upgrade_button.grid(row=7, column=i, sticky=W)
 
             self.upgrade_buttons.append(new_upgrade_button)
+
+        self.history_choice = StringVar()
+        self.history_choice.set(self.stringify_history(0))
+
+        self.stats_label = Label(self.gui_window, text='Stats:')
+        self.stats_label.grid(row=8, column=0, sticky=W)
+
+        self.stats_choice = OptionMenu(self.gui_window, self.history_choice, *map(self.stringify_history, range(len(self.arms_history))))
+        self.stats_choice.grid(row=8, column=1, sticky=W)
+
+        self.stats_select = Button(self.gui_window, text='Select', command=self.select_history)
+        self.stats_select.grid(row=8, column=2, sticky=W)
+
+        self.stats_display = Listbox(self.gui_window)
+        self.stats_display.grid(row=9, column=0, columnspan=3, sticky=W+E)
+
+        self.select_history()
+
+    def stringify_history(self, i):
+        weapon_str = ', '.join(map(lambda i: i.name, self.arms_history[i][0]))
+        armor_str = self.arms_history[i][1].name
+        return '{}: ({}, {})'.format(i, weapon_str, armor_str)
+
+    def select_history(self):
+        history_index = int(self.history_choice.get().split(':')[0])
+
+        self.stats_display.delete(0, END)
+        for stat in self.stats_history[history_index]:
+            self.stats_display.insert(END, '{}: {}'.format(utility.displayify_text(stat), self.stats_history[history_index][stat]))
 
     def add_number(self, number, nation):
         self.number += number
@@ -238,7 +273,7 @@ class Troop:
         return sorted([self] + reduce(lambda a, b: a + b, [i.make_upgrade_list() for i in self.upgrades], []), key=lambda a: a.strength * a.health)
 
     def copy(self):
-        return Troop(self.name, self.strength, self.health, 0, self.ranged, self.speed, self.discipline, self.rank_size, self.ranks, [i.copy() for i in self.weapons], self.armor.copy(), self.elite, self.tier, map(lambda i: i.copy(), self.upgrades), stats_history=map(dict, self.stats_history))
+        return Troop(self.name, self.strength, self.health, 0, self.ranged, self.speed, self.discipline, self.rank_size, self.ranks, [i.copy() for i in self.weapons], self.armor.copy(), self.elite, self.tier, map(lambda i: i.copy(), self.upgrades), stats_history=map(dict, self.stats_history), arms_history=list(self.arms_history))
 
     def is_empty(self):
         return all(map(lambda i: i.is_empty(), self.upgrades)) and self.number == 0

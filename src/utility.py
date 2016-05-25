@@ -15,6 +15,13 @@ DISPLAY_HEIGHT = 720
 
 CELL_SIZE = 6 #cells are squares, this is the side length
 
+def capitalize_first_letter(s):
+    return s[0].upper() + s[1:]
+
+def displayify_text(s):
+    words = s.split('_')
+    words = map(capitalize_first_letter, words)
+    return ' '.join(words)
 
 def base_stats():
     base = {}
@@ -52,10 +59,10 @@ def show_dict(d, depth=1, recurse=True):
     for stat, v in sorted(d.items()):
         if isinstance(v, dict):
             if recurse:
-                print('{}{}:'.format('\t' * depth, stat))
+                print('{}{}:'.format('\t' * depth, displayify_text(stat)))
                 show_dict(v, depth=depth + 1, recurse=recurse)
         else:
-            print('{}{}: {}'.format('\t' * depth, stat, v))
+            print('{}{}: {}'.format('\t' * depth, displayify_text(stat), v))
 
 def fst(t):
     return t[0]

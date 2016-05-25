@@ -337,7 +337,7 @@ class Culture:
     def update_art_display(self):
         self.art_display.delete(0, END)
         for art in self.art:
-            self.art_display.insert(END, self.art)
+            self.art_display.insert(END, art)
 
     def add_art(self, work):
         self.art.append(work)
