@@ -1,4 +1,31 @@
-2016-05-24
+2016-07-29
+Major changes:
+- There is no longer just one stat. Now there is also an art creation rate (with others to come).
+- Works of art will now sometimes have basic content (this is mostly for prophesies, but will be expanded upon later).
+- Many changes to the string generation system to make it significantly more useful.
+- If a nation is completely conquered, all of its notable people and art are now transferred to the conquering nation.
+
+Minor changes:
+- Added historians and allowed them to write works.
+- Scientists can now write scientific essays.
+- Oracles can now issue prophesies (currently do nothing).
+- Each profession now has its own base art create chance (in addition to the randomization).
+- The game will now store a list of all the battles fought including the location, belligerents, date, result, and statistics.
+- Added some more options to the culture form generator (weapons, armor, battles, nations).
+- The program now writes a more readable version of the event log (exactly the same stuff that appears in the console while the program is running).
+- Increased name variety.
+- Added an information GUI for individual pieces of art.
+- Added a nation eliminated event.
+- Note: Currently all art is registered as being "Lost". This is not actually the case, it's just due to not creating the system whereby art is actually stored in specific cities.
+
+Bug fixes:
+- Minor fixes to the art generation stuff to fix some capitalization and excessive spacing.
+- Added the notion of countable/uncountable to the form generator so that we don't get things like "Ode to a Water" anymore (will now always be "Ode to the Water").
+- Fixes to the string generation system for capitalization.
+- Nation's information screen no longer displays dead people.
+- Fixed bug where game would notify you of a person's death every year, every if they were already dead.
+
+2016-05-28
 Major changes:
 - Added statistics to battles (projectiles launched, projectiles hit, troops lost, troops killed, et cetera).
 - Made units keep track of their stats, adding a new stats tracker every time they are rearmed.
@@ -7,8 +34,10 @@ Major changes:
 Minor changes:
 - Improved languages so that words are more pronounceable.
 - Added culture button to nation's information GUI.
+- Miscellaneous message improvements.
 
 Bug fixes:
+- Fixed issue where some types of drawings would have no material.
 
 2016-05-17
 Major changes:

@@ -368,7 +368,7 @@ class City:
         self.merges.append(other.name)
 
         self.parent.events.append(events.EventCityMerged('CityMerged', {'nation_a': self.nation.id, 'city_a': self.name, 'city_b': other.name}, self.parent.get_current_date()))
-        print(self.parent.events[-1].text_version())
+        self.parent.write_to_gen_log(self.parent.events[-1].text_version())
 
         other.destroy = True
 
@@ -377,6 +377,14 @@ class City:
         original_cities = len(self.nation.cities)
         if self in self.nation.cities: #should be, but just to be sure
             self.nation.cities.remove(self)
+
+            # This nation has been completely conquered, transfer its notable people and art
+            if len(self.nation.cities) == 0:
+                new_nation.culture.combine(self.nation.culture)
+
+                for person in self.nation.notable_people:
+                    person.nation = new_nation
+                    new_nation.notable_people.append(person)
         else:
             raise Exception('{} not in {}'.format(self.name, map(lambda c: c.name, self.nation.cities)))
             return

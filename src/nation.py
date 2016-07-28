@@ -56,10 +56,6 @@ NAME_SWITCH_THRESHOLD = 30
 
 NOTABLE_PERSON_BIRTH_CHANCE = 150
 
-SCIENTIST_RESEARCH_BONUS = 20
-
-ART_CREATE_CHANCE = 26
-
 GOVERNMENT_TYPE_BONUSES = {}
 GOVERNMENT_TYPE_BONUSES["Principality"] = {'food': 1, 'morale': 0.75, 'efficiency': 1, 'tolerance': 1, 'conscription': 1.5}
 GOVERNMENT_TYPE_BONUSES["Kingdom"] = {'food': 1, 'morale': 0.75, 'efficiency': 1, 'tolerance': 1, 'conscription': 1.5}
@@ -247,7 +243,8 @@ class Nation:
     def display_people(self):
         self.listbox_display.delete(0, END)
         for person in self.notable_people:
-            self.listbox_display.insert(END, person)
+            if person.alive: # Don't show all the dead people we keep stored away...
+                self.listbox_display.insert(END, person)
 
         self.displaying = 'people'
 
@@ -348,24 +345,7 @@ class Nation:
         self.mod_morale(self.ruler.effectiveness**2)
 
         for person in self.notable_people:
-            if person.alive:
-                if not person == self.ruler:
-                    if person.role == 'scientist':
-                        amount = person.effectiveness**2 * SCIENTIST_RESEARCH_BONUS
-                        if self.current_research != None:
-                            self.current_research.do_research(amount)
-                    elif person.role == 'revolutionary':
-                        self.mod_morale(-person.effectiveness**2)
-                if person.role in ['artist', 'writer', 'composer', 'philosopher']:
-                    if random.randint(0, ART_CREATE_CHANCE) == 0:
-                        self.culture.add_art(culture.create_art(self, person))
-
-                        person.art.append(self.culture.art[-1])
-
-                        e = events.EventArtCreated('ArtCreated', {'nation_a': self.id, 'person_a': person.name, 'person_a_role': person.role, 'art': str(self.culture.art[-1])}, self.parent.get_current_date())
-                        self.parent.events.append(e)
-
-                        print(self.parent.events[-1].text_version())
+            person.handle_monthly()
 
     def grow_population(self):
         for city in self.cities:
@@ -424,7 +404,7 @@ class Nation:
 
         self.chance_add_new_name(self.cities[-1].name)
 
-        print("{}: A new city was founded in the nation of {}, called {}".format(self.parent.get_current_date(), self.name, self.cities[-1].name))
+        self.parent.write_to_gen_log("{}: A new city was founded in the nation of {}, called {}".format(self.parent.get_current_date(), self.name, self.cities[-1].name))
         self.parent.events.append(events.EventCityFounded('CityFounded', {'nation_a': self.id, 'city_a': self.cities[-1].name}, self.parent.get_current_date()))
 
         self.cities[-1].army = self.army_structure.copy().zero()
@@ -501,20 +481,22 @@ class Nation:
             rearm_unit = random.choice(units)
             rearm_unit.do_rearm(self)
 
-            weapon_string = ','.join(map(lambda w: w.name, rearm_unit.weapons))
+            weapon_string = ', '.join(map(lambda w: w.name, rearm_unit.weapons))
             e = events.EventRearmUnit('RearmUnit', {'nation_a': self.id, 'unit_a': rearm_unit.name, 'weapons': weapon_string, 'armor': rearm_unit.armor.name}, self.parent.get_current_date())
             self.parent.events.append(e)
 
-            print(self.parent.events[-1].text_version())
+            self.parent.write_to_gen_log(self.parent.events[-1].text_version())
 
             for city in self.cities:
                 city.rearm_army(rearm_unit)
 
     def handle_people(self):
         for person in self.notable_people:
+            was_alive = person.alive
             person.history_step()
 
-            if not person.alive:
+            # Only do it once.
+            if not person.alive and was_alive:
                 person.handle_death()
 
     def history_step(self):
@@ -544,7 +526,7 @@ class Nation:
                 if self.current_research != None and self.current_research.is_unlocked():
                     self.parent.events.append(events.EventTechResearch('TechResearch', {'nation_a': self.id, 'tech_a': self.current_research.name}, self.parent.get_current_date()))
 
-                    print(self.parent.events[-1].text_version())
+                    self.parent.write_to_gen_log(self.parent.events[-1].text_version())
                 available = self.tech.get_available_research()
 
                 if len(available) > 0:

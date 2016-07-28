@@ -2,7 +2,8 @@
 - Generals
 - Judges
 - Heroes (achilles, cu chulainn, odysseus, et cetera)
-- People should live in cities, rather than just existing in the nation
+    - Fights between heroes to decide the outcome of battles, rather than fighting the whole battle
+- Notable People should live in cities, rather than just existing in the nation
 
 #Military
 - Officers (centurions, colonels, whatever)
@@ -23,6 +24,11 @@
 - Tornadoes
 - Droughts/floods
 
+#Art
+- Actual content
+    - Basic outlines of the work
+    - Possibly even simple paintings
+
 #Literature
 - Fables
 - History
@@ -37,6 +43,7 @@
 - Randomly generated animals/plants
 
 #Food
+- Multiple kinds of food.
 - Vegan/Vegetarian/whatever
 - Staple foods
 - Common foods

@@ -138,7 +138,7 @@ wood_armor = Armor('Wood Armor', 300, 0, 5, 0.3)
 chainmail = Armor('Chaimail', 1000, 1, 8, 0.25)
 plate = Armor('Plate', 2000, 2, 12, 0.15)
 
-all_armor_list = [cloth_armor, padded_armor, leather_armor, wood_armor, chainmail, plate]
+armor_list = [cloth_armor, padded_armor, leather_armor, wood_armor, chainmail, plate]
 
 armor_list = [wood_armor, chainmail, plate]
 basic_armor_list = [cloth_armor, leather_armor, wood_armor, padded_armor]

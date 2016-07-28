@@ -39,6 +39,8 @@ class Event:
     def from_dict(dict):
         if dict['name'] == 'NationFounded':
             return EventNationFounded(dict['name'], dict['event_data'], dict['date'])
+        elif dict['name'] == 'NationEliminated':
+            return EventNationEliminated(dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'CityFounded':
             return EventCityFounded(dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'CityMerged':
@@ -86,6 +88,13 @@ class EventNationFounded(Event):
 
     def text_version(self):
         return '{} was founded on {}.'.format(get_nation_name(self.nation_name), self.date)
+
+class EventNationEliminated(Event):
+    def setup(self):
+        self.nation_name = self.event_data['nation_a']
+
+    def text_version(self):
+        return '{}: {} was eliminated.'.format(self.date, get_nation_name(self.nation_name))
 
 class EventReligionGodAdded(Event):
     def setup(self):

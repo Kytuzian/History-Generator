@@ -334,7 +334,7 @@ class Cloud:
         return amount
 
 class Weather:
-    def __init__(self, cells):
+    def __init__(self, cells, parent):
         self.cells = cells
         self.water_cells = []
 
@@ -343,14 +343,23 @@ class Weather:
         self.cells_x = utility.S_WIDTH // utility.CELL_SIZE
         self.cells_y = utility.S_HEIGHT // utility.CELL_SIZE
 
-        self.setup()
+        self.setup(parent)
 
-    def setup(self):
-        print('Calculating wind vectors.')
+    def setup(self, parent):
+        if parent != None:
+            parent.write_to_gen_log('Calculating wind vectors.')
+        else:
+            print('Calculating wind vectors.')
         self.wind_vectors = self.calculate_wind_vectors()
-        print('Setting up clouds.')
+        if parent != None:
+            parent.write_to_gen_log('Setting up clouds.')
+        else:
+            print('Setting up clouds.')
         self.setup_clouds()
-        print('Filtering for water cells for evaporation.')
+        if parent != None:
+            parent.write_to_gen_log('Filtering for water cells for evaporation.')
+        else:
+            print('Filtering for water cells for evaporation.')
         self.water_cells = self.get_water_cells()
 
     def get_water_cells(self):

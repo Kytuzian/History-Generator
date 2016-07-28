@@ -19,6 +19,8 @@ LOSE_PLACE_CITY_NAME = 8 #Only applies if the nation no longer owns the city.
 LOSE_NAME_MODIFIER = 30 #Per modifier
 GAIN_NAME_MODIFIER = 30 #Per history step
 
+STARTING_NAME_COUNT = 100
+
 def generate_sound_word(length):
     res = []
     consonants = 0
@@ -120,6 +122,9 @@ class Language:
         else:
             self.create()
 
+        for i in xrange(STARTING_NAME_COUNT):
+            self.generate_name()
+
         # Initialize it with all the base words.
         # for word in start_words:
         #     print('{}: {}'.format(word, self.translateTo(word)))
@@ -192,7 +197,7 @@ class Language:
         else:
             last_name = random.choice(self.last_names)
 
-        return "{0} {1}".format(first_name, last_name)
+        return "{} {}".format(first_name, last_name)
 
     def getVowels(self):
         return [i for i in self.letters if i in "aeiouy"]

@@ -15,6 +15,89 @@ DISPLAY_HEIGHT = 720
 
 CELL_SIZE = 6 #cells are squares, this is the side length
 
+def get_container(s, start, end, start_pos):
+    level = 1
+
+    i = start_pos
+    while i < len(s):
+        if s[i] == start:
+            level += 1
+        elif s[i] ==end:
+            level -= 1
+            if level == 0:
+                break
+
+        i += 1
+
+    return s[start_pos:i]
+
+def find_container_of(s, start, end, char):
+    # Start here, and go back until we find the starting bracket
+    level = 1
+
+    start_pos = s.find(char)
+    while start_pos > 0:
+        if s[start_pos] == end:
+            level += 1
+        elif s[start_pos] == start:
+            level -= 1
+            if level == 0:
+                break
+
+        start_pos -= 1
+
+    level = 1
+    end_pos = start_pos + 1
+    while end_pos < len(s):
+        if s[end_pos] == start:
+            level += 1
+        elif s[end_pos] == end:
+            level -= 1
+            if level == 0:
+                break
+
+        end_pos += 1
+
+    return start_pos, end_pos
+
+# So that if an inner section is detected, its entire contents are ignored
+# For example, separate_container('<test|test1>|test2', '<', '>', '|') will return ['<test|test1>', 'test2']
+def separate_container(s, start, end, char):
+    result = []
+    level = 0
+
+    i = 0
+    while len(s) > 0 and i < len(s):
+        if s[i] == char and level == 0:
+            result.append(s[:i])
+            s = s[i + 1:]
+            i = 0
+        else:
+            if s[i] == start:
+                level += 1
+            elif s[i] == end:
+                level -= 1
+            i += 1
+
+    if len(s) > 0:
+        result.append(s)
+
+    return result
+
+def titlecase(s):
+    new_words = []
+    for word in s.split():
+        if not word in ['of', 'by', 'a', 'the']:
+            word = word[0].upper() + word[1:]
+
+        new_words.append(word)
+
+    # First word is always capitalized
+    if len(new_words) > 0 and len(new_words[0]) > 0:
+        new_words[0] = new_words[0][0].upper() + new_words[0][1:]
+
+    return ' '.join(new_words)
+
 def capitalize_first_letter(s):
     return s[0].upper() + s[1:]
 
@@ -55,14 +138,20 @@ def base_weapon_stats():
 
     return base
 
-def show_dict(d, depth=1, recurse=True):
+def show_dict(d, depth=1, recurse=True, gen=None):
     for stat, v in sorted(d.items()):
         if isinstance(v, dict):
             if recurse:
-                print('{}{}:'.format('\t' * depth, displayify_text(stat)))
-                show_dict(v, depth=depth + 1, recurse=recurse)
+                if gen != None:
+                    gen.write_to_gen_log('{}{}:'.format('\t' * depth, displayify_text(stat)))
+                else:
+                    print('{}{}:'.format('\t' * depth, displayify_text(stat)))
+                show_dict(v, depth=depth + 1, recurse=recurse, gen=gen)
         else:
-            print('{}{}: {}'.format('\t' * depth, displayify_text(stat), v))
+            if gen != None:
+                gen.write_to_gen_log('{}{}: {}'.format('\t' * depth, displayify_text(stat), v))
+            else:
+                print('{}{}: {}'.format('\t' * depth, displayify_text(stat), v))
 
 def fst(t):
     return t[0]
