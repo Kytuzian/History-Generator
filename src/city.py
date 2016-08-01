@@ -28,14 +28,15 @@ SEND_CARAVAN_CHANCE = 10
 
 TRADE_GOOD_PRICE = 25
 
-house_effects = {'population_capacity': 10, 'tax_score': 10, 'cost': 50, 'size': 5}
-farm_effects = {'population_capacity': 5, 'food': 60, 'cost': 200, 'size': 20}
+# hovel_effects = {'population_capacity': 1, 'tax_score': 0, 'cost': 5, 'size': 1}
+house_effects = {'population_capacity': 10, 'tax_score': 10, 'cost': 40, 'size': 5}
+farm_effects = {'population_capacity': 5, 'food': 60, 'cost': 200, 'size': 15}
 tavern_effects = {'population_capacity': 5, 'cost': 500, 'money_output': 1200, 'size': 50}
 fishery_effects = {'population_capacity': 2, 'food': 125, 'cost': 200, 'size': 40}
 ranch_effects = {'population_capacity': 2, 'food': 125, 'cost': 300, 'size': 50}
 hunting_lodge_effects = {'population_capacity': 2, 'food': 50, 'cost': 50, 'size': 20}
-leatherworker_effects = {'population_capacity': 2, 'money_output': 200, 'leather': 5, 'cost': 300, 'size': 5}
-weaver_effects = {'population_capacity': 2, 'money_output': 200, 'cloth': 5, 'cost': 300, 'size': 5}
+leatherworker_effects = {'population_capacity': 2, 'money_output': 200, 'leather': 5, 'cost': 300, 'size': 15}
+weaver_effects = {'population_capacity': 2, 'money_output': 200, 'cloth': 5, 'cost': 300, 'size': 15}
 woodcutter_effects = {'population_capacity': 2, 'money_output': 150, 'wood': 5, 'cost': 300, 'size': 50}
 mine_effects = {'population_capacity': 8, 'money_output': 1000, 'metal': 3, 'cost': 1000, 'size': 90}
 library_effects = {'population': 4, 'research_rate': 2, 'cost': 1000, 'size': 90}
@@ -292,6 +293,9 @@ class City:
 
             if len(partner.cities) > 0:
                 trade_city = random.choice(partner.cities)
+
+                trade_treaty = self.nation.get_treaty_with(partner, 'trade')
+                trade_treaty[self.nation.id]['caravans_sent'] += 1
             else: # There was a problem, just exit the function.
                 return
         else:
@@ -316,7 +320,6 @@ class City:
             city.caravans.remove(caravan)
 
             # Construct a demand ranking
-
             consumption_ranking = sorted(self.consumed_resources.items(), key=utility.snd)
             res_count = float(len(consumption_ranking))
             resource_mults = {k: (res_count / 2.0 - i) / res_count for i, (k, v) in enumerate(consumption_ranking)}
@@ -340,6 +343,11 @@ class City:
 
             if city.nation != self.nation: # Trading with ourselves doesn't give any bonus
                 city.nation.money += profit // 2 # The other party only makes half as much
+
+                trade_treaty = self.nation.get_treaty_with(city.nation, 'trade')
+
+                if trade_treaty != None: # Although this should always be the case, really.
+                    trade_treaty[self.nation.id]['caravans_received'] += 1
 
         return f
 

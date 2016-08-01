@@ -3,7 +3,7 @@ from nation import *
 
 import random
 
-import culture
+import generator
 
 from math import *
 
@@ -96,7 +96,7 @@ class NationName:
         return self.get_name()
 
 class Language:
-    def __init__(self, start_words=culture.base_words, name_length=random.randint(4, 10), base_language = None):
+    def __init__(self, start_words=generator.base_words, name_length=random.randint(4, 10), base_language = None):
         self.letters = []
         self.startLetters = []
         self.endLetters = []

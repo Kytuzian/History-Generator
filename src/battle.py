@@ -152,10 +152,20 @@ class Soldier:
                 stats[self.name][weapon]['kills'] += 1
 
                 enemy_stats['troops_lost'] += 1
+
+                if not self.target.name in enemy_stats:
+                    enemy_stats[self.target.name] = utility.base_soldier_stats()
+                enemy_stats[self.target.name]['deaths'] += 1
+
                 self.target.unit.handle_death(self.target)
             elif self.health <= 0:
                 stats['troops_lost'] += 1
+                stats[self.name]['deaths'] += 1
+
                 enemy_stats['troops_killed'] += 1
+                enemy_stats[self.target.name]['kills'] += 1
+                enemy_stats[self.target.name][self.target.get_melee_weapon().name]['kills'] += 1
+
                 self.unit.handle_death(self)
 
             self.reload = 0
@@ -738,6 +748,9 @@ class Battle:
                                 stats[p.launcher.name]['kills'] += 1
                                 stats[p.launcher.name][weapon]['kills'] += 1
 
+                                if not p.target.name in enemy_stats:
+                                    enemy_stats[p.target.name] = utility.base_soldier_stats()
+                                enemy_stats[p.target.name]['deaths'] += 1
                                 enemy_stats['troops_lost'] += 1
 
                                 p.target.unit.handle_death(p.target)

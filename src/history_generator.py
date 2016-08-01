@@ -18,6 +18,7 @@ from martial import *
 from language import *
 
 import culture
+import diplomacy
 import events
 import event_analysis
 import terrain
@@ -25,20 +26,6 @@ import terrain
 import noise
 
 DEFAULT_SIMULATION_SPEED = 300 #ms
-
-class BattleHistory:
-    def __init__(self, location, winner, nation_a, nation_b, date, a_stats, b_stats):
-        self.location = location
-
-        self.winner = winner
-
-        self.nation_a = nation_a
-        self.nation_b = nation_b
-
-        self.date = date
-
-        self.a_stats = a_stats
-        self.b_stats = b_stats
 
 class Main:
     nation_count = 8
@@ -68,7 +55,9 @@ class Main:
         self.nation_id = 0
 
         self.battles = []
+
         self.battle_history = []
+        self.treaties = []
 
         self.cells = []
 
@@ -159,7 +148,7 @@ class Main:
         self.old_nations = {}
 
         for new_nation in xrange(self.nation_count):
-            self.nations.append(Nation(self))
+            self.add_nation(Nation(self))
 
         self.create_gui()
 
@@ -246,7 +235,7 @@ class Main:
         return res
 
     def available_colors(self):
-        #For the deep copy
+        # For deep copying
         available_list = list(NATION_COLORS)
 
         for nation in self.nations:
@@ -256,6 +245,13 @@ class Main:
 
     def add_nation(self, nation):
         self.nations.append(nation)
+
+        for nation in self.nations:
+            for check_nation in self.nations:
+                if nation != check_nation:
+                    if not check_nation.id in nation.relations:
+                        nation.relations[check_nation.id] = 0 # Initially we start out neutral with all nations.
+
         self.events.append(events.EventNationFounded("NationFounded", {"nation_a": self.nations[-1].id}, self.get_current_date()))
 
     def remove_nation(self, nation):
@@ -291,13 +287,13 @@ class Main:
 
             if advance_amount > 0:
                 self.end_year = self.year + advance_amount
+
+                self.after_id = self.parent.after(self.delay.get(), self.main_loop)
             else:
-                tkMessageBox.showerror('Negative Years', 'Cannot advance a negative amount of time.')
+                tkMessageBox.showerror('Negative Years', 'Cannot advance a negative or zero amount of time.')
         except ValueError:
             tkMessageBox.showerror('Invalid Year', '{} is not a valid integer'.format(self.years_input.get()))
             return
-
-        self.after_id = self.parent.after(self.delay.get(), self.main_loop)
 
     def toggle_run_until_battle(self):
         self.run_until_battle = not self.run_until_battle
@@ -325,36 +321,34 @@ class Main:
                 self.year += 1
                 self.month = 1
 
-                for i in self.nations:
-                    i.history_step()
+                for nation in self.nations:
+                    nation.history_step()
 
-                    if len(i.cities) == 0 and len(i.moving_armies) == 0 and len(self.battles) == 0:
-                        self.remove_nation(i)
+                    if len(nation.cities) == 0 and len(nation.moving_armies) == 0 and len(self.battles) == 0:
+                        self.remove_nation(nation)
 
             if len(self.battles) == 0 or self.day == 30:
-                for i in self.nations:
-                    i.grow_population()
+                for nation in self.nations:
+                    nation.grow_population()
+                    nation.handle_diplomacy()
+                    nation.move_armies(utility.flatten([nation.moving_armies for check_nation in self.nations if nation != check_nation]))
 
-                    i.move_armies(utility.flatten([nation.moving_armies for nation in self.nations if nation != i]))
-
-                    for k in i.at_war:
+                    for k in nation.at_war:
                         if not (k in self.nations):
-                            i.at_war.remove(k)
+                            nation.at_war.remove(k)
 
-                    if len(i.cities) == 0 and len(i.moving_armies) == 0 and len(self.battles) == 0:
-                        self.remove_nation(i)
+                    if len(nation.cities) == 0 and len(nation.moving_armies) == 0 and len(self.battles) == 0:
+                        self.remove_nation(nation)
 
                 # We only want to handle moving the groups after we handle each city.
                 # This is because the groups involve caravans, which need to know
                 # about a city's production in the last month, so that we can calculate prices
-                for i in self.nations:
-                    i.group_step()
+                for nation in self.nations:
+                    nation.group_step()
 
                 #We can only have one nation per color
                 if random.randint(0, len(self.nations)**3 + 5) == 0 and len(self.nations) < len(NATION_COLORS):
                     self.add_nation(Nation(self))
-
-                self.diplomacy()
 
                 self.refresh_nation_selector()
 
@@ -383,7 +377,6 @@ class Main:
     def write_out_events(self, filename):
         with open(filename, 'w' if self.month == 1 and self.year == 1 else 'a') as f:
             for event in self.events:
-                # self.write_to_gen_log("Writing event {}".format(event.to_dict()))
                 f.write('{}\n'.format(event.to_dict()))
 
             self.events = []
@@ -393,28 +386,24 @@ class Main:
             if i.name == name:
                 return i
 
-    def remove_dead_nations_from_trading(self):
-        for nation in self.nations:
-            for partner in nation.trading:
-                if not partner in self.nations:
-                    nation.trading.remove(partner)
-
     def start_war(self, a, b, is_holy_war=False):
         if a != b and not b in a.at_war and not a in b.at_war:
             if not b in a.trading and not a in b.trading:
-                a.at_war.append(b)
-                b.at_war.append(a)
-
-                distance_to_enemy = utility.distance(a.get_average_city_position(), b.get_average_city_position())
-
-                # self.write_to_gen_log('Declared war on enemy who is: {} away'.format(distance_to_enemy))
-
                 if is_holy_war:
-                    self.write_to_gen_log("{}: {} has started a holy war with {} because of religious differences.".format(self.get_current_date, a.name, b.name))
+                    self.write_to_gen_log("{}: {} has started a holy war with {} because of religious differences.".format(self.get_current_date(), a.name, b.name))
                     self.events.append(events.EventDiplomacyWar('DiplomacyWar', {'nation_a': a.id, 'nation_b': b.id, 'reason': 'religious'}, self.get_current_date()))
                 else:
                     self.write_to_gen_log("{}: {} has gone to war with {}!".format(self.get_current_date(), a.name, b.name))
                     self.events.append(events.EventDiplomacyWar('DiplomacyWar', {'nation_a': a.id, 'nation_b': b.id, 'reason': 'economic'}, self.get_current_date()))
+
+                a.at_war.append(b)
+                b.at_war.append(a)
+
+                new_treaty = diplomacy.Treaty(self, self.get_current_date(), a, b, 'war')
+
+                self.treaties.append(new_treaty)
+                a.treaties.append(new_treaty)
+                b.treaties.append(new_treaty)
 
     def start_trade_agreement(self, a, b):
         #Some more sanity checks, just in case.
@@ -423,153 +412,15 @@ class Main:
                 a.trading.append(b)
                 b.trading.append(a)
 
-                self.write_to_gen_log("{}: {} has begun to send caravans to and receive them from {}".format(self.get_current_date(), a.name, b.name))
+                new_treaty = diplomacy.Treaty(self, self.get_current_date(), a, b, 'trade')
+
+                self.treaties.append(new_treaty)
+                a.treaties.append(new_treaty)
+                b.treaties.append(new_treaty)
+
+                self.write_to_gen_log("{}: {} has begun to trade with {}".format(self.get_current_date(), a.name, b.name))
 
                 self.events.append(events.EventDiplomacyTrade('DiplomacyTrade', {'nation_a': a.id, 'nation_b': b.id}, self.get_current_date()))
-
-    def handle_revolt(self, nation):
-        #Not for realism, but this just can't happen, because then they'd be sharing colors.
-        if len(self.nations) < len(NATION_COLORS):
-            #Need more than one city to revolt.
-            if len(nation.cities) > 1:
-                if random.randint(0, max(1, 50 + nation.morale)) == 0:
-                    revolted_cities = []
-                    for city in nation.cities:
-                        #Not all cities can revolt
-                        if random.randint(0, max(1, int(city.morale))) == 0 and len(nation.cities) > 1:
-                            revolted_cities.append(city)
-                            nation.remove_city(city)
-
-                    #At least one city has to revolt, we already decided a revolt was happening, dammit!
-                    if len(revolted_cities) == 0:
-                        min_morale = nation.cities[0].morale
-                        lowest_morale = nation.cities[0]
-                        for city in nation.cities:
-                            if city.morale < min_morale:
-                                min_morale = city.morale
-                                lowest_morale = city
-                        revolted_cities.append(lowest_morale)
-                        nation.remove_city(lowest_morale)
-
-                    self.nations.append(Nation(self, revolted_cities))
-
-                    #For readability
-                    revolted_nation = self.nations[-1]
-
-                    #The actual army revolts are just the armies in the revolting cities
-                    revolted_nation.army_structure = nation.army_structure.reset()
-                    revolted_nation.language = Language(base_language=nation.language)
-
-                    #Copy weapon choices over
-                    #We don't want a shallow copy because they shouldn't share research
-                    revolted_nation.sidearm_list = list(nation.sidearm_list)
-                    revolted_nation.basic_weapon_list = list(nation.basic_weapon_list)
-                    revolted_nation.weapon_list = list(nation.weapon_list)
-                    revolted_nation.basic_ranged_weapon_list = list(nation.basic_ranged_weapon_list)
-                    revolted_nation.ranged_weapon_list = list(nation.ranged_weapon_list)
-                    revolted_nation.armor_list = list(nation.armor_list)
-                    revolted_nation.basic_armor_list = list(nation.basic_armor_list)
-
-                    army_revolted = sum([city.army.size() for city in revolted_nation.cities])
-
-                    #The revolting nation increases their morale because they're now free from whatever issues they saw with the old regime
-                    revolted_nation.mod_morale(MORALE_INCREMENT * len(revolted_cities) * int(log(army_revolted + 2)))
-
-                    #The old nation increases their morale because the haters are now gone.
-                    nation.mod_morale(len(revolted_cities) * MORALE_INCREMENT * int(log(sum([city.army.size() for city in nation.cities]) + 2)))
-
-                    self.write_to_gen_log('{}:'.format(self.get_current_date()))
-                    self.write_to_gen_log("There was a revolt in the nation of {}, resulting in the creation of the new nation state of {}.".format(nation.name, revolted_nation.name))
-                    self.write_to_gen_log("The following cities joined the revolt, along with {} soldiers: {}".format(army_revolted, self.nations[-1].cities))
-
-                    self.events.append(events.EventRevolt('Revolt', {'nation_a': nation.id, 'nation_b': revolted_nation.id, 'cities': [city.name for city in revolted_nation.cities]}, self.get_current_date()))
-
-                    #We don't have peaceful revolts, naturally a nation would attempt to put down the revolt.
-                    self.start_war(nation, revolted_nation)
-
-    def diplomacy(self):
-        for i in self.nations:
-            self.handle_revolt(i)
-
-            #Let's go to war, but we can only do that if there is a nation other than us
-            if random.randint(0, max(15, (len(i.at_war) + 1)**5 + 2*i.get_tolerance())) == 0 and len(self.nations) > 1:
-                enemy = utility.weighted_random_choice(self.nations, weight=lambda _, v: utility.distance(i.get_average_city_position(), v.get_average_city_position()), reverse=True)
-
-                #We can't go to war twice, fight with a trading partner, or be war with ourselves
-                #Because doing any of those things would be really stupid
-                if not enemy in i.at_war and not enemy in i.trading and enemy != i:
-                    self.start_war(i, enemy)
-            else:
-                for enemy in self.nations: #CHECK FOR THE HEATHEN BASTARDS
-                    if enemy != i and enemy.religion != i.religion and random.randint(0, 3 * i.get_tolerance()) == 0:
-                        self.start_war(i, enemy)
-
-                        break
-
-            #Let's try not warring with them, and trade instead, perhaps?
-            if random.randint(0, max(4, int(7**log(max(1, i.get_tolerance()))))) == 0: #Randomly start a new trade agreement. Change it later
-                partner = utility.weighted_random_choice(self.nations, weight=lambda _, v: utility.distance(i.get_average_city_position(), v.get_average_city_position()), reverse=True)
-
-                #We can't trade with somebody we're already trading with or at war with, and we can't trade with ourselves
-                if not partner in i.trading and not partner in i.at_war and not partner == i:
-                    self.start_trade_agreement(i, partner)
-
-            self.remove_dead_nations_from_trading()
-
-            self.handle_army_dispatch(i)
-
-    def handle_army_dispatch(self, nation):
-        #Determine if we want to launch an attack with this cities army
-        for city in nation.cities:
-            #Cool, let's fight them, assuming we have soldiers of course, and there is a them to fight
-            if len(nation.at_war) > 0 and city.army.size() > 0:
-                enemy = random.choice(nation.at_war)
-
-                if len(enemy.cities) > 0 and enemy in self.nations:
-                    attacking_city = utility.weighted_random_choice(enemy.cities, weight=lambda _, v: utility.distance(city.position, v.position), reverse=True)
-
-                    if random.randint(0, max(20, city.army.size() + city.population // 8 - attacking_city.population // 3 - attacking_city.army.size())) > 20 and random.randint(0, len(nation.moving_armies)**3) == 0:
-                        fx, fy = city.position
-
-                        dx, dy = attacking_city.position
-
-                        #Conscript some levies to join the army.
-                        if city.population // 3 > 1:
-                            conscript_max = max(city.population // 4, 3)
-                            conscript_min = min(city.population // 8, 2)
-                            conscripted = int(random.randint(conscript_min, conscript_max) * nation.get_conscription_bonus())
-                        else:
-                            conscripted = 0
-
-                        # self.write_to_gen_log('Conscripted {} people (out of {}) into the army.'.format(conscripted, city.population))
-
-                        city.population -= conscripted
-                        city.army.add_to(city.army.name, conscripted)
-
-                        nation.moving_armies.append(Group(nation.name, city.army, (fx, fy), (dx, dy), nation.color, lambda s: False, self.do_attack(nation, city, enemy, attacking_city), self.canvas))
-
-                        self.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': nation.id, 'nation_b': enemy.id, 'city_a': city.name, 'city_b': attacking_city.name, 'reason': 'attack', 'army_size': city.army.size()}, self.get_current_date()))
-
-                        city.army = city.army.zero()
-                    # elif random.randint(0, city.army.size()) < city.army.size() // 4 and len(nation.cities) > 1: #Reinforce another city
-                    #     fx, fy = city.position
-                    #
-                    #     #We obviously can't reinforce the same city
-                    #     reinforcement_cities = filter(lambda check: check != city, nation.cities)
-                    #
-                    #     #This really should always be true, but, as always, just in case
-                    #     if len(reinforcement_cities) > 0:
-                    #         #We want to reinforce cities with larger armies more, so we can better amass our forces for attacks
-                    #         reinforce_city = utility.weighted_random_choice(reinforcement_cities, lambda _, v: v.army.size())
-                    #
-                    #         if reinforce_city != city:
-                    #             dx, dy = reinforce_city.position
-                    #
-                    #             nation.moving_armies.append(Group(nation.name, city.army, (fx, fy), (dx, dy), nation.color, lambda s, c: False, self.reinforce(nation, reinforce_city), self.canvas))
-                    #
-                    #             self.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': nation.id, 'nation_b': nation.id, 'city_a': city.name, 'city_b': reinforce_city.name, 'reason': 'reinforce', 'army_size': city.army.size()}, self.get_current_date()))
-                    #
-                    #             city.army = city.army.zero()
 
     def return_levies(self, sender, reinforce_city):
         def do(reinforcing):
@@ -583,10 +434,11 @@ class Main:
             elif reinforce_city.nation in sender.at_war: #If we're at war with the nation that now owns our city, attack it.
                 self.attack(sender, reinforcing.members, reinforce_city.nation, None, reinforce_city)
             else: #if a third party is involved, let's just return back home
-                return_destination = random.choice(sender.cities)
-                sender.moving_armies.append(Group(sender.name, reinforcing.members, reinforce_city.position, return_destination.position, sender.color, lambda s: False, self.reinforce(sender, return_destination), self.canvas))
+                if len(sender.cities) > 0:
+                    return_destination = random.choice(sender.cities)
+                    sender.moving_armies.append(Group(sender.name, reinforcing.members, reinforce_city.position, return_destination.position, sender.color, lambda s: False, self.reinforce(sender, return_destination), self.canvas))
 
-                self.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': sender.id, 'nation_b': sender.id, 'city_a': reinforce_city.name, 'city_b': return_destination.name, 'reason': 'reinforce', 'army_size': reinforcing.members.size()}, self.get_current_date()))
+                    self.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': sender.id, 'nation_b': sender.id, 'city_a': reinforce_city.name, 'city_b': return_destination.name, 'reason': 'reinforce', 'army_size': reinforcing.members.size()}, self.get_current_date()))
 
         return do
 
@@ -682,6 +534,12 @@ class Main:
             if unit.name in battle.b_stats:
                 unit.handle_battle_end(battle.b_stats[unit.name])
 
+        war_treaty = a.get_treaty_with(b, 'war')
+        war_treaty.treaty_details[a.id]['troops_lost'] += battle.a_stats['troops_lost']
+        war_treaty.treaty_details[a.id]['troops_killed'] += battle.a_stats['troops_killed']
+        war_treaty.treaty_details[b.id]['troops_lost'] += battle.b_stats['troops_lost']
+        war_treaty.treaty_details[b.id]['troops_killed'] += battle.b_stats['troops_killed']
+
         winner = None
 
         #Determine the winner
@@ -694,6 +552,9 @@ class Main:
 
             attack_city.capture(battle.a_army, a, battle.attacking_city)
             a.capture_city(attack_city)
+
+            war_treaty.treaty_details[a.id]['cities_conquered'] += 1
+            war_treaty.treaty_details[b.id]['cities_lost'] += 1
 
             winner = a
         elif battle.b_army.size() > 0:
@@ -711,7 +572,7 @@ class Main:
 
             winner = b
 
-        self.battle_history.append(BattleHistory(attack_city, winner, a, b, self.get_current_date(), battle.a_stats, battle.b_stats))
+        self.battle_history.append(diplomacy.BattleHistory(attack_city, winner, a, b, self.get_current_date(), battle.a_stats, battle.b_stats))
 
         self.after_id = self.parent.after(self.delay.get(), self.main_loop)
 

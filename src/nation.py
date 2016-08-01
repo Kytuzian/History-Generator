@@ -112,6 +112,9 @@ class Nation:
         self.at_war = []
         self.allied = []
         self.trading = []
+        self.relations = {}
+
+        self.treaties = []
 
         self.caravans = []
 
@@ -424,6 +427,13 @@ class Nation:
     def remove_city(self, city):
         self.cities.remove(city)
 
+    def get_capital(self):
+        for city in self.cities:
+            if city.is_capital:
+                return city
+
+        return None
+
     def has_capital(self):
         for city in self.cities:
             if city.is_capital:
@@ -551,6 +561,177 @@ class Nation:
 
         #More cities means less happiness
         self.mod_morale(-(len(self.cities)**2 + 1))
+
+    def handle_revolt(self):
+        # Not for realism, but this really shouldn't happen, because then they'd be sharing colors.
+        if len(self.parent.available_colors()) > 0:
+            # Need more than one city to revolt.
+            if len(self.cities) > 1:
+                if random.randint(0, max(1, 50 + self.morale)) == 0:
+                    revolted_cities = []
+                    for city in self.cities:
+                        #Not all cities can revolt
+                        if random.randint(0, max(1, int(city.morale))) == 0 and len(self.cities) > 1:
+                            revolted_cities.append(city)
+                            self.remove_city(city)
+
+                    #At least one city has to revolt, we already decided a revolt was happening, dammit!
+                    if len(revolted_cities) == 0:
+                        min_morale = self.cities[0].morale
+                        lowest_morale = self.cities[0]
+                        for city in self.cities:
+                            if city.morale < min_morale:
+                                min_morale = city.morale
+                                lowest_morale = city
+                        revolted_cities.append(lowest_morale)
+                        self.remove_city(lowest_morale)
+
+                    self.parent.add_nation(Nation(self.parent, revolted_cities))
+
+                    #For readability
+                    revolted_nation = self.parent.nations[-1]
+
+                    #The actual army revolts are just the armies in the revolting cities
+                    revolted_nation.army_structure = self.army_structure.reset()
+                    revolted_nation.language = Language(base_language=self.language)
+
+                    #Copy weapon choices over
+                    #We don't want a shallow copy because they shouldn't share research
+                    revolted_nation.sidearm_list = list(self.sidearm_list)
+                    revolted_nation.basic_weapon_list = list(self.basic_weapon_list)
+                    revolted_nation.weapon_list = list(self.weapon_list)
+                    revolted_nation.basic_ranged_weapon_list = list(self.basic_ranged_weapon_list)
+                    revolted_nation.ranged_weapon_list = list(self.ranged_weapon_list)
+                    revolted_nation.armor_list = list(self.armor_list)
+                    revolted_nation.basic_armor_list = list(self.basic_armor_list)
+
+                    army_revolted = sum([city.army.size() for city in revolted_nation.cities])
+
+                    #The revolting nation increases their morale because they're now free from whatever issues they saw with the old regime
+                    revolted_nation.mod_morale(MORALE_INCREMENT * len(revolted_cities) * int(log(army_revolted + 2)))
+
+                    #The old nation increases their morale because the haters are now gone.
+                    self.mod_morale(len(revolted_cities) * MORALE_INCREMENT * int(log(sum([city.army.size() for city in self.cities]) + 2)))
+
+                    self.parent.write_to_gen_log('{}:'.format(self.parent.get_current_date()))
+                    self.parent.write_to_gen_log("There was a revolt in the nation of {}, resulting in the creation of the new nation state of {}.".format(self.name, revolted_nation.name))
+                    self.parent.write_to_gen_log("The following cities joined the revolt, along with {} soldiers: {}".format(army_revolted, revolted_nation.cities))
+
+                    self.parent.events.append(events.EventRevolt('Revolt', {'nation_a': self.id, 'nation_b': revolted_nation.id, 'cities': [city.name for city in revolted_nation.cities]}, self.parent.get_current_date()))
+
+                    #We don't have peaceful revolts, naturally a nation would attempt to put down the revolt.
+                    self.parent.start_war(self, revolted_nation)
+
+    def handle_army_dispatch(self):
+        #Determine if we want to launch an attack with this city's army
+        for city in self.cities:
+            if len(self.at_war) > 0 and city.army.size() > 0:
+                enemy = random.choice(self.at_war)
+
+                # Make sure our enemy actually still exists.
+                if len(enemy.cities) > 0 and enemy in self.parent.nations:
+                    attacking_city = utility.weighted_random_choice(enemy.cities, weight=lambda _, v: utility.distance(city.position, v.position), reverse=True)
+
+                    if random.randint(0, max(20, city.army.size() + city.population // 8 - attacking_city.population // 3 - attacking_city.army.size())) > 20:
+                        if random.randint(0, len(self.moving_armies)**3) == 0:
+                            fx, fy = city.position
+
+                            dx, dy = attacking_city.position
+
+                            #Conscript some levies to join the army.
+                            if city.population // 3 > 1:
+                                conscript_max = max(city.population // 4, 3)
+                                conscript_min = min(city.population // 8, 2)
+                                conscripted = int(random.randint(conscript_min, conscript_max) * self.get_conscription_bonus())
+                            else:
+                                conscripted = 0
+
+                            city.population -= conscripted
+                            city.army.add_to(city.army.name, conscripted)
+
+                            action = self.parent.do_attack(self, city, enemy, attacking_city)
+                            self.moving_armies.append(Group(self.id, city.army, (fx, fy), (dx, dy), self.color, lambda s: False, action, self.parent.canvas))
+
+                            self.parent.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': self.id, 'nation_b': enemy.id, 'city_a': city.name, 'city_b': attacking_city.name, 'reason': 'attack', 'army_size': city.army.size()}, self.parent.get_current_date()))
+
+                            city.army = city.army.zero()
+
+    def handle_treaties(self):
+        return
+
+    def get_current_treaties_with(self, nation):
+        current_treaties = filter(lambda treaty: treaty.is_current, self.treaties)
+
+        return filter(lambda treaty: treaty.nation_a == nation or treaty.nation_b == nation)
+
+    def get_treaty_with(self, nation, treaty_type):
+        for treaty in self.treaties:
+            if treaty.is_current:
+                if treaty.nation_a == nation or treaty.nation_b == nation:
+                    if treaty.treaty_type == treaty_type:
+                        return treaty
+
+        return None
+
+    def handle_relations(self):
+        for nation in self.parent.nations:
+            if nation != self:
+                if nation in self.trading:
+                    trade_treaty = self.get_treaty_with(nation, 'trade')
+                    self.relations[nation.id] += trade_treaty.treaty_details[self.id]['caravans_received']
+                if nation in self.at_war:
+                    war_treaty = self.get_treaty_with(nation, 'war')
+
+                    # This way, if we lose more troops than them, our relations will go down even more, even though they go down by default just for being at war
+                    self.relations[nation.id] += min(-1, war_treaty.treaty_details[nation.id]['troops_lost'] - war_treaty.treaty_details[self.id]['troops_lost'])
+
+                max_relation_increase = int(log(self.get_tolerance() + nation.get_tolerance() + 1))
+                max_relation_decrease = int(log(self.get_tolerance()))
+
+                self.relations[nation.id] += random.randint(-max_relation_decrease, max_relation_increase)
+
+                self.relations[nation.id] = min(100, max(-100, self.relations[nation.id]))
+
+                # Relations are the same both ways.
+                nation.relations[self.id] = self.relations[nation.id]
+
+        # print('{}\'s Relations:'.format(self.name))
+        # for nation in self.relations:
+        #     print('\t{}: {}'.format(events.get_nation_name(nation), self.relations[nation]))
+
+    def handle_diplomacy(self):
+        # We can only start warring/trading if there are nations other than us.
+        if len(self.parent.nations) > 1:
+            distance_sorted_nations = sorted(self.parent.nations, key=lambda nation: utility.distance(self.get_average_city_position(), nation.get_average_city_position()))
+
+            # Check for war/trade
+            for other in distance_sorted_nations:
+                # We can't start trading with an enemy we're at war with or vice versa.
+                # And we certainly can't start fighting/trading with ourselves.
+                if other != self and not other in self.at_war and not other in self.trading:
+                    if random.randint(0, max(15, (len(self.at_war) + 1)**3 + 2 * self.get_tolerance()**2)) == 0:
+                        self.parent.start_war(self, other)
+                        break
+                    elif other.religion != self.religion and random.randint(0, (len(self.at_war) + 2)**3 + 8 * self.get_tolerance()) == 0:
+                        self.parent.start_war(self, other, is_holy_war=True)
+                        break
+                    elif random.randint(0, max(len(self.parent.nations)**2 * int(log(max(1, self.money)) + 1), int(self.money / max(1, self.get_tolerance())**2))) == 0:
+                        self.parent.start_trade_agreement(self, other)
+                        break
+
+        self.remove_dead_nations()
+        self.handle_army_dispatch()
+        self.handle_revolt()
+        self.handle_treaties()
+        self.handle_relations()
+
+    def remove_dead_nations(self):
+        for nation in self.trading:
+            if not nation in self.parent.nations:
+                for treaty in self.get_current_treaties_with(nation):
+                    treaty.end(self.parent.get_current_date())
+
+                self.relations.pop(nation.id)
 
     def __repr__(self):
         return '{} ({}): ${}; Pop: {}'.format(self.name.short_name(), self.color, int(self.money), sum([i.population for i in self.cities]))

@@ -1,4 +1,31 @@
-2016-07-29
+2016-08-03
+Major changes:
+
+Minor changes:
+
+Bug fixes:
+
+2016-08-01
+Major changes:
+- Nations now all have a relations value for every other nation, which determines how hostile/accepting they are of that nation. This value is used for treaties and such.
+- Added treaties to the game. Treaties, for now, simply provide an interface for the simulation to check how each treaty is developing, and use that information to determine the nations' relations.
+
+Minor changes:
+- Battle statistics now include deaths as well as kills.
+- Added more descriptions/content to the various art forms.
+- Took out abstract art for now--I want to improve it's subject/content generation before I put it back, and it needs a lot of reworking.
+- WAY decreased frequency of holy wars (because every was at war with everybody, which is ridiculous).
+- Changed the factors that affect starting trade agreements.
+- Slightly tweaked some building values.
+- Improved the string generator further (allowed custom tags to be added to a specific generator).
+
+Bug fixes:
+- Fixed issue with battle statistics where not all troop kills were counted.
+- Fixed bug where the simulation would complain that it "cannot advance a negative amount of time" then attempt to do it anyway, causing an error.
+- Various fixes to the art generation forms.
+- Fixed bug where holy wars were not marked as actually being holy wars.
+
+2016-07-28
 Major changes:
 - There is no longer just one stat. Now there is also an art creation rate (with others to come).
 - Works of art will now sometimes have basic content (this is mostly for prophesies, but will be expanded upon later).

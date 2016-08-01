@@ -57,7 +57,7 @@
 #Celebrations
 - Religious
 - Independence days/founding days
-- Birthdays of notable people
+- Birthdays (probably going to be birth months, on account of how time progresses, but eh) of notable people
 
 #Superstitions
 - Lucky days

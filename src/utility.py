@@ -15,6 +15,19 @@ DISPLAY_HEIGHT = 720
 
 CELL_SIZE = 6 #cells are squares, this is the side length
 
+def get_time_span_length(start_date, end_date):
+    year_dif, month_dif, day_dif = end_date[0] - start_date[0], end_date[1] - start_date[1], end_date[2] - start_date[2]
+
+    if day_dif < 0:
+        month_dif -= 1
+        day_dif += 30
+
+    if month_dif < 0:
+        year_dif -= 1
+        month_dif += 12
+
+    return year_dif, month_dif, day_dif
+
 def get_container(s, start, end, start_pos):
     level = 1
 
@@ -33,9 +46,20 @@ def get_container(s, start, end, start_pos):
 
 def find_container_of(s, start, end, char):
     # Start here, and go back until we find the starting bracket
-    level = 1
+    level = 0
 
-    start_pos = s.find(char)
+    start_pos = 0
+    while start_pos < len(s):
+        if s[start_pos] == start:
+            level += 1
+        elif s[start_pos] == end:
+            level -= 1
+        elif s[start_pos] == char and level == 1:
+            break
+        start_pos += 1
+
+    if start_pos >= len(s) - 1:
+        start_pos = len(s) - 1
     while start_pos > 0:
         if s[start_pos] == end:
             level += 1
@@ -106,6 +130,14 @@ def displayify_text(s):
     words = map(capitalize_first_letter, words)
     return ' '.join(words)
 
+def base_war_stats():
+    base = {}
+
+    base['troops_lost'] = 0
+    base['troops_killed'] = 0
+
+    return base
+
 def base_stats():
     base = {}
 
@@ -124,6 +156,7 @@ def base_soldier_stats():
     base['attacks'] = 0
     base['attacks_won'] = 0
     base['kills'] = 0
+    base['deaths'] = 0
     base['projectiles_launched'] = 0
     base['projectiles_hit'] = 0
 
