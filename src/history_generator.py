@@ -290,8 +290,10 @@ class Main:
 
                 self.after_id = self.parent.after(self.delay.get(), self.main_loop)
             else:
+                self.end_year = self.year
                 tkMessageBox.showerror('Negative Years', 'Cannot advance a negative or zero amount of time.')
         except ValueError:
+            self.end_year = self.year
             tkMessageBox.showerror('Invalid Year', '{} is not a valid integer'.format(self.years_input.get()))
             return
 
@@ -535,10 +537,10 @@ class Main:
                 unit.handle_battle_end(battle.b_stats[unit.name])
 
         war_treaty = a.get_treaty_with(b, 'war')
-        war_treaty.treaty_details[a.id]['troops_lost'] += battle.a_stats['troops_lost']
-        war_treaty.treaty_details[a.id]['troops_killed'] += battle.a_stats['troops_killed']
-        war_treaty.treaty_details[b.id]['troops_lost'] += battle.b_stats['troops_lost']
-        war_treaty.treaty_details[b.id]['troops_killed'] += battle.b_stats['troops_killed']
+        war_treaty[a.id]['troops_lost'] += battle.a_stats['troops_lost']
+        war_treaty[a.id]['troops_killed'] += battle.a_stats['troops_killed']
+        war_treaty[b.id]['troops_lost'] += battle.b_stats['troops_lost']
+        war_treaty[b.id]['troops_killed'] += battle.b_stats['troops_killed']
 
         winner = None
 
@@ -593,8 +595,6 @@ if len(sys.argv) > 1:
         elif params[0] == "size":
             utility.CELL_SIZE = int(params[1])
 
-Main().start()
-# cProfile.run('Main().start()', sort='tottime')
+# Main().start()
+cProfile.run('Main().start()', sort='tottime')
 raw_input()
-# History = Main()
-# History.start()

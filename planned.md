@@ -53,6 +53,9 @@
 #Religion
 - Rituals (specific to gods, and the whole religion in general)
     - Sacrifices: Animal, human
+- Associate gods with particular representations
+    - Animals
+    - As people using certain weapons
 
 #Celebrations
 - Religious

@@ -20,11 +20,11 @@ ART_CATEGORIES = {'artist': ['drawing', 'statue'],
 ART_STYLES = {'drawing': ['painting', 'painting', 'painting', 'fresco', 'woodblock print', 'sketch']}
 ART_SUBCATEGORIES = {'drawing': ['portrait', 'landscape', 'allegorical', 'scene']}
 
-ART_MATERIALS = {'painting': ['<paint> on <medium>'],
-                 'woodblock print': ['<paint> on wood'],
-                 'fresco': ['<paint> on <medium>'],
-                 'sketch': ['<sketch> on <medium>'],
-                 'statue': ['<material>']}
+ART_MATERIALS = {'painting': [['<paint> on <medium>']],
+                 'woodblock print': [['<paint> on wood']],
+                 'fresco': [['<paint> on <medium>']],
+                 'sketch': [['<sketch> on <medium>']],
+                 'statue': [['<material>']]}
 
 ART_SUBJECTS = {'landscape': [[['<landscape_type:cap><nature>'],
                               ['This is a <well|masterfully|poorly|adequately|knowledgably> painted <picture|image> of <article><all_lower><landscape_type>.']]],
@@ -96,7 +96,7 @@ ART_SUBJECTS = {'landscape': [[['<landscape_type:cap><nature>'],
                                'This prophesy predicts that there will be <all_lower><prophesy_type> in <randint;10;1000> years.']]]}
 
 def create_art(nation, creator):
-    category = random.choice(ART_CATEGORIES[creator.role])
+    category = creator.choice(ART_CATEGORIES[creator.periods[-1].role])
 
     style = ''
     sub_category = ''
@@ -107,30 +107,30 @@ def create_art(nation, creator):
     gen = None
 
     if category == 'drawing':
-        style = random.choice(ART_STYLES[category])
-        sub_category = random.choice(ART_SUBCATEGORIES[category])
+        style = creator.choice(ART_STYLES[category])
+        sub_category = creator.choice(ART_SUBCATEGORIES[category])
 
-        gen_forms = random.choice(ART_SUBJECTS[sub_category])
-        gen = generator.Form(gen_forms)
-        subject, content = gen.generate(nation=nation, creator=creator)
+        gen_forms = creator.choice(ART_SUBJECTS[sub_category])
     else:
-        forms = list(ART_SUBJECTS[category])
-        random.shuffle(forms)
+        gen_forms = creator.choice(ART_SUBJECTS[category])
 
-        for gen_forms in forms:
-            gen = generator.Form(gen_forms)
-            subject, content = gen.generate(nation=nation, creator=creator)
-
-            if subject != None:
-                break
+    gen = generator.Form(gen_forms, custom_weights=creator.periods[-1].custom_weights)
+    subject, content = gen.generate(nation=nation, creator=creator)
 
     if subject != None:
+        creator.periods[-1].custom_weights = gen.custom_weights
+
+        material_gen = None
         if style in ART_MATERIALS:
-            material = generator.gen_simple_form(ART_MATERIALS[style], nation=nation, creator=creator)
+            material_gen = generator.Form(ART_MATERIALS[style], custom_weights=creator.periods[-1].custom_weights)
         elif category in ART_MATERIALS:
-            material = generator.gen_simple_form(ART_MATERIALS[category], nation=nation, creator=creator)
+            material_gen = generator.Form(ART_MATERIALS[category], custom_weights=creator.periods[-1].custom_weights)
 
         name = utility.titlecase(nation.language.translateTo(subject))
+
+        if material_gen != None:
+            material = material_gen.generate(nation=nation, creator=creator)[0]
+            creator.periods[-1].custom_weights = material_gen.custom_weights
 
         return Art(nation, creator, name, subject, category, style, sub_category, content, material, None, gen)
     else:

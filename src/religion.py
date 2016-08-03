@@ -142,12 +142,12 @@ class Religion:
 
         for person in self.nation.notable_people:
             if person.alive and not person == self.nation.ruler:
-                if person.role == 'priest':
+                if person.periods[-1].role == 'priest':
                     amount = (1 - person.effectiveness) * PRIEST_TOLERANCE_BONUS
 
                     tolerance_value += amount
 
-        #Can't have a negative tolerance
+        # Can't have a negative or zero tolerance
         return max(1, tolerance_value)
 
     def history_step(self, parent):

@@ -11,45 +11,51 @@ SKETCHING = ['charcoal', 'pencil']
 
 # For statues
 MATERIALS = ['marble', 'rock', 'bronze', 'copper', 'tin', 'wood', 'glass']
-
 ANIMALS = ['dog', 'cat', 'bear', 'wolf', 'bird', 'sparrow', 'hawk', 'eagle',
            'tiger', 'lion', 'elephant', 'alligator', 'pig', 'spider', 'ant',
            'bee', 'panther', 'snake', 'crocodile', 'worm', 'fish', 'shark', 'elk',
-           'fox', 'squirrel', 'cardinal', 'beetle']
+           'fox', 'squirrel', 'cardinal', 'beetle', 'goose', 'ox', 'mouse', 'owl',
+           'moose']
 NATURE = ['tree', 'flower', 'rose', 'grass', 'stump', 'cactus', 'wind',
           'sky', 'ground', 'earth', 'Sun', 'ocean', 'sea', 'lake', 'pond',
           'water', 'mountain', 'cliff', 'shore', 'bay', 'prairie', 'savannah',
-          'star']
+          'star', 'river', 'creek']
+
 PHILOSOPHIES = ['skepticism', 'romanticism', 'modernism', 'stoicism', 'altruism',
-                'capitalism', 'socialism']
+                'capitalism', 'socialism', 'animism', 'cynicism', 'pacifism',
+                'idealism', 'utilitarianism']
+
+COLORS = ['red', 'blue', 'green', 'yellow', 'orange', 'purple', 'white',
+          'black', 'scarlet', 'gold', 'navy', 'periwinkle', 'peridot', 'violet',
+          'grey', 'chartreuse', 'indigo', 'sky blue']
+
+FLOWERS = ['rose', 'daffodil', '']
 
 NOUNS = ['dog', 'cat', 'bear', 'wolf', 'cabinet', 'table', 'paper', 'light',
          'forest', 'tree', 'time', 'society', 'bird', 'robin', 'sparrow',
          'snow', 'rain', 'library', 'python', 'sword', 'book', 'emptiness', 'hollowness',
          'chair', 'shirt', 'dress', 'floor', 'bee', 'grapefruit', 'fight', 'battle',
-         'art', 'anger', 'joy', 'sadness', 'jealousy',
+         'art', 'anger', 'joy', 'sadness', 'jealousy', 'mouse', 'philosophy',
          'pomegranate', 'clock', 'warrior', 'fighter', 'soldier', 'artist',
          'tailor', 'king', 'queen', 'prince', 'princess', 'duke', 'merchant',
          'beggar', 'craftsman', 'spear', 'dagger', 'cart', 'wagon', 'horse',
          'building', 'tower', 'castle', 'hail', 'water', 'skeptic', 'capital',
-         'altruist', 'romantic']
+         'altruist', 'romantic', 'goose', 'ox', 'mouse', 'owl', 'skepticism', 'romanticism',
+         'modernism', 'stoicism', 'altruism', 'capitalism', 'socialism',
+         'animism', 'cynicism', 'pacifism', 'idealism', 'pacfist', 'utilitarianism']
 ADJECTIVES = ['red', 'blue', 'green', 'yellow', 'orange', 'purple', 'white',
               'black', 'fast', 'intelligent', 'blank', 'empty', 'hollow',
               'poetic', 'short', 'tall', 'epic', 'scarlet', 'wide', 'long',
               'narrow', 'grey', 'violet', 'small', 'great', 'strong', 'mighty',
-              'romantic', 'social', 'stoic', 'modern', 'jealous', 'quick']
-BASE_VERBS = ['run', 'walk', 'look', 'drop', 'cause', 'rain', 'fly', 'make',
+              'romantic', 'social', 'stoic', 'modern', 'jealous', 'quick',
+              'devious', 'mischievous', 'noble', 'smart', 'scarlet', 'gold', 'navy',
+              'periwinkle', 'peridot', 'violet', 'grey', 'chartreuse', 'indigo', 'sky blue']
+VERBS = ['run', 'walk', 'look', 'drop', 'cause', 'rain', 'fly', 'make',
               'precipitate', 'fight', 'take', 'snow',
               'write', 'read', 'talk', 'speak', 'transfix', 'roll']
 VERBS = ['runs', 'walks', 'looks', 'drops', 'causes', 'rains', 'flies', 'makes',
          'precipitates', 'fights', 'takes', 'snows',
          'writes', 'reads', 'talks', 'speaks', 'transfixes', 'rolls']
-GERUNDS = ['running', 'walking', 'looking', 'causing', 'raining', 'flying', 'making',
-           'precipitating', 'writing', 'reading', 'talking', 'speaking', 'rolling',
-           'fighting', 'taking', 'snowing']
-PAST_PARTICIPLES = ['ran', 'walked', 'looked', 'dropped', 'caused', 'rained', 'flown',
-                    'made', 'precipitated', 'wrote', 'read', 'talked', 'spoken', 'rolled',
-                    'fought', 'taken', 'snowed']
 PREPOSITIONS = ['around', 'in', 'of', 'by', 'under', 'above', 'before', 'at', 'with']
 
 PREPOSITION_FORMS = ['<article><gerund> <n>', '<article><n>',
@@ -59,9 +65,10 @@ PREPOSITION_FORMS = ['<article><gerund> <n>', '<article><n>',
 
 BEGINNING_FORMS = ['<article><adj,adj,gerund> <n> <v,>']
 
-CONJUCTIONS = ['and', 'or', 'while', 'because']
+CONJUCTIONS = ['and', 'or', 'while', 'because', 'but']
 
-SCIENTIFIC_SUBJECTS = ['mechanics', 'optics', 'physics']
+SCIENTIFIC_SUBJECTS = ['mechanics', 'optics', 'physics', 'biology', 'chemistry',
+                       'geology']
 
 COUNTABLE_WORDS = ['canvas', 'beaverboard', 'paper', 'panel', 'oil', 'watercolor', 'pencil',
                    'rock', 'dog', 'cat', 'bear', 'wolf', 'cabinet', 'table', 'light', 'forest',
@@ -80,13 +87,26 @@ COUNTABLE_WORDS = ['canvas', 'beaverboard', 'paper', 'panel', 'oil', 'watercolor
                    'altruist', 'romantic', 'dagger', 'rondel', 'dirk', 'kopis', 'shortsword', 'club', 'hammer',
                    'mace', 'axe', 'morning star', 'sword', 'bastard sword', 'claymore', 'bill', 'flail',
                    'falx', 'polehammer', 'staff', 'spear', 'pike', 'sarissa', 'sling', 'javelin', 'bow',
-                   'atlatl', 'shortbow', 'longbow', 'crossbow', 'sling staff']
+                   'atlatl', 'shortbow', 'longbow', 'crossbow', 'sling staff', 'goose', 'ox', 'mouse', 'owl',
+                   'moose', 'pacifist', 'river', 'creek']
+
+IRREGULAR_PLURALS = {'goose': 'geese',
+                     'ox': 'oxen',
+                     'mouse': 'mice',
+                     'moose': 'moose'}
+
+# Any of the irregular forms should be include in the following format:
+# 'person(s);tense(s);number(s)': 'form' OR 'type': 'form'
+# e.g. '1,2,3;pres;pl': 'run' OR 'all;pres;pl': 'run'
+# e.g. 'gerund': 'running' OR 'infinitive': 'to run'
+# Only specify the ones that need specification
+IRREGULAR_VERBS = {'run': {'all;past;all': 'ran'}}
 
 # This order matters.
 # Verbs, gerunds, and past participles must be after base verbs, to properly get the -ing suffix.
 # Philosophies must be at the end to get the -ism suffix.
 base_words = MEDIUMS + PAINTS + SKETCHING + MATERIALS + ANIMALS + NATURE +\
-             NOUNS + ADJECTIVES + BASE_VERBS + VERBS + GERUNDS + PAST_PARTICIPLES + PREPOSITIONS +\
+             NOUNS + ADJECTIVES + VERBS + PREPOSITIONS +\
              CONJUCTIONS + PHILOSOPHIES
 
 def is_valid(nation):
@@ -106,11 +126,12 @@ def is_valid(nation):
     return f
 
 class Form:
-    def __init__(self, texts, custom_tags={}):
+    def __init__(self, texts, custom_tags={}, custom_weights={}):
         self.tags = {}
         self.chosen_tags = {}
 
         self.custom_tags = custom_tags
+        self.custom_weights = dict(custom_weights)
 
         self.forms = []
 
@@ -182,10 +203,73 @@ class Form:
 
         return new_form
 
+    def do_conjugate(self, verb, person, tense, number):
+        if verb in IRREGULAR_VERBS:
+            for conj in IRREGULAR_VERBS[verb]:
+                conj_person, conj_tense, conj_number = conj.split(';')
+
+                if conj_person == 'all' or person in conj_person.split(','):
+                    if conj_tense == 'all' or tense in conj_tense.split(','):
+                        if conj_number == 'all' or number in conj_number.split(','):
+                            return IRREGULAR_VERBS[verb][conj]
+
+        # Handle regular verbs
+        if tense == 'pres':
+            if number == 'pl' or person == '2': # Second person is always plural because English
+                return verb
+            else:
+                return verb + 's'
+        elif tense == 'past':
+            return verb + 'ed'
+        elif tense == 'future':
+            return 'will ' + verb
+
+    def do_conjugate_type(self, verb, conj_type):
+        if verb in IRREGULAR_VERBS:
+            if conj_type in IRREGULAR_VERBS[verb]:
+                return IRREGULAR_VERBS[verb][conj_type]
+
+        if conj_type == 'gerund':
+            if len(verb) >= 3:
+                if not verb[-1] in 'aeiou' and verb[-2] in 'aeiou' and not verb[-3] in 'aeiou':
+                    return verb + verb[-1] + 'ing'
+                else:
+                    return verb + 'ing'
+            else:
+                return verb + 'ing'
+        elif conj_type == 'infintive':
+            return 'to ' + verb
+
+    # A replacement for random.choice, so we can keep track of what we chose and use it to
+    def choice(self, options, amount=1):
+        def weight(_, v):
+            if v in self.custom_weights:
+                return self.custom_weights[v]
+            else:
+                return 1
+
+        converted = {}
+        for i in xrange(len(options)):
+            if isinstance(options[i], list):
+                converted[utility.tuplize(options[i])] = options[i]
+                options[i] = utility.tuplize(options[i])
+
+        chosen_item = utility.weighted_random_choice(options, weight)
+
+        if chosen_item in self.custom_weights:
+            self.custom_weights[chosen_item] += amount
+        else:
+            self.custom_weights[chosen_item] = 1 + amount
+
+        if chosen_item in converted:
+            return converted[chosen_item]
+        else:
+            return chosen_item
+
     def generate(self, nation=None, creator=None):
         self.chosen_tags = {}
 
-        actual_forms = map(lambda form_choices: random.choice(form_choices), self.forms)
+        actual_forms = map(lambda form_choices: self.choice(form_choices), self.forms)
         self.generate_tags(actual_forms, nation=nation, creator=creator)
 
         result = []
@@ -217,7 +301,7 @@ class Form:
         for tag in tag_order:
             base = self.tags[tag]
 
-            # () allow you to name text without using any actual tag
+            # () allow you to group text without using any actual tag
             # For example, <test:(<animal>'s hair)> allows you to give the name 'test' to 'lion's hair'
             while '<(' in base:
                 i = base.find('<(')
@@ -246,7 +330,7 @@ class Form:
                 choice = utility.separate_container(choice_section, '<', '>', '|')
                 valid_choice = filter(is_valid(nation), choice)
 
-                base = base.replace('<' + choice_section + '>', random.choice(valid_choice), 1)
+                base = base.replace('<' + choice_section + '>', self.choice(valid_choice), 1)
 
             while ',' in base:
                 start_pos, end_pos = utility.find_container_of(base, '<', '>', ',')
@@ -263,38 +347,38 @@ class Form:
             base = base.replace('<>', '')
 
             while '<paint>' in base:
-                base = base.replace('<paint>', random.choice(PAINTS), 1)
+                base = base.replace('<paint>', self.choice(PAINTS), 1)
             while '<medium>' in base:
-                base = base.replace('<medium>', random.choice(MEDIUMS), 1)
+                base = base.replace('<medium>', self.choice(MEDIUMS), 1)
             while '<sketch>' in base:
-                base = base.replace('<sketch>', random.choice(SKETCHING), 1)
+                base = base.replace('<sketch>', self.choice(SKETCHING), 1)
             while '<material>' in base:
-                base = base.replace('<material>', random.choice(MATERIALS), 1)
+                base = base.replace('<material>', self.choice(MATERIALS), 1)
             while '<animal>' in base:
-                base = base.replace('<animal>', random.choice(ANIMALS), 1)
+                base = base.replace('<animal>', self.choice(ANIMALS), 1)
             while '<nature>' in base:
-                base = base.replace('<nature>', random.choice(NATURE), 1)
+                base = base.replace('<nature>', self.choice(NATURE), 1)
             while '<philosophy>' in base:
-                base = base.replace('<philosophy>', random.choice(PHILOSOPHIES), 1)
+                base = base.replace('<philosophy>', self.choice(PHILOSOPHIES), 1)
             while '<nation>' in base:
                 if nation != None:
-                    base = base.replace('<nation>', str(random.choice(nation.parent.nations).name), 1)
+                    base = base.replace('<nation>', str(self.choice(nation.parent.nations).name), 1)
                 else:
                     base = base.replace('<nation>', '')
             while '<notable_person>' in base:
                 if nation != None:
-                    base = base.replace('<notable_person>', random.choice(nation.notable_people).name, 1)
+                    base = base.replace('<notable_person>', self.choice(nation.notable_people).name, 1)
                 else:
                     base = base.replace('<notable_person>', '')
             while '<notable_person_role>' in base:
                 if nation != None:
-                    person = random.choice(nation.notable_people)
-                    base = base.replace('<notable_person_role>', '{} the {}'.format(person.name, person.role), 1)
+                    person = self.choice(nation.notable_people)
+                    base = base.replace('<notable_person_role>', '{} the {}'.format(person.name, person.periods[-1].role), 1)
                 else:
                     base = base.replace('<notable_person_role>', '')
             while '<god>' in base:
                 if nation != None:
-                    base = base.replace('<god>', random.choice(nation.religion.gods).name, 1)
+                    base = base.replace('<god>', self.choice(nation.religion.gods).name, 1)
                 else:
                     base = base.replace('<god>', '')
             while '<name>' in base:
@@ -304,67 +388,69 @@ class Form:
                     base = base.replace('<name>', '')
             while '<art>' in base:
                 if nation != None and len(nation.culture.art) > 0:
-                        base = base.replace('<art>', '\'{}\''.format(random.choice(nation.culture.art).subject), 1)
+                        base = base.replace('<art>', '\'{}\''.format(self.choice(nation.culture.art).subject), 1)
                 else:
                     base = base.replace('<art>', '')
             while '<art_creator>' in base:
                 if nation != None and len(nation.culture.art) > 0:
-                    art = random.choice(nation.culture.art)
+                    art = self.choice(nation.culture.art)
                     base = base.replace('<art_creator>', '{}\'s \'{}\''.format(art.creator.name, art.subject), 1)
                 else:
                     base = base.replace('<art_creator>', '')
             while '<place>' in base:
                 if nation != None:
-                    base = base.replace('<place>', random.choice(nation.parent.get_all_cities()).name, 1)
+                    base = base.replace('<place>', self.choice(nation.parent.get_all_cities()).name, 1)
                 else:
                     base = base.replace('<place>', '')
             while '<nation_place>' in base:
                 if nation != None:
-                    base = base.replace('<nation_place>', random.choice(nation.cities).name, 1)
+                    base = base.replace('<nation_place>', self.choice(nation.cities).name, 1)
                 else:
                     base = base.replace('<nation_place>', '')
             while '<battle>' in base:
                 if nation != None and len(nation.parent.battle_history) > 0:
-                    battle = random.choice(nation.parent.battle_history)
+                    battle = self.choice(nation.parent.battle_history)
 
                     battle_bases = ['<The Battle of|The Battle for|>{}'.format(battle.location.name)]
-                    base = base.replace('<battle>', gen_simple_form(random.choice(battle_bases)), 1)
+                    base = base.replace('<battle>', gen_simple_form(self.choice(battle_bases)), 1)
                 else:
                     base = base.replace('<battle>', '')
             while '<treaty>' in base:
                 if nation != None and len(nation.parent.treaties) > 0:
-                    treaty = random.choice(nation.parent.treaties).get_treaty_name(nation.parent.get_current_date(), nation)
+                    treaty = self.choice(nation.parent.treaties).get_treaty_name(nation.parent.get_current_date(), nation)
                     base = base.replace('<treaty>', treaty)
                 else:
                     base = base.replace('<treaty>', '')
             while '<nation_treaty>' in base:
                 if nation != None and len(nation.treaties) > 0:
-                    treaty = random.choice(nation.treaties).get_treaty_name(nation.parent.get_current_date(), nation)
+                    treaty = self.choice(nation.treaties).get_treaty_name(nation.parent.get_current_date(), nation)
                     base = base.replace('<nation_treaty>', treaty)
                 else:
                     base = base.replace('<nation_treaty>', '')
             while '<weapon>' in base:
-                base = base.replace('<weapon>', random.choice(research.weapon_list).name, 1)
+                base = base.replace('<weapon>', self.choice(research.weapon_list).name, 1)
             while '<armor>' in base:
-                base = base.replace('<armor>', random.choice(research.armor_list).name, 1)
+                base = base.replace('<armor>', self.choice(research.armor_list).name, 1)
+            while '<color>' in base:
+                base = base.replace('<color>', self.choice(COLORS), 1)
+            while '<flower>' in base:
+                base = base.replace('<flower>', self.choice(FLOWERS), 1)
             while '<scientific_subject>' in base:
-                base = base.replace('<scientific_subject>', random.choice(SCIENTIFIC_SUBJECTS), 1)
+                base = base.replace('<scientific_subject>', self.choice(SCIENTIFIC_SUBJECTS), 1)
             while '<n>' in base:
-                base = base.replace('<n>', random.choice(NOUNS), 1)
+                base = base.replace('<n>', self.choice(NOUNS), 1)
             while '<v>' in base:
-                base = base.replace('<v>', random.choice(VERBS), 1)
+                base = base.replace('<v>', self.choice(VERBS), 1)
             while '<prep>' in base:
-                base = base.replace('<prep>', random.choice(PREPOSITIONS), 1)
-            while '<ppart>' in base:
-                base = base.replace('<ppart>', random.choice(PAST_PARTICIPLES), 1)
-            while '<gerund>' in base:
-                base = base.replace('<gerund>', random.choice(GERUNDS), 1)
+                base = base.replace('<prep>', self.choice(PREPOSITIONS), 1)
             while '<adj>' in base:
-                base = base.replace('<adj>', random.choice(ADJECTIVES), 1)
+                base = base.replace('<adj>', self.choice(ADJECTIVES), 1)
 
             if creator != None:
-                base = base.replace('<self>', creator.name)
-                base = base.replace('<self_role>', '{} the {}'.format(creator.name, creator.role))
+                if '<self>' in base:
+                    base = base.replace('<self>', creator.name)
+                if '<self_role>' in base:
+                    base = base.replace('<self_role>', '{} the {}'.format(creator.name, creator.periods[-1].role))
 
             randoms = re.findall(r'<rand(.*?);(.*?);(.*?)>', base)
 
@@ -385,11 +471,7 @@ class Form:
                 if check_tag in self.chosen_tags:
                     base = base.replace('<' + check_tag + '>', self.chosen_tags[check_tag])
                 elif check_tag in self.custom_tags:
-                    base = base.replace('<' + check_tag + '>', random.choice(self.custom_tags[check_tag]))
-                elif not check_tag in ['article', 'indef', 'cap', 'lower', 'all_lower', 'titlecase', 'pl']:
-                    # Get rid of all of tags
-                    # This is so we can do stuff like <on|off>, and get either on or off, despite the fact that neither is a recognized tag
-                    base = base.replace('<' + check_tag + '>', check_tag)
+                    base = base.replace('<' + check_tag + '>', self.choice(self.custom_tags[check_tag]))
 
             while True:
                 try:
@@ -474,28 +556,43 @@ class Form:
                     if len(words) > 0:
                         next_word = words[0]
                         if next_word in COUNTABLE_WORDS:
-                            pluralized = str(next_word)
-                            if next_word.endswith('s') or next_word.endswith('x') or next_word.endswith('ch') or next_word.endswith('sh'):
-                                pluralized += 'es'
-                            elif next_word.endswith('y'):
-                                pluralized = pluralized[:-1] + 'ies'
+                            if next_word in irregular_plurals:
+                                pluralized = irregular_plurals[next_word]
                             else:
-                                pluralized += 's'
+                                pluralized = str(next_word)
+                                if next_word.endswith('s') or next_word.endswith('x') or next_word.endswith('ch') or next_word.endswith('sh'):
+                                    pluralized += 'es'
+                                elif next_word.endswith('y'):
+                                    pluralized = pluralized[:-1] + 'ies'
+                                else:
+                                    pluralized += 's'
 
                             base = base.replace(next_word, pluralized)
                 except:
                     break
 
+            conjugate = re.findall(r'<conj;(.*?);(.*?);(.*?);(.*?)>', base)
+
+            for person, tense, number, verb in conjugate:
+                conjugated = self.do_conjugate(verb, person, tense, number)
+
+                base = base.replace('<conj;{};{};{};{}>'.format(person, tense, number, verb), conjugated)
+
+            conjugate = re.findall(r'<conj;(.*?);(.*?)>', base)
+            for conj_type, verb in conjugate:
+                conjugated = self.do_conjugate_type(verb, conj_type)
+
+                base = base.replace('<conj;{};{}>'.format(conj_type, verb), conjugated)
+
             base = base.replace('  ', ' ').strip()
 
             self.chosen_tags[tag] = base
 
-def gen_simple_form(form, nation=None, creator=None, custom_tags={}):
-    gen = Form([form], custom_tags=custom_tags)
+def gen_simple_form(form, nation=None, creator=None, custom_tags={}, custom_weights={}):
+    gen = Form([[form]], custom_tags=custom_tags, custom_weights=custom_weights)
 
     return gen.generate(nation=nation, creator=creator)[0]
 
 if __name__ == '__main__':
-    a = Form([['<On the|The> Effectiveness of <armor_type:cap><armor>'],
-     ['<This|The> <essay|paper> <<discusses|talks about> the <strengths|weaknesses> of <all_lower><armor_type>.|<states|says> that <all_lower><armor_type> is <exceedingly|extremely|barely|adequately|sort of|very> <useful|useless|effective|ineffective>.>']])
+    a = Form([['<pl>goose']])
     print(a.generate())

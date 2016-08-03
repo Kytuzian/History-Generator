@@ -223,6 +223,14 @@ class Nation:
                     city.show_information_gui()
 
                     break
+        elif self.displaying == 'people':
+            selected_item = self.listbox_display.get(self.listbox_display.curselection())
+
+            for person in self.notable_people:
+                if str(person) == selected_item:
+                    person.show_information_gui()
+
+                    break
         elif self.displaying == 'trade' or self.displaying == 'war':
             selected_item = self.listbox_display.get(self.listbox_display.curselection())
 
@@ -301,7 +309,7 @@ class Nation:
     def get_tax_rate(self):
         multiplier = 1.0
         for person in self.notable_people:
-            if person.role == 'administrator':
+            if person.periods[-1].role == 'administrator':
                 multiplier *= person.effectiveness
         return self.tax_rate * multiplier
 
@@ -441,7 +449,9 @@ class Nation:
         return False
 
     def get_tolerance(self):
-        return int(self.religion.get_tolerance() * self.get_tolerance_bonus())
+        val = int(self.religion.get_tolerance() * self.get_tolerance_bonus())
+
+        return max(1, val)
 
     def get_tolerance_bonus(self):
         return GOVERNMENT_TYPE_BONUSES[self.name.government_type]['tolerance']
@@ -678,12 +688,15 @@ class Nation:
             if nation != self:
                 if nation in self.trading:
                     trade_treaty = self.get_treaty_with(nation, 'trade')
-                    self.relations[nation.id] += trade_treaty.treaty_details[self.id]['caravans_received']
+
+                    if trade_treaty != None:
+                        self.relations[nation.id] += trade_treaty[self.id]['caravans_received']
                 if nation in self.at_war:
                     war_treaty = self.get_treaty_with(nation, 'war')
 
-                    # This way, if we lose more troops than them, our relations will go down even more, even though they go down by default just for being at war
-                    self.relations[nation.id] += min(-1, war_treaty.treaty_details[nation.id]['troops_lost'] - war_treaty.treaty_details[self.id]['troops_lost'])
+                    if war_treaty != None:
+                        # This way, if we lose more troops than them, our relations will go down even more, even though they go down by default just for being at war
+                        self.relations[nation.id] += min(-1, war_treaty[nation.id]['troops_lost'] - war_treaty[self.id]['troops_lost'])
 
                 max_relation_increase = int(log(self.get_tolerance() + nation.get_tolerance() + 1))
                 max_relation_decrease = int(log(self.get_tolerance()))

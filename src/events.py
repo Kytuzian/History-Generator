@@ -1,5 +1,7 @@
 import ast
 
+import culture
+
 main = None
 
 def get_nation_name(id):
@@ -71,6 +73,8 @@ class Event:
             return EventNotablePersonBirth(dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'NotablePersonDeath':
             return EventNotablePersonDeath(dict['name'], dict['event_data'], dict['date'])
+        elif dict['name'] == 'NotablePersonPeriod':
+            return EventNotablePersonPeriod(dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'ArtCreated':
             return EventArtCreated(dict['name'], dict['event_data'], dict['date'])
         else:
@@ -244,6 +248,25 @@ class EventNotablePersonDeath(Event):
 
     def text_version(self):
         return '{}: {}, a {} from the nation of {}, has died.'.format(self.date, self.person_name, self.person_role, get_nation_name(self.nation_a))
+
+class EventNotablePersonPeriod(Event):
+    def setup(self):
+        self.nation_a = self.event_data['nation_a']
+        self.person_name = self.event_data['person_a']
+        self.person_prev_role = self.event_data['person_a_prev_role']
+        self.person_role = self.event_data['person_a_role']
+        self.period_name = self.event_data['period_name']
+
+    def text_version(self):
+        if self.person_prev_role == '':
+            return '{}: {} became a {}.'.format(self.date, self.person_name, self.person_role)
+        elif self.person_prev_role == self.person_role:
+            return '{}: {} has begun a new period, called his {}.'.format(self.date, self.person_name, self.period_name)
+        else:
+            if self.person_role in culture.ART_CATEGORIES.keys():
+                return '{}: {}, who was previously a {}, is now a {}, and has started his {}.'.format(self.date, self.person_name, self.person_prev_role, self.person_role, self.period_name)
+            else:
+                return '{}: {}, who was previously a {}, is now a {}.'.format(self.date, self.person_name, self.person_prev_role, self.person_role)
 
 class EventArtCreated(Event):
     def setup(self):

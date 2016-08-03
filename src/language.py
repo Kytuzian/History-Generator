@@ -105,6 +105,7 @@ class Language:
 
         self.first_names = []
         self.last_names = []
+        self.names = [] # Names for things like gods, cities, things that only have one name
 
         self.to_dictionary = {}
         self.to_prefix_dictionary = {}
@@ -242,7 +243,11 @@ class Language:
         return result
 
     def make_name_word(self):
-        return self.make_word(self.name_length, True)
+        self.names.append(self.make_word(self.name_length, True))
+        self.from_dictionary[self.names[-1]] = self.names[-1]
+        self.to_dictionary[self.names[-1]] = self.names[-1]
+        
+        return self.names[-1]
 
     def make_word(self, rough_length, capitalize_first_letter=False):
         # To make sure we don't have too many vowels in a row while creating a word.

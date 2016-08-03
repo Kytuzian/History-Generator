@@ -15,6 +15,25 @@ DISPLAY_HEIGHT = 720
 
 CELL_SIZE = 6 #cells are squares, this is the side length
 
+def count(l):
+    res = {}
+    for i in l:
+        if i in res:
+            res[i] += 1
+        else:
+            res[i] = 1
+
+    return res
+
+def tuplize(l):
+    res = l
+
+    for i in xrange(len(res)):
+        if isinstance(res[i], list):
+            res[i] = tuplize(res[i])
+
+    return tuple(res)
+
 def get_time_span_length(start_date, end_date):
     year_dif, month_dif, day_dif = end_date[0] - start_date[0], end_date[1] - start_date[1], end_date[2] - start_date[2]
 
@@ -59,7 +78,7 @@ def find_container_of(s, start, end, char):
         start_pos += 1
 
     if start_pos >= len(s) - 1:
-        start_pos = len(s) - 1
+        raise Exception('\'{}\' not found in {}.'.format(char, s))
     while start_pos > 0:
         if s[start_pos] == end:
             level += 1
@@ -192,12 +211,22 @@ def fst(t):
 def snd(t):
     return t[1]
 
-#Finds the corresponding keys in a dictionary and applies the function to both, creating a new dictionary
-def zip_dict_with(f, a, b):
+# Finds the corresponding keys in a dictionary and applies the function to both, creating a new dictionary
+# f_single is used if the key appears in only one of the dictionaries
+def zip_dict_with(f, a, b, f_single=None):
     res = {}
     for k in a:
         if k in b:
             res[k] = f(a[k], b[k])
+        else:
+            if f_single != None:
+                res[k] = f_single(a[k])
+
+    if f_single != None:
+        for k in b:
+            if not k in res:
+                res[k] = f_single(b[k])
+
     return res
 
 def get_nearest_enemy(unit, check, check_unit = None):
@@ -269,22 +298,21 @@ def calculate_polar_vector((dx, dy)):
 
     return (magnitude, atan2(dy, dx))
 
-#If reverse is false, then it selects heigher weights, if it's true, then it selects lower ones.
+# If reverse is false, then it selects heigher weights, if it's true, then it selects lower ones.
 def weighted_random_choice(col, weight=None, reverse=True):
     if weight == None:
         weight = lambda i, _: i #Makes it more likely to select early indexes.
 
-    if reverse:
-        weight_calculate = lambda i, v: 1.0 / (weight(i, v) + 1.0)
-    else:
-        weight_calculate = weight
+    col = list(col)
+    random.shuffle(col)
 
     accum = 0
-    total = sum(map(lambda i: weight_calculate(i[0], i[1]), enumerate(col)))
+    total = sum(map(lambda i: weight(i[0], i[1]), enumerate(col)))
     goal = random.random() * total
 
     for i, v in enumerate(col):
-        weight_value = weight_calculate(i, v)
+        weight_value = weight(i, v)
+        weight_value = weight(i, v)
         # print(weight_value)
         if weight_value > 0: #If its not, we'll get an error for an empty randrange
             accum += weight_value

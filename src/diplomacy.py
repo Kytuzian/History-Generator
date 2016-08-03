@@ -5,10 +5,12 @@ import generator
 
 TREATY_NAMES = {'trade': [['The Treaty of <signing_city>',
                            'Trade Deal of <signing_year>',
-                           'The Treaty of <signing_year>']],
+                           'The Treaty of <signing_year>',
+                           '<|The > Treaty of <nation_a> and <nation_b>']],
                 'war': [['The Treaty of <signing_city>',
                          'Declaration of War of <signing_year>',
-                         'The Treaty of <signing_year>']]}
+                         'The Treaty of <signing_year>',
+                         '<|The > Treaty of <nation_a> and <nation_b>']]}
 
 class Treaty:
     def __init__(self, parent, starting_date, nation_a, nation_b, treaty_type, signing_city=None, treaty_details={}):
@@ -35,8 +37,10 @@ class Treaty:
 
             if len(capitals) > 0:
                 self.signing_city = random.choice(capitals)
-            else:
+            elif len(nation_a.cities + nation_b.cities) > 0:
                 self.signing_city = random.choice(nation_a.cities + nation_b.cities)
+            else:
+                self.signing_city = None
 
         self.treaty_type = treaty_type
 
@@ -98,7 +102,10 @@ class Treaty:
     def get_treaty_name(self, current_date, requesting_nation):
         if self.status_changed or current_date > self.last_requested_date or not requesting_nation.id in self.names or len(self.names[requesting_nation.id]) == 0:
             custom_tags = {}
-            custom_tags['signing_city'] = [self.signing_city.name]
+            if self.signing_city != None:
+                custom_tags['signing_city'] = [self.signing_city.name]
+            else:
+                custom_tags['signing_city'] = [str(self.nation_a.name), str(self.nation_b.name)]
             custom_tags['signing_year'] = [str(self.starting_date[0])]
             custom_tags['nation_a'] = [str(self.nation_a.name)]
             custom_tags['nation_b'] = [str(self.nation_b.name)]
