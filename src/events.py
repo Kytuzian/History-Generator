@@ -47,6 +47,8 @@ class Event:
             return EventCityFounded(dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'CityMerged':
             return EventCityMerged(dict['name'], dict['event_data'], dict['date'])
+        elif dict['name'] == 'ReligionCreated':
+            return EventReligionCreated(dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'ReligionGodAdded':
             return EventReligionGodAdded(dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'ReligionGodRemoved':
@@ -99,6 +101,20 @@ class EventNationEliminated(Event):
 
     def text_version(self):
         return '{}: {} was eliminated.'.format(self.date, get_nation_name(self.nation_name))
+
+class EventReligionCreated(Event):
+    def setup(self):
+        self.nation = self.event_data['nation_a']
+        self.city = self.event_data['city_a']
+        self.founder = self.event_data['person_a']
+
+        self.name = self.event_data['religion_a']
+
+    def text_version(self):
+        if self.founder != None:
+            return '{}: The religion of {} was founded in the city of {} in the nation of {} by {}.'.format(self.date, self.name, get_nation_name(self.nation), self.city, self.nation, self.founder)
+        else:
+            return '{}: The religion of {} was founded in the city of {} in the nation of {}.'.format(self.date, self.name, get_nation_name(self.nation), self.city, self.nation)
 
 class EventReligionGodAdded(Event):
     def setup(self):

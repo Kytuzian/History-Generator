@@ -107,7 +107,7 @@ class God:
             return '{} ({}): {} of {}'.format(self.name, self.importance, self.get_gender(), self.domains[0])
 
 class Religion:
-    def __init__(self, language, name, nation):
+    def __init__(self, language, name):
         self.name = name
 
         self.language = language
@@ -124,9 +124,10 @@ class Religion:
         #Lower tolerance means more tolerant
         self.tolerance = random.randint(1, MAX_BASE_TOLERANCE)
 
-        self.nation = nation
-
         self.age = 0
+
+        # Adherents are organized by city name
+        self.adherents = {}
 
     def add_god(self, domains=None):
         if domains == None:

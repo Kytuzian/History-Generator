@@ -129,7 +129,7 @@ class Cell:
             available_buildings = filter(lambda b: b.get_size() <= self.get_available_building_capacity(), self.buildings)
 
             if len(available_buildings) > 0:
-                build_building = utility.weighted_random_choice(available_buildings, weight=lambda _, b: float(b.get_cost()), reverse=True)
+                build_building = utility.weighted_random_choice(available_buildings, weight=lambda _, b: 1.0 / b.get_cost())
 
                 if self.owner.nation.money > build_building.get_cost():
                     self.owner.nation.money -= build_building.get_cost()

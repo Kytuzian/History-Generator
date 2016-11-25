@@ -4,6 +4,7 @@ import time
 from math import *
 
 import sys
+import platform
 
 START_BATTLES_MINIMIZED = False
 
@@ -247,26 +248,121 @@ def get_nearest_enemy(unit, check, check_unit = None):
 def rgb_color(r, g, b):
     return '#{}{}{}'.format(hex(r)[2:].ljust(2, '0'), hex(g)[2:].ljust(2, '0'), hex(b)[2:].ljust(2, '0'))
 
+# From https://gist.github.com/jtriley/1108174
+def get_terminal_size():
+    """ getTerminalSize()
+     - get width and height of console
+     - works on linux,os x,windows,cygwin(windows)
+     originally retrieved from:
+     http://stackoverflow.com/questions/566746/how-to-get-console-window-width-in-python
+    """
+    current_os = platform.system()
+    tuple_xy = None
+    if current_os == 'Windows':
+        tuple_xy = _get_terminal_size_windows()
+        if tuple_xy is None:
+            tuple_xy = _get_terminal_size_tput()
+            # needed for window's python in cygwin's xterm!
+    if current_os in ['Linux', 'Darwin'] or current_os.startswith('CYGWIN'):
+        tuple_xy = _get_terminal_size_linux()
+    if tuple_xy is None:
+        tuple_xy = (80, 25)      # default value
+    return tuple_xy
+
+def _get_terminal_size_windows():
+    try:
+        from ctypes import windll, create_string_buffer
+        # stdin handle is -10
+        # stdout handle is -11
+        # stderr handle is -12
+        h = windll.kernel32.GetStdHandle(-12)
+        csbi = create_string_buffer(22)
+        res = windll.kernel32.GetConsoleScreenBufferInfo(h, csbi)
+        if res:
+            (bufx, bufy, curx, cury, wattr,
+             left, top, right, bottom,
+             maxx, maxy) = struct.unpack("hhhhHhhhhhh", csbi.raw)
+            sizex = right - left + 1
+            sizey = bottom - top + 1
+            return sizex, sizey
+    except:
+        pass
+
+
+def _get_terminal_size_tput():
+    # get terminal width
+    # src: http://stackoverflow.com/questions/263890/how-do-i-find-the-width-height-of-a-terminal-window
+    try:
+        cols = int(subprocess.check_call(shlex.split('tput cols')))
+        rows = int(subprocess.check_call(shlex.split('tput lines')))
+        return (cols, rows)
+    except:
+        pass
+
+
+def _get_terminal_size_linux():
+    def ioctl_GWINSZ(fd):
+        try:
+            import fcntl
+            import termios
+            cr = struct.unpack('hh',
+                               fcntl.ioctl(fd, termios.TIOCGWINSZ, '1234'))
+            return cr
+        except:
+            pass
+    cr = ioctl_GWINSZ(0) or ioctl_GWINSZ(1) or ioctl_GWINSZ(2)
+    if not cr:
+        try:
+            fd = os.open(os.ctermid(), os.O_RDONLY)
+            cr = ioctl_GWINSZ(fd)
+            os.close(fd)
+        except:
+            pass
+    if not cr:
+        try:
+            cr = (os.environ['LINES'], os.environ['COLUMNS'])
+        except:
+            return None
+    return int(cr[1]), int(cr[0])
+
+terminal_width = -1
 def show_bar(i, total, start_time=None, width=80, message='', number_limit = False):
+    global terminal_width
+    if terminal_width == -1:
+        terminal_width,_ = get_terminal_size()
+        terminal_width -= 1
+
+    if terminal_width != -1:
+        width = terminal_width
+
+    if isinstance(total, int) or isinstance(total, float):
+        number_limit = True
+
+    # Because we start counting at 0
+    i += 1
+
+    # Just to make sure we don't get a ridiculously long bar
+    i = min(total, i)
+
     time_message = ''
     if start_time != None:
-        end_time = time.time()
-        elapsed = end_time - start_time
+        elapsed = time.time() - start_time
         if number_limit:
-            estimated_remaining = float(i) / elapsed * float(total - i)
+            estimated_remaining = elapsed / float(i) * float(total - i)
         else:
-            estimated_remaining = float(i) / elapsed * float(len(total) - i)
+            estimated_remaining = elapsed / float(i) * float(len(total) - i)
 
-        time_message = '{}s remaining. '.format(round(estimated_remaining))
+        time_message = '{} seconds. '.format(round(estimated_remaining))
 
     message += time_message
 
+    # The 2 is because of the []
     if not number_limit:
-        bar_chunks = int(float(i) / float(len(total)) * (width - len(message)))
+        bar_chunks = int(float(i) / float(len(total)) * (width - len(message) - 2))
     else:
-        bar_chunks = int(float(i) / float(total) * (width - len(message)))
+        bar_chunks = int(float(i) / float(total) * (width - len(message) - 2))
 
-    sys.stdout.write('\r{}'.format(message) + '=' * bar_chunks + ' ' * (width - bar_chunks - len(message)))
+    sys.stdout.write('\r{}'.format(message) + '[{}{}]'.format('=' * bar_chunks, ' ' * (width - bar_chunks - len(message) - 2)))
     sys.stdout.flush()
 
 def calculate_interception(v_e, v_p, (x_e, y_e), (x_p, y_p), theta_e):
@@ -298,29 +394,31 @@ def calculate_polar_vector((dx, dy)):
 
     return (magnitude, atan2(dy, dx))
 
-# If reverse is false, then it selects heigher weights, if it's true, then it selects lower ones.
-def weighted_random_choice(col, weight=None, reverse=True):
+def count_freq(l):
+    res = {}
+    for i in l:
+        if not i in res:
+            res[i] = 1
+        else:
+            res[i] += 1
+    return res
+
+# Adapted from:
+# http://stackoverflow.com/questions/3679694/a-weighted-version-of-random-choice
+def weighted_random_choice(choices, weight=None):
     if weight == None:
-        weight = lambda i, _: i #Makes it more likely to select early indexes.
+        weight = lambda i, _: len(choices) - i #Makes it more likely to select early indexes.
 
-    col = list(col)
-    random.shuffle(col)
-
+    total = sum(weight(i, v) for i, v in enumerate(choices))
+    r = random.uniform(0, total)
     accum = 0
-    total = sum(map(lambda i: weight(i[0], i[1]), enumerate(col)))
-    goal = random.random() * total
 
-    for i, v in enumerate(col):
-        weight_value = weight(i, v)
-        weight_value = weight(i, v)
-        # print(weight_value)
-        if weight_value > 0: #If its not, we'll get an error for an empty randrange
-            accum += weight_value
-
-            if accum > goal:
-                return v
-
-    return col[0]
+    for i, v in enumerate(choices):
+        w = weight(i, v)
+        if accum + w >= r:
+            return v
+        accum += w
+    return choices[0]
 
 def rough_match(a, b, tolerance):
     return a + tolerance >= b and a - tolerance <= b

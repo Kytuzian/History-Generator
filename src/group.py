@@ -27,7 +27,8 @@ class Group:
 
             return True
 
-        self.on_step(self)
+        if self.on_step != None:
+            self.on_step(self)
 
         dist = utility.distance((self.x, self.y), (self.end_x, self.end_y))
         self.x += float(self.end_x - self.x) / dist * GROUP_SPEED_MULTIPLIER

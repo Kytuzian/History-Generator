@@ -62,6 +62,7 @@ class Main:
         self.cells = []
 
         self.nations = []
+        self.religions = []
 
         self.is_continuous = False
         self.run_until_battle = False
@@ -145,14 +146,30 @@ class Main:
         print('')
 
         self.nations = []
+        self.religions = []
         self.old_nations = {}
 
         for new_nation in xrange(self.nation_count):
             self.add_nation(Nation(self))
 
+        # Initially create one new religion for every nation
+        for i in xrange(self.nation_count):
+            new_religion = Religion(self.nations[i].language, self.nations[i].language.make_name_word())
+            new_religion.adherents[self.nations[i].cities[0].name] = self.nations[i].cities[0].population
+            self.religions.append(new_religion)
+
         self.create_gui()
 
         events.main = self
+
+    def create_religion(self, city, nation, founder=None):
+        new_religion = Religion(nation.language, nation.language.make_name_word())
+
+        self.events.append(events.EventReligionCreated('ReligionCreated', {'nation_a': nation.id, 'city_a': city.name, 'person_a': founder, 'religion_a': new_religion.name}, self.get_current_date()))
+        self.write_to_gen_log(self.events[-1].text_version())
+
+        self.religions.append(new_religion)
+        new_religions.adherents[city.name] = 1 # Hooray! We have an adherent
 
     def get_next_id(self):
         self.nation_id += 1
@@ -322,6 +339,9 @@ class Main:
             if self.month == 12:
                 self.year += 1
                 self.month = 1
+
+                for religion in self.religions:
+                    religion.history_step(self)
 
                 for nation in self.nations:
                     nation.history_step()
@@ -595,6 +615,6 @@ if len(sys.argv) > 1:
         elif params[0] == "size":
             utility.CELL_SIZE = int(params[1])
 
-# Main().start()
-cProfile.run('Main().start()', sort='tottime')
+Main().start()
+# cProfile.run('Main().start()', sort='tottime')
 raw_input()

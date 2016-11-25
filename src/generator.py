@@ -254,7 +254,7 @@ class Form:
                 converted[utility.tuplize(options[i])] = options[i]
                 options[i] = utility.tuplize(options[i])
 
-        chosen_item = utility.weighted_random_choice(options, weight)
+        chosen_item = utility.weighted_random_choice(options, weight=weight)
 
         if chosen_item in self.custom_weights:
             self.custom_weights[chosen_item] += amount
@@ -388,7 +388,7 @@ class Form:
                     base = base.replace('<name>', '')
             while '<art>' in base:
                 if nation != None and len(nation.culture.art) > 0:
-                        base = base.replace('<art>', '\'{}\''.format(self.choice(nation.culture.art).subject), 1)
+                    base = base.replace('<art>', '\'{}\''.format(self.choice(nation.culture.art).subject), 1)
                 else:
                     base = base.replace('<art>', '')
             while '<art_creator>' in base:
@@ -398,12 +398,12 @@ class Form:
                 else:
                     base = base.replace('<art_creator>', '')
             while '<place>' in base:
-                if nation != None:
+                if nation != None and len(nation.parent.get_all_cities()) > 0:
                     base = base.replace('<place>', self.choice(nation.parent.get_all_cities()).name, 1)
                 else:
                     base = base.replace('<place>', '')
             while '<nation_place>' in base:
-                if nation != None:
+                if nation != None and len(nation.cities) > 0:
                     base = base.replace('<nation_place>', self.choice(nation.cities).name, 1)
                 else:
                     base = base.replace('<nation_place>', '')

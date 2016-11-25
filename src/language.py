@@ -12,8 +12,6 @@ vowel_sounds = ['ah', 'ae', 'aa', 'uh', 'eh', 'ee', 'ar', 'er', 'ow', 'ih', 'aw'
 consonant_sounds = ['b', 'k', 's', 'd', 'f', 'g', 'h', 'j', 'l', 'm', 'n', 'ng',
                     'p', 'kw', 'r', 't', 'v', 'w', 'x', 'y', 'z', 'ch', 'sh', 'th']
 
-
-
 #Chances (1 in x)
 LOSE_PLACE_CITY_NAME = 8 #Only applies if the nation no longer owns the city.
 LOSE_NAME_MODIFIER = 30 #Per modifier
@@ -246,7 +244,7 @@ class Language:
         self.names.append(self.make_word(self.name_length, True))
         self.from_dictionary[self.names[-1]] = self.names[-1]
         self.to_dictionary[self.names[-1]] = self.names[-1]
-        
+
         return self.names[-1]
 
     def make_word(self, rough_length, capitalize_first_letter=False):

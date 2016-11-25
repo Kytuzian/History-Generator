@@ -17,6 +17,9 @@ CELL_POPULATION_CAPACITY = 10
 
 FOOD_PER_PERSON = 1
 
+# The chance that a new person will create a whole new religion
+CREATE_RELIGION_CHANCE = 50000
+
 MORALE_NOT_ENOUGH_FOOD = 12
 MORALE_NOT_ENOUGH_HOUSING = 2
 MORALE_ENOUGH_FOOD = 2
@@ -268,6 +271,15 @@ class City:
 
         self.event_log_display.grid(row=7, column=0, columnspan=3, rowspan=10, sticky=W+E)
 
+    def get_religion_populations(self):
+        res = []
+
+        for religion in self.parent.religions:
+            for city in religion.adherents:
+                res.append((religion, religion.adherents[city]))
+
+        return res
+
     def handle_caravans(self):
         if random.randint(0, SEND_CARAVAN_CHANCE) == 0:
             self.send_caravan()
@@ -364,6 +376,15 @@ class City:
         while len(other.cells) > 0:
             other.cells[0].change_owner(self)
 
+        # Combine the religious populations
+        for religion in self.parent.religions:
+            if other.name in religion.adherents:
+                v = religion.adherents.pop(other.name)
+                if self.name in religion.adherents:
+                    religion.adherents[self.name] += v
+                else:
+                    religion.adherents[self.name] = v
+                    
         self.population += other.population
         self.army.add_army(other.army)
 
@@ -493,16 +514,12 @@ class City:
                 elif neighbor.owner.nation != self.nation: #If there is a nation neighboring one of our cities
                     #we must either be at war with them, or be their trading partner.
                     if not neighbor.owner.nation in self.nation.trading and not neighbor.owner.nation in self.nation.at_war:
-                        if neighbor.owner.nation.religion == self.nation.religion: #If they're our religion, we'll just trade
+                        if random.randint(0, 10 * self.nation.get_tolerance()) == 0:
+                            self.parent.start_war(self.nation, neighbor.owner.nation, is_holy_war=True)
+                        elif random.randint(0, 3) == 0: #Those bastards have stuff we want
+                            self.parent.start_war(self.nation, neighbor.owner.nation, is_holy_war=False)
+                        else: #Nah jk let's just trade.
                             self.parent.start_trade_agreement(self.nation, neighbor.owner.nation)
-                        else:
-                            #Those heathen scum must die.
-                            if random.randint(0, 10 * self.nation.get_tolerance()) == 0:
-                                self.parent.start_war(self.nation, neighbor.owner.nation, is_holy_war=True)
-                            elif random.randint(0, 3) == 0: #Those bastards have stuff we want
-                                self.parent.start_war(self.nation, neighbor.owner.nation, is_holy_war=False)
-                            else: #Nah jk let's just trade.
-                                self.parent.start_trade_agreement(self.nation, neighbor.owner.nation)
                 elif neighbor.owner != self and neighbor.owner.nation == self.nation: #It's not a neighboring nation, but it is a neighboring city, so we'll merge together with it.
                     self.combine_cities(neighbor.owner)
 
@@ -543,7 +560,7 @@ class City:
             self.name_id = self.parent.canvas.create_text(x, y - utility.CELL_SIZE, text=self.name)
         else:
             self.parent.canvas.coords(self.name_id, x, y - utility.CELL_SIZE)
-            self.parent.canvas.itemconfig(self.name_id, text='{}: {}/{}, {}'.format(self.name, self.population, self.calculate_population_capacity(), self.army.size()))
+            self.parent.canvas.itemconfig(self.name_id, text='{} ({})'.format(self.name, self.population))
 
     #We'll get rid of cells or transform city cells back into surroundings cells
     def handle_abandonment(self):
@@ -630,7 +647,7 @@ class City:
             if losses > 0:
                 population_losses = random.randint(1, losses) #Not everybody immediately starves when there isn't enough food.
 
-                self.population = utility.clamp(self.population - population_losses, self.population, 1) #can't be fewer than one person
+                self.handle_population_change(-population_losses)
 
             self.resources['food'] = 0
 
@@ -639,6 +656,39 @@ class City:
             self.morale -= MORALE_NOT_ENOUGH_FOOD
         else:
             self.morale += MORALE_ENOUGH_FOOD
+
+    def handle_population_change(self, amount):
+        original_population = self.population
+        self.population = max(self.population + amount, 1) # Can't be fewer than one person in the city
+
+        # Remove religious adherents
+        if self.population != original_population:
+            religion_populations = self.get_religion_populations()
+
+            weight = lambda _, (religion, adherents): adherents
+
+            lose = original_population > self.population
+
+            pop_change = 0
+            if lose:
+                pop_change = original_population - self.population
+            else:
+                pop_change = self.population - original_population
+
+            for i in xrange(original_population):
+                religion,_ = utility.weighted_random_choice(religion_populations, weight=weight)
+
+                if lose:
+                    religion.adherents[self.name] -= 1
+                else:
+                    if random.randint(0, CREATE_RELIGION_CHANCE) == 0:
+                        # Might as well keep track of the founder, eh?
+                        self.nation.add_person(role='priest')
+
+                        # Take care of all of these shenanigans.
+                        self.parent.create_religion(self, self.nation, founder=self.nation.notable_people[-1])
+                    else:
+                        religion.adherents[self.name] += 1
 
     def handle_money(self):
         total_tax_rate = utility.product([cell.get_tax_rate() for cell in self.cells])
@@ -680,8 +730,7 @@ class City:
 
             self.nation.money = 0
 
-        self.population -= conscripted
-        self.population = max(self.population, 1)
+        self.handle_population_change(-conscripted)
 
         if not self.army:
             self.army = self.nation.army_structure.zero()
@@ -721,8 +770,8 @@ class City:
             rate = 1.0 / (1.0 + self.population**0.5 * e**(-t)) / 9.0
             new_pop = self.population * (1.0 + rate/12.0)**12.0 + 2
             # print(self.resources['food'], self.population_capacity, self.population, t, rate, new_pop)
-
-            self.population = int(new_pop)
+            change = new_pop - self.population
+            self.handle_population_change(change)
 
         if random.randint(0, len(self.cells)) < math.sqrt(self.age): #Add new surrounding land
             candidate_expansion_squares = self.get_expansion_candidates()

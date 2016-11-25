@@ -74,6 +74,15 @@ class Treaty:
     def __getitem__(self, key):
         return self.treaty_details[key]
 
+    def length(self, current_date):
+        year_len, month_len, day_len = utility.get_time_span_length(self.starting_date, current_date)
+
+        # There are only 360 days in a year in our world, because life is so much simpler that way
+        actual_len = year_len + month_len / 12.0 + day_len / 360.0
+
+        # If treaty has only been in effect for 0 time, then let's just say it's been one day.
+        return max(actual_len, 1.0 / 360.0)
+
     def get_other_side_details(self, nation):
         if nation == self.nation_a:
             return self.treaty_details[self.nation_b.id]

@@ -141,8 +141,6 @@ class Nation:
         self.army_spending = random.random() * 0.6 + 0.2
         self.elite = random.randint(3, 6)
 
-        self.religion = Religion(self.language, self.language.make_name_word(), self)
-
         if len(self.cities) > 0:
             place_name = self.cities[0].name
         else:
@@ -287,11 +285,13 @@ class Nation:
 
         return sum([city.army.size() for city in self.cities])
 
-    def add_person(self):
-        new_person = Person(self, self.language.generate_name())
-        self.notable_people.append(new_person)
+    def add_person(self, role=None):
+        if len(self.cities) > 0:
+            start_city = random.choice(self.cities)
+            new_person = Person(self, start_city, self.language.generate_name(), role=role)
+            self.notable_people.append(new_person)
 
-        return new_person
+            return new_person
 
     def remove_population(self, amount):
         per_city = amount / len(self.cities)
@@ -353,7 +353,8 @@ class Nation:
         if random.randint(0, NOTABLE_PERSON_BIRTH_CHANCE) == 0:
             self.add_person()
 
-        self.mod_morale(self.ruler.effectiveness**2)
+        if self.ruler != None:
+            self.mod_morale(self.ruler.effectiveness**2)
 
         for person in self.notable_people:
             person.handle_monthly()
@@ -410,7 +411,7 @@ class Nation:
 
         x, y = self.get_average_city_position()
         candidates = self.get_city_candidate_cells()
-        candidate = utility.weighted_random_choice(candidates, lambda _,cell: utility.distance_squared((cell.x, cell.y), (x, y)))
+        candidate = utility.weighted_random_choice(candidates, lambda _,cell: 1.0 / (utility.distance_squared((cell.x, cell.y), (x, y)) + 1.0))
         self.cities.append(City(self, name, candidate, self.parent))
 
         self.chance_add_new_name(self.cities[-1].name)
@@ -448,9 +449,32 @@ class Nation:
                 return True
         return False
 
-    def get_tolerance(self):
-        val = int(self.religion.get_tolerance() * self.get_tolerance_bonus())
+    def get_nation_religion_populations(self):
+        res = {}
+        for religion in self.parent.religions:
+            for city_name in religion.adherents:
+                if city_name in map(lambda i: i.name, self.cities):
+                    if not religion in res:
+                        res[religion] = religion.adherents[city_name]
+                    else:
+                        res[religion] += religion.adherents[city_name]
 
+        final_result = {}
+        total = self.get_population()
+
+        if total > 0:
+            for (religion, adherents) in res.items():
+                res[religion] = float(adherents) / total
+
+        return res
+
+    # Tolerance is a weighted average of the tolerances of the religions that make up this nation.
+    def get_tolerance(self):
+        val = 0
+        for (religion, p) in self.get_nation_religion_populations():
+            val += religion.get_tolerance() * p
+
+        val = int(self.get_tolerance_bonus() * val)
         return max(1, val)
 
     def get_tolerance_bonus(self):
@@ -524,9 +548,9 @@ class Nation:
 
         #we lost our capital somehow
         if not self.has_capital():
-            #choose a new capital from our cities, utility.weighted by population
+            #choose a new capital from our cities, weighted by population
             if len(self.cities) > 0: #Just to be sure
-                new_capital = utility.weighted_random_choice(self.cities, weight=lambda i, v: v.population, reverse=False)
+                new_capital = utility.weighted_random_choice(self.cities, weight=lambda i, v: v.population)
 
                 new_capital.make_capital()
         else:
@@ -563,7 +587,6 @@ class Nation:
                         if research_rate > 0:
                             self.current_research.do_research(random.randint(1, research_rate))
 
-        self.religion.history_step(self.parent)
         self.handle_rearming()
         self.handle_people()
 
@@ -640,7 +663,7 @@ class Nation:
 
                 # Make sure our enemy actually still exists.
                 if len(enemy.cities) > 0 and enemy in self.parent.nations:
-                    attacking_city = utility.weighted_random_choice(enemy.cities, weight=lambda _, v: utility.distance(city.position, v.position), reverse=True)
+                    attacking_city = utility.weighted_random_choice(enemy.cities, weight=lambda _, v: 1.0 / utility.distance(city.position, v.position))
 
                     if random.randint(0, max(20, city.army.size() + city.population // 8 - attacking_city.population // 3 - attacking_city.army.size())) > 20:
                         if random.randint(0, len(self.moving_armies)**3) == 0:
@@ -690,18 +713,18 @@ class Nation:
                     trade_treaty = self.get_treaty_with(nation, 'trade')
 
                     if trade_treaty != None:
-                        self.relations[nation.id] += trade_treaty[self.id]['caravans_received']
+                        self.relations[nation.id] += trade_treaty[self.id]['caravans_received'] / trade_treaty.length(self.parent.get_current_date())
                 if nation in self.at_war:
                     war_treaty = self.get_treaty_with(nation, 'war')
 
                     if war_treaty != None:
                         # This way, if we lose more troops than them, our relations will go down even more, even though they go down by default just for being at war
-                        self.relations[nation.id] += min(-1, war_treaty[nation.id]['troops_lost'] - war_treaty[self.id]['troops_lost'])
+                        relative_troops_lost = min(-1, war_treaty[nation.id]['troops_lost'] - war_treaty[self.id]['troops_lost'])
+                        self.relations[nation.id] += relative_troops_lost / war_treaty.length(self.parent.get_current_date())
 
-                max_relation_increase = int(log(self.get_tolerance() + nation.get_tolerance() + 1))
-                max_relation_decrease = int(log(self.get_tolerance()))
+                max_relation_change = int(log(self.get_tolerance() + nation.get_tolerance() + 1))
 
-                self.relations[nation.id] += random.randint(-max_relation_decrease, max_relation_increase)
+                self.relations[nation.id] += random.randint(-max_relation_change // 2, max_relation_change // 2)
 
                 self.relations[nation.id] = min(100, max(-100, self.relations[nation.id]))
 
@@ -722,13 +745,26 @@ class Nation:
                 # We can't start trading with an enemy we're at war with or vice versa.
                 # And we certainly can't start fighting/trading with ourselves.
                 if other != self and not other in self.at_war and not other in self.trading:
-                    if random.randint(0, max(15, (len(self.at_war) + 1)**3 + 2 * self.get_tolerance()**2)) == 0:
+                    normal_war_chance = int(max(24, len(self.at_war) + 2 * self.get_tolerance() + 3 * self.relations[other.id]))
+                    holy_war_chance = int(max(12, len(self.at_war) + self.get_tolerance() + 3 * self.relations[other.id]))
+
+                    effective_money = max(self.money**2, 1) # The less money we have, the more we want to trade.
+                    trade_chance = int(max(24, log(effective_money) + self.get_tolerance() - 3 * self.relations[other.id]))
+
+                    # print('War chance with {} ({}) is {}'.format(other.name.short_name(), self.relations[other.id], normal_war_chance))
+                    # print('Holy war chance with {} ({}) is {}'.format(other.name.short_name(), self.relations[other.id], holy_war_chance))
+                    # print('Trade chance with {} ({}) is {}'.format(other.name.short_name(), self.relations[other.id], trade_chance))
+
+                    if random.randint(0, normal_war_chance) == 0:
+                        # print('Declaring war on nation with which out relations are {}'.format(self.relations[other.id]))
                         self.parent.start_war(self, other)
                         break
-                    elif other.religion != self.religion and random.randint(0, (len(self.at_war) + 2)**3 + 8 * self.get_tolerance()) == 0:
-                        self.parent.start_war(self, other, is_holy_war=True)
-                        break
-                    elif random.randint(0, max(len(self.parent.nations)**2 * int(log(max(1, self.money)) + 1), int(self.money / max(1, self.get_tolerance())**2))) == 0:
+                    # elif other.religion != self.religion and random.randint(0, holy_war_chance) == 0:
+                    #     # print('Declaring a holy war on nation with which out relations are {}'.format(self.relations[other.id]))
+                    #     self.parent.start_war(self, other, is_holy_war=True)
+                    #     break
+                    elif random.randint(0, trade_chance) == 0:
+                        # print('Starting trade with a nation with which out relations are {}'.format(self.relations[other.id]))
                         self.parent.start_trade_agreement(self, other)
                         break
 
