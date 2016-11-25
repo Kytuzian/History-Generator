@@ -177,11 +177,11 @@ class Nation:
         self.morale_label = Label(self.gui_window, text='Morale: {}'.format(self.morale))
         self.morale_label.grid(row=4, columnspan=2, sticky=W)
 
-        self.religion_label = Label(self.gui_window, text='Religion: ')
-        self.religion_label.grid(row=5, sticky=W)
-
-        self.religion_button = Button(self.gui_window, text=self.religion.name, command=self.religion.show_information_gui)
-        self.religion_button.grid(row=5, column=1, sticky=W)
+        # self.religion_label = Label(self.gui_window, text='Religion: ')
+        # self.religion_label.grid(row=5, sticky=W)
+        #
+        # self.religion_button = Button(self.gui_window, text=self.religion.name, command=self.religion.show_information_gui)
+        # self.religion_button.grid(row=5, column=1, sticky=W)
 
         self.army_structure_button = Button(self.gui_window, text='Army', command=self.army_structure.show_information_gui)
         self.army_structure_button.grid(row=6, column=0, sticky=W)

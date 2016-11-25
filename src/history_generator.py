@@ -358,8 +358,8 @@ class Main:
                         self.remove_nation(nation)
 
             if len(self.battles) == 0 or self.day == 30:
-                for religion in self.religions:
-                    print(religion.adherents)
+                # for religion in self.religions:
+                #     print(religion.adherents)
                 for nation in self.nations:
                     nation.grow_population()
                     nation.handle_diplomacy()
