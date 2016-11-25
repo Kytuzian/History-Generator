@@ -275,8 +275,8 @@ class City:
         res = []
 
         for religion in self.parent.religions:
-            for city in religion.adherents:
-                res.append((religion, religion.adherents[city]))
+            if self.name in religion.adherents:
+                res.append((religion, religion.adherents[self.name]))
 
         return res
 
@@ -384,7 +384,7 @@ class City:
                     religion.adherents[self.name] += v
                 else:
                     religion.adherents[self.name] = v
-                    
+
         self.population += other.population
         self.army.add_army(other.army)
 
@@ -658,12 +658,19 @@ class City:
             self.morale += MORALE_ENOUGH_FOOD
 
     def handle_population_change(self, amount):
-        original_population = self.population
-        self.population = max(self.population + amount, 1) # Can't be fewer than one person in the city
+        original_population = int(self.population)
+        self.population = int(max(self.population + amount, 1)) # Can't be fewer than one person in the city
 
         # Remove religious adherents
         if self.population != original_population:
             religion_populations = self.get_religion_populations()
+
+            if len(religion_populations) == 0:
+                print('Uh what just happened?', self.name)
+                for religion in self.parent.religions:
+                    print(religion.adherents)
+                raw_input()
+                return
 
             weight = lambda _, (religion, adherents): adherents
 
@@ -675,11 +682,12 @@ class City:
             else:
                 pop_change = self.population - original_population
 
-            for i in xrange(original_population):
+            for i in xrange(pop_change):
                 religion,_ = utility.weighted_random_choice(religion_populations, weight=weight)
 
                 if lose:
-                    religion.adherents[self.name] -= 1
+                    if religion.adherents[self.name] > 0:
+                        religion.adherents[self.name] -= 1
                 else:
                     if random.randint(0, CREATE_RELIGION_CHANCE) == 0:
                         # Might as well keep track of the founder, eh?

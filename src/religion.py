@@ -27,8 +27,6 @@ TOLERANCE_MULTIPLIER = 1
 
 MAX_BASE_TOLERANCE = 100
 
-PRIEST_TOLERANCE_BONUS = 5
-
 INTOLERANT_DOMAINS = ['war', 'fire', 'death', 'lightning', 'thunder',\
                       'wind', 'chaos', 'the underworld']
 TOLERANT_DOMAINS = ['peace', 'wisdom', 'children', 'knowledge',\
@@ -140,13 +138,6 @@ class Religion:
 
         for god in self.gods:
             tolerance_value += god.get_tolerance_score()
-
-        for person in self.nation.notable_people:
-            if person.alive and not person == self.nation.ruler:
-                if person.periods[-1].role == 'priest':
-                    amount = (1 - person.effectiveness) * PRIEST_TOLERANCE_BONUS
-
-                    tolerance_value += amount
 
         # Can't have a negative or zero tolerance
         return max(1, tolerance_value)

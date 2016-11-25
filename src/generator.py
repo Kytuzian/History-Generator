@@ -378,7 +378,9 @@ class Form:
                     base = base.replace('<notable_person_role>', '')
             while '<god>' in base:
                 if nation != None:
-                    base = base.replace('<god>', self.choice(nation.religion.gods).name, 1)
+                    religion_populations = nation.get_nation_religion_populations()
+                    religion,_ = utility.weighted_random_choice(religion_populations, weight=lambda i,(_,adherents): adherents)
+                    base = base.replace('<god>', self.choice(religion.gods).name, 1)
                 else:
                     base = base.replace('<god>', '')
             while '<name>' in base:

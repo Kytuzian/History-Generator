@@ -56,6 +56,8 @@ NAME_SWITCH_THRESHOLD = 30
 
 NOTABLE_PERSON_BIRTH_CHANCE = 150
 
+PRIEST_TOLERANCE_BONUS = 5
+
 GOVERNMENT_TYPE_BONUSES = {}
 GOVERNMENT_TYPE_BONUSES["Principality"] = {'food': 1, 'morale': 0.75, 'efficiency': 1, 'tolerance': 1, 'conscription': 1.5}
 GOVERNMENT_TYPE_BONUSES["Kingdom"] = {'food': 1, 'morale': 0.75, 'efficiency': 1, 'tolerance': 1, 'conscription': 1.5}
@@ -428,6 +430,12 @@ class Nation:
         if self.parent.cells[self.cities[-1].position[0]][self.cities[-1].position[1]].owner == None:
             self.parent.change_cell_ownership(self.cities[-1].position[0], self.cities[-1].position[1], self.cities[-1], new_type='city')
 
+        religion_populations = self.get_nation_religion_populations()
+
+        if len(religion_populations) > 0:
+            religion,_ = utility.weighted_random_choice(religion_populations, lambda i,(_,adherents): adherents)
+            religion.adherents[self.cities[-1].name] = self.cities[-1].population
+
     def add_city(self, city):
         self.cities.append(city)
 
@@ -459,20 +467,28 @@ class Nation:
                     else:
                         res[religion] += religion.adherents[city_name]
 
-        final_result = {}
-        total = self.get_population()
-
-        if total > 0:
-            for (religion, adherents) in res.items():
-                res[religion] = float(adherents) / total
-
         return res
 
     # Tolerance is a weighted average of the tolerances of the religions that make up this nation.
     def get_tolerance(self):
         val = 0
-        for (religion, p) in self.get_nation_religion_populations():
+        religion_populations = self.get_nation_religion_populations()
+        total = self.get_population()
+
+        if total > 0:
+            for (religion, adherents) in religion_populations.items():
+                religion_populations[religion] = float(adherents) / total
+
+        for (religion, p) in religion_populations.iteritems():
             val += religion.get_tolerance() * p
+
+        for person in self.notable_people:
+            if person.alive and not person == self.ruler:
+                if person.periods[-1].role == 'priest':
+                    # Priests can either make the nation more or less tolerant, depending
+                    amount = (1 - person.effectiveness) * PRIEST_TOLERANCE_BONUS
+
+                    val += amount
 
         val = int(self.get_tolerance_bonus() * val)
         return max(1, val)

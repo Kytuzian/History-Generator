@@ -165,11 +165,11 @@ class Main:
     def create_religion(self, city, nation, founder=None):
         new_religion = Religion(nation.language, nation.language.make_name_word())
 
-        self.events.append(events.EventReligionCreated('ReligionCreated', {'nation_a': nation.id, 'city_a': city.name, 'person_a': founder, 'religion_a': new_religion.name}, self.get_current_date()))
+        self.events.append(events.EventReligionCreated('ReligionCreated', {'nation_a': nation.id, 'city_a': city.name, 'person_a': founder.name, 'religion_a': new_religion.name}, self.get_current_date()))
         self.write_to_gen_log(self.events[-1].text_version())
 
         self.religions.append(new_religion)
-        new_religions.adherents[city.name] = 1 # Hooray! We have an adherent
+        new_religion.adherents[city.name] = 1 # Hooray! We have an adherent
 
     def get_next_id(self):
         self.nation_id += 1
@@ -263,6 +263,14 @@ class Main:
     def add_nation(self, nation):
         self.nations.append(nation)
 
+        # Give them one of the religions that exists already
+        # If there are no religions, that means we're at the beginning of world gen, so it's handled separately in the setup() function
+        if len(self.religions) > 0:
+            religion = random.choice(self.religions)
+            for city in nation.cities:
+                if len(city.get_religion_populations()) == 0:
+                    religion.adherents[city.name] = city.population
+
         for nation in self.nations:
             for check_nation in self.nations:
                 if nation != check_nation:
@@ -350,6 +358,8 @@ class Main:
                         self.remove_nation(nation)
 
             if len(self.battles) == 0 or self.day == 30:
+                for religion in self.religions:
+                    print(religion.adherents)
                 for nation in self.nations:
                     nation.grow_population()
                     nation.handle_diplomacy()

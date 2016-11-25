@@ -108,13 +108,13 @@ class EventReligionCreated(Event):
         self.city = self.event_data['city_a']
         self.founder = self.event_data['person_a']
 
-        self.name = self.event_data['religion_a']
+        self.religion_name = self.event_data['religion_a']
 
     def text_version(self):
         if self.founder != None:
-            return '{}: The religion of {} was founded in the city of {} in the nation of {} by {}.'.format(self.date, self.name, get_nation_name(self.nation), self.city, self.nation, self.founder)
+            return '{}: The religion of {} was founded in the city of {} in the nation of {} by {}.'.format(self.date, self.religion_name, get_nation_name(self.nation), self.city, self.nation, self.founder)
         else:
-            return '{}: The religion of {} was founded in the city of {} in the nation of {}.'.format(self.date, self.name, get_nation_name(self.nation), self.city, self.nation)
+            return '{}: The religion of {} was founded in the city of {} in the nation of {}.'.format(self.date, self.religion_name, get_nation_name(self.nation), self.city, self.nation)
 
 class EventReligionGodAdded(Event):
     def setup(self):
