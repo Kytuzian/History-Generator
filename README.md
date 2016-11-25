@@ -47,10 +47,10 @@ Nations also have a technology level. The full tech tree is described in the Tec
 Notable people can be any of the following:
 
 - General: Currently no purpose.
-- Priest: Can increase of decrease the tolerance of the nation's religio.
-- Oracle: Currently no purpose.
+- Priest: Can increase of decrease the tolerance of the nation's religion.
+- Oracle: Creates prophesies.
 - Artist: Creates works of art: both drawings and statues.
-- Writer: Creates works of literature (which counts as art): plays, novels, essays, and poems.
+- Writer: Creates works of literature (which counts as art): plays, novels, essays, poems, and myths.
 - Composer: Creates works of art: both songs and musicals.
 - Philosopher: Creates works of art: just essays.
 - Scientist: Increases the nation's research rate.
@@ -107,6 +107,80 @@ Units have three main stats, strength, health, and discipline. Additionally, the
 Ranged unit do not move until they are out of ammo, or when their targets are too close to them (as in, charging them), at which point they switch to melee. If you see projectiles flying through large amounts of enemies, this is because the projectile is only targeting one enemy (runs WAY faster this way). Just imagine it was a really bad shot, although this should be relatively rare, as soldiers should aim ahead.
 
 Each weapon and armor has it's own stats, which are listed in the Weapons section below.
+
+#Battles
+There are four main components of battles: soldiers, projectiles, units, and the battle itself.
+- Soldiers
+    - Each soldier belongs to a unit (see below for more details).
+    - Each soldier has a name, health, strength, two weapons, a type of armor, a discipline, a fatigue, and an ammunition.
+    - Targeting
+        - Just randomly choose a target from the targeted unit until it dies, then choose a new one
+    - Reloading
+        - All weapons have a cooldown (which can be found in the table below).
+        - For ranged units this is the frequency that they can shoot.
+        - For melee units this is how quickly they can swing their weapons.
+        - The reload rate is partially random, and is affected by the discipline of the unit, but is mostly constant.
+        - The exact formula is as follows: The reload counter increases by half of the square root of the discipline plus a random number (either 0 or 1) plus one.
+    - The line that comes out of each soldier shows it's melee weapon range (if it's using a ranged weapon, the line will not show, so you can tell what mode they're in).
+    - Step
+        - Melee
+            - When a soldier attacks or defends with a melee weapon, several factors go in it.
+            - This is their fatigue, the weapon they're using, the material of that weapon (currently just the best material available to the empire) and their strength.
+            - If they're defending, then it also includes the armor they're using/the material of that armor.
+            - The fatigue loss is a number from 0 to half the fatigue.
+            - See the section on weapons and armor for the corresponding numbers (it's in the section about research/technology).
+            - Finally the base attack is the weapon's skill multiplier times a random number from 0 to the soldier's strength.
+            - The reasoning is that this would allow even the best soldier to fail to kill a weaker one (as they would in real life).
+            - Their resulting value is the sum of all the factors minus the fatigue loss.
+            - If that value is 0, then their actual result is a random number that is either 0 or 1.
+            - If the attack value is greater than the defense value, then the defending soldier will lose one health, if it is the same, then nothing will happen.
+            - After each attack/defense, the soldier has a 1 in their discipline value chance to increase their fatigue by 1.
+        - Ranged
+            - If the unit is in range and fully reloaded, then they will launch a projectile (see the projectile section for more details).
+            - The position of their target in the future is calculated exactly (assuming their don't change direction, of course).
+            - They lose one ammo for each projectile launched.
+            - When a soldier is hit by a projectile, they use their ranged defense, not their melee defense.
+            - This is different only in that the weapon defense doesn't count (because generally speaking, it's very difficult to like, cut an arrow or crossbow bolt out of the air, and you're never going to poke a sling stone out of the air with a spear).
+            - The strength of a ranged attack depends on all the same things as the strength of a melee attack, except that it is halved at the end, so that ranged weapons aren't TOO powerful.
+- Projectiles
+    - Each projectile basically has a speed, a radius, and a strength.
+    - In order to make the simulation faster, they also have a range of time that they cannot do damage, this half the anticipated time it takes to get to the target, and twice the anticipated time it takes to get to the taget. For example, if it should take about 10 seconds to get to the target, then they don't check for hits for the first five seconds or any time after twenty seconds.
+    - You might exclaim, but what if it hits a different soldier/unit? Well it doesn't matter, because projectiles only target one soldier, and ignore all others. This accounts for projectiles you see flying through the soldiers. It's unfortunate, but it's way too slow to check collisions with every unit at every point, so I don't really know what else to do. A consequence of this is that, if the unit the projectile is targeting dies, the projectile itself will simply disappear (in case you've been seeing that and wondering what that's all about).
+    - When a projectile hits a soldier, the damage done is equal to the projectile's strength.
+    - However, this is reduced by the defense of the soldier that it hits, calculated using the ranged defense mentioned above.
+    - The defending soldier's fatigue will increase, in the same way that it does for melee attacks.
+- Units
+    - Each unit has a speed, a number of soldiers, and a certain arrangement of their ranks, and that's pretty much it.
+    - The main function of a unit is to provide targeting for their soldiers, and to keep them moving in those nice ranks rather than becoming a blob of people.
+    - The close combat range is 50 by default, this means that s
+    - Units will periodically, but randomly, switch targets to the closest unit to them. This is because while at the beginning of the battle, the closet unit might be some ranged unit far away, but now there's a group of people with swords charging at the unit, and that's probably just a tad more pressing. However, it doesn't happen every step because that slows it down more, and it's barely noticable.
+- Battle
+    - There is only one control, the battle speed, which controls the number of milliseconds between each step. Generally, however, you will reach a point at which decreasing the time between steps doesn't actually speed up the battle (especially in larger battles), this is due to the simulation taking up too much time to calculate each new step.
+    - Battles are always between two armies, and always continue until the entirety of one side is killed.
+    - Each battle always takes place in a city, there are no battles in the field (while this isn't entirely realistic, it is easier, and I believe most battles in history did take place at cities, rather than in the field in any case).
+    - I plan to add fortifications and such for the defenders in the future, but for now, there is no difference between the two sides.
+    - Set up
+        - At the beginning of the battle, units are randomly placed on their side (either the top half or bottom half) of the field (the screen).
+        - The number of troops placed depends on the battle size (the default is 350), because having thousands of soldiers on the screen at once only serves to add to the lag of battles.
+        - This doesn't mean that each side gets 350, because the number deploy is proportional to the total number of troops that each nation brought. Obviously it wouldn't be fair if a nation bringing only 350 troops got to fight the 350 troops of their enemy who actually had another 10000 in reserve, because one side should vastly outnumber the other.
+        - The battle size is calculated by letting the larger side just automatically have 350 troops out, and then the smaller side is 350 times the ratio of the size of the armies. For example, if one nation has 500 soldiers and the other 1000, the side with 1000 gets to have 350 troops out a time, and the side with 500 gets to have half of that, 175.
+        - Soldiers are deployed from the lowest tiers up (because obviously losing peasants isn't nearly as bad as losing, like, important people).
+    - Every step the following things happen, in order:
+        - The projectiles for each side are handled.
+        - The units (and therefore the soldiers) for each side are handled (this include movements, attacking, targeting, and the like).
+        - Then the game checks if there should be more reinforcements added to the battle for either side, and if there should, it does it.
+        - Finally, if all the soldiers on one side are dead, then the battle is over.
+    - When the battle ends, if the attackers won, they incorporate the city into their empire and send back the levied troops to their city of origin (we'll discuss movies armies in a future video).
+    - If the defenders won, their levies simply rejoin the rest of the population.
+
+- Stats
+    - The simulation keeps track of several stats for each battle, troop type, and weapon.
+    - These stats will be used in the future by the AI to make decisions on which weapons they want their soldiers to wield.
+    - For battles, this is the troops brought by each side, the number of troops killed, the projectiles launched and the projectiles hit, and the number of melee attacks won.
+    - For troop types, it is the number of melee attacks made, the number of melee attacks won, the number of enemies killed, the number of soldiers that died, and the numbers of projectiles launched and hit.
+    - For weapons, it is just the attacks made, the attacks won, and the number of soldiers killed. However, attacks in this case can be either melee or ranged, depending on the type of the weapon.
+- Optimization
+    - This is one of the slowest parts of the simulation at the moment, so if anyone has any ideas about optimization or wants to actually contribute to the code, that'd be great.
 
 #Weapons and Armor
 

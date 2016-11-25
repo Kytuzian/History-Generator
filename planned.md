@@ -56,6 +56,7 @@
 - Associate gods with particular representations
     - Animals
     - As people using certain weapons
+- Dogmas/teachings/prohibitions
 
 #Celebrations
 - Religious
