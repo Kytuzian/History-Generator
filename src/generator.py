@@ -379,7 +379,7 @@ class Form:
             while '<god>' in base:
                 if nation != None:
                     religion_populations = nation.get_nation_religion_populations()
-                    if len(religion_populations) > 0: #TODO Figure out why
+                    if len(religion_populations) > 0:
                         religion,_ = utility.weighted_random_choice(religion_populations, weight=lambda i,(_,adherents): adherents)
                         base = base.replace('<god>', self.choice(religion.gods).name, 1)
                     else:

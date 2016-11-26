@@ -5,6 +5,7 @@ from Tkinter import *
 
 import events
 import event_analysis
+import people
 
 #In percent
 MONOTHEISM_CHANCE = 20
@@ -27,19 +28,48 @@ TOLERANCE_MULTIPLIER = 1
 
 MAX_BASE_TOLERANCE = 100
 
-INTOLERANT_DOMAINS = ['war', 'fire', 'death', 'lightning', 'thunder',\
+INTOLERANT_DOMAINS = ['war', 'fire', 'death', 'lightning', 'thunder',
                       'wind', 'chaos', 'the underworld']
-TOLERANT_DOMAINS = ['peace', 'wisdom', 'children', 'knowledge',\
-                    'writing', 'music', 'storytelling', 'friendship'\
+TOLERANT_DOMAINS = ['peace', 'wisdom', 'children', 'knowledge',
+                    'writing', 'music', 'storytelling', 'friendship',
                     'the hearth', 'unity']
 
-DOMAINS = ['fire', 'wind', 'water', 'air', 'lightning', 'death',\
-           'children', 'fertility', 'harvest', 'wisdom', 'war',\
-           'smithing', 'animals', 'earth', 'rivers', 'peace',\
-           'knowledge', 'writing', 'music', 'storytelling',\
-           'luck', 'thunder', 'friendship', 'wine', 'weaving',\
-           'the sun', 'the hearth', 'the moon', 'the sky', 'messengers',\
-           'chaos', 'unity', 'the underworld', 'creation']
+DOMAINS = {'fire': {'general': 0.5},
+           'wind': {'artist': 1},
+           'water': {'artist': 1},
+           'air': {'artist': 1},
+           'lightning': {'artist': 1},
+           'death': {'general': 0.5},
+           'children': {},
+           'fertility': {},
+           'harvest': {'administrator': 1},
+           'wisdom': {'oracle': 1, 'scientist': 1, 'historian': 1, 'philosopher': 1},
+           'war': {'general': 1},
+           'smithing': {},
+           'animals': {'artist': 1},
+           'earth': {'artist': 1},
+           'rivers': {'artist': 1},
+           'peace': {'administrator': 1},
+           'knowledge': {'historian': 1, 'scientist': 1},
+           'writing': {'writer': 1, 'historian': 1, 'philosopher': 1},
+           'music': {'composer': 1},
+           'storytelling': {'writer': 1, 'oracle': 1, 'hero': 1},
+           'luck': {},
+           'thunder': {'artist': 1},
+           'friendship': {},
+           'wine': {},
+           'weaving': {},
+           'the sun': {},
+           'the hearth': {},
+           'the moon': {},
+           'the sky': {},
+           'messenger': {},
+           'chaos': {'revolutionary': 1},
+           'unity': {},
+           'the underworld': {},
+           'creation': {},
+           'everything': {} # For monotheistic religions
+           }
 
 class God:
     def __init__(self, name, religion, domains):
@@ -70,7 +100,7 @@ class God:
             # print(parent.events[-1].text_version())
 
         if len(self.domains) <= MAX_DOMAIN_COUNT and random.randint(0, 100) < DOMAIN_GAIN_CHANCE:
-            gained_domain = random.choice(DOMAINS)
+            gained_domain = random.choice(DOMAINS.keys())
 
             if not gained_domain in self.domains:
                 self.domains.append(gained_domain)
@@ -129,7 +159,7 @@ class Religion:
 
     def add_god(self, domains=None):
         if domains == None:
-            self.gods.append(God(self.language.make_name_word(), self, random.sample(DOMAINS, random.randint(1, 4))))
+            self.gods.append(God(self.language.make_name_word(), self, random.sample(DOMAINS.keys(), random.randint(1, 4))))
         else:
             self.gods.append(God(self.language.make_name_word(), self, domains))
 
@@ -141,6 +171,18 @@ class Religion:
 
         # Can't have a negative or zero tolerance
         return max(1, tolerance_value)
+
+    def get_role_weights(self):
+        role_weights = {}
+        for role in people.PERSON_ROLES:
+            role_weights[role] = 0
+
+        for god in self.gods:
+            for domain in god.domains:
+                for (role, weight) in DOMAINS[domain].iteritems():
+                    role_weights[role] += god.importance * weight
+
+        return role_weights
 
     def history_step(self, parent):
         self.age += 1

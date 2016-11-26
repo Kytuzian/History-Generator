@@ -1,3 +1,11 @@
+2016-11-26
+Major changes:
+
+Minor changes:
+- Notable people now have a religion, and their roles are affected by their religion (for example, a person who follows a religion that worships a prominent war god is more likely to be a general).
+
+Bug fixes:
+
 2016-11-24
 Major changes:
 - Changed artists to have more of an identity, rather than just a random art producer. Artists can now switch professions, become specialized in producing a certain kind of art, or have a penchant for certain topics.

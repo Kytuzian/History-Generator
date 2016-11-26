@@ -657,23 +657,18 @@ class City:
         else:
             self.morale += MORALE_ENOUGH_FOOD
 
+    def get_random_religion(self):
+        religion_populations = self.get_religion_populations()
+        weight = lambda _, (religion, adherents): adherents
+        religion,_ = utility.weighted_random_choice(religion_populations, weight=weight)
+        return religion
+
     def handle_population_change(self, amount):
         original_population = int(self.population)
         self.population = int(max(self.population + amount, 1)) # Can't be fewer than one person in the city
 
         # Remove religious adherents
         if self.population != original_population:
-            religion_populations = self.get_religion_populations()
-
-            if len(religion_populations) == 0:
-                print('Uh what just happened?', self.name)
-                for religion in self.parent.religions:
-                    print(religion.adherents)
-                raw_input()
-                return
-
-            weight = lambda _, (religion, adherents): adherents
-
             lose = original_population > self.population
 
             pop_change = 0
@@ -683,7 +678,7 @@ class City:
                 pop_change = self.population - original_population
 
             for i in xrange(pop_change):
-                religion,_ = utility.weighted_random_choice(religion_populations, weight=weight)
+                religion = self.get_random_religion()
 
                 if lose:
                     if religion.adherents[self.name] > 0:
@@ -784,7 +779,7 @@ class City:
         if random.randint(0, len(self.cells)) < math.sqrt(self.age): #Add new surrounding land
             candidate_expansion_squares = self.get_expansion_candidates()
 
-            if len(candidate_expansion_squares):
+            if len(candidate_expansion_squares) > 0:
                 new_square = random.choice(candidate_expansion_squares)
 
                 new_square.change_owner(self, 'city')

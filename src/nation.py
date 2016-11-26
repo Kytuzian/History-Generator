@@ -290,7 +290,8 @@ class Nation:
     def add_person(self, role=None):
         if len(self.cities) > 0:
             start_city = random.choice(self.cities)
-            new_person = Person(self, start_city, self.language.generate_name(), role=role)
+            religion = start_city.get_random_religion()
+            new_person = Person(self, start_city, self.language.generate_name(), religion, role=role)
             self.notable_people.append(new_person)
 
             return new_person
@@ -467,19 +468,20 @@ class Nation:
                     else:
                         res[religion] += religion.adherents[city_name]
 
-        return res
+        return res.items()
 
     # Tolerance is a weighted average of the tolerances of the religions that make up this nation.
     def get_tolerance(self):
         val = 0
         religion_populations = self.get_nation_religion_populations()
+        final = {}
         total = self.get_population()
 
         if total > 0:
-            for (religion, adherents) in religion_populations.items():
-                religion_populations[religion] = float(adherents) / total
+            for (religion, adherents) in religion_populations:
+                final[religion] = float(adherents) / total
 
-        for (religion, p) in religion_populations.iteritems():
+        for (religion, p) in final.iteritems():
             val += religion.get_tolerance() * p
 
         for person in self.notable_people:

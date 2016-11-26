@@ -99,15 +99,6 @@ Cities contain buildings as well. There following are the types of buildings and
 | Market        	|            	| 100       	|      	|      	|         	|       	|       	| 1000  	|                	| 60   	| 1500 	|               	|
 | Caravansary   	| 5          	|           	|      	|      	|         	|       	|       	|       	| 20             	| 90   	| 2000 	|               	|
 
-#Army
-A tree of unit types/numbers.
-
-Units have three main stats, strength, health, and discipline. Additionally, they can either be ranged, or not ranged. Discipline only currently affects ranged units (higher disciplines means soldiers will tend to shoot faster).
-
-Ranged unit do not move until they are out of ammo, or when their targets are too close to them (as in, charging them), at which point they switch to melee. If you see projectiles flying through large amounts of enemies, this is because the projectile is only targeting one enemy (runs WAY faster this way). Just imagine it was a really bad shot, although this should be relatively rare, as soldiers should aim ahead.
-
-Each weapon and armor has it's own stats, which are listed in the Weapons section below.
-
 #Battles
 There are four main components of battles: soldiers, projectiles, units, and the battle itself.
 - Soldiers
