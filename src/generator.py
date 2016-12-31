@@ -53,9 +53,6 @@ ADJECTIVES = ['red', 'blue', 'green', 'yellow', 'orange', 'purple', 'white',
 VERBS = ['run', 'walk', 'look', 'drop', 'cause', 'rain', 'fly', 'make',
               'precipitate', 'fight', 'take', 'snow',
               'write', 'read', 'talk', 'speak', 'transfix', 'roll']
-VERBS = ['runs', 'walks', 'looks', 'drops', 'causes', 'rains', 'flies', 'makes',
-         'precipitates', 'fights', 'takes', 'snows',
-         'writes', 'reads', 'talks', 'speaks', 'transfixes', 'rolls']
 PREPOSITIONS = ['around', 'in', 'of', 'by', 'under', 'above', 'before', 'at', 'with']
 
 PREPOSITION_FORMS = ['<article><gerund> <n>', '<article><n>',

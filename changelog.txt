@@ -1,10 +1,17 @@
-2016-11-26
+2016-12-30
 Major changes:
+- Battles can now be run without graphics, which speeds up the rate at which
+they run. Battles can also be run in "fast" mode--this greatly speeds up the
+battle speed, but it also removes many features from the normal battles, so
+you won't get the same results.
 
 Minor changes:
 - Notable people now have a religion, and their roles are affected by their religion (for example, a person who follows a religion that worships a prominent war god is more likely to be a general).
+- Changed reloading speed to be simply the troop's discipline plus a random
+either 0 or 1.
 
 Bug fixes:
+- Fixed a bug where art was trying to get a religion to base it's artwork off of.
 
 2016-11-24
 Major changes:

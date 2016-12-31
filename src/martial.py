@@ -83,7 +83,7 @@ class Troop:
 
         strength = self.strength + random.randint(1, 10 if not ranged else 5)
         health = self.health + random.randint(1, 4 if not ranged else 2)
-        discipline = self.discipline + random.randint(0, 2)
+        discipline = self.discipline + random.randint(0, 1)
 
         speed = self.speed + random.randint(1, 2)
 

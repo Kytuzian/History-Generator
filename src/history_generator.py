@@ -67,6 +67,8 @@ class Main:
         self.is_continuous = False
         self.run_until_battle = False
         self.advancing = False
+        self.graphical_battles = True
+        self.fast_battles = False
 
         self.clear_gen_log()
 
@@ -195,6 +197,13 @@ class Main:
         self.zoom_label = Label(self.parent, text='Zoom (Cell Size):')
         self.zoom_label.grid(row=3, column=0, sticky=W)
 
+        self.graphical_battles_checkbox = Checkbutton(self.parent, text='Graphical Battles', command=self.toggle_graphical_battles)
+        self.graphical_battles_checkbox.grid(row=3, column=1, sticky=W)
+        self.graphical_battles_checkbox.select() # Graphical battles are the default
+
+        self.fast_battles_checkbox = Checkbutton(self.parent, text='Fast Battles', command=self.toggle_fast_battles)
+        self.fast_battles_checkbox.grid(row=4,column=1, sticky=W)
+
         self.zoom_scale = Scale(self.parent, from_=1, to_=20, orient=HORIZONTAL)
         self.zoom_scale.grid(row=4, column=0, sticky=W)
         self.zoom_scale.bind('<ButtonRelease-1>', self.zoom)
@@ -233,6 +242,12 @@ class Main:
 
     def open_world_history_window(self):
         self.world_history_window = event_analysis.HistoryWindow('World History', ['NationFounded', 'CityFounded', 'CityMerged', 'ReligionGodAdded', 'ReligionGodRemoved', 'ReligionDomainAdded', 'ReligionDomainRemoved', 'DiplomacyTrade', 'DiplomacyWar', 'ArmyDispatched', 'Attack', 'Revolt'])
+
+    def toggle_graphical_battles(self):
+        self.graphical_battles = not self.graphical_battles
+
+    def toggle_fast_battles(self):
+        self.fast_battles = not self.fast_battles
 
     def toggle_minimize_battles(self):
         utility.START_BATTLES_MINIMIZED = not utility.START_BATTLES_MINIMIZED
@@ -523,7 +538,7 @@ class Main:
             if attacking_army.size() == 0:
                 attacking_army.add_number(1, attacker)
 
-            battle = Battle(attacker, attacking_army, defender, defending_army, attacking_city, city, self.end_battle)
+            battle = Battle(attacker, attacking_army, defender, defending_army, attacking_city, city, self.end_battle, use_graphics=self.graphical_battles, fast_battles=self.fast_battles)
             battle.setup_soldiers()
 
             if not battle.check_end_battle():
@@ -531,7 +546,8 @@ class Main:
 
                 battle.main_phase()
 
-                self.battles.append(battle)
+                if self.graphical_battles and not self.fast_battles:
+                    self.battles.append(battle)
         elif city in attacker.cities: #if we already own it, just join the army that's already there
             city.army.add_army(attacking_army)
         else: #If somebody other than us or the person we intended to attack owns this city, just go back to reinforce one of our cities.
@@ -603,9 +619,14 @@ class Main:
             attack_city.army = battle.b_army
 
             winner = b
+        else:
+            print('----------------------')
+            print('No battle winner?')
+            print(battle.a_army.size(), battle.b_army.size())
+            print('----------------------')
 
         self.battle_history.append(diplomacy.BattleHistory(attack_city, winner, a, b, self.get_current_date(), battle.a_stats, battle.b_stats))
-
+        
         self.after_id = self.parent.after(self.delay.get(), self.main_loop)
 
     def all_cities(self, ignore_nation=None):
@@ -626,5 +647,5 @@ if len(sys.argv) > 1:
             utility.CELL_SIZE = int(params[1])
 
 Main().start()
-# cProfile.run('Main().start()', sort='tottime')
+#cProfile.run('Main().start()', sort='tottime')
 raw_input()

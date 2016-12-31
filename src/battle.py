@@ -1,8 +1,9 @@
 from Tkinter import *
-from time import sleep
 
-import random
 import math
+import random
+import sys
+from time import sleep
 
 import utility
 
@@ -73,7 +74,7 @@ class Soldier:
             if not self.target in self.unit.target.soldiers:
                 self.target = None
 
-        if self.ranged:
+        if self.ranged and self.target == None:
             self.target = random.choice(self.unit.target.soldiers)
         else:
             self.target = utility.get_nearest_enemy(self, self.unit.target.soldiers)
@@ -89,21 +90,22 @@ class Soldier:
 
         if self.reload < self.reload_counter:
             if not self.ranged or self.in_range(): # Melee units always reload, because their first attack is like a "charge"
-                self.reload += math.sqrt(self.discipline) // 2 + random.randint(0, 1) + 1
+                self.reload += self.discipline + random.randint(0,1)
 
         #Show the weapon if we are currently in melee mode
-        if d != 0 and not self.ranged:
-            cx, cy = self.x + TROOP_RADIUS // 2, self.y + TROOP_RADIUS // 2
-            weapon_range = self.get_melee_weapon().range
+        if self.canvas:
+            if d != 0 and not self.ranged:
+                cx, cy = self.x + TROOP_RADIUS // 2, self.y + TROOP_RADIUS // 2
+                weapon_range = self.get_melee_weapon().range
 
-            if self.weapon_id == -1:
-                self.weapon_id = self.canvas.create_line(cx, cy, cx, cy + weapon_range)
-            else:
-                self.canvas.coords(self.weapon_id, cx, cy, cx + (tx - cx) / d * weapon_range, cy + (ty - cy) / d * weapon_range)
-        elif self.ranged:
-            if self.weapon_id != -1:
-                self.canvas.delete(self.weapon_id)
-                self.weapon_id = -1
+                if self.weapon_id == -1:
+                    self.weapon_id = self.canvas.create_line(cx, cy, cx, cy + weapon_range)
+                else:
+                    self.canvas.coords(self.weapon_id, cx, cy, cx + (tx - cx) / d * weapon_range, cy + (ty - cy) / d * weapon_range)
+            elif self.ranged:
+                if self.weapon_id != -1:
+                    self.canvas.delete(self.weapon_id)
+                    self.weapon_id = -1
 
         if self.ranged:
             self.handle_ranged(d, proj, best_material, stats, enemy_stats)
@@ -203,10 +205,12 @@ class Soldier:
                     d = utility.distance((self.x, self.y), (tx, ty))
 
                 damage = self.get_ranged_attack(best_material)
-                proj.append(Projectile(((tx - self.x) / d, (ty - self.y) / d), self, damage, self.target, self.get_projectile_speed()))
+                proj.append(Projectile((self.x, self.y), ((tx - self.x) / d, (ty - self.y) / d), self, damage, self.target, self.get_projectile_speed()))
 
-                color = self.canvas.itemcget(self.id, 'fill')
-                proj[-1].id = self.canvas.create_oval(self.x, self.y, self.x + PROJECTILE_RADIUS, self.y + PROJECTILE_RADIUS, width=0, fill=color)
+                if self.canvas:
+                    color = self.canvas.itemcget(self.id, 'fill')
+                    proj[-1].id = self.canvas.create_oval(self.x, self.y, self.x + PROJECTILE_RADIUS, self.y + PROJECTILE_RADIUS, width=0, fill=color)
+
                 proj[-1].skip_step = d // self.get_projectile_speed() // 2
                 proj[-1].kill_range = d // self.get_projectile_speed() * 2
 
@@ -238,16 +242,6 @@ class Soldier:
             return self.weapons[0]
         else:
             return None
-
-    def calculate_position(self):
-        coords = self.canvas.coords(self.id)[:2]
-
-        if len(coords) == 2:
-            self.x, self.y = coords
-
-            return (self.x, self.y)
-        else:
-            return (-1, -1)
 
     def get_ranged_attack(self, material):
         fatigue_loss = random.randint(0, self.fatigue // 2)
@@ -358,7 +352,8 @@ class Soldier:
                         self.x += dx / d * speed
                         self.y += dy / d * speed
 
-                self.canvas.coords(self.id, self.x, self.y, self.x + TROOP_RADIUS, self.y + TROOP_RADIUS)
+                if self.canvas:
+                    self.canvas.coords(self.id, self.x, self.y, self.x + TROOP_RADIUS, self.y + TROOP_RADIUS)
 
 class RankPosition:
     def __init__(self, unit, rank, position, canvas):
@@ -386,17 +381,16 @@ class RankPosition:
         d1 = ((len(self.unit.ranks[0]) - 1) / 2.0 - self.position) * (TROOP_RADIUS + 1)
         d2 = -self.rank * (TROOP_RADIUS + 1)
 
-        # print(self.rank, len(self.unit.ranks[0]), d1, d2)
-
         t1 = math.atan2(self.unit.dy, self.unit.dx) + math.pi / 2.0
         t2 = t1 - math.pi / 2.0
         self.x = self.unit.x + math.cos(t1) * d1 + math.cos(t2) * d2
         self.y = self.unit.y + math.sin(t1) * d1 + math.sin(t2) * d2
 
-        # print(self.rank, self.position, self.x, self.y, self.unit.x, self.unit.y)
-
 class Projectile:
-    def __init__(self, (dx, dy), launcher, strength, target, speed):
+    def __init__(self, (x, y), (dx, dy), launcher, strength, target, speed):
+        self.x = x
+        self.y = y
+
         self.dx = dx
         self.dy = dy
 
@@ -463,8 +457,9 @@ class Unit:
                     return
 
     def handle_death(self, soldier):
-        self.canvas.delete(soldier.id)
-        self.canvas.delete(soldier.weapon_id)
+        if self.canvas:
+            self.canvas.delete(soldier.id)
+            self.canvas.delete(soldier.weapon_id)
 
         if soldier.targeted != None:
             soldier.targeted.target = None
@@ -480,7 +475,8 @@ class Unit:
 
             self.force.remove(self)
 
-            self.canvas.delete(self.name_id)
+            if self.canvas:
+                self.canvas.delete(self.name_id)
 
     def handle_ranks(self):
         #Fill up earlier positions in the formation
@@ -538,14 +534,9 @@ class Unit:
         total_x = 0
         total_y = 0
 
-        for i in self.soldiers:
-            sx, sy = i.calculate_position()
-
-            if sx >= 0 and sy >= 0:
-                total_x += sx
-                total_y += sy
-            else:
-                self.soldiers.remove(i)
+        for soldier in self.soldiers:
+            total_x += soldier.x
+            total_y += soldier.y
 
         if len(self.soldiers) > 0:
             self.x = total_x // len(self.soldiers)
@@ -562,15 +553,13 @@ class Unit:
 
     def move(self):
         if self.target != None:
-            #We need to calculate these things because we need them for rank positions (facing the enemy, etc.)
             tx, ty = self.target.get_position()
-            x, y = self.get_position()
+            self.dx, self.dy = tx - self.x, ty - self.y
 
-            self.dx, self.dy = tx - x, ty - y
-
+            # print(self.x, self.y)
             #If we aren't in range, we need to move closer.
             if not self.in_range():
-                d = utility.distance((tx, ty), (x, y))
+                d = utility.distance((tx, ty), (self.x, self.y))
 
                 if d != 0:
                     speed = self.get_effective_speed()
@@ -581,9 +570,10 @@ class Unit:
                     else:
                         self.x += self.dx / d * speed
                         self.y += self.dy / d * speed
+                    # print(self.dx, self.dy, d, self.x, self.y)
 
 class Battle:
-    def __init__(self, nation_a, a_army, nation_b, b_army, attacking_city, city, battle_over):
+    def __init__(self, nation_a, a_army, nation_b, b_army, attacking_city, city, battle_over, use_graphics=True, fast_battles=False):
         self.a = nation_a
         self.b = nation_b
 
@@ -595,18 +585,7 @@ class Battle:
 
         self.a_stats['troops'] = a_army.size()
         self.b_stats['troops'] = b_army.size()
-
-        self.parent = Tk()
-        self.parent.title("{}({}) vs. {}({})".format(self.a.name, self.a_army.size(), self.b.name, self.b_army.size()))
-        self.parent.geometry("1000x600+330+0")
-
-        if utility.START_BATTLES_MINIMIZED:
-            self.parent.wm_state('iconic')
-
         self.delay = 1
-
-        self.canvas = Canvas(self.parent, width=1000, height=600)
-        self.canvas.pack()
 
         self.force_a = []
         self.force_b = []
@@ -625,8 +604,27 @@ class Battle:
 
         self.attacking_city = attacking_city
         self.city = city
+        
+        self.fast_battles = fast_battles
+        if self.fast_battles:
+            self.use_graphics = False
+        else:
+            self.use_graphics = use_graphics
+            if use_graphics:
+                self.parent = Tk()
+                self.parent.title("{}({}) vs. {}({})".format(self.a.name, self.a_army.size(), self.b.name, self.b_army.size()))
+                self.parent.geometry("1000x600+330+0")
 
-        self.create_gui()
+                if utility.START_BATTLES_MINIMIZED:
+                    self.parent.wm_state('iconic')
+
+                self.canvas = Canvas(self.parent, width=1000, height=600)
+                self.canvas.pack()
+
+                self.create_gui()
+            else:
+                self.parent = None
+                self.canvas = None
 
     def create_gui(self):
         self.battle_speed = Scale(self.parent, from_=1, to=200, orient=HORIZONTAL)
@@ -641,11 +639,13 @@ class Battle:
     def setup_army(self, army, force, color, (xmin, xmax), (ymin, ymax), limit):
         sx, sy = 0, 0
 
-       # print("Setting up a max of {} soldiers of {} for this unit type.".format(limit, army.number))
+        # print("Setting up a max of {} soldiers of {} for this unit type.".format(limit, army.number))
 
+        new_units = []
         for soldier in xrange(army.number):
             if soldier % (army.ranks * army.rank_size) == 0:
                 force.append(Unit(army.zero(), force, [], self.canvas))
+                new_units.append(force[-1])
 
                 sx, sy = random.randint(xmin, xmax), random.randint(ymin, ymax)
 
@@ -653,12 +653,15 @@ class Battle:
 
             x,y = sx + len(force[-1].soldiers[:-1]) % army.rank_size * (TROOP_RADIUS + 1), sy + len(force[-1].soldiers[:-1]) / army.rank_size * (TROOP_RADIUS + 1)
 
-            force[-1].soldiers[-1].id = self.canvas.create_oval(x, y, x + TROOP_RADIUS, y + TROOP_RADIUS, fill=color)
+            force[-1].soldiers[-1].x = x
+            force[-1].soldiers[-1].y = y
+            if self.use_graphics:
+                force[-1].soldiers[-1].id = self.canvas.create_oval(x, y, x + TROOP_RADIUS, y + TROOP_RADIUS, fill=color)
 
-            cx, cy = x + TROOP_RADIUS // 2, y + TROOP_RADIUS // 2
+                cx, cy = x + TROOP_RADIUS // 2, y + TROOP_RADIUS // 2
 
-            if not force[-1].soldiers[-1].ranged:
-                force[-1].soldiers[-1].weapon_id = self.canvas.create_line(cx, cy, cx + 1, cy + force[-1].soldiers[-1].get_melee_weapon().range)
+                if not force[-1].soldiers[-1].ranged:
+                    force[-1].soldiers[-1].weapon_id = self.canvas.create_line(cx, cy, cx + 1, cy + force[-1].soldiers[-1].get_melee_weapon().range)
 
             limit -= 1
             army.number -= 1
@@ -666,22 +669,22 @@ class Battle:
             if limit <= 0:
                 break
 
-        for unit in force:
-            if unit.name_id == 0: #It was just created, set it up
-                #So they start out facing the right direction
-                if army == self.a_army:
-                    unit.dy = -1
-                    unit.dx = 0
-                elif army == self.b_army:
-                    unit.dy = 1
-                    unit.dx = 0
+        for unit in new_units:
+            #So they start out facing the right direction
+            if army == self.a_army:
+                unit.dy = -1
+                unit.dx = 0
+            elif army == self.b_army:
+                unit.dy = 1
+                unit.dx = 0
 
-                unit.calculate_position()
-                for soldier in unit.soldiers:
-                    soldier.move()
+            unit.calculate_position()
+            for soldier in unit.soldiers:
+                soldier.move()
 
-                unit.setup_ranks()
-                unit.setup_ammunition()
+            unit.setup_ranks()
+            unit.setup_ammunition()
+            if self.use_graphics:
                 unit.name_id = self.canvas.create_text(unit.x, unit.y, text=("{} ({}; {}): {}, {}".format(unit.soldier_type.name, ', '.join(map(lambda w: w.name, unit.soldier_type.weapons)), unit.soldier_type.armor.name, unit.soldier_type.strength, unit.soldier_type.health)))
 
         if limit <= 0:
@@ -692,27 +695,33 @@ class Battle:
                 self.setup_army(i, force, color, (xmin, xmax), (ymin, ymax), limit)
 
     def setup_soldiers(self):
-        if self.a_army.size() > self.b_army.size():
-            self.a_amount = BATTLE_SIZE
-            self.b_amount = int(BATTLE_SIZE * (float(self.b_army.size() + 1) / float(self.a_army.size() + 1)))
+        if self.fast_battles:
+            return
         else:
-            self.a_amount = int(BATTLE_SIZE * (float(self.a_army.size() + 1) / float(self.b_army.size() + 1)))
-            self.b_amount = BATTLE_SIZE
+            if self.a_army.size() > self.b_army.size():
+                self.a_amount = BATTLE_SIZE
+                self.b_amount = int(BATTLE_SIZE * (float(self.b_army.size() + 1) / float(self.a_army.size() + 1)))
+            else:
+                self.a_amount = int(BATTLE_SIZE * (float(self.a_army.size() + 1) / float(self.b_army.size() + 1)))
+                self.b_amount = BATTLE_SIZE
 
-        self.setup_army(self.a_army, self.force_a, self.a.color, (100, 900), (50, 300), self.a_amount)
-        self.setup_army(self.b_army, self.force_b, self.b.color, (100, 900), (300, 550), self.b_amount)
+            self.setup_army(self.a_army, self.force_a, self.a.color, (100, 900), (50, 300), self.a_amount)
+            self.setup_army(self.b_army, self.force_b, self.b.color, (100, 900), (300, 550), self.b_amount)
 
     def handle_projectiles(self, owner_nation, proj, enemy, enemy_force, stats, enemy_stats):
         i = 0
         for p in proj:
             hit = False
 
-            self.canvas.move(p.id, p.dx * p.speed, p.dy * p.speed)
+            if self.use_graphics:
+                self.canvas.move(p.id, p.dx * p.speed, p.dy * p.speed)
 
-            x,y = self.canvas.coords(p.id)[:2]
+            p.x += p.dx * p.speed
+            p.y += p.dy * p.speed
 
+            x, y = p.x, p.y
             try:
-                tx,ty = self.canvas.coords(p.target.id)[:2]
+                tx, ty = p.target.x, p.target.y
 
                 if p.skip_step <= 0:
                     if p.kill_range > 0:
@@ -758,11 +767,13 @@ class Battle:
                     p.skip_step -= 1
 
                 if hit or x < 0 or x > 1000 or y < 0 or y > 600:
-                    self.canvas.delete(p.id)
+                    if self.use_graphics:
+                        self.canvas.delete(p.id)
 
                     proj.remove(p)
             except: #Remove this if we don't have a target
-                self.canvas.delete(p.id)
+                if self.use_graphics:
+                    self.canvas.delete(p.id)
 
                 proj.remove(p)
 
@@ -777,7 +788,9 @@ class Battle:
 
                 for i in self.force_a:
                     self.a_army.add_to(i.soldier_type.name, len(i.soldiers))
-            self.parent.destroy()
+
+            if self.use_graphics:
+                self.parent.destroy()
 
             self.over = True
             self.battle_over(self)
@@ -801,7 +814,8 @@ class Battle:
 
                 continue
 
-            self.canvas.coords(current_unit.name_id, current_unit.x, current_unit.y - 20)
+            if self.use_graphics:
+                self.canvas.coords(current_unit.name_id, current_unit.x, current_unit.y - 20)
 
             #Targeting stuff
             if current_unit.target != None: #if we have a target make sure it still exists
@@ -840,44 +854,234 @@ class Battle:
             total += len(i.soldiers)
 
         return total
-
+    
     def main_phase(self):
-        if self.check_end_battle():
-            return True
+        if self.fast_battles:
+            self.fast_battle_main()
+        else:
+            self.standard_battle_main()
 
-        self.parent.title("Battle for {}: {}(Reinforcments: {}) vs. {}(Reinforcments: {})".format(self.city.name, self.a.name.short_name(), self.a_army.size(), self.b.name.short_name(), self.b_army.size()))
+    def fast_battle_main(self):
+        def get_next_soldier(army):
+            for troop in army.make_upgrade_list():
+                if troop.number > 0:
+                    return troop
 
-        self.handle_projectiles(self.a, self.proj_a, self.b, self.force_b, self.a_stats, self.b_stats)
-        self.handle_projectiles(self.b, self.proj_b, self.a, self.force_a, self.b_stats, self.a_stats)
+            return None
 
-        self.handle_units(self.force_a, self.a, self.proj_a, self.force_b, self.b, self.a.color, self.a_stats, self.b_stats)
-        if self.over:
-            return
+        def get_ranged_damage(troop, material):
+            use_weapon = troop.weapons[0]
+            weapon_attack = use_weapon.get_attack(material)
+            normal_attack = use_weapon.attack_skill_multiplier * random.randint(0, troop.strength)
 
-        self.handle_units(self.force_b, self.b, self.proj_b, self.force_a, self.a, self.b.color, self.b_stats, self.a_stats)
-        if self.over:
-            return
+            result = weapon_attack + normal_attack
 
-        a_force_size = self.size(self.force_a)
-        b_force_size = self.size(self.force_b)
+            if result > 0:
+                return result
+            else:
+                return random.randint(0, 1)
+        
+        def get_melee_attack(troop, material):
+            if troop.ranged:
+                use_weapon = troop.weapons[1]
+            else:
+                use_weapon = troop.weapons[0]
 
-        # print(a_force_size, b_force_size)
+            weapon_attack = use_weapon.get_attack(material)
+            normal_attack = use_weapon.attack_skill_multiplier * random.randint(0, troop.strength)
 
-        #Add more troops if possible
-        if a_force_size < 10 or a_force_size < self.a_amount // 2:
-            self.setup_army(self.a_army, self.force_a, self.a.color, (350, 650), (50, 100), max(10, self.a_amount - a_force_size))
-        if b_force_size < 10 or b_force_size < self.b_amount // 2:
-            self.setup_army(self.b_army, self.force_b, self.b.color, (350, 650), (500, 550), max(10, self.b_amount - b_force_size))
+            result = weapon_attack + normal_attack
 
-        if self.a_army.size() > 0 and a_force_size == 0:
-            self.setup_army(self.a_army, self.force_a, self.a.color, (350, 650), (50, 100), self.a_amount)
+            if result > 0:
+                return result
+            else:
+                return random.randint(0, 1)
 
-        if self.b_army.size() > 0 and b_force_size == 0:
-            self.setup_army(self.b_army, self.force_b, self.b.color, (350, 650), (500, 550), self.b_amount)
+        def get_ranged_defense(troop, material):
+            armor_defense = troop.armor.get_defense(material)
+            skill_defense = troop.armor.defense_skill_multiplier * random.randint(0, troop.strength)
 
-        total = self.a_original_size + self.b_original_size
-        current = self.a_army.size() + self.b_army.size() + a_force_size + b_force_size
-        utility.show_bar(current, total, message='Soldiers Left: ', number_limit=True)
+            return max(0, armor_defense + skill_defense)
 
-        if not self.over:
-            self.after_id = self.parent.after(self.battle_speed.get(), self.main_phase)
+        def get_melee_defense(troop, material):
+            if troop.ranged:
+                use_weapon = troop.weapons[1]
+            else:
+                use_weapon = troop.weapons[0]
+
+            weapon_defense = use_weapon.get_defense(material)
+            armor_defense = troop.armor.get_defense(material)
+            normal_defense = troop.armor.defense_skill_multiplier * use_weapon.defense_skill_multiplier * random.randint(0, troop.strength)
+
+            result = weapon_defense + armor_defense + normal_defense
+
+            if result > 0:
+                return result
+            else:
+                return random.randint(0, 1)
+
+        a_material = self.a.tech.get_best_in_category('material')
+        b_material = self.b.tech.get_best_in_category('material')
+
+        while self.a_army.size() > 0 and self.b_army.size() > 0:
+            a_unit = get_next_soldier(self.a_army)
+            b_unit = get_next_soldier(self.b_army)
+
+            a_health = a_unit.health
+            b_health = b_unit.health
+
+            if not a_unit.name in self.a_stats:
+                self.a_stats[a_unit.name] = utility.base_soldier_stats()
+                self.a_stats[a_unit.name][a_unit.weapons[0].name] = utility.base_weapon_stats()
+                self.a_stats[a_unit.name][a_unit.weapons[1].name] = utility.base_weapon_stats()
+
+            if not b_unit.name in self.b_stats:
+                self.b_stats[b_unit.name] = utility.base_soldier_stats()
+                self.b_stats[b_unit.name][b_unit.weapons[0].name] = utility.base_weapon_stats()
+                self.b_stats[b_unit.name][b_unit.weapons[1].name] = utility.base_weapon_stats()
+            
+            sys.stdout.write("\rBattle for {}: {}(Soldiers: {}) vs. {}(Soldiers: {})".format(self.city.name, self.a.name.short_name(), self.a_army.size(), self.b.name.short_name(), self.b_army.size()))
+            sys.stdout.flush()
+
+            if a_unit == None or b_unit == None:
+                raise Exception('Couldn\'t find any units!')
+
+            if a_unit.ranged:
+                damage = get_ranged_damage(a_unit, a_material)
+                defense = get_ranged_defense(b_unit, b_material)
+                
+                self.a_stats['projectiles_launched'] += 1
+                self.a_stats[a_unit.name]['projectiles_launched'] += 1
+                self.a_stats[a_unit.name][a_unit.weapons[0].name]['attacks'] += 1
+
+                if defense < damage:
+                    b_health -= damage - defense
+                    
+                    self.a_stats['projectiles_hit'] += 1
+                    self.a_stats[a_unit.name]['projectiles_hit'] += 1
+                    self.a_stats[a_unit.name][a_unit.weapons[0].name]['attacks_won'] += 1
+
+                    if b_health <= 0:
+                        self.a_stats[a_unit.name][a_unit.weapons[0].name]['kills'] += 1
+
+            if b_unit.ranged:
+                damage = get_ranged_damage(b_unit, b_material)
+                defense = get_ranged_defense(a_unit, a_material)
+                
+                self.b_stats['projectiles_launched'] += 1
+                self.b_stats[b_unit.name]['projectiles_launched'] += 1
+                self.b_stats[b_unit.name][b_unit.weapons[0].name]['attacks'] += 1
+
+                if defense < damage:
+                    a_health -= damage - defense
+                    
+                    self.b_stats['projectiles_hit'] += 1
+                    self.b_stats[b_unit.name]['projectiles_hit'] += 1
+                    self.b_stats[b_unit.name][b_unit.weapons[0].name]['attacks_won'] += 1
+
+                    if a_health <= 0:
+                        self.b_stats[b_unit.name][b_unit.weapons[0].name]['kills'] += 1
+
+            while a_health > 0 and b_health > 0:
+                a_attack = get_melee_attack(a_unit, a_material)
+                b_defense = get_melee_defense(b_unit, b_material)                
+                self.a_stats[a_unit.name]['attacks'] += 1
+                if a_unit.ranged:
+                    a_melee = a_unit.weapons[1]
+                else:
+                    a_melee = a_unit.weapons[0]
+                self.a_stats[a_unit.name][a_melee.name]['attacks'] += 1
+
+                if a_attack > b_defense:
+                    self.a_stats[a_unit.name]['attacks_won'] += 1
+                    self.a_stats['attacks_won'] += 1
+                    self.a_stats[a_unit.name][a_melee.name]['attacks_won'] += 1
+                    
+                    b_health -= 1
+
+                    if b_health <= 0:
+                        self.a_stats[a_unit.name][a_melee.name]['kills'] += 1
+                        break
+
+                b_attack = get_melee_attack(b_unit, b_material)
+                a_defense = get_melee_defense(a_unit, a_material)
+                self.b_stats[b_unit.name]['attacks'] += 1
+
+                if b_unit.ranged:
+                    b_melee = b_unit.weapons[1]
+                else:
+                    b_melee = b_unit.weapons[0]
+
+                self.b_stats[b_unit.name][b_melee.name]['attacks'] += 1
+
+                if b_attack > a_defense:
+                    self.b_stats[b_unit.name]['attacks_won'] += 1
+                    self.b_stats['attacks_won'] += 1
+                    self.b_stats[b_unit.name][b_melee.name]['attacks_won'] += 1
+                
+                    a_health -= 1
+
+                    if a_health <= 0:
+                        self.b_stats[b_unit.name][b_melee.name]['kills'] += 1
+                        break
+
+            if a_health <= 0:
+                a_unit.number -= 1
+
+                self.a_stats['troops_lost'] += 1
+                self.b_stats['troops_killed'] += 1
+                self.a_stats[a_unit.name]['deaths'] += 1
+                self.b_stats[b_unit.name]['kills'] += 1
+            elif b_health <= 0:
+                b_unit.number -= 1
+
+                self.b_stats['troops_lost'] += 1
+                self.a_stats['troops_killed'] += 1
+                self.b_stats[b_unit.name]['deaths'] += 1
+                self.a_stats[a_unit.name]['kills'] += 1
+
+        self.battle_over(self)
+
+    def standard_battle_main(self):
+        while not self.check_end_battle():
+            self.handle_projectiles(self.a, self.proj_a, self.b, self.force_b, self.a_stats, self.b_stats)
+            self.handle_projectiles(self.b, self.proj_b, self.a, self.force_a, self.b_stats, self.a_stats)
+
+            self.handle_units(self.force_a, self.a, self.proj_a, self.force_b, self.b, self.a.color, self.a_stats, self.b_stats)
+            if self.over:
+                return
+
+            self.handle_units(self.force_b, self.b, self.proj_b, self.force_a, self.a, self.b.color, self.b_stats, self.a_stats)
+            if self.over:
+                return
+
+            a_force_size = self.size(self.force_a)
+            b_force_size = self.size(self.force_b)
+
+            # print(a_force_size, b_force_size)
+
+            #Add more troops if possible
+            if a_force_size < 10 or a_force_size < self.a_amount // 2:
+                self.setup_army(self.a_army, self.force_a, self.a.color, (350, 650), (50, 100), max(10, self.a_amount - a_force_size))
+            if b_force_size < 10 or b_force_size < self.b_amount // 2:
+                self.setup_army(self.b_army, self.force_b, self.b.color, (350, 650), (500, 550), max(10, self.b_amount - b_force_size))
+
+            if self.a_army.size() > 0 and a_force_size == 0:
+                self.setup_army(self.a_army, self.force_a, self.a.color, (350, 650), (50, 100), self.a_amount)
+
+            if self.b_army.size() > 0 and b_force_size == 0:
+                self.setup_army(self.b_army, self.force_b, self.b.color, (350, 650), (500, 550), self.b_amount)
+
+            a_cur = self.a_army.size() + a_force_size
+            b_cur = self.b_army.size() + b_force_size
+
+            sys.stdout.write("\rBattle for {}: {}(Soldiers: {}) vs. {}(Soldiers: {})".format(self.city.name, self.a.name.short_name(), a_cur, self.b.name.short_name(), b_cur))
+            sys.stdout.flush()
+
+            if not self.over:
+                if self.use_graphics:
+                    self.parent.title("Battle for {}: {}(Reinforcements: {}) vs. {}(Reinforcements: {})".format(self.city.name, self.a.name.short_name(), self.a_army.size(), self.b.name.short_name(), self.b_army.size()))
+
+                    self.after_id = self.parent.after(self.battle_speed.get(), self.main_phase)
+
+                    break

@@ -28,6 +28,7 @@ MORALE_INCREMENT = 30
 GARRISON_MORALE_BONUS = 2.5 #Multiplier
 
 SEND_CARAVAN_CHANCE = 10
+CARAVAN_RELIGION_CHANCE = 10
 
 TRADE_GOOD_PRICE = 25
 
@@ -324,11 +325,15 @@ class City:
         # This is to ensure that all caravans make at least some money
         resource_send['trade_goods'] = random.randint(1, int(math.log(self.population))**2 + 1)
 
+	# Each caravan has a random religion.
+	religion = self.get_random_religion()
+
         dx, dy = trade_city.position #Send it to a random city
-        self.caravans.append(Group("caravan", resource_send, (cx, cy), (dx, dy), self.nation.color, lambda s: False, trade_city.receive_caravan(self), self.nation.parent.canvas))
+	self.caravans.append(Group("caravan", (religion, resource_send), (cx, cy), (dx, dy), self.nation.color, lambda s: False, trade_city.receive_caravan(self), self.nation.parent.canvas))
 
     def receive_caravan(self, city):
         def f(caravan):
+            caravan_religion, caravan_resources = caravan.members
             city.caravans.remove(caravan)
 
             # Construct a demand ranking
@@ -341,17 +346,29 @@ class City:
                 prices[resource] *= resource_mults[resource]
 
             profit = 0
-            for resource in caravan.members:
+            for resource in caravan_resources:
                 if resource in prices:
-                    profit += caravan.members[resource] * prices[resource]
+                    profit += caravan_resources[resource] * prices[resource]
                 elif resource == 'trade_goods':
-                    profit += TRADE_GOOD_PRICE * caravan.members[resource]
+                    profit += TRADE_GOOD_PRICE * caravan_resources[resource]
 
             profit = int(profit)
 
-            # print('{} made a profit of {} while trading {} with {}'.format(city.nation.name.short_name(), profit, caravan.members, self.nation.name.short_name()))
+            # print('{} made a profit of {} while trading {} with {}'.format(city.nation.name.short_name(), profit, caravan_resources, self.nation.name.short_name()))
 
             self.nation.money += profit
+
+	    # The religion of the caravan influences the religion of this city (but only if they have a different religion than the caravan)
+	    religion_populations = self.get_religion_populations()
+	    for (religion, adherents) in religion_populations:
+                if religion != caravan_religion:
+                    if random.randint(0,CARAVAN_RELIGION_CHANCE):
+                        self.handle_population_change(-1)
+
+                        if self.name in caravan_religion.adherents:
+                            caravan_religion.adherents[self.name] += 1
+                        else:
+                            caravan_religion.adherents[self.name] = 1
 
             if city.nation != self.nation: # Trading with ourselves doesn't give any bonus
                 city.nation.money += profit // 2 # The other party only makes half as much
@@ -497,7 +514,7 @@ class City:
     def calculate_population_capacity(self):
         self.population_capacity = len(self.cells) * CELL_POPULATION_CAPACITY
 
-        for cell in self.cells:
+    	for cell in self.cells:
             self.population_capacity += cell.get_population_capacity()
 
         return self.population_capacity
@@ -684,7 +701,7 @@ class City:
                     if religion.adherents[self.name] > 0:
                         religion.adherents[self.name] -= 1
                 else:
-                    if random.randint(0, CREATE_RELIGION_CHANCE) == 0:
+		    if random.randint(0, CREATE_RELIGION_CHANCE) == 0:
                         # Might as well keep track of the founder, eh?
                         self.nation.add_person(role='priest')
 
