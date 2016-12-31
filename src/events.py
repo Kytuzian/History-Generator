@@ -59,8 +59,12 @@ class Event:
             return EventReligionDomainRemoved(dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'DiplomacyTrade':
             return EventDiplomacyTrade(dict['name'], dict['event_data'], dict['date'])
+        elif dict['name'] == 'DiplomacyTradeEnd':
+            return EventDiplomacyTradeEnd(dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'DiplomacyWar':
             return EventDiplomacyWar(dict['name'], dict['event_data'], dict['date'])
+        elif dict['name'] == 'DiplomacyWarEnd':
+            return EventDiplomacyWarEnd(dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'ArmyDispatched':
             return EventArmyDispatched(dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'Attack':
@@ -179,7 +183,15 @@ class EventDiplomacyTrade(Event):
         self.offeree = self.event_data['nation_b']
 
     def text_version(self):
-        return '{} has formed a trade agreement with {}'.format(get_nation_name(self.offerer), get_nation_name(self.offeree))
+        return '{} has formed a trade agreement with {}.'.format(get_nation_name(self.offerer), get_nation_name(self.offeree))
+
+class EventDiplomacyTradeEnd(Event):
+    def setup(self):
+        self.nation_a = self.event_data['nation_a']
+        self.nation_b = self.event_data['nation_b']
+
+    def text_version(self):
+        return '{}: The trade agreement between {} and {} has ended.'.format(self.date, get_nation_name(self.nation_a), get_nation_name(self.nation_b))
 
 class EventDiplomacyWar(Event):
     def setup(self):
@@ -190,6 +202,14 @@ class EventDiplomacyWar(Event):
 
     def text_version(self):
         return '{} declared war on {} for {} reasons'.format(get_nation_name(self.attacker), get_nation_name(self.defender), self.reason)
+
+class EventDiplomacyWarEnd(Event):
+    def setup(self):
+        self.nation_a = self.event_data['nation_a']
+        self.nation_b = self.event_data['nation_b']
+
+    def text_version(self):
+        return '{}: The war between {} and {} has ended.'.format(self.date, get_nation_name(self.nation_a), get_nation_name(self.nation_b))
 
 class EventArmyDispatched(Event):
     def setup(self):

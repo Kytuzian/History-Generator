@@ -574,6 +574,8 @@ class Nation:
         else:
             self.mod_morale(CAPITAL_CITY_MORALE_BONUS)
 
+        self.handle_treaties()
+
         for city in self.cities:
             #It's more likely to found a new city when this city is near population capacity
             #Because as there's no more space, people want to go to a new city
@@ -708,19 +710,27 @@ class Nation:
                             city.army = city.army.zero()
 
     def handle_treaties(self):
-        return
+        for treaty in self.treaties:
+            treaty.history_step(self, self.parent.get_current_date())
 
     def get_current_treaties_with(self, nation):
         current_treaties = filter(lambda treaty: treaty.is_current, self.treaties)
 
-        return filter(lambda treaty: treaty.nation_a == nation or treaty.nation_b == nation)
+        return filter(lambda treaty: treaty.nation_a == nation or treaty.nation_b == nation, current_treaties)
 
     def get_treaty_with(self, nation, treaty_type):
+        # First check for current treaties
         for treaty in self.treaties:
             if treaty.is_current:
                 if treaty.nation_a == nation or treaty.nation_b == nation:
                     if treaty.treaty_type == treaty_type:
                         return treaty
+
+        # Now for not current ones
+        for treaty in self.treaties:
+            if treaty.nation_a == nation or treaty.nation_b == nation:
+                if treaty.treaty_type == treaty_type:
+                    return treaty
 
         return None
 
@@ -789,7 +799,6 @@ class Nation:
         self.remove_dead_nations()
         self.handle_army_dispatch()
         self.handle_revolt()
-        self.handle_treaties()
         self.handle_relations()
 
     def remove_dead_nations(self):

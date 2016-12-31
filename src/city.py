@@ -358,9 +358,19 @@ class City:
 
             self.nation.money += profit
 
-	    # The religion of the caravan influences the religion of this city (but only if they have a different religion than the caravan)
-	    religion_populations = self.get_religion_populations()
-	    for (religion, adherents) in religion_populations:
+            if city.nation != self.nation: # Trading with ourselves doesn't give any bonus
+                city.nation.money += profit // 2 # The senders only makes half as much
+
+                trade_treaty = self.nation.get_treaty_with(city.nation, 'trade')
+
+                if trade_treaty != None: # Although this should always be the case, really.
+                    trade_treaty[self.nation.id]['caravans_received'] += 1
+                    trade_treaty[self.nation.id]['money'] += profit
+                    trade_treaty[city.nation.id]['money'] += profit // 2
+
+    	    # The religion of the caravan influences the religion of this city (but only if they have a different religion than the caravan)
+    	    religion_populations = self.get_religion_populations()
+    	    for (religion, adherents) in religion_populations:
                 if religion != caravan_religion:
                     if random.randint(0,CARAVAN_RELIGION_CHANCE):
                         self.handle_population_change(-1)
@@ -369,14 +379,6 @@ class City:
                             caravan_religion.adherents[self.name] += 1
                         else:
                             caravan_religion.adherents[self.name] = 1
-
-            if city.nation != self.nation: # Trading with ourselves doesn't give any bonus
-                city.nation.money += profit // 2 # The other party only makes half as much
-
-                trade_treaty = self.nation.get_treaty_with(city.nation, 'trade')
-
-                if trade_treaty != None: # Although this should always be the case, really.
-                    trade_treaty[self.nation.id]['caravans_received'] += 1
 
         return f
 

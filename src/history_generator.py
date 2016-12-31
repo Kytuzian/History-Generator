@@ -297,9 +297,11 @@ class Main:
     def remove_nation(self, nation):
         #Remove this nation from other treaties.
         for remove_war in nation.at_war:
-            remove_war.at_war.remove(nation)
+            war_treaty = nation.get_treaty_with(remove_war, 'war')
+            war_treaty.end(self.get_current_date())
         for remove_trade in nation.trading:
-            remove_trade.trading.remove(nation)
+            trade_treaty = nation.get_treaty_with(remove_trade, 'trade')
+            trade_treaty.end(self.get_current_date())
 
         self.events.append(events.EventNationEliminated("NationEliminated", {"nation_a": nation.id}, self.get_current_date()))
         self.write_to_gen_log(self.events[-1].text_version())
@@ -379,10 +381,6 @@ class Main:
                     nation.grow_population()
                     nation.handle_diplomacy()
                     nation.move_armies(utility.flatten([nation.moving_armies for check_nation in self.nations if nation != check_nation]))
-
-                    for k in nation.at_war:
-                        if not (k in self.nations):
-                            nation.at_war.remove(k)
 
                     if len(nation.cities) == 0 and len(nation.moving_armies) == 0 and len(self.battles) == 0:
                         self.remove_nation(nation)
@@ -626,7 +624,7 @@ class Main:
             print('----------------------')
 
         self.battle_history.append(diplomacy.BattleHistory(attack_city, winner, a, b, self.get_current_date(), battle.a_stats, battle.b_stats))
-        
+
         self.after_id = self.parent.after(self.delay.get(), self.main_loop)
 
     def all_cities(self, ignore_nation=None):

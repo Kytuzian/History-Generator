@@ -1,3 +1,14 @@
+2016-12-31
+Major changes:
+- Treaties can now end (so wars don't last forever, and neither do trade deals).
+
+Minor changes:
+- Trade treaties now keep track of the money that each side has made.
+
+Bug fixes:
+- Fixed bug where treaties were not properly kept track of.
+- Fixed bug where caravans influenced a cities religion before they actually got there.
+
 2016-12-30
 Major changes:
 - Battles can now be run without graphics, which speeds up the rate at which
