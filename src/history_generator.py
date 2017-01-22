@@ -5,6 +5,8 @@ from time import sleep
 import tkFont
 import random
 
+import shutil
+import os
 import sys
 
 import cProfile
@@ -53,6 +55,7 @@ class Main:
         self.after_id = 0
 
         self.nation_id = 0
+        self.group_id = 0
 
         self.battles = []
 
@@ -71,6 +74,8 @@ class Main:
         self.fast_battles = False
 
         self.clear_gen_log()
+
+        self.world_name = ''
 
         self.setup()
 
@@ -125,6 +130,10 @@ class Main:
         self.canvas.xview_scroll(-event.delta, 'units')
 
     def setup(self):
+        # Clear out the event log
+        with open('event_log.txt', 'w') as f:
+            f.write('')
+
         size = utility.S_WIDTH // utility.CELL_SIZE
         data = noise.generate_noise(size, 'Generating terrain: ')
         print('')
@@ -160,6 +169,10 @@ class Main:
             new_religion.adherents[self.nations[i].cities[0].name] = self.nations[i].cities[0].population
             self.religions.append(new_religion)
 
+        # Choose a random nation to generate our world's name with
+        lang = random.choice(self.nations).language
+        self.world_name = lang.translateTo('world')
+
         self.create_gui()
 
         events.main = self
@@ -172,6 +185,11 @@ class Main:
 
         self.religions.append(new_religion)
         new_religion.adherents[city.name] = 1 # Hooray! We have an adherent
+
+    def get_next_group_id(self):
+        self.group_id += 1
+
+        return 'group {}'.format(self.group_id)
 
     def get_next_id(self):
         self.nation_id += 1
@@ -217,6 +235,9 @@ class Main:
 
         self.simulation_speed_label = Label(self.parent, text='Simulation Speed (ms):')
         self.simulation_speed_label.grid(row=6, column=0, sticky=W)
+
+        self.save_button = Button(self.parent, text='Save', command=self.save)
+        self.save_button.grid(row=6, column=1, sticky=W)
 
         self.delay = Scale(self.parent, from_=10, to_=1000, orient=HORIZONTAL)
         self.delay.grid(row=7, sticky=W)
@@ -357,8 +378,52 @@ class Main:
     def start(self):
         self.parent.mainloop()
 
+    def save(self):
+        try:
+            os.makedirs('saves/{}/'.format(self.world_name))
+            os.makedirs('saves/{}/nations/'.format(self.world_name))
+            os.makedirs('saves/{}/religions/'.format(self.world_name))
+            os.makedirs('saves/{}/battles/'.format(self.world_name))
+            os.makedirs('saves/{}/battle_history/'.format(self.world_name))
+            os.makedirs('saves/{}/treaties/'.format(self.world_name))
+        except:
+            pass
+
+        # Save the event log. That's kind of important, I guess.
+        self.write_out_events('event_log.txt')
+        shutil.copyfile('event_log.txt', 'saves/{}/event_log.txt'.format(self.world_name))
+
+        res = {}
+        res['date'] = self.get_current_date()
+        res['width'] = utility.S_WIDTH // utility.CELL_SIZE
+        res['height'] = utility.S_HEIGHT // utility.CELL_SIZE
+        res['old_nations'] = self.old_nations
+
+        with open('saves/{}/main.txt'.format(self.world_name), 'w') as f:
+            f.write(str(res))
+
+        i = 0
+        total_cells = len(self.cells) * len(self.cells[0])
+
+        with open('saves/{}/cells.txt'.format(self.world_name), 'w') as f:
+            for row in self.cells:
+                for cell in row:
+                    utility.show_bar(i, total_cells, message='Saving cells ({} of {}): '.format(i, total_cells))
+                    i += 1
+
+                    f.write('{}\n'.format(cell.get_info()))
+        print('')
+
+        for i, nation in enumerate(self.nations):
+            utility.show_bar(i, len(self.nations), message='Saving nations: ')
+
+            os.makedirs('saves/{}/nations/{}/'.format(self.world_name, nation.id))
+            nation.save('saves/{}/nations/{}/'.format(self.world_name, nation.id))
+
+        print('')
+
     def main_loop(self):
-        self.parent.title("Map View: Year {}".format(self.year))
+        self.parent.title("Map View ({}): Year {}".format(self.world_name, self.year))
 
         try:
             if self.month == 12:
@@ -420,7 +485,7 @@ class Main:
         return (self.year, self.month, self.day)
 
     def write_out_events(self, filename):
-        with open(filename, 'w' if self.month == 1 and self.year == 1 else 'a') as f:
+        with open(filename, 'a') as f:
             for event in self.events:
                 f.write('{}\n'.format(event.to_dict()))
 
@@ -481,7 +546,7 @@ class Main:
             else: #if a third party is involved, let's just return back home
                 if len(sender.cities) > 0:
                     return_destination = random.choice(sender.cities)
-                    sender.moving_armies.append(Group(sender.name, reinforcing.members, reinforce_city.position, return_destination.position, sender.color, lambda s: False, self.reinforce(sender, return_destination), self.canvas))
+                    sender.moving_armies.append(Group(self, sender.name, reinforcing.members, reinforce_city.position, return_destination.position, sender.color, lambda s: False, self.reinforce(sender, return_destination), self.canvas))
 
                     self.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': sender.id, 'nation_b': sender.id, 'city_a': reinforce_city.name, 'city_b': return_destination.name, 'reason': 'reinforce', 'army_size': reinforcing.members.size()}, self.get_current_date()))
 
@@ -499,7 +564,7 @@ class Main:
                 self.attack(sender, reinforcing.members, reinforce_city.nation, None, reinforce_city)
             else: #if a third party is involved, let's just return back home
                 return_destination = random.choice(sender.cities)
-                sender.moving_armies.append(Group(sender.name, reinforcing.members, reinforce_city.position, return_destination.position, sender.color, lambda s: False, self.reinforce(sender, return_destination), self.canvas))
+                sender.moving_armies.append(Group(self, sender.name, reinforcing.members, reinforce_city.position, return_destination.position, sender.color, lambda s: False, self.reinforce(sender, return_destination), self.canvas))
 
                 self.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': sender.id, 'nation_b': sender.id, 'city_a': reinforce_city.name, 'city_b': return_destination.name, 'reason': 'reinforce', 'army_size': reinforcing.members.size()}, self.get_current_date()))
 
@@ -551,7 +616,7 @@ class Main:
         else: #If somebody other than us or the person we intended to attack owns this city, just go back to reinforce one of our cities.
             if len(attacker.cities) > 0: #It really ought to be, but it could happen that we lose all our cities before we can go back.
                 return_destination = random.choice(attacker.cities)
-                attacker.moving_armies.append(Group(attacker.name, attacking_army, city.position, return_destination.position, attacker.color, lambda s: False, self.reinforce(attacker, return_destination), self.canvas))
+                attacker.moving_armies.append(Group(self, attacker.name, attacking_army, city.position, return_destination.position, attacker.color, lambda s: False, self.reinforce(attacker, return_destination), self.canvas))
 
                 self.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': attacker.id, 'nation_b': attacker.id, 'city_a': city.name, 'city_b': return_destination.name, 'reason': 'reinforce', 'army_size': attacking_army.size()}, self.get_current_date()))
 

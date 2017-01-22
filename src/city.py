@@ -32,21 +32,21 @@ CARAVAN_RELIGION_CHANCE = 10
 
 TRADE_GOOD_PRICE = 25
 
-# hovel_effects = {'population_capacity': 1, 'tax_score': 0, 'cost': 5, 'size': 1}
-house_effects = {'population_capacity': 10, 'tax_score': 10, 'cost': 40, 'size': 5}
-farm_effects = {'population_capacity': 5, 'food': 60, 'cost': 200, 'size': 15}
-tavern_effects = {'population_capacity': 5, 'cost': 500, 'money_output': 1200, 'size': 50}
-fishery_effects = {'population_capacity': 2, 'food': 125, 'cost': 200, 'size': 40}
-ranch_effects = {'population_capacity': 2, 'food': 125, 'cost': 300, 'size': 50}
-hunting_lodge_effects = {'population_capacity': 2, 'food': 50, 'cost': 50, 'size': 20}
-leatherworker_effects = {'population_capacity': 2, 'money_output': 200, 'leather': 5, 'cost': 300, 'size': 15}
-weaver_effects = {'population_capacity': 2, 'money_output': 200, 'cloth': 5, 'cost': 300, 'size': 15}
-woodcutter_effects = {'population_capacity': 2, 'money_output': 150, 'wood': 5, 'cost': 300, 'size': 50}
-mine_effects = {'population_capacity': 8, 'money_output': 1000, 'metal': 3, 'cost': 1000, 'size': 90}
-library_effects = {'population': 4, 'research_rate': 2, 'cost': 1000, 'size': 90}
-lab_effects = {'population_capacity': 2, 'research_rate': 5, 'cost': 1000, 'size': 75}
-market_effects = {'tax_score': 100, 'money_output': 1000, 'cost': 1500, 'size': 60}
-caravansary_effects = {'population_capacity': 5, 'caravan_chance': 20, 'cost': 2000, 'size': 90}
+building_effects = {}
+building_effects['House'] = {'population_capacity': 10, 'tax_score': 10, 'cost': 40, 'size': 5}
+building_effects['Farm'] = {'population_capacity': 5, 'food': 60, 'cost': 200, 'size': 15}
+building_effects['Tavern'] = {'population_capacity': 5, 'cost': 500, 'money_output': 1200, 'size': 50}
+building_effects['Fishery'] = {'population_capacity': 2, 'food': 125, 'cost': 200, 'size': 40}
+building_effects['Ranch'] = {'population_capacity': 2, 'food': 125, 'cost': 300, 'size': 50}
+building_effects['Hunting Lodge'] = {'population_capacity': 2, 'food': 50, 'cost': 50, 'size': 20}
+building_effects['Leatherworker'] = {'population_capacity': 2, 'money_output': 200, 'leather': 5, 'cost': 300, 'size': 15}
+building_effects['Weaver'] = {'population_capacity': 2, 'money_output': 200, 'cloth': 5, 'cost': 300, 'size': 15}
+building_effects['Woodcutter'] = {'population_capacity': 2, 'money_output': 150, 'wood': 5, 'cost': 300, 'size': 50}
+building_effects['Mine'] = {'population_capacity': 8, 'money_output': 1000, 'metal': 3, 'cost': 1000, 'size': 90}
+building_effects['Library'] = {'population': 4, 'research_rate': 2, 'cost': 1000, 'size': 90}
+building_effects['Lab'] = {'population_capacity': 2, 'research_rate': 5, 'cost': 1000, 'size': 75}
+building_effects['Market'] = {'tax_score': 100, 'money_output': 1000, 'cost': 1500, 'size': 60}
+building_effects['Caravansary'] = {'population_capacity': 5, 'caravan_chance': 20, 'cost': 2000, 'size': 90}
 
 def base_resources():
     return {'leather': 0, 'wood': 0, 'cloth': 0, 'metal': 0, 'food': 0}
@@ -61,6 +61,15 @@ class Building:
 
         self.effects = effects
         self.number = number
+
+    def get_info(self):
+        res = {}
+
+        # We don't need to save effects because we have a whole list of those above
+        res['name'] = self.name
+        res['number'] = self.number
+
+        return res
 
     def produce(self):
         return
@@ -151,20 +160,20 @@ class Building:
 
 def base_buildings(city):
     buildings = []
-    buildings.append(Building('House', city, house_effects, 0))
-    buildings.append(Building('Farm', city, farm_effects, 0))
-    buildings.append(Building('Hunting Lodge', city, hunting_lodge_effects, 0))
-    buildings.append(Building('Fishery', city, fishery_effects, 0))
-    buildings.append(Building('Ranch', city, ranch_effects, 0))
-    buildings.append(Building('Tavern', city, tavern_effects, 0))
-    buildings.append(Building('Mine', city, mine_effects, 0))
-    buildings.append(Building('Leatherworker', city, leatherworker_effects, 0))
-    buildings.append(Building('Weaver', city, weaver_effects, 0))
-    buildings.append(Building('Woodcutter', city, woodcutter_effects, 0))
-    buildings.append(Building('Library', city, library_effects, 0))
-    buildings.append(Building('Lab', city, lab_effects, 0))
-    buildings.append(Building('Market', city, market_effects, 0))
-    buildings.append(Building('Caravansary', city, caravansary_effects,0 ))
+    buildings.append(Building('House', city, building_effects['House'], 0))
+    buildings.append(Building('Farm', city, building_effects['Farm'], 0))
+    buildings.append(Building('Hunting Lodge', city, building_effects['Hunting Lodge'], 0))
+    buildings.append(Building('Fishery', city, building_effects['Fishery'], 0))
+    buildings.append(Building('Ranch', city, building_effects['Ranch'], 0))
+    buildings.append(Building('Tavern', city, building_effects['Tavern'], 0))
+    buildings.append(Building('Mine', city, building_effects['Mine'], 0))
+    buildings.append(Building('Leatherworker', city, building_effects['Leatherworker'], 0))
+    buildings.append(Building('Weaver', city, building_effects['Weaver'], 0))
+    buildings.append(Building('Woodcutter', city, building_effects['Woodcutter'], 0))
+    buildings.append(Building('Library', city, building_effects['Library'], 0))
+    buildings.append(Building('Lab', city, building_effects['Lab'], 0))
+    buildings.append(Building('Market', city, building_effects['Market'], 0))
+    buildings.append(Building('Caravansary', city, building_effects['Caravansary'],0 ))
     return buildings
 
 class City:
@@ -329,7 +338,7 @@ class City:
 	religion = self.get_random_religion()
 
         dx, dy = trade_city.position #Send it to a random city
-	self.caravans.append(Group("caravan", (religion, resource_send), (cx, cy), (dx, dy), self.nation.color, lambda s: False, trade_city.receive_caravan(self), self.nation.parent.canvas))
+	self.caravans.append(Group(self.parent, "caravan", (religion, resource_send), (cx, cy), (dx, dy), self.nation.color, lambda s: False, trade_city.receive_caravan(self), self.nation.parent.canvas))
 
     def receive_caravan(self, city):
         def f(caravan):
@@ -445,7 +454,7 @@ class City:
         if self.army.size() > 0:
             if len(self.nation.cities) > 0: #this shouldn't happen because the army should fight to the death first
                 return_destination = random.choice(self.nation.cities)
-                self.nation.moving_armies.append(Group(self.nation.name, self.army, self.position, return_destination.position, self.nation.color, lambda s: False, self.parent.reinforce(self.nation, return_destination), self.parent.canvas))
+                self.nation.moving_armies.append(Group(self.parent, self.nation.name, self.army, self.position, return_destination.position, self.nation.color, lambda s: False, self.parent.reinforce(self.nation, return_destination), self.parent.canvas))
 
                 self.parent.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': self.nation.id, 'nation_b': self.nation.id, 'city_a': self.name, 'city_b': return_destination.name, 'reason': 'evacuate', 'army_size': self.army.size()}, self.parent.get_current_date()))
 
@@ -481,7 +490,7 @@ class City:
             send_army.add_to(send_army.name, self.army.number)
             self.army.number = 0
 
-            self.nation.moving_armies.append(Group(self.nation.name, send_army, self.position, attacking_city.position, self.nation.color, lambda s: False, self.parent.return_levies(self.nation, attacking_city), self.parent.canvas))
+            self.nation.moving_armies.append(Group(self.parent, self.nation.name, send_army, self.position, attacking_city.position, self.nation.color, lambda s: False, self.parent.return_levies(self.nation, attacking_city), self.parent.canvas))
 
             self.parent.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': self.nation.id, 'nation_b': self.nation.id, 'city_a': self.name, 'city_b': attacking_city.name, 'reason': 'return levies', 'army_size': send_army.size()}, self.parent.get_current_date()))
 

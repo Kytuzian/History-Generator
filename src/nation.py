@@ -16,6 +16,7 @@ import event_analysis
 import random
 
 from math import *
+import os
 
 from Tkinter import *
 
@@ -213,6 +214,69 @@ class Nation:
         self.listbox_display.bind('<Double-Button-1>', self.selected)
 
         self.displaying = ''
+
+    def save(self, path):
+        try:
+            os.makedirs(path + 'cities/')
+            os.makedirs(path + 'people/')
+        except:
+            pass
+
+        res = {}
+        res['id'] = self.id
+        res['age'] = self.age
+        res['money'] = self.money
+        res['morale'] = self.morale
+        res['tax_rate'] = self.tax_rate
+        res['elite'] = self.elite
+        res['army_spending'] = self.army_spending
+        res['at_war'] = map(lambda nation: nation.id, self.at_war)
+        res['trading'] = map(lambda nation: nation.id, self.trading)
+        res['allied'] = map(lambda nation: nation.id, self.allied)
+        res['relations'] = self.relations
+        res['name'] = self.name.get_info()
+
+        for person in self.notable_people:
+            person.save(path + 'people/')
+
+        self.culture = culture.Culture(self)
+
+        self.ruler = None
+
+        self.treaties = []
+
+        self.caravans = []
+
+        self.moving_armies = []
+
+        self.sidearm_list = random.sample(sidearm_list, 3)
+        self.basic_weapon_list = random.sample(basic_weapon_list, 2)
+        self.weapon_list = random.sample(weapon_list, 4)
+        self.basic_ranged_weapon_list = random.sample(basic_ranged_weapon_list, 1)
+        self.ranged_weapon_list = random.sample(ranged_weapon_list, 2)
+
+        self.armor_list = random.sample(armor_list, 2)
+        self.basic_armor_list = random.sample(basic_armor_list, 2)
+
+        self.army_structure = Troop.init_troop(self.language.make_word(self.language.name_length, True), self)
+
+        self.tech = base_tech_tree()
+        self.current_research = None
+
+        if len(self.cities) > 0:
+            place_name = self.cities[0].name
+        else:
+            place_name = self.language.make_name_word()
+
+        self.name = NationName(random.sample(MODIFIERS, max(0, random.randint(0, 8) - 5)), random.choice(GOVERNMENT_TYPES), [place_name])
+
+        #Otherwise we were initialized with some cities and such stuff
+        if len(self.cities) == 0:
+            for i in xrange(INIT_CITY_COUNT):
+                self.create_city(self.name.places[0])
+
+        with open(path + 'main.txt', 'w') as f:
+            f.write(str(res))
 
     def selected(self, event):
         if self.displaying == 'city': #We can't select any other options
@@ -703,7 +767,7 @@ class Nation:
                             city.army.add_to(city.army.name, conscripted)
 
                             action = self.parent.do_attack(self, city, enemy, attacking_city)
-                            self.moving_armies.append(Group(self.id, city.army, (fx, fy), (dx, dy), self.color, lambda s: False, action, self.parent.canvas))
+                            self.moving_armies.append(Group(self.parent, self.id, city.army, (fx, fy), (dx, dy), self.color, lambda s: False, action, self.parent.canvas))
 
                             self.parent.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': self.id, 'nation_b': enemy.id, 'city_a': city.name, 'city_b': attacking_city.name, 'reason': 'attack', 'army_size': city.army.size()}, self.parent.get_current_date()))
 

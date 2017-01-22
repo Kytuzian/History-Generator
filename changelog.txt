@@ -1,9 +1,11 @@
-2016-12-31
+2017-01-21
 Major changes:
 - Treaties can now end (so wars don't last forever, and neither do trade deals).
+- Added the ability to save.
 
 Minor changes:
 - Trade treaties now keep track of the money that each side has made.
+- The world now has a name.
 
 Bug fixes:
 - Fixed bug where treaties were not properly kept track of.

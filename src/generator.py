@@ -137,6 +137,16 @@ class Form:
             for text in text_choices:
                 self.forms[-1].append(self.separate_text(text))
 
+    def get_info(self):
+        res = {}
+        res['tags'] = self.tags
+        res['chosen_tags'] = self.chosen_tags
+        res['custom_tags'] = self.custom_tags
+        res['custom_weights'] = self.custom_weights
+        res['forms'] = self.forms
+
+        return res
+
     def copy(self):
         return Form(dict(self.tags), dict(self.chosen_tags), list(self.form))
 

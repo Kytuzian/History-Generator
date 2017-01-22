@@ -36,10 +36,21 @@ def temperature(elevation, height, world_height):
 
 class Terrain:
     def __init__(self, height, moisture):
+        self.name = ''
+        self.color = ''
         self.height = max(0, height)
         self.moisture = moisture
 
         self.setup()
+
+    def get_info(self):
+        res = {}
+        res['height'] = self.height
+        res['moisture'] = self.moisture
+        res['name'] = self.name
+        res['color'] = self.color
+
+        return res
 
     def setup(self):
         if self.height == 0:
@@ -97,6 +108,25 @@ class Cell:
         self.owner = owner
 
         self.make_id()
+
+    def get_info(self):
+        res = {}
+        res['x'] = self.x
+        res['y'] = self.y
+        res['type'] = self.type
+        res['building_capacity'] = self.building_capacity
+        res['high_temp_range'] = self.high_temp_range
+        res['low_temp_range'] = self.low_temp_range
+        res['temperature'] = self.temperature
+        res['temperature_multiplier'] = self.temperature_multiplier
+        res['terrain'] = self.terrain.get_info()
+
+        res['buildings'] = []
+
+        for building in self.buildings:
+            res['buildings'].append(building.get_info())
+
+        return res
 
     def get_population_capacity(self):
         return sum([building.get_population_capacity() for building in self.buildings])

@@ -115,7 +115,7 @@ class Treaty:
                 else:
                     end_chance = 0.5 - math.log(score+1) / TRADE_END_DIVISOR
 
-                print('trade', end_chance)
+                # print('trade', end_chance)
 
                 val = random.random()
                 if val < end_chance:
@@ -135,7 +135,7 @@ class Treaty:
                     nation_b_end_chance = 0.5 - math.log(b_score+1) / TRADE_END_DIVISOR
 
                 end_chance = nation_a_end_chance * nation_b_end_chance
-                print('war', end_chance)
+                # print('war', end_chance)
 
                 val = random.random()
                 if val < end_chance:

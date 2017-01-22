@@ -271,6 +271,30 @@ class Art:
         self.content_box.grid(row=i, column=0, sticky=N+W+E+S)
         i += 1
 
+    def get_info(self):
+        res = {}
+        res['creating_nation'] = self.creating_nation.id
+        res['nation'] = self.nation.id
+        res['creator'] = self.creator.name
+
+        res['style'] = self.style
+        res['category'] = self.category
+        res['sub_category'] = self.sub_category
+
+        res['name'] = self.name
+        res['subject'] = self.subject
+        res['content'] = self.content
+        res['material'] = self.material
+
+        if self.location != None:
+            res['location'] = self.location.name
+        else:
+            res['location'] = None
+
+        res['gen'] = self.gen.get_info()
+
+        return res
+
     def __repr__(self):
         if self.category == 'drawing':
             return '{} ({}) by {}. It is a {} {}, made with {}. {}'.format(self.name, self.subject, self.creator.name, self.sub_category, self.style, self.material, self.content)
