@@ -7,7 +7,7 @@ class Group:
     def __init__(self, parent, name, members, start_position, end_position, color, on_step, on_end, canvas):
         self.name = name
 
-        self.group_id = parent.get_next_group_id()
+        self.group_id = parent.get_next_id('group')
 
         self.members = members
 

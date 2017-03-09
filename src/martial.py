@@ -101,6 +101,38 @@ class Troop:
 
         return cls(name, strength, health, 0, ranged, speed, discipline, rank_size, ranks, weapons, armor, elite, self.tier + 1, [])
 
+    def get_info(self):
+        res = {}
+        res['name'] = self.name
+        res['strength'] = self.strength
+        res['health'] = self.health
+        res['number'] = self.number
+        res['speed'] = self.speed
+        res['ranged'] = self.ranged
+        res['discipline'] = self.discipline
+        res['rank_size'] = self.rank_size
+        res['ranks'] = self.ranks
+        res['weapons'] = map(lambda eqp: eqp.get_info(), self.weapons)
+        res['armor'] = self.armor.get_info()
+        res['elite'] = self.elite
+        res['tier'] = self.tier
+
+        res['upgrades'] = []
+        for upgrade in self.upgrades:
+            res['upgrades'].append(upgrade.get_info())
+
+        res['arms_history'] = []
+        for weapons, armor in self.arms_history:
+            res['arms_history'].append((map(lambda eqp: eqp.get_info(), weapons), armor.get_info()))
+
+        res['stats_history'] = self.stats_history
+
+        return res
+
+    def save(self, path):
+        with open(path + 'army_structure.txt', 'w') as f:
+            f.write(str(self.get_info()))
+
     def handle_battle_end(self, stats):
         self.stats_history[-1] = utility.zip_dict_with(lambda a,b: a + b, self.stats_history[-1], stats)
 

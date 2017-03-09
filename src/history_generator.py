@@ -54,8 +54,7 @@ class Main:
 
         self.after_id = 0
 
-        self.nation_id = 0
-        self.group_id = 0
+        self.ids = {}
 
         self.battles = []
 
@@ -186,15 +185,13 @@ class Main:
         self.religions.append(new_religion)
         new_religion.adherents[city.name] = 1 # Hooray! We have an adherent
 
-    def get_next_group_id(self):
-        self.group_id += 1
+    def get_next_id(self, id_type):
+        if id_type in self.ids:
+            self.ids[id_type] += 1
+        else:
+            self.ids[id_type] = 0
 
-        return 'group {}'.format(self.group_id)
-
-    def get_next_id(self):
-        self.nation_id += 1
-
-        return 'nation {}'.format(self.nation_id)
+        return '{} {}'.format(id_type, self.ids[id_type])
 
     def create_gui(self):
         self.parent.columnconfigure(3, weight=1)
@@ -246,10 +243,8 @@ class Main:
         self.advance_time_button = Button(self.parent, text='Advance By:', command=self.run_to)
         self.advance_time_button.grid(row=8, column=0, sticky=W)
 
-        self.years_input = StringVar()
-        self.years_box = Entry(self.parent, textvariable=self.years_input)
+        self.years_box = Entry(self.parent)
         self.years_box.grid(row=9, column=0, sticky=W)
-        self.years_input.set('0')
 
         self.nation_selector = Listbox(self.parent)
         self.nation_selector.grid(row=10, column=0, columnspan=3, sticky=W+E)
@@ -343,12 +338,11 @@ class Main:
             self.cells[cell_x][cell_y].show_information_gui()
 
     def run_to(self):
-        self.advancing = True
-
         try:
-            advance_amount = int(self.years_input.get())
+            advance_amount = int(self.years_box.get())
 
             if advance_amount > 0:
+                self.advancing = True
                 self.end_year = self.year + advance_amount
 
                 self.after_id = self.parent.after(self.delay.get(), self.main_loop)
@@ -357,7 +351,7 @@ class Main:
                 tkMessageBox.showerror('Negative Years', 'Cannot advance a negative or zero amount of time.')
         except ValueError:
             self.end_year = self.year
-            tkMessageBox.showerror('Invalid Year', '{} is not a valid integer'.format(self.years_input.get()))
+            tkMessageBox.showerror('Invalid Year', '"{}" is not a valid integer'.format(self.years_box.get()))
             return
 
     def toggle_run_until_battle(self):
@@ -383,7 +377,6 @@ class Main:
             os.makedirs('saves/{}/'.format(self.world_name))
             os.makedirs('saves/{}/nations/'.format(self.world_name))
             os.makedirs('saves/{}/religions/'.format(self.world_name))
-            os.makedirs('saves/{}/battles/'.format(self.world_name))
             os.makedirs('saves/{}/battle_history/'.format(self.world_name))
             os.makedirs('saves/{}/treaties/'.format(self.world_name))
         except:
@@ -398,6 +391,7 @@ class Main:
         res['width'] = utility.S_WIDTH // utility.CELL_SIZE
         res['height'] = utility.S_HEIGHT // utility.CELL_SIZE
         res['old_nations'] = self.old_nations
+        res['ids'] = self.ids
 
         with open('saves/{}/main.txt'.format(self.world_name), 'w') as f:
             f.write(str(res))
@@ -419,6 +413,12 @@ class Main:
 
             os.makedirs('saves/{}/nations/{}/'.format(self.world_name, nation.id))
             nation.save('saves/{}/nations/{}/'.format(self.world_name, nation.id))
+
+        for battle in self.battle_history:
+            battle.save('saves/{}/battle_history/'.format(self.world_name))
+
+        for treaty in self.treaties:
+            treaty.save('saves/{}/treaties/'.format(self.world_name))
 
         print('')
 
@@ -445,7 +445,6 @@ class Main:
                 for nation in self.nations:
                     nation.grow_population()
                     nation.handle_diplomacy()
-                    nation.move_armies(utility.flatten([nation.moving_armies for check_nation in self.nations if nation != check_nation]))
 
                     if len(nation.cities) == 0 and len(nation.moving_armies) == 0 and len(self.battles) == 0:
                         self.remove_nation(nation)
@@ -455,6 +454,8 @@ class Main:
                 # about a city's production in the last month, so that we can calculate prices
                 for nation in self.nations:
                     nation.group_step()
+                    
+                self.start_army_move()
 
                 #We can only have one nation per color
                 if random.randint(0, len(self.nations)**3 + 5) == 0 and len(self.nations) < len(NATION_COLORS):
@@ -480,6 +481,12 @@ class Main:
                     self.after_id = self.parent.after(self.delay.get(), self.main_loop)
         except KeyboardInterrupt:
             self.write_out_events('event_log.txt')
+            
+    # Set everything up (like paths and such) so that the armies can later move
+    def start_army_move(self):
+nation.move_armies(utility.flatten([nation.moving_armies for check_nation in self.nations if nation != check_nation]))
+
+    def do_army_move(self):
 
     def get_current_date(self):
         return (self.year, self.month, self.day)
@@ -688,7 +695,7 @@ class Main:
             print(battle.a_army.size(), battle.b_army.size())
             print('----------------------')
 
-        self.battle_history.append(diplomacy.BattleHistory(attack_city, winner, a, b, self.get_current_date(), battle.a_stats, battle.b_stats))
+        self.battle_history.append(diplomacy.BattleHistory(self, attack_city, winner, a, b, self.get_current_date(), battle.a_stats, battle.b_stats))
 
         self.after_id = self.parent.after(self.delay.get(), self.main_loop)
 
@@ -697,6 +704,42 @@ class Main:
             return reduce(lambda a,b: a + b, map(lambda a: a.cities if a != ignore_nation else [], self.nations))
         else:
             return []
+
+class StartUp:
+    def __init__(self):
+        self.parent = Tk()
+        self.parent.title('History Generator')
+        self.parent.geometry("350x200+0+0")
+
+        self.main_label = Label(self.parent, text='History Generator:')
+        self.main_label.config(font=(None, 28))
+        self.main_label.pack()
+
+        self.start_new_button = Button(self.parent, text='Start New', command=self.start_new)
+        self.start_new_button.pack()
+
+        self.load_var = StringVar()
+        self.load_entry = Entry(self.parent, textvariable=self.load_var)
+        self.load_entry.pack()
+        self.load_button = Button(self.parent, text='Load', command=self.load)
+        self.load_button.pack()
+
+        self.archaeology_button = Button(self.parent, text='Archaeology', command=self.archaeology)
+        self.archaeology_button.pack()
+
+        self.exit_button = Button(self.parent, text='Exit', command=self.parent.destroy)
+        self.exit_button.pack()
+
+        self.parent.mainloop()
+
+    def start_new(self):
+        Main().start()
+
+    def load(self):
+        Main.load(self.load_var.get())
+
+    def archaeology(self):
+        return
 
 if len(sys.argv) > 1:
     for arg in sys.argv[1:]:
@@ -709,6 +752,7 @@ if len(sys.argv) > 1:
         elif params[0] == "size":
             utility.CELL_SIZE = int(params[1])
 
-Main().start()
+StartUp()
+# Main().start()
 #cProfile.run('Main().start()', sort='tottime')
-raw_input()
+# raw_input()

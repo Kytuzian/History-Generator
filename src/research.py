@@ -26,6 +26,24 @@ class Weapon:
 
         self.stats = utility.base_weapon_stats()
 
+    def get_info(self):
+        res = {}
+
+        res['name'] = self.name
+        res['cost'] = self.cost
+        res['range'] = self.range
+        res['material_multiplier'] = self.material_multiplier
+        res['attack'] = self.attack
+        res['defense'] = self.defense
+        res['attack_skill_multiplier'] = self.attack_skill_multiplier
+        res['defense_skill_multiplier'] = self.defense_skill_multiplier
+        res['reload_time'] = self.reload_time
+        res['ammunition'] = self.ammunition
+        res['projectile_speed'] = self.projectile_speed
+        res['stats'] = self.stats
+
+        return res
+
     def get_attack(self, material):
         effective_attack = self.attack
 
@@ -61,6 +79,17 @@ class Armor:
 
         self.defense = defense
         self.defense_skill_multiplier = defense_skill_multiplier
+
+    def get_info(self):
+        res = {}
+
+        res['name'] = self.name
+        res['cost'] = self.cost
+        res['material_multiplier'] = self.material_multiplier
+        res['defense'] = self.defense
+        res['defense_skill_multiplier'] = self.defense_skill_multiplier
+
+        return res
 
     def get_defense(self, material):
         effective_defense = self.defense
@@ -225,6 +254,23 @@ class Tech:
 
         self.get_best_in_categories()
 
+    def get_info(self):
+        res = {}
+        res['name'] = self.name
+        res['category'] = self.category
+        res['current_research_points'] = self.current_research_points
+        res['research_points'] = self.research_points
+
+        res['effect_strength'] = self.effect_strength
+        res['next_techs'] = map(lambda tech: tech.get_info(), self.next_techs)
+        # We don't need to save best_techs, we can just recalculate them when we load.
+
+        return res
+
+    def save(self, path):
+        with open(path + 'tech.txt', 'w') as f:
+            f.write(str(self.get_info()))
+
     def is_unlocked(self):
         return self.current_research_points >= self.research_points
 
@@ -238,6 +284,7 @@ class Tech:
                     return res
 
             return None
+
     def has_tech(self, tech_name):
         if self.name == tech_name:
             return self.is_unlocked()

@@ -105,7 +105,7 @@ class Nation:
 
         self.money = 0
 
-        self.id = parent.get_next_id()
+        self.id = parent.get_next_id('nation')
 
         self.notable_people = []
         self.culture = culture.Culture(self)
@@ -235,45 +235,45 @@ class Nation:
         res['allied'] = map(lambda nation: nation.id, self.allied)
         res['relations'] = self.relations
         res['name'] = self.name.get_info()
+        res['ruler'] = self.ruler.name
+        res['treaties'] = []
+
+        # The actual treaty data in stored in the treaties folder, so we only need the ids here
+        for treaty in self.treaties:
+            res['treaties'].append(treaty.treaty_id)
+
+        res['caravans'] = []
+        for caravan in self.caravans:
+            res['caravans'].append(caravan.get_info())
+
+        res['moving_armies'] = []
+        for moving_army in self.moving_armies:
+            res['moving_armies'].append(moving_army.get_info())
+
+        res['sidearm_list'] = map(lambda eqp: eqp.get_info(), self.sidearm_list)
+        res['basic_weapon_list'] = map(lambda eqp: eqp.get_info(), self.basic_weapon_list)
+        res['weapon_list'] = map(lambda eqp: eqp.get_info(), self.weapon_list)
+        res['basic_ranged_weapon_list'] = map(lambda eqp: eqp.get_info(), self.basic_ranged_weapon_list)
+        res['ranged_weapon_list'] = map(lambda eqp: eqp.get_info(), self.ranged_weapon_list)
+
+        res['armor_list'] = map(lambda eqp: eqp.get_info(), self.armor_list)
+        res['basic_armor_list'] = map(lambda eqp: eqp.get_info(), self.basic_armor_list)
+
+        if self.current_research != None:
+            res['current_research'] = self.current_research.name
+        else:
+            res['current_research'] = None
+
+        self.army_structure.save(path)
+        self.tech.save(path)
 
         for person in self.notable_people:
             person.save(path + 'people/')
 
-        self.culture = culture.Culture(self)
+        for city in self.cities:
+            city.save(path + 'cities/')
 
-        self.ruler = None
-
-        self.treaties = []
-
-        self.caravans = []
-
-        self.moving_armies = []
-
-        self.sidearm_list = random.sample(sidearm_list, 3)
-        self.basic_weapon_list = random.sample(basic_weapon_list, 2)
-        self.weapon_list = random.sample(weapon_list, 4)
-        self.basic_ranged_weapon_list = random.sample(basic_ranged_weapon_list, 1)
-        self.ranged_weapon_list = random.sample(ranged_weapon_list, 2)
-
-        self.armor_list = random.sample(armor_list, 2)
-        self.basic_armor_list = random.sample(basic_armor_list, 2)
-
-        self.army_structure = Troop.init_troop(self.language.make_word(self.language.name_length, True), self)
-
-        self.tech = base_tech_tree()
-        self.current_research = None
-
-        if len(self.cities) > 0:
-            place_name = self.cities[0].name
-        else:
-            place_name = self.language.make_name_word()
-
-        self.name = NationName(random.sample(MODIFIERS, max(0, random.randint(0, 8) - 5)), random.choice(GOVERNMENT_TYPES), [place_name])
-
-        #Otherwise we were initialized with some cities and such stuff
-        if len(self.cities) == 0:
-            for i in xrange(INIT_CITY_COUNT):
-                self.create_city(self.name.places[0])
+        self.culture.save(path)
 
         with open(path + 'main.txt', 'w') as f:
             f.write(str(res))

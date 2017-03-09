@@ -89,10 +89,9 @@ class Period:
         res['art_create_chance'] = self.art_create_chance
         res['role'] = self.role
         res['name'] = self.name
-
-        res['art'] = []
-        for art in self.art:
-            res['art'].append(art.get_info())
+        # We store the actual art data in the cultures for the various nations
+        # We'll retrieve it when we load the game.
+        res['art'] = map(lambda art: art.name, self.art)
 
         return res
 

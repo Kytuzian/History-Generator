@@ -23,6 +23,8 @@ class Treaty:
     def __init__(self, parent, starting_date, nation_a, nation_b, treaty_type, signing_city=None, treaty_details={}):
         self.parent = parent
 
+        self.treaty_id = self.parent.get_next_id('treaty')
+
         self.starting_date = starting_date
         self.ending_date = None
 
@@ -79,6 +81,30 @@ class Treaty:
                 self.treaty_details[nation_b.id]['cities_lost'] = 0
 
         self.is_current = True
+
+    def save(self, path):
+        res = {}
+        res['id'] = self.treaty_id
+
+        res['starting_date'] = self.starting_date
+        res['ending_date'] = self.ending_date
+        res['nation_a'] = self.nation_a.id
+        res['nation_b'] = self.nation_b.id
+        res['names'] = self.names
+        res['last_requested_date'] = self.last_requested_date
+        res['status_changed'] = self.status_changed
+
+        if self.signing_city != None:
+            res['signing_city'] = self.signing_city.name
+        else:
+            res['signing_city'] = self.signing_city
+
+        res['treaty_type'] = self.treaty_type
+        res['treaty_details'] = self.treaty_details
+        res['is_current'] = self.is_current
+
+        with open(path + self.treaty_id + '.txt', 'w') as f:
+            f.write(str(res))
 
     def __getitem__(self, key):
         return self.treaty_details[key]
@@ -213,7 +239,10 @@ class Treaty:
         return self.names[requesting_nation.id][-1]
 
 class BattleHistory:
-    def __init__(self, location, winner, nation_a, nation_b, date, a_stats, b_stats):
+    def __init__(self, parent, location, winner, nation_a, nation_b, date, a_stats, b_stats):
+        self.parent = parent
+        self.battle_id = self.parent.get_next_id('battle')
+
         self.location = location
 
         self.winner = winner
@@ -225,3 +254,20 @@ class BattleHistory:
 
         self.a_stats = a_stats
         self.b_stats = b_stats
+
+    def save(self, path):
+        res = {}
+        res['id'] = self.battle_id
+        res['location'] = self.location.name
+        res['winner'] = self.winner.id
+
+        res['nation_a'] = self.nation_a.id
+        res['nation_b'] = self.nation_b.id
+
+        res['date'] = self.date
+
+        res['a_stats'] = self.a_stats
+        res['b_stats'] = self.b_stats
+
+        with open(path + self.battle_id + '.txt', 'w') as f:
+            f.write(str(res))

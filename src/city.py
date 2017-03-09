@@ -216,6 +216,26 @@ class City:
 
         self.caravans = []
 
+    def save(self, path):
+        res = {}
+        res['name'] = self.name
+        res['population'] = self.population
+        res['nation'] = self.nation.id
+        res['age'] = self.age
+        res['morale'] = self.morale
+        res['cells'] = map(lambda cell: cell.id, self.cells)
+        res['army'] = self.army.get_info()
+        res['resources'] = self.resources
+        res['resource_prices'] = self.resource_prices
+        res['consumed_resources'] = self.consumed_resources
+        res['produced_resources'] = self.produced_resources
+        res['is_capital'] = self.is_capital
+        res['merges'] = self.merges
+        res['caravans'] = map(lambda caravan: caravan.get_info(), self.caravans)
+
+        with open(path + self.name + '.txt', 'w') as f:
+            f.write(str(res))
+
     #Creates a new window showing basic information about itself
     def show_information_gui(self):
         self.gui_window = Tk()

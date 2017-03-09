@@ -168,6 +168,15 @@ class Culture:
 
         self.update_art_display()
 
+    def save(self, path):
+        res = {}
+        res['art'] = []
+        for art in self.art:
+            res['art'].append(art.get_info())
+
+        with open(path + 'culture.txt', 'w') as f:
+            f.write(str(res))
+
     def select_art(self, event):
         selected_item = self.art_display.get(self.art_display.curselection())
         for art in self.art:

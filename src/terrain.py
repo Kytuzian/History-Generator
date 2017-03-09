@@ -91,6 +91,8 @@ class Cell:
         self.x = x
         self.y = y
 
+        self.cell_id = self.parent.get_next_id('cell')
+
         self.id = -1
 
         self.building_capacity = 100
@@ -113,6 +115,7 @@ class Cell:
         res = {}
         res['x'] = self.x
         res['y'] = self.y
+        res['id'] = self.cell_id
         res['type'] = self.type
         res['building_capacity'] = self.building_capacity
         res['high_temp_range'] = self.high_temp_range
