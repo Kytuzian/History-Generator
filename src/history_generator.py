@@ -53,6 +53,7 @@ class Main:
         self.canvas.grid(row=0, column=3, rowspan=12)#, sticky=W + E + N + S)
 
         self.after_id = 0
+        self.advance_num = 0
 
         self.ids = {}
 
@@ -224,7 +225,7 @@ class Main:
         self.zoom_scale.bind('<ButtonRelease-1>', self.zoom)
         self.zoom_scale.set(utility.CELL_SIZE)
 
-        self.advance_button = Button(self.parent, text="Advance Step", command=self.main_loop)
+        self.advance_button = Button(self.parent, text="Advance Step", command=self.advance_once)
         self.advance_button.grid(row=5, sticky=W)
 
         self.run_continuously_checkbutton = Checkbutton(self.parent, text='Run continuously', command=self.toggle_continuous)
@@ -252,6 +253,10 @@ class Main:
         self.nation_selector.bind('<Double-Button-1>', self.select_nation)
 
         self.refresh_nation_selector()
+
+    def advance_once(self):
+        self.advance_num = 1
+        self.main_loop()
 
     def open_religion_history_window(self):
         self.religion_history_window = event_analysis.HistoryWindow('Religion History', ['ReligionGodAdded', 'ReligionGodRemoved', 'ReligionDomainAdded', 'ReligionDomainRemoved'])
@@ -454,8 +459,6 @@ class Main:
                 # about a city's production in the last month, so that we can calculate prices
                 for nation in self.nations:
                     nation.group_step()
-                    
-                self.start_army_move()
 
                 #We can only have one nation per color
                 if random.randint(0, len(self.nations)**3 + 5) == 0 and len(self.nations) < len(NATION_COLORS):
@@ -467,9 +470,42 @@ class Main:
 
                 self.month += 1
 
-            if len(self.battles) > 0:
-                self.run_until_battle = False
+                self.start_army_move()
+        except KeyboardInterrupt:
+            self.write_out_events('event_log.txt')
 
+    # Set everything up (like paths and such) so that the armies can later move
+    def start_army_move(self):
+        for nation in self.nations:
+            nation.start_army_moves()
+
+        self.do_army_move()
+
+    def do_army_move(self):
+        done = True
+
+        for nation in self.nations:
+            if not nation.do_army_moves():
+                done = False
+
+        if not done:
+            self.after_id = self.parent.after(self.delay.get() / 2, self.do_army_move)
+        else: # If we're done, clean up
+            self.end_army_move()
+
+    def end_army_move(self):
+        for nation in self.nations:
+            nation.end_army_moves()
+
+        if len(self.battles) > 0:
+            self.run_until_battle = False
+
+        if self.advance_num > 0:
+            self.advance_num -= 1
+
+            if self.advance_num > 0:
+                self.after_id = self.parent.after(self.delay.get(), self.main_loop)
+        else:
             if self.is_continuous or self.run_until_battle:
                 self.after_id = self.parent.after(self.delay.get(), self.main_loop)
             elif self.advancing:
@@ -479,14 +515,6 @@ class Main:
                     #We finish advancing next step
                     self.advancing = False
                     self.after_id = self.parent.after(self.delay.get(), self.main_loop)
-        except KeyboardInterrupt:
-            self.write_out_events('event_log.txt')
-            
-    # Set everything up (like paths and such) so that the armies can later move
-    def start_army_move(self):
-nation.move_armies(utility.flatten([nation.moving_armies for check_nation in self.nations if nation != check_nation]))
-
-    def do_army_move(self):
 
     def get_current_date(self):
         return (self.year, self.month, self.day)
@@ -553,7 +581,7 @@ nation.move_armies(utility.flatten([nation.moving_armies for check_nation in sel
             else: #if a third party is involved, let's just return back home
                 if len(sender.cities) > 0:
                     return_destination = random.choice(sender.cities)
-                    sender.moving_armies.append(Group(self, sender.name, reinforcing.members, reinforce_city.position, return_destination.position, sender.color, lambda s: False, self.reinforce(sender, return_destination), self.canvas))
+                    sender.moving_armies.append(Group(self, sender.name, reinforcing.members, reinforce_city.position, return_destination.position, sender.color, lambda s: False, self.reinforce(sender, return_destination), self.canvas, is_army=True))
 
                     self.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': sender.id, 'nation_b': sender.id, 'city_a': reinforce_city.name, 'city_b': return_destination.name, 'reason': 'reinforce', 'army_size': reinforcing.members.size()}, self.get_current_date()))
 
@@ -571,7 +599,7 @@ nation.move_armies(utility.flatten([nation.moving_armies for check_nation in sel
                 self.attack(sender, reinforcing.members, reinforce_city.nation, None, reinforce_city)
             else: #if a third party is involved, let's just return back home
                 return_destination = random.choice(sender.cities)
-                sender.moving_armies.append(Group(self, sender.name, reinforcing.members, reinforce_city.position, return_destination.position, sender.color, lambda s: False, self.reinforce(sender, return_destination), self.canvas))
+                sender.moving_armies.append(Group(self, sender.name, reinforcing.members, reinforce_city.position, return_destination.position, sender.color, lambda s: False, self.reinforce(sender, return_destination), self.canvas, is_army=True))
 
                 self.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': sender.id, 'nation_b': sender.id, 'city_a': reinforce_city.name, 'city_b': return_destination.name, 'reason': 'reinforce', 'army_size': reinforcing.members.size()}, self.get_current_date()))
 
@@ -623,7 +651,7 @@ nation.move_armies(utility.flatten([nation.moving_armies for check_nation in sel
         else: #If somebody other than us or the person we intended to attack owns this city, just go back to reinforce one of our cities.
             if len(attacker.cities) > 0: #It really ought to be, but it could happen that we lose all our cities before we can go back.
                 return_destination = random.choice(attacker.cities)
-                attacker.moving_armies.append(Group(self, attacker.name, attacking_army, city.position, return_destination.position, attacker.color, lambda s: False, self.reinforce(attacker, return_destination), self.canvas))
+                attacker.moving_armies.append(Group(self, attacker.name, attacking_army, city.position, return_destination.position, attacker.color, lambda s: False, self.reinforce(attacker, return_destination), self.canvas, is_army=True))
 
                 self.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': attacker.id, 'nation_b': attacker.id, 'city_a': city.name, 'city_b': return_destination.name, 'reason': 'reinforce', 'army_size': attacking_army.size()}, self.get_current_date()))
 

@@ -474,7 +474,7 @@ class City:
         if self.army.size() > 0:
             if len(self.nation.cities) > 0: #this shouldn't happen because the army should fight to the death first
                 return_destination = random.choice(self.nation.cities)
-                self.nation.moving_armies.append(Group(self.parent, self.nation.name, self.army, self.position, return_destination.position, self.nation.color, lambda s: False, self.parent.reinforce(self.nation, return_destination), self.parent.canvas))
+                self.nation.moving_armies.append(Group(self.parent, self.nation.name, self.army, self.position, return_destination.position, self.nation.color, lambda s: False, self.parent.reinforce(self.nation, return_destination), self.parent.canvas, is_army=True))
 
                 self.parent.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': self.nation.id, 'nation_b': self.nation.id, 'city_a': self.name, 'city_b': return_destination.name, 'reason': 'evacuate', 'army_size': self.army.size()}, self.parent.get_current_date()))
 
@@ -510,7 +510,7 @@ class City:
             send_army.add_to(send_army.name, self.army.number)
             self.army.number = 0
 
-            self.nation.moving_armies.append(Group(self.parent, self.nation.name, send_army, self.position, attacking_city.position, self.nation.color, lambda s: False, self.parent.return_levies(self.nation, attacking_city), self.parent.canvas))
+            self.nation.moving_armies.append(Group(self.parent, self.nation.name, send_army, self.position, attacking_city.position, self.nation.color, lambda s: False, self.parent.return_levies(self.nation, attacking_city), self.parent.canvas, is_army=True))
 
             self.parent.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': self.nation.id, 'nation_b': self.nation.id, 'city_a': self.name, 'city_b': attacking_city.name, 'reason': 'return levies', 'army_size': send_army.size()}, self.parent.get_current_date()))
 

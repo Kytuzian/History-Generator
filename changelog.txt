@@ -1,4 +1,4 @@
-2017-01-30
+2017-03-10
 Major changes:
 - Treaties can now end (so wars don't last forever, and neither do trade deals).
 - Added the ability to save, but no loading yet (soon) so its kind of useless, but eh. Soon.
@@ -12,6 +12,7 @@ Bug fixes:
 - Fixed bug where treaties were not properly kept track of.
 - Fixed bug where caravans influenced a cities religion before they actually got there.
 - Fixed a bug where the advance by feature didn't register the number entered.
+- Fixed a bug where the advance once button advanced repeatedly.
 
 2016-12-30
 Major changes:

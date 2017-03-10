@@ -344,6 +344,22 @@ class Nation:
 
         self.displaying = 'city'
 
+    def start_army_moves(self):
+        for army in self.moving_armies:
+            army.start_move()
+
+    def do_army_moves(self):
+        done = True
+        for army in self.moving_armies:
+            if not army.do_move():
+                done = False
+
+        return done
+
+    def end_army_moves(self):
+        for army in self.moving_armies:
+            army.end_move()
+
     def total_army(self):
         for i in self.cities:
             if not i.army:
@@ -412,6 +428,9 @@ class Nation:
         for city in self.cities:
             for caravan in city.caravans:
                 caravan.step(None)
+
+        for army in self.moving_armies:
+            army.step(None) # run the calculations but don't actually move yet
 
     def handle_people_monthly(self):
         if self.ruler == None or not self.ruler.alive:
@@ -767,7 +786,7 @@ class Nation:
                             city.army.add_to(city.army.name, conscripted)
 
                             action = self.parent.do_attack(self, city, enemy, attacking_city)
-                            self.moving_armies.append(Group(self.parent, self.id, city.army, (fx, fy), (dx, dy), self.color, lambda s: False, action, self.parent.canvas))
+                            self.moving_armies.append(Group(self.parent, self.id, city.army, (fx, fy), (dx, dy), self.color, lambda s: False, action, self.parent.canvas, is_army=True))
 
                             self.parent.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': self.id, 'nation_b': enemy.id, 'city_a': city.name, 'city_b': attacking_city.name, 'reason': 'attack', 'army_size': city.army.size()}, self.parent.get_current_date()))
 
@@ -804,15 +823,24 @@ class Nation:
                 if nation in self.trading:
                     trade_treaty = self.get_treaty_with(nation, 'trade')
 
+
+
                     if trade_treaty != None:
+
                         self.relations[nation.id] += trade_treaty[self.id]['caravans_received'] / trade_treaty.length(self.parent.get_current_date())
+
                 if nation in self.at_war:
                     war_treaty = self.get_treaty_with(nation, 'war')
 
+
                     if war_treaty != None:
+
                         # This way, if we lose more troops than them, our relations will go down even more, even though they go down by default just for being at war
+
                         relative_troops_lost = min(-1, war_treaty[nation.id]['troops_lost'] - war_treaty[self.id]['troops_lost'])
+
                         self.relations[nation.id] += relative_troops_lost / war_treaty.length(self.parent.get_current_date())
+
 
                 max_relation_change = int(log(self.get_tolerance() + nation.get_tolerance() + 1))
 

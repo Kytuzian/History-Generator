@@ -110,6 +110,10 @@ class Cell:
         self.owner = owner
 
         self.make_id()
+        
+    # Determines whether it is legal for a group to move onto this square
+    def can_move(self, group):
+        return True # For now it is always legal
 
     def get_info(self):
         res = {}
