@@ -213,16 +213,16 @@ class Main:
 
         self.canvas.grid(row=0, column=3, rowspan=14, sticky=W + E + N + S)
 
-        self.continuous = gui.Button(self.parent, text="Run until battle", command=self.toggle_run_until_battle)
+        self.continuous = gui.Button(self.parent, text="[R]un until battle", command=self.toggle_run_until_battle)
         self.continuous.grid(row=0, sticky=W)
 
         self.minimize_battles = gui.Checkbutton(self.parent, text='Minimize battle windows', command=self.toggle_minimize_battles)
         self.minimize_battles.grid(row=0, column=1, columnspan=2, sticky=W)
 
-        self.religion_history_button = gui.Button(self.parent, text="Religion history", command=self.open_religion_history_window)
+        self.religion_history_button = gui.Button(self.parent, text="R[e]ligion history", command=self.open_religion_history_window)
         self.religion_history_button.grid(row=2, column=0, sticky=W)
 
-        self.world_history_button = gui.Button(self.parent, text="World history", command=self.open_world_history_window)
+        self.world_history_button = gui.Button(self.parent, text="[W]orld history", command=self.open_world_history_window)
         self.world_history_button.grid(row=2, column=1, sticky=W)
 
         self.zoom_label = gui.Label(self.parent, text='Zoom (Cell Size):')
@@ -240,7 +240,7 @@ class Main:
         self.zoom_scale.bind('<ButtonRelease-1>', self.zoom)
         self.zoom_scale.set(utility.CELL_SIZE)
 
-        self.advance_button = gui.Button(self.parent, text="Advance Step", command=self.advance_once)
+        self.advance_button = gui.Button(self.parent, text="[A]dvance Step", command=self.advance_once)
         self.advance_button.grid(row=5, sticky=W)
 
         self.run_continuously_checkbutton = gui.Checkbutton(self.parent, text='Run continuously', command=self.toggle_continuous)
@@ -249,14 +249,14 @@ class Main:
         self.simulation_speed_label = gui.Label(self.parent, text='Simulation Speed (ms):')
         self.simulation_speed_label.grid(row=6, column=0, sticky=W)
 
-        self.save_button = gui.Button(self.parent, text='Save', command=self.save)
+        self.save_button = gui.Button(self.parent, text='[S]ave', command=self.save)
         self.save_button.grid(row=6, column=1, sticky=W)
 
         self.delay = gui.Scale(self.parent, from_=10, to_=1000, orient=HORIZONTAL)
         self.delay.grid(row=7, sticky=W)
         self.delay.set(DEFAULT_SIMULATION_SPEED)
 
-        self.advance_time_button = gui.Button(self.parent, text='Advance By:', command=self.run_to)
+        self.advance_time_button = gui.Button(self.parent, text='Advance [B]y:', command=self.run_to)
         self.advance_time_button.grid(row=8, column=0, sticky=W)
 
         self.years_box = Entry(self.parent)
@@ -272,6 +272,20 @@ class Main:
 
         self.event_log_box = Listbox(self.parent, height=10)
         self.event_log_box.grid(row=15, column=3, stick=W+E)
+
+        # Set up hotkeys
+        self.parent.bind('R', lambda _: self.toggle_run_until_battle())
+        self.parent.bind('r', lambda _: self.toggle_run_until_battle())
+        self.parent.bind('E', lambda _: self.open_religion_history_window())
+        self.parent.bind('e', lambda _: self.open_religion_history_window())
+        self.parent.bind('W', lambda _: self.open_world_history_window())
+        self.parent.bind('w', lambda _: self.open_world_history_window())
+        self.parent.bind('A', lambda _: self.advance_once())
+        self.parent.bind('a', lambda _: self.advance_once())
+        self.parent.bind('S', lambda _: self.save())
+        self.parent.bind('s', lambda _: self.save())
+        self.parent.bind('B', lambda _: self.run_to())
+        self.parent.bind('b', lambda _: self.run_to())
 
         self.refresh_nation_selector()
 
@@ -772,14 +786,24 @@ class StartUp:
         self.load_var = StringVar()
         self.load_entry = Entry(self.parent, textvariable=self.load_var)
         self.load_entry.pack()
-        self.load_button = gui.Button(self.parent, text='Load', command=self.load)
+        self.load_button = gui.Button(self.parent, text='[L]oad', command=self.load)
         self.load_button.pack()
 
-        self.archaeology_button = gui.Button(self.parent, text='Archaeology', command=self.archaeology)
+        self.archaeology_button = gui.Button(self.parent, text='[A]rchaeology', command=self.archaeology)
         self.archaeology_button.pack()
 
-        self.exit_button = gui.Button(self.parent, text='Exit', command=self.parent.destroy)
+        self.exit_button = gui.Button(self.parent, text='[E]xit', command=self.parent.destroy)
         self.exit_button.pack()
+
+        # Set up the hot keys
+        self.parent.bind('S', lambda _: self.start_new())
+        self.parent.bind('s', lambda _: self.start_new())
+        self.parent.bind('L', lambda _: self.load())
+        self.parent.bind('l', lambda _: self.load())
+        self.parent.bind('A', lambda _: self.archaeology())
+        self.parent.bind('a', lambda _: self.archaeology())
+        self.parent.bind('E', lambda _: self.parent.destroy())
+        self.parent.bind('e', lambda _: self.parent.destroy())
 
         self.parent.mainloop()
 
