@@ -3,7 +3,7 @@ import utility
 GROUP_SPEED_MULTIPLIER = 10
 ARMY_SPEED_MULTIPLIER = 2 # Armies can move twice as far as other groups.
 
-# A group some band of people, who go to some place, and do something when they get there
+# A group of some band of people, who go to some place, and do something when they get there
 class Group:
     def __init__(self, parent, name, members, start_position, end_position, color, on_step, on_end, canvas, is_army=False):
         self.name = name

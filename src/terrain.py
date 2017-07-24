@@ -383,20 +383,8 @@ class Weather:
         self.setup(parent)
 
     def setup(self, parent):
-        if parent != None:
-            parent.write_to_gen_log('Calculating wind vectors.')
-        else:
-            print('Calculating wind vectors.')
         self.wind_vectors = self.calculate_wind_vectors()
-        if parent != None:
-            parent.write_to_gen_log('Setting up clouds.')
-        else:
-            print('Setting up clouds.')
         self.setup_clouds()
-        if parent != None:
-            parent.write_to_gen_log('Filtering for water cells for evaporation.')
-        else:
-            print('Filtering for water cells for evaporation.')
         self.water_cells = self.get_water_cells()
 
     def get_water_cells(self):

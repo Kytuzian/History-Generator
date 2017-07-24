@@ -1,3 +1,15 @@
+2017-07-24
+Major changes:
+
+Minor changes:
+- You can now use the arrow keys to move around the main view (mostly because
+scrolling wasn't working one computer).
+- The events will now show at the bottom of the screen instead of the
+terminal.
+- Made resizing better.
+
+Bug fixes:
+
 2017-03-10
 Major changes:
 - Treaties can now end (so wars don't last forever, and neither do trade deals).
@@ -7,6 +19,7 @@ Minor changes:
 - Trade treaties now keep track of the money that each side has made.
 - The world now has a name.
 - Added a start up menu.
+- Armies move in an easier to see way.
 
 Bug fixes:
 - Fixed bug where treaties were not properly kept track of.

@@ -1,0 +1,4 @@
+CREATE TABLE treaties
+(
+    id INTEGER PRIMARY KEY
+)

@@ -216,6 +216,10 @@ class Nation:
         self.displaying = ''
 
     def save(self, path):
+        self.parent.db.save_nation(self)
+
+        
+
         try:
             os.makedirs(path + 'cities/')
             os.makedirs(path + 'people/')

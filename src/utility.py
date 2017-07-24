@@ -1,6 +1,8 @@
 import random
 import time
 
+import tkFont
+
 from math import *
 
 import sys
@@ -15,6 +17,13 @@ DISPLAY_WIDTH = 1280
 DISPLAY_HEIGHT = 720
 
 CELL_SIZE = 6 #cells are squares, this is the side length
+
+SCROLL_SPEED = CELL_SIZE
+
+def listbox_capacity(listbox):
+    font = tkFont.Font(listbox, listbox['font'])
+
+    return listbox.winfo_height() / font.metrics()['ascent']
 
 def count(l):
     res = {}

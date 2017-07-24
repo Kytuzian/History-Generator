@@ -24,6 +24,7 @@ import diplomacy
 import events
 import event_analysis
 import terrain
+import db
 
 import noise
 
@@ -35,22 +36,15 @@ class Main:
     def __init__(self):
         self.events = []
 
-        self.year = 0
+        self.year = 1
         self.month = 1
-        self.day = 0
+        self.day = 1
         self.hour = 0
         self.minute = 0
 
         self.parent = Tk()
         self.parent.title('Year: 0')
         self.parent.geometry("{}x{}+0+0".format(utility.DISPLAY_WIDTH, utility.DISPLAY_HEIGHT))
-
-        self.canvas = Canvas(self.parent, bd=1, relief=RIDGE, width=utility.DISPLAY_WIDTH, height=utility.DISPLAY_HEIGHT - 4, scrollregion=(0, 0, utility.S_WIDTH, utility.S_HEIGHT))
-        self.canvas.bind('<Button-1>', self.get_cell_information)
-        self.canvas.bind('<MouseWheel>', self.on_vertical)
-        self.canvas.bind('<Shift-MouseWheel>', self.on_horizontal)
-
-        self.canvas.grid(row=0, column=3, rowspan=12)#, sticky=W + E + N + S)
 
         self.after_id = 0
         self.advance_num = 0
@@ -77,21 +71,31 @@ class Main:
 
         self.world_name = ''
 
+        self.db = None # The DB connection. Will be created after setup so we can give it a real name.
+
         self.setup()
 
     def clear_gen_log(self):
         with open('gen_log.txt', 'w') as f:
             f.write('')
 
+    def get_real_date(self):
+        return '{}-{}-{}'.format(self.year, self.month, self.day)
+
     def write_to_gen_log(self, message):
         # Don't write blank messages to the log
         if message == '':
             return
+        
+        if self.db != None:
+            self.db.gen_log_insert(self.get_real_date(), message)
 
-        with open('gen_log.txt', 'a') as f:
-            f.write(message + '\n')
+        # print(message)
 
-        print(message)
+        self.event_log_box.insert(END, message)
+
+        if self.event_log_box.size() > utility.listbox_capacity(self.event_log_box):
+            self.event_log_box.delete(0)
 
     def zoom(self, size):
         utility.CELL_SIZE = int(self.zoom_scale.get())
@@ -104,16 +108,6 @@ class Main:
 
         self.canvas.config(scrollregion=(0, 0, utility.S_WIDTH, utility.S_HEIGHT))
 
-        if utility.S_WIDTH < utility.DISPLAY_WIDTH:
-            self.canvas.config(width=utility.S_WIDTH)
-        else:
-            self.canvas.config(width=utility.DISPLAY_WIDTH)
-
-        if utility.S_HEIGHT < utility.DISPLAY_HEIGHT:
-            self.canvas.config(height=utility.S_HEIGHT)
-        else:
-            self.canvas.config(height=utility.DISPLAY_HEIGHT)
-
         for x in self.cells:
             for y in x:
                 self.canvas.delete(y.id)
@@ -123,13 +117,19 @@ class Main:
             for city in nation.cities:
                 city.remake_display_name()
 
+    def scroll_canvas(self, x, y):
+        self.canvas.xview_scroll(x, 'units')
+        self.canvas.yview_scroll(y, 'units')
+
     def on_vertical(self, event):
-        self.canvas.yview_scroll(-event.delta, 'units')
+        self.scroll_canvas(0, -event.delta)
 
     def on_horizontal(self, event):
-        self.canvas.xview_scroll(-event.delta, 'units')
+        self.scroll_canvas(-event.delta, 0)
 
     def setup(self):
+        self.create_gui()
+
         # Clear out the event log
         with open('event_log.txt', 'w') as f:
             f.write('')
@@ -173,7 +173,8 @@ class Main:
         lang = random.choice(self.nations).language
         self.world_name = lang.translateTo('world')
 
-        self.create_gui()
+        self.db = db.DB(self.world_name)
+        self.db.setup()
 
         events.main = self
 
@@ -196,7 +197,19 @@ class Main:
 
     def create_gui(self):
         self.parent.columnconfigure(3, weight=1)
-        self.parent.rowconfigure(11, weight=1)
+        self.parent.rowconfigure(13, weight=1)
+        
+        self.parent.bind('<MouseWheel>', self.on_vertical)
+        self.parent.bind('<Shift-MouseWheel>', self.on_horizontal)
+        self.parent.bind('<Left>', lambda _: self.scroll_canvas(-utility.SCROLL_SPEED, 0))
+        self.parent.bind('<Right>', lambda _: self.scroll_canvas(utility.SCROLL_SPEED, 0))
+        self.parent.bind('<Up>', lambda _: self.scroll_canvas(0, -utility.SCROLL_SPEED))
+        self.parent.bind('<Down>', lambda _: self.scroll_canvas(0, utility.SCROLL_SPEED))
+        
+        self.canvas = Canvas(self.parent, bd=1, relief=RIDGE, scrollregion=(0, 0, utility.S_WIDTH, utility.S_HEIGHT))
+        self.canvas.bind('<Button-1>', self.get_cell_information)
+
+        self.canvas.grid(row=0, column=3, rowspan=14, sticky=W + E + N + S)
 
         self.continuous = Button(self.parent, text="Run until battle", command=self.toggle_run_until_battle)
         self.continuous.grid(row=0, sticky=W)
@@ -251,6 +264,9 @@ class Main:
         self.nation_selector.grid(row=10, column=0, columnspan=3, sticky=W+E)
 
         self.nation_selector.bind('<Double-Button-1>', self.select_nation)
+
+        self.event_log_box = Listbox(self.parent, height=10)
+        self.event_log_box.grid(row=15, column=3, stick=W+E)
 
         self.refresh_nation_selector()
 
