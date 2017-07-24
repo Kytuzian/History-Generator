@@ -217,14 +217,8 @@ class Nation:
 
     def save(self, path):
         self.parent.db.save_nation(self)
-
-        
-
-        try:
-            os.makedirs(path + 'cities/')
-            os.makedirs(path + 'people/')
-        except:
-            pass
+        self.parent.db.save_name(self.name)
+        return
 
         res = {}
         res['id'] = self.id

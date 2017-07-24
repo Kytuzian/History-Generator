@@ -7,6 +7,5 @@ CREATE TABLE nations
     tax_rate REAL,
     elite INTEGER,
     army_spending REAL,
-    name TEXT,
     ruler TEXT
 )

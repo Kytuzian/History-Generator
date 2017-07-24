@@ -25,6 +25,7 @@ import events
 import event_analysis
 import terrain
 import db
+import gui
 
 import noise
 
@@ -45,6 +46,7 @@ class Main:
         self.parent = Tk()
         self.parent.title('Year: 0')
         self.parent.geometry("{}x{}+0+0".format(utility.DISPLAY_WIDTH, utility.DISPLAY_HEIGHT))
+        self.parent.config(background='white')
 
         self.after_id = 0
         self.advance_num = 0
@@ -211,57 +213,60 @@ class Main:
 
         self.canvas.grid(row=0, column=3, rowspan=14, sticky=W + E + N + S)
 
-        self.continuous = Button(self.parent, text="Run until battle", command=self.toggle_run_until_battle)
+        self.continuous = gui.Button(self.parent, text="Run until battle", command=self.toggle_run_until_battle)
         self.continuous.grid(row=0, sticky=W)
 
-        self.minimize_battles = Checkbutton(self.parent, text='Minimize battle windows', command=self.toggle_minimize_battles)
+        self.minimize_battles = gui.Checkbutton(self.parent, text='Minimize battle windows', command=self.toggle_minimize_battles)
         self.minimize_battles.grid(row=0, column=1, columnspan=2, sticky=W)
 
-        self.religion_history_button = Button(self.parent, text="Religion history", command=self.open_religion_history_window)
+        self.religion_history_button = gui.Button(self.parent, text="Religion history", command=self.open_religion_history_window)
         self.religion_history_button.grid(row=2, column=0, sticky=W)
 
-        self.world_history_button = Button(self.parent, text="World history", command=self.open_world_history_window)
+        self.world_history_button = gui.Button(self.parent, text="World history", command=self.open_world_history_window)
         self.world_history_button.grid(row=2, column=1, sticky=W)
 
-        self.zoom_label = Label(self.parent, text='Zoom (Cell Size):')
+        self.zoom_label = gui.Label(self.parent, text='Zoom (Cell Size):')
         self.zoom_label.grid(row=3, column=0, sticky=W)
 
-        self.graphical_battles_checkbox = Checkbutton(self.parent, text='Graphical Battles', command=self.toggle_graphical_battles)
+        self.graphical_battles_checkbox = gui.Checkbutton(self.parent, text='Graphical Battles', command=self.toggle_graphical_battles)
         self.graphical_battles_checkbox.grid(row=3, column=1, sticky=W)
         self.graphical_battles_checkbox.select() # Graphical battles are the default
 
-        self.fast_battles_checkbox = Checkbutton(self.parent, text='Fast Battles', command=self.toggle_fast_battles)
+        self.fast_battles_checkbox = gui.Checkbutton(self.parent, text='Fast Battles', command=self.toggle_fast_battles)
         self.fast_battles_checkbox.grid(row=4,column=1, sticky=W)
 
-        self.zoom_scale = Scale(self.parent, from_=1, to_=20, orient=HORIZONTAL)
+        self.zoom_scale = gui.Scale(self.parent, from_=1, to_=20, orient=HORIZONTAL)
         self.zoom_scale.grid(row=4, column=0, sticky=W)
         self.zoom_scale.bind('<ButtonRelease-1>', self.zoom)
         self.zoom_scale.set(utility.CELL_SIZE)
 
-        self.advance_button = Button(self.parent, text="Advance Step", command=self.advance_once)
+        self.advance_button = gui.Button(self.parent, text="Advance Step", command=self.advance_once)
         self.advance_button.grid(row=5, sticky=W)
 
-        self.run_continuously_checkbutton = Checkbutton(self.parent, text='Run continuously', command=self.toggle_continuous)
+        self.run_continuously_checkbutton = gui.Checkbutton(self.parent, text='Run continuously', command=self.toggle_continuous)
         self.run_continuously_checkbutton.grid(row=5, column=1, sticky=W)
 
-        self.simulation_speed_label = Label(self.parent, text='Simulation Speed (ms):')
+        self.simulation_speed_label = gui.Label(self.parent, text='Simulation Speed (ms):')
         self.simulation_speed_label.grid(row=6, column=0, sticky=W)
 
-        self.save_button = Button(self.parent, text='Save', command=self.save)
+        self.save_button = gui.Button(self.parent, text='Save', command=self.save)
         self.save_button.grid(row=6, column=1, sticky=W)
 
-        self.delay = Scale(self.parent, from_=10, to_=1000, orient=HORIZONTAL)
+        self.delay = gui.Scale(self.parent, from_=10, to_=1000, orient=HORIZONTAL)
         self.delay.grid(row=7, sticky=W)
         self.delay.set(DEFAULT_SIMULATION_SPEED)
 
-        self.advance_time_button = Button(self.parent, text='Advance By:', command=self.run_to)
+        self.advance_time_button = gui.Button(self.parent, text='Advance By:', command=self.run_to)
         self.advance_time_button.grid(row=8, column=0, sticky=W)
 
         self.years_box = Entry(self.parent)
         self.years_box.grid(row=9, column=0, sticky=W)
 
+        self.nation_selector_label = gui.Label(self.parent, text='Nations:')
+        self.nation_selector_label.grid(row=10, column=0, sticky=W)
+
         self.nation_selector = Listbox(self.parent)
-        self.nation_selector.grid(row=10, column=0, columnspan=3, sticky=W+E)
+        self.nation_selector.grid(row=11, column=0, columnspan=3, sticky=W+E)
 
         self.nation_selector.bind('<Double-Button-1>', self.select_nation)
 
@@ -753,25 +758,27 @@ class StartUp:
     def __init__(self):
         self.parent = Tk()
         self.parent.title('History Generator')
-        self.parent.geometry("350x200+0+0")
+        self.parent.geometry("450x260+0+0")
 
-        self.main_label = Label(self.parent, text='History Generator:')
-        self.main_label.config(font=(None, 28))
+        self.parent.config(background='white')
+
+        self.main_label = gui.Label(self.parent, text='History Generator:')
+        self.main_label.config(font=(None, 32), fg='#f4ce42')
         self.main_label.pack()
 
-        self.start_new_button = Button(self.parent, text='Start New', command=self.start_new)
+        self.start_new_button = gui.Button(self.parent, text='[S]tart New', command=self.start_new)
         self.start_new_button.pack()
 
         self.load_var = StringVar()
         self.load_entry = Entry(self.parent, textvariable=self.load_var)
         self.load_entry.pack()
-        self.load_button = Button(self.parent, text='Load', command=self.load)
+        self.load_button = gui.Button(self.parent, text='Load', command=self.load)
         self.load_button.pack()
 
-        self.archaeology_button = Button(self.parent, text='Archaeology', command=self.archaeology)
+        self.archaeology_button = gui.Button(self.parent, text='Archaeology', command=self.archaeology)
         self.archaeology_button.pack()
 
-        self.exit_button = Button(self.parent, text='Exit', command=self.parent.destroy)
+        self.exit_button = gui.Button(self.parent, text='Exit', command=self.parent.destroy)
         self.exit_button.pack()
 
         self.parent.mainloop()
