@@ -18,3 +18,4 @@ class Checkbutton(Tkinter.Checkbutton):
 class Scale(Tkinter.Scale):
     def __init__(self, parent, **kwargs):
         Tkinter.Scale.__init__(self, parent, background='white', **kwargs)
+

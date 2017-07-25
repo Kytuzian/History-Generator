@@ -210,6 +210,7 @@ class Main:
         
         self.canvas = Canvas(self.parent, bd=1, relief=RIDGE, scrollregion=(0, 0, utility.S_WIDTH, utility.S_HEIGHT))
         self.canvas.bind('<Button-1>', self.get_cell_information)
+        self.canvas.config(background='white')
 
         self.canvas.grid(row=0, column=3, rowspan=14, sticky=W + E + N + S)
 

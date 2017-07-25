@@ -9,6 +9,7 @@ from research import *
 from people import *
 
 import culture
+import gui
 
 import events
 import event_analysis
@@ -160,22 +161,23 @@ class Nation:
         self.gui_window = Tk()
         self.gui_window.title(self.name.short_name())
         self.gui_window.geometry("500x400+0+0")
+        self.gui_window.config(background='white')
 
         self.gui_window.columnconfigure(5, weight=1)
 
-        self.full_name = Label(self.gui_window, text='Full name: {}'.format(self.name))
+        self.full_name = gui.Label(self.gui_window, text='Full name: {}'.format(self.name))
         self.full_name.grid(row=0, columnspan=6, sticky=W)
 
-        self.age_label = Label(self.gui_window, text='Age: {}'.format(self.age))
+        self.age_label = gui.Label(self.gui_window, text='Age: {}'.format(self.age))
         self.age_label.grid(row=1, sticky=W)
 
-        self.ruler_label = Label(self.gui_window, text='Ruler: {}'.format(self.ruler))
+        self.ruler_label = gui.Label(self.gui_window, text='Ruler: {}'.format(self.ruler))
         self.ruler_label.grid(row=2, columnspan=6, sticky=W)
 
-        self.money_label = Label(self.gui_window, text='Money: {}'.format(int(self.money)))
+        self.money_label = gui.Label(self.gui_window, text='Money: {}'.format(int(self.money)))
         self.money_label.grid(row=3, columnspan=2, sticky=W)
 
-        self.morale_label = Label(self.gui_window, text='Morale: {}'.format(self.morale))
+        self.morale_label = gui.Label(self.gui_window, text='Morale: {}'.format(self.morale))
         self.morale_label.grid(row=4, columnspan=2, sticky=W)
 
         # self.religion_label = Label(self.gui_window, text='Religion: ')
@@ -184,28 +186,28 @@ class Nation:
         # self.religion_button = Button(self.gui_window, text=self.religion.name, command=self.religion.show_information_gui)
         # self.religion_button.grid(row=5, column=1, sticky=W)
 
-        self.army_structure_button = Button(self.gui_window, text='Army', command=self.army_structure.show_information_gui)
+        self.army_structure_button = gui.Button(self.gui_window, text='Army', command=self.army_structure.show_information_gui)
         self.army_structure_button.grid(row=6, column=0, sticky=W)
 
-        self.culture_button = Button(self.gui_window, text='Culture', command=self.culture.show_information_gui)
+        self.culture_button = gui.Button(self.gui_window, text='Culture', command=self.culture.show_information_gui)
         self.culture_button.grid(row=6, column=1, sticky=W)
 
-        self.display_selector_label = Label(self.gui_window, text='Display:')
+        self.display_selector_label = gui.Label(self.gui_window, text='Display:')
         self.display_selector_label.grid(row=7, sticky=W)
 
-        self.event_display_button = Button(self.gui_window, text='Events', command=self.display_events)
+        self.event_display_button = gui.Button(self.gui_window, text='Events', command=self.display_events)
         self.event_display_button.grid(row=8, column=0, sticky=W)
 
-        self.people_display_button = Button(self.gui_window, text='People', command=self.display_people)
+        self.people_display_button = gui.Button(self.gui_window, text='People', command=self.display_people)
         self.people_display_button.grid(row=8, column=1, sticky=W)
 
-        self.city_display_button = Button(self.gui_window, text='Cities', command=self.display_cities)
+        self.city_display_button = gui.Button(self.gui_window, text='Cities', command=self.display_cities)
         self.city_display_button.grid(row=8, column=2, sticky=W)
 
-        self.trade_display_button = Button(self.gui_window, text='Trade', command=self.display_trade)
+        self.trade_display_button = gui.Button(self.gui_window, text='Trade', command=self.display_trade)
         self.trade_display_button.grid(row=8, column=3, sticky=W)
 
-        self.war_display_button = Button(self.gui_window, text='War', command=self.display_war)
+        self.war_display_button = gui.Button(self.gui_window, text='War', command=self.display_war)
         self.war_display_button.grid(row=8, column=4, sticky=W)
 
         self.listbox_display = Listbox(self.gui_window)

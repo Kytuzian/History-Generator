@@ -8,6 +8,7 @@ from Tkinter import *
 import utility
 import noise
 import city
+import gui
 
 MAX_HEIGHT = 4000
 
@@ -262,27 +263,28 @@ class Cell:
         self.gui_window = Tk()
         self.gui_window.title('Cell Information: ({}, {})'.format(self.x, self.y))
         self.gui_window.geometry("400x300+0+0")
+        self.gui_window.config(background='white')
 
-        self.type_label = Label(self.gui_window, text='Type: {}'.format(self.type))
+        self.type_label = gui.Label(self.gui_window, text='Type: {}'.format(self.type))
         self.type_label.grid(row=0, sticky=W)
 
-        self.owning_city_label = Label(self.gui_window, text='Owning city: ')
+        self.owning_city_label = gui.Label(self.gui_window, text='Owning city: ')
         self.owning_city_label.grid(row=1, sticky=W)
 
-        self.owning_nation_label = Label(self.gui_window, text='Owning nation: ')
+        self.owning_nation_label = gui.Label(self.gui_window, text='Owning nation: ')
         self.owning_nation_label.grid(row=2, sticky=W)
 
         if self.owner != None:
-            self.owning_city_button = Button(self.gui_window, text=self.owner.name, command=self.owner.show_information_gui)
-            self.owning_nation_button = Button(self.gui_window, text=self.owner.nation.name, command=self.owner.nation.show_information_gui)
+            self.owning_city_button = gui.Button(self.gui_window, text=self.owner.name, command=self.owner.show_information_gui)
+            self.owning_nation_button = gui.Button(self.gui_window, text=self.owner.nation.name, command=self.owner.nation.show_information_gui)
         else:
-            self.owning_city_button = Button(self.gui_window, text='None')
-            self.owning_nation_button = Button(self.gui_window, text='None')
+            self.owning_city_button = gui.Button(self.gui_window, text='None')
+            self.owning_nation_button = gui.Button(self.gui_window, text='None')
 
         self.owning_city_button.grid(row=1, column=1, sticky=W)
         self.owning_nation_button.grid(row=2, column=1, sticky=W)
 
-        self.building_capacity_label = Label(self.gui_window, text='{} of {} filled.'.format(self.get_total_buiding_size(), self.building_capacity))
+        self.building_capacity_label = gui.Label(self.gui_window, text='{} of {} filled.'.format(self.get_total_buiding_size(), self.building_capacity))
         self.building_capacity_label.grid(row=3)
 
         self.buildings_display = Listbox(self.gui_window)

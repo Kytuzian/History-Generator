@@ -6,7 +6,7 @@ import math
 
 import utility
 
-impotr gui
+import gui
 from nation import *
 from language import *
 from battle import TROOP_RADIUS
@@ -191,6 +191,7 @@ class Troop:
         self.arrangement.grid(row=4, sticky=W)
 
         self.arrangement_canvas = Canvas(self.gui_window, width = (self.rank_size + 1) * (TROOP_RADIUS + 1), height= (self.ranks + 1) * (TROOP_RADIUS + 1))
+        self.arrangement_canvas.config(background='white')
         self.arrangement_canvas.grid(row=5, sticky=W)
 
         for x in xrange(1, self.rank_size + 1):
@@ -215,6 +216,8 @@ class Troop:
         self.stats_label.grid(row=8, column=0, sticky=W)
 
         self.stats_choice = OptionMenu(self.gui_window, self.history_choice, *map(self.stringify_history, range(len(self.arms_history))))
+        self.stats_choice.config(background='white')
+        self.stats_choice['menu'].config(background='white')
         self.stats_choice.grid(row=8, column=1, sticky=W)
 
         self.stats_select = gui.Button(self.gui_window, text='Select', command=self.select_history)
