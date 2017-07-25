@@ -5,6 +5,7 @@ from language import *
 from group import *
 from religion import *
 from research import *
+import gui
 
 import events
 import event_analysis
@@ -241,11 +242,12 @@ class City:
         self.gui_window = Tk()
         self.gui_window.title(self.name)
         self.gui_window.geometry("600x375+0+0")
+        self.gui_window.config(background='white')
 
         self.gui_window.columnconfigure(2, weight=1)
 
         x, y = self.get_average_position()
-        self.position_label = Label(self.gui_window, text='Position: ({}, {})'.format(x, y))
+        self.position_label = gui.Label(self.gui_window, text='Position: ({}, {})'.format(x, y))
         self.position_label.grid(row=0, sticky=W)
 
         self.resources_display = Listbox(self.gui_window)
@@ -256,16 +258,16 @@ class City:
         self.resources_display.config(height=len(self.resources))
         self.resources_display.grid(row=0, column=1, rowspan=4, columnspan=3, sticky=N+S+W+E)
 
-        self.size_label = Label(self.gui_window, text='Size: {}'.format(self.total_cell_count()))
+        self.size_label = gui.Label(self.gui_window, text='Size: {}'.format(self.total_cell_count()))
         self.size_label.grid(row=1, sticky=W)
 
-        self.population_label = Label(self.gui_window, text='Population: {} of {}'.format(self.population, self.calculate_population_capacity()))
+        self.population_label = gui.Label(self.gui_window, text='Population: {} of {}'.format(self.population, self.calculate_population_capacity()))
         self.population_label.grid(row=3, sticky=W)
 
-        self.army_label = Label(self.gui_window, text='Army: {}'.format(self.army.size()))
+        self.army_label = gui.Label(self.gui_window, text='Army: {}'.format(self.army.size()))
         self.army_label.grid(row=4, sticky=W)
 
-        self.morale_label = Label(self.gui_window, text='Morale: {}'.format(self.morale))
+        self.morale_label = gui.Label(self.gui_window, text='Morale: {}'.format(self.morale))
         self.morale_label.grid(row=5, sticky=W)
 
         self.buildings_display = Listbox(self.gui_window)
@@ -284,10 +286,10 @@ class City:
 
         self.buildings_display.grid(row=4, column=1, columnspan=3, rowspan=2, sticky=W+E)
 
-        self.nation_label = Label(self.gui_window, text='Nation: ')
+        self.nation_label = gui.Label(self.gui_window, text='Nation: ')
         self.nation_label.grid(row=6, sticky=W)
 
-        self.nation_button = Button(self.gui_window, text=self.nation.name, command=self.nation.show_information_gui)
+        self.nation_button = gui.Button(self.gui_window, text=self.nation.name, command=self.nation.show_information_gui)
         self.nation_button.grid(row=6, column=1, sticky=W)
 
         all_events = event_analysis.find_city_mentions([self.name] + self.merges)

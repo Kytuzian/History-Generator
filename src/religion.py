@@ -5,6 +5,7 @@ from Tkinter import *
 
 import events
 import event_analysis
+import gui
 import people
 
 #In percent
@@ -208,10 +209,11 @@ class Religion:
         self.gui_window = Tk()
         self.gui_window.title(self.name)
         self.gui_window.geometry("500x400+0+0")
+        self.gui_window.config(background='white')
 
         self.gui_window.columnconfigure(1, weight=1)
 
-        self.tolerance_label = Label(self.gui_window, text='Tolerance: {}'.format(self.get_tolerance()))
+        self.tolerance_label = gui.Label(self.gui_window, text='Tolerance: {}'.format(self.get_tolerance()))
         self.tolerance_label.grid(row=0, sticky=W)
 
         self.gods_display = Listbox(self.gui_window)
@@ -230,3 +232,4 @@ class Religion:
             self.event_log_display.insert(END, event.text_version())
 
         self.event_log_display.grid(row=2, columnspan=2, sticky=W + E)
+

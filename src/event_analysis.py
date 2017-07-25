@@ -1,6 +1,7 @@
 import re
 
 import events
+import gui
 
 from Tkinter import *
 
@@ -72,6 +73,7 @@ class HistoryWindow:
         self.gui_window = Tk()
         self.gui_window.title(self.title)
         self.gui_window.geometry("800x400+0+0")
+        self.gui_window.config(background='white')
 
         self.gui_window.columnconfigure(1, weight=1)
         self.gui_window.rowconfigure(3, weight=1)

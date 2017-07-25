@@ -6,6 +6,7 @@ import math
 
 import utility
 
+impotr gui
 from nation import *
 from language import *
 from battle import TROOP_RADIUS
@@ -172,20 +173,21 @@ class Troop:
         self.gui_window = Tk()
         self.gui_window.title(self.name)
         self.gui_window.geometry("300x325+0+0")
+        self.gui_window.config(background='white')
 
-        self.ranged_label = Label(self.gui_window, text='Is ranged: {}'.format(self.ranged))
+        self.ranged_label = gui.Label(self.gui_window, text='Is ranged: {}'.format(self.ranged))
         self.ranged_label.grid(row=0, sticky=W)
 
-        self.strength_label = Label(self.gui_window, text='Strength: {}'.format(self.strength))
+        self.strength_label = gui.Label(self.gui_window, text='Strength: {}'.format(self.strength))
         self.strength_label.grid(row=1, sticky=W)
 
-        self.health_label = Label(self.gui_window, text='Health: {}'.format(self.health))
+        self.health_label = gui.Label(self.gui_window, text='Health: {}'.format(self.health))
         self.health_label.grid(row=2, sticky=W)
 
-        self.discipline_label = Label(self.gui_window, text='Discipline: {}'.format(self.discipline))
+        self.discipline_label = gui.Label(self.gui_window, text='Discipline: {}'.format(self.discipline))
         self.discipline_label.grid(row=3, sticky=W)
 
-        self.arrangement = Label(self.gui_window, text='Arrangement: {}x{}'.format(self.rank_size, self.ranks))
+        self.arrangement = gui.Label(self.gui_window, text='Arrangement: {}x{}'.format(self.rank_size, self.ranks))
         self.arrangement.grid(row=4, sticky=W)
 
         self.arrangement_canvas = Canvas(self.gui_window, width = (self.rank_size + 1) * (TROOP_RADIUS + 1), height= (self.ranks + 1) * (TROOP_RADIUS + 1))
@@ -196,12 +198,12 @@ class Troop:
                 base_x, base_y = x * (TROOP_RADIUS + 1), y * (TROOP_RADIUS + 1)
                 self.arrangement_canvas.create_oval(base_x, base_y, base_x + TROOP_RADIUS, base_y + TROOP_RADIUS)
 
-        self.upgrade_label = Label(self.gui_window, text='Upgrades:')
+        self.upgrade_label = gui.Label(self.gui_window, text='Upgrades:')
         self.upgrade_label.grid(row=6, sticky=W)
 
         self.upgrade_buttons = []
         for (i, upgrade) in enumerate(self.upgrades):
-            new_upgrade_button = Button(self.gui_window, text=upgrade.name, command=upgrade.show_information_gui)
+            new_upgrade_button = gui.Button(self.gui_window, text=upgrade.name, command=upgrade.show_information_gui)
             new_upgrade_button.grid(row=7, column=i, sticky=W)
 
             self.upgrade_buttons.append(new_upgrade_button)
@@ -209,13 +211,13 @@ class Troop:
         self.history_choice = StringVar()
         self.history_choice.set(self.stringify_history(0))
 
-        self.stats_label = Label(self.gui_window, text='Stats:')
+        self.stats_label = gui.Label(self.gui_window, text='Stats:')
         self.stats_label.grid(row=8, column=0, sticky=W)
 
         self.stats_choice = OptionMenu(self.gui_window, self.history_choice, *map(self.stringify_history, range(len(self.arms_history))))
         self.stats_choice.grid(row=8, column=1, sticky=W)
 
-        self.stats_select = Button(self.gui_window, text='Select', command=self.select_history)
+        self.stats_select = gui.Button(self.gui_window, text='Select', command=self.select_history)
         self.stats_select.grid(row=8, column=2, sticky=W)
 
         self.stats_display = Listbox(self.gui_window)

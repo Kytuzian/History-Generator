@@ -3,6 +3,7 @@ from Tkinter import *
 import random
 import re
 
+import gui
 import research
 import utility
 
@@ -149,17 +150,18 @@ class Culture:
         self.gui_window = Tk()
         self.gui_window.title('Culture of {}'.format(self.nation.name))
         self.gui_window.geometry("700x750+0+0")
+        self.gui_window.config(background='white')
 
         self.gui_window.columnconfigure(2, weight=1)
         self.gui_window.rowconfigure(2, weight=1)
 
-        self.nation_label = Label(self.gui_window, text='Nation:')
+        self.nation_label = gui.Label(self.gui_window, text='Nation:')
         self.nation_label.grid(row=0, column=0, sticky=W)
 
-        self.nation_button = Button(self.gui_window, text=self.nation.name.short_name(), command=self.nation.show_information_gui)
+        self.nation_button = gui.Button(self.gui_window, text=self.nation.name.short_name(), command=self.nation.show_information_gui)
         self.nation_button.grid(row=0, column=1, sticky=W)
 
-        self.art_label = Label(self.gui_window, text='Art:')
+        self.art_label = gui.Label(self.gui_window, text='Art:')
         self.art_label.grid(row=1, column=0, sticky=W)
 
         self.art_display = Listbox(self.gui_window)
@@ -222,21 +224,22 @@ class Art:
         self.gui_window = Tk()
         self.gui_window.title('{}'.format(self.name))
         self.gui_window.geometry('700x500+0+0')
+        self.gui_window.config(background='white')
 
         i = 0
-        self.title_label = Label(self.gui_window, text='Translated Title: {}'.format(self.subject))
+        self.title_label = gui.Label(self.gui_window, text='Translated Title: {}'.format(self.subject))
         self.title_label.grid(row=i, column=0, sticky=W)
         i += 1
 
-        self.creator_label = Label(self.gui_window, text='Creator: {}'.format(self.creator.name))
+        self.creator_label = gui.Label(self.gui_window, text='Creator: {}'.format(self.creator.name))
         self.creator_label.grid(row=i, column=0, sticky=W)
         i += 1
 
-        self.creating_nation_label = Label(self.gui_window, text='Creating Nation: {}'.format(self.creating_nation.name))
+        self.creating_nation_label = gui.Label(self.gui_window, text='Creating Nation: {}'.format(self.creating_nation.name))
         self.creating_nation_label.grid(row=i, column=0, sticky=W)
         i += 1
 
-        self.current_nation_label = Label(self.gui_window, text='Current Nation: {}'.format(self.nation.name))
+        self.current_nation_label = gui.Label(self.gui_window, text='Current Nation: {}'.format(self.nation.name))
         self.current_nation_label.grid(row=i, column=0, sticky=W)
         i += 1
 
@@ -245,32 +248,32 @@ class Art:
         else:
             location_name = self.location.name
 
-        self.location_label = Label(self.gui_window, text='Location: {}'.format(location_name))
+        self.location_label = gui.Label(self.gui_window, text='Location: {}'.format(location_name))
         self.location_label.grid(row=i, column=0, sticky=W)
         i += 1
 
-        self.category_label = Label(self.gui_window, text='Category: {}'.format(self.category))
+        self.category_label = gui.Label(self.gui_window, text='Category: {}'.format(self.category))
         self.category_label.grid(row=i, column=0, sticky=W)
         i += 1
 
         if self.category == 'drawing':
-            self.sub_category_label = Label(self.gui_window, text='Subcategory: {}'.format(self.sub_category))
+            self.sub_category_label = gui.Label(self.gui_window, text='Subcategory: {}'.format(self.sub_category))
             self.sub_category_label.grid(row=i, column=0, sticky=W)
             i += 1
 
-            self.style_label = Label(self.gui_window, text='Style: {}'.format(self.style))
+            self.style_label = gui.Label(self.gui_window, text='Style: {}'.format(self.style))
             self.style_label.grid(row=i, column=0, sticky=W)
             i += 1
 
-            self.material_label = Label(self.gui_window, text='Material: {}'.format(self.material))
+            self.material_label = gui.Label(self.gui_window, text='Material: {}'.format(self.material))
             self.material_label.grid(row=i, column=0, sticky=W)
             i += 1
         elif self.category == 'statue':
-            self.material_label = Label(self.gui_window, text='Material: {}'.format(self.material))
+            self.material_label = gui.Label(self.gui_window, text='Material: {}'.format(self.material))
             self.material_label.grid(row=i, column=0, sticky=W)
             i += 1
 
-        self.content_label = Label(self.gui_window, text='Content:')
+        self.content_label = gui.Label(self.gui_window, text='Content:')
         self.content_label.grid(row=i, column=0, sticky=W)
         i += 1
 
