@@ -14,7 +14,7 @@ PROJECTILE_RADIUS = 3
 
 TROOP_MOVEMENT_SPEED = 1
 TROOP_RADIUS = 5
-
+#ADd routing units + equipment slots
 #How many steps away the target unit should be before switching to melee.
 CC_RANGE = 50
 
@@ -23,6 +23,10 @@ SWITCH_TARGET_COUNT = 8
 
 #The maximum number of troops on either side of the battle
 BATTLE_SIZE = 350
+
+#Kenny Additions
+# 1 unit of ranged from one unit of melee
+TROOP_RATIO = 1
 
 class Soldier:
     def __init__(self, unit, name, health, strength, ranged, weapons, armor, discipline, canvas):
@@ -131,6 +135,29 @@ class Soldier:
             attack = self.get_melee_attack(best_material)
             defense = self.target.get_melee_defense(best_enemy_material)
 
+            is_shield = self.weapons[1].shield
+            armor_pierce = self.get_melee_weapon().armor_pierce
+            is_heavy = self.target.armor.heavy                     
+
+            if is_shield:
+                attack = int(attack/2)
+                print self.name + " does "+ str(attack) +" damage because of their shield!"
+
+            if is_heavy:
+                if armor_pierce == 1:
+                    defense /= 2
+                    print self.name + " pierced through " +self.target.name +"'s armor: " + str(defense)
+                elif armor_pierce == -1:
+                    defense *= 2
+                    print self.name + " attack glanced off " +self.target.name +"'s armor: " + str(defense)
+            else:
+                if armor_pierce == 1:
+                    defense *= 2
+                    print self.name + " attack was cushioned by " +self.target.name +"'s armor: " + str(defense)
+                elif armor_pierce == -1:
+                    defense /= 2
+                    print self.name + " attack sliced through " +self.target.name +"'s armor: " + str(defense)
+
             stats[self.name]['attacks'] += 1
             stats[self.name][weapon]['attacks'] += 1
 
@@ -138,6 +165,10 @@ class Soldier:
                 self.fatigue += 1
             if random.randint(0, self.target.discipline) == 0:
                 self.target.fatigue += 1
+
+            if is_heavy:
+                print self.target.name + "'s heavy armor is tiring the unit"
+                self.target.fatigue *= 2
 
             if attack > defense:
                 stats['attacks_won'] += 1
@@ -209,7 +240,7 @@ class Soldier:
 
                 if self.canvas:
                     color = self.canvas.itemcget(self.id, 'fill')
-                    proj[-1].id = self.canvas.create_oval(self.x, self.y, self.x + PROJECTILE_RADIUS, self.y + PROJECTILE_RADIUS, width=0, fill=color)
+                    proj[-1].id = self.canvas.create_oval(self.x, self.y, self.x + self.get_projectile_size(), self.y + 2, width=0, fill=color)
 
                 proj[-1].skip_step = d // self.get_projectile_speed() // 2
                 proj[-1].kill_range = d // self.get_projectile_speed() * 2
@@ -237,6 +268,14 @@ class Soldier:
         else:
             return 0
 
+    def get_projectile_size(self):
+        weapon = self.get_ranged_weapon()
+
+        if weapon != None:
+            return weapon.projectile_size
+        else:
+            return 0
+
     def get_ranged_weapon(self):
         if self.unit.soldier_type.originally_ranged:
             return self.weapons[0]
@@ -260,7 +299,7 @@ class Soldier:
             # print('{} from weapon ({}), {} from strength, {} lost from fatigue = {}'.format(weapon_attack, use_weapon.name, normal_attack, fatigue_loss, result))
 
             if result > 0:
-                return result
+                return result 
             else:
                 return random.randint(0, 1)
 
@@ -289,6 +328,7 @@ class Soldier:
         fatigue_loss = random.randint(0, self.fatigue // 2)
         armor_defense = self.armor.get_defense(material)
         skill_defense = self.armor.defense_skill_multiplier * random.randint(0, self.strength)
+        is_shield = self.weapons[1].shield
 
         return max(0, armor_defense + skill_defense - fatigue_loss)
 
@@ -639,7 +679,7 @@ class Battle:
     def setup_army(self, army, force, color, (xmin, xmax), (ymin, ymax), limit):
         sx, sy = 0, 0
 
-        # print("Setting up a max of {} soldiers of {} for this unit type.".format(limit, army.number))
+        #print("Setting up a max of {} soldiers of {} for this unit type.".format(limit, army.number))
 
         new_units = []
         for soldier in xrange(army.number):
@@ -743,6 +783,32 @@ class Battle:
 
                             #Allow the troop being hit by the projectile to try and defend a little.
                             defense = p.target.get_ranged_defense(owner_nation.tech.get_best_in_category('material'))
+                            is_shield = p.target.weapons[1].shield 
+                            armor_pierce = p.launcher.get_ranged_weapon().armor_pierce
+                            siege_weapon = p.launcher.get_ranged_weapon().siege_weapon
+                            is_heavy = p.target.armor.heavy                     
+
+                            if is_shield:
+                                damage = int(damage/2)
+                                print p.launcher.name + "'s ranged attack was deflected by "+p.target.name+"'s shield: "+str(damage)
+                            elif not is_heavy:
+                                damage *= 2
+                                print p.launcher.name + "'s ranged attack was left unprotected by "+p.target.name+"'s lack of a shield: "+str(damage)
+
+                            if is_heavy:
+                                if armor_pierce == 1:
+                                    defense /= 2
+                                    print p.launcher.name + "'s ranged attack pierced  "+p.target.name+"'s heavy armor:  "+str(damage)
+                                elif armor_pierce == -1:
+                                    defense *= 2
+                                    print p.launcher.name + "'s ranged attack glanced off of "+p.target.name+"'s hevy armor: "+str(damage)
+                            else:
+                                if armor_pierce == 1:
+                                    defense *= 2
+                                    print p.launcher.name + "'s ranged attack was cushioned by "+p.target.name+"'s light armor: "+str(damage)
+                                elif armor_pierce == -1:
+                                    defense /= 2
+                                    print p.launcher.name + "'s ranged attack impacted "+p.target.name+"'s light armor: "+str(damage)
 
                             if random.randint(0, p.target.discipline) == 0:
                                 p.target.fatigue += 1
@@ -750,19 +816,29 @@ class Battle:
                             #Can't do less than 0 damage
                             total_damage = max(damage - defense, 0)
 
+                            original_health = p.target.health
+
                             p.target.health -= total_damage
 
                             if p.target.health <= 0:
-                                stats['troops_killed'] += 1
-                                stats[p.launcher.name]['kills'] += 1
-                                stats[p.launcher.name][weapon]['kills'] += 1
+                                overkill = 1
+                                if siege_weapon:
+                                    overkill += p.target.health*-1/original_health
+                                stats['troops_killed'] += overkill
+                                stats[p.launcher.name]['kills'] += overkill
+                                stats[p.launcher.name][weapon]['kills'] += overkill
 
                                 if not p.target.name in enemy_stats:
                                     enemy_stats[p.target.name] = utility.base_soldier_stats()
-                                enemy_stats[p.target.name]['deaths'] += 1
-                                enemy_stats['troops_lost'] += 1
-
+                                enemy_stats[p.target.name]['deaths'] += overkill
+                                enemy_stats['troops_lost'] += overkill
                                 p.target.unit.handle_death(p.target)
+
+                                num = 1
+                                while(num < overkill):
+                                    if num < len(p.target.soldiers):
+                                        p.target.unit.handle_death(p.target.soldiers[num])
+                                    num += 1
                 else:
                     p.skip_step -= 1
 

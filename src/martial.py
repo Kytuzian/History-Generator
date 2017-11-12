@@ -271,7 +271,7 @@ class Troop:
 
                 if nation.money > total_cost:
                     upgrade.add_number(per_upgrade, nation)
-                    print str(nation.name) + " raised an army of " + str(number) + " " + str(self.name)
+                    #print str(nation.name) + " raised an army of " + str(number) + " " + str(self.name)
                 else:
                     self.number += per_upgrade #Add these people back, because they weren't actually upgraded.
 

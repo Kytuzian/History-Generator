@@ -50,26 +50,27 @@ building_effects['Market'] = {'tax_score': 100, 'money_output': 1000, 'cost': 15
 building_effects['Caravansary'] = {'population_capacity': 5, 'caravan_chance': 20, 'cost': 2000, 'size': 90}
 
 #Kenny - Additions
-building_effects['Guildhouse'] = {'population_capacity': 20, 'research_rate': 2, 'caravan_chance': 20, 'money_output': 500, 'cost': 4000, 'size': 100}
-building_effects['College'] = {'population_capacity': 20,  'research_rate': 3, 'cost': 3500, 'size': 100}
-building_effects['Inn'] = {'population_capacity': 50,  'tax_score': 5, 'cost': 1000, 'size': 100}
-building_effects['Baracks'] = {'population_capacity': 15,  'tax_score': 5, 'cost': 500, 'size': 80}
-building_effects['Blacksmith'] = {'population_capacity': 2,  'tax_score': 5, 'cost': 350, 'size': 10}
+building_effects['Guildhouse'] = {'population_capacity': 20, 'research_rate': 2, 'caravan_chance': 20, 'money_output': 500, 'cost': 4000, 'size': 50}
+building_effects['College'] = {'population_capacity': 20,  'research_rate': 3, 'cost': 3500, 'size': 50}
+building_effects['Inn'] = {'population_capacity': 50,  'tax_score': 5, 'money_output':500,'cost': 1000, 'size': 40}
+building_effects['Baracks'] = {'population_capacity': 15,  'morale_bonus': 25, 'conscript_bonus':5, 'weapons':2,'cost': 500, 'size': 30}
+building_effects['Blacksmith'] = {'population_capacity': 2,  'weapons': 10, 'cost': 350, 'size': 10}
 building_effects['Church'] = {'population_capacity': 5,  'tax_score': 5, 'cost': 200, 'size': 40}
-building_effects['Underkeep'] = {'population_capacity': 5,  'tax_score': 5, 'cost': 700, 'size': 100}
-building_effects['Sewer'] = {'population_capacity': 12,  'tax_score': 5, 'cost': 1200, 'size': 90}
+building_effects['Underkeep'] = {'population_capacity': 5,  'tax_score': 5, 'cost': 700, 'size': 50}
+building_effects['Sewer'] = {'population_capacity': 12,  'tax_score': 5, 'cost': 1200, 'size': 35}
 building_effects['Graveyard'] = {'population_capacity': 2,  'tax_score': 5, 'cost': 100, 'size': 30}
 building_effects['Carpenter House'] = {'population_capacity': 3,  'tax_score': 5, 'cost': 50, 'size': 10}
-building_effects['School of Combat'] = {'population_capacity': 14,  'tax_score': 5, 'cost': 900, 'size': 50}
-building_effects['Dockyard'] = {'population_capacity': 3,  'tax_score': 5, 'cost': 2300, 'size': 90}
-building_effects['Court'] = {'population_capacity': 6,  'tax_score': 5, 'cost': 1500, 'size': 30}
-building_effects['Workshop'] = {'population_capacity': 10,  'tax_score': 5, 'cost': 1700, 'size': 35}
+
+building_effects['School of Combat'] = {'population_capacity': 14,  'troop_quality':5, 'weapons': 5, 'cost': 900, 'size': 50}
+building_effects['Dockyard'] = {'population_capacity': 3, 'wood':-5, 'boats':1,'cost': 2300, 'size': 20}
+building_effects['Court'] = {'population_capacity': 6,  'morale_bonus': 25, 'cost': 1500, 'size': 30}
+building_effects['Workshop'] = {'population_capacity': 10,  'cloth': 5, 'metal':5, 'wood':5, 'cost': 1700, 'size': 35}
 
 def base_resources():
-    return {'leather': 0, 'wood': 0, 'cloth': 0, 'metal': 0, 'food': 0}
+    return {'leather': 0, 'wood': 0, 'cloth': 0, 'metal': 0, 'food': 0, 'boats':0, 'weapons':0}
 
 def base_resource_prices():
-    return {'leather': 50, 'wood': 75, 'cloth': 50, 'metal': 150, 'food': 10}
+    return {'leather': 50, 'wood': 75, 'cloth': 50, 'metal': 150, 'food': 10, 'boats':250, 'weapons':80}
 
 class Building:
     def __init__(self, name, city, effects, number):
@@ -154,6 +155,18 @@ class Building:
         else:
             return 1
 
+    def get_conscription_bonus(self):
+        if 'conscription_bonus' in self.effects:
+            return self.effects['conscription_bonus'] * self.number
+        else:
+            return 1
+
+    def get_morale_bonus(self):
+        if 'morale_bonus' in self.effects:
+            return self.effects['morale_bonus'] * self.number
+        else:
+            return 0
+
     def get_money_output(self):
         if 'money_output' in self.effects:
             amount = self.effects['money_output'] * self.number
@@ -223,6 +236,8 @@ class City:
 
         self.morale = 0
 
+        #self.conscription_bonus = 0
+
         self.cells = []
 
         self.position = (cell.x, cell.y)
@@ -246,6 +261,8 @@ class City:
         self.merges = []
 
         self.caravans = []
+
+        #self.can_build_boats = False
 
     def save(self, path):
         res = {}
@@ -390,7 +407,7 @@ class City:
 	religion = self.get_random_religion()
 
         dx, dy = trade_city.position #Send it to a random city
-	self.caravans.append(Group(self.parent, "caravan", (religion, resource_send), (cx, cy), (dx, dy), self.nation.color, lambda s: False, trade_city.receive_caravan(self), self.nation.parent.canvas))
+	self.caravans.append(Group(self.parent, "caravan", (religion, resource_send), (cx, cy), (dx, dy), self.nation.color, lambda s: False, trade_city.receive_caravan(self), self.nation.parent.canvas, has_boat=(self.resources['boats'] > 0)))
 
     def receive_caravan(self, city):
         def f(caravan):
@@ -506,7 +523,7 @@ class City:
         if self.army.size() > 0:
             if len(self.nation.cities) > 0: #this shouldn't happen because the army should fight to the death first
                 return_destination = random.choice(self.nation.cities)
-                self.nation.moving_armies.append(Group(self.parent, self.nation.name, self.army, self.position, return_destination.position, self.nation.color, lambda s: False, self.parent.reinforce(self.nation, return_destination), self.parent.canvas, is_army=True))
+                self.nation.moving_armies.append(Group(self.parent, self.nation.name, self.army, self.position, return_destination.position, self.nation.color, lambda s: False, self.parent.reinforce(self.nation, return_destination), self.parent.canvas, is_army=True, has_boat=(self.resources['boats'] > 0)))
 
                 self.parent.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': self.nation.id, 'nation_b': self.nation.id, 'city_a': self.name, 'city_b': return_destination.name, 'reason': 'evacuate', 'army_size': self.army.size()}, self.parent.get_current_date()))
 
@@ -737,6 +754,7 @@ class City:
         else:
             self.morale += MORALE_ENOUGH_FOOD
 
+
     def get_random_religion(self):
         religion_populations = self.get_religion_populations()
         weight = lambda _, (religion, adherents): adherents
@@ -789,13 +807,25 @@ class City:
             for resource in production:
                 self.mod_resource(resource, production[resource])
 
+    def handle_conscription_bonus(self):
+        conscription_bonus = 0
+
+        for cell in self.cells:
+             for building in cell.buildings:
+                conscription_bonus += building.get_conscription_bonus()
+
+        return conscription_bonus
+
     def handle_army(self):
         if not self.army:
             self.army = nation.army_structure.zero()
 
+
+        conscription_bonus = 0#self.handle_conscription_bonus()
+
         #This is the number of recruits, it remains to be seen if we can pay for all of them
         conscripted = int((random.random() * 0.2 + 0.2) * self.population**(2.0/3.0) * self.nation.get_conscription_bonus())
-        max_soldiers = int(self.nation.money / self.nation.get_soldier_cost(self.army) * self.nation.get_army_spending())
+        max_soldiers = int(self.nation.money / (self.nation.get_soldier_cost(self.army) - conscription_bonus) * self.nation.get_army_spending())
 
         #print(self.population, conscripted, max_soldiers)
 
@@ -803,13 +833,13 @@ class City:
             conscripted = max_soldiers
 
         #Pay for new conscripted soldiers
-        self.nation.money -= conscripted * self.nation.get_soldier_cost(self.army)
+        self.nation.money -= conscripted * (self.nation.get_soldier_cost(self.army) - conscription_bonus)
 
-        if self.nation.money > self.army.size() * self.nation.get_soldier_upkeep(self.army):
-            self.nation.money -= self.army.size() * self.nation.get_soldier_upkeep(self.army)
+        if self.nation.money > self.army.size() * (self.nation.get_soldier_upkeep(self.army) - conscription_bonus * 2):
+            self.nation.money -= self.army.size() * (self.nation.get_soldier_upkeep(self.army) - conscription_bonus * 2)
         else:
             # print('Not enough money for upkeep, removing {} soldiers!'.format(int((self.army.size() * self.nation.get_soldier_upkeep(self.army.name) - self.nation.money) / self.nation.get_soldier_upkeep(self.army.name))))
-            self.army.remove_number('', int((self.army.size() * self.nation.get_soldier_upkeep(self.army) - self.nation.money) / self.nation.get_soldier_upkeep(self.army.name)))
+            self.army.remove_number('', int((self.army.size() * (self.nation.get_soldier_upkeep(self.army) - conscription_bonus * 2) - self.nation.money) / (self.nation.get_soldier_upkeep(self.army.name) - conscription_bonus * 2)))
 
             self.nation.money = 0
 
@@ -842,6 +872,15 @@ class City:
 
         if self.population > self.population_capacity:
             self.morale -= MORALE_NOT_ENOUGH_HOUSING
+
+        #Kenny Additions
+        morale_bonus_a = 0
+        for cell in self.cells:
+            for building in cell.buildings:
+                morale_bonus_a += building.get_morale_bonus()
+
+        if self.morale < morale_bonus_a:
+            self.morale = morale_bonus_a
 
     def history_step(self):
         self.consumed_resources = base_resources()

@@ -60,6 +60,9 @@ class Terrain:
         elif self.height < 0.1 and self.moisture < 0.5:
             self.name = 'sand'
             self.color = utility.rgb_color(237, 201, 175)
+        elif self.height > 0.5 and self.moisture < 0.5:
+            self.name = 'snow'
+            self.color = utility.rgb_color(200, 255, 255)
         elif self.moisture > 0.5:
             self.name = 'forest'
             self.color = utility.rgb_color(34, 139, 34)
@@ -76,6 +79,8 @@ class Terrain:
             return 0.95
         elif self.name == 'forest':
             return 1.05
+        elif self.name == 'snow':
+            return 0.75
 
     def is_settleable(self):
         return not self.is_water()
@@ -111,14 +116,17 @@ class Cell:
         self.owner = owner
 
         self.make_id()
+
+        self.can_pass=True
+
+        if self.terrain.is_water():
+            self.can_pass = False
+
         
     # Determines whether it is legal for a group to move onto this square
     #Kenny - detects whether or not the cell's terrain is water. If it is water unit can't move through
     def can_move(self, group):
-        #if self.terrain.name == 'water':
-        #    return False
-        #else:
-        return True # For now it is always lega
+        return self.can_pass # For now it is always lega
 
     def get_info(self):
         res = {}
