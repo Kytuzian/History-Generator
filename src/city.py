@@ -797,7 +797,7 @@ class City:
         conscripted = int((random.random() * 0.2 + 0.2) * self.population**(2.0/3.0) * self.nation.get_conscription_bonus())
         max_soldiers = int(self.nation.money / self.nation.get_soldier_cost(self.army) * self.nation.get_army_spending())
 
-        # print(self.population, conscripted, max_soldiers)
+        #print(self.population, conscripted, max_soldiers)
 
         if conscripted > max_soldiers: #If we are recruiting more than we can afford, reduce the number
             conscripted = max_soldiers
@@ -818,7 +818,7 @@ class City:
         if not self.army:
             self.army = self.nation.army_structure.zero()
 
-        self.army.add_number(conscripted, self.nation, self.parent)
+        self.army.add_number(conscripted, self.nation)
 
 
         if not self.nation.army_structure.make_upgrade_list() == self.army.zero().make_upgrade_list():

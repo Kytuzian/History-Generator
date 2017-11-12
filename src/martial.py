@@ -13,9 +13,6 @@ from battle import TROOP_RADIUS
 
 from research import all_ranged_weapons, unarmed
 
-import events
-import event_analysis
-
 class Troop:
     @classmethod
     def init_troop(cls, name, nation):
@@ -40,6 +37,8 @@ class Troop:
         armor = random.choice(nation.basic_armor_list)
 
         tier = 1
+
+        print "Unknown nation has created a new unit: " + str(name) + ", armed with: " + str(weapons[0].name) +", " + str(weapons[1].name) + ", "+str(armor.name)
 
         return cls(name, strength, health, 0, ranged, speed, discipline, rank_size, ranks, weapons, armor, elite, tier, [])
 
@@ -80,7 +79,7 @@ class Troop:
 
     #Creates another troop to add to the troop tree
     @classmethod
-    def new_troop(cls, self, nation, parent):
+    def new_troop(cls, self, nation):
         name = nation.language.make_word(nation.language.name_length, True)
 
         ranged = random.choice([False, True])
@@ -103,7 +102,9 @@ class Troop:
 
         elite = random.randint(2, 6)
 
-        parent.events.append(events.EventTroopCreated('TroopCreated', {'nation_a': nation.name, 'army_a': name, 'equip_a':weapons, 'armor_a':armor}, parent.get_current_date()))
+
+        print str(nation.name) + " created a new unit: " + str(name) + ", armed with: " + str(weapons[0].name) +", " + str(weapons[1].name) + ", "+str(armor.name)
+        #e.append(events.EventTroopCreated('TroopCreated', {'nation_a': nation.name, 'army_a': name, 'equip_a':weapons, 'armor_a':armor}, s_parent.get_current_date()))
 
         return cls(name, strength, health, 0, ranged, speed, discipline, rank_size, ranks, weapons, armor, elite, self.tier + 1, [])
 
@@ -245,14 +246,14 @@ class Troop:
         for stat in self.stats_history[history_index]:
             self.stats_display.insert(END, '{}: {}'.format(utility.displayify_text(stat), self.stats_history[history_index][stat]))
 
-    def add_number(self, number, nation, parent):
+    def add_number(self, number, nation):
         self.number += number
 
-        parent.events.append(events.EventArmyRaised('ArmyRaised', {'nation_a': nation.name, 'army_a': self.name, 'raised_a':number}, parent.get_current_date()))
+        #e.append(events.EventArmyRaised('ArmyRaised', {'nation_a': nation.name, 'army_a': self.name, 'raised_a':number}, s_parent.get_current_date()))
 
         if self.number > self.elite**sqrt(self.tier): #If we have enough troops, we will create another, better, rank of troops
             if len(self.upgrades) < 3:
-                self.upgrades.append(Troop.new_troop(self, nation, parent))
+                self.upgrades.append(Troop.new_troop(self, nation))
 
                 self.upgrades[-1].upgrades = [] #Because it wants to put itself as an upgrade, for some reason. TODO
 
@@ -270,6 +271,7 @@ class Troop:
 
                 if nation.money > total_cost:
                     upgrade.add_number(per_upgrade, nation)
+                    print str(nation.name) + " raised an army of " + str(number) + " " + str(self.name)
                 else:
                     self.number += per_upgrade #Add these people back, because they weren't actually upgraded.
 
