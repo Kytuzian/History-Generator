@@ -1,0 +1,95 @@
+{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 0', 'city_a': 'Xocraauwmv'}}
+{'date': (1, 1, 1), 'name': 'NationFounded', 'event_data': {'nation_a': 'nation 0'}}
+{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 1', 'city_a': 'Lyjreaeenv'}}
+{'date': (1, 1, 1), 'name': 'NationFounded', 'event_data': {'nation_a': 'nation 1'}}
+{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 2', 'city_a': 'Eieuogbt'}}
+{'date': (1, 1, 1), 'name': 'NationFounded', 'event_data': {'nation_a': 'nation 2'}}
+{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 3', 'city_a': 'Xui'}}
+{'date': (1, 1, 1), 'name': 'NationFounded', 'event_data': {'nation_a': 'nation 3'}}
+{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 4', 'city_a': 'Yeaieqeah'}}
+{'date': (1, 1, 1), 'name': 'NationFounded', 'event_data': {'nation_a': 'nation 4'}}
+{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 5', 'city_a': 'Ymeeyejsep'}}
+{'date': (1, 1, 1), 'name': 'NationFounded', 'event_data': {'nation_a': 'nation 5'}}
+{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 6', 'city_a': 'Wiuavoovx'}}
+{'date': (1, 1, 1), 'name': 'NationFounded', 'event_data': {'nation_a': 'nation 6'}}
+{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 7', 'city_a': 'Gyudcg'}}
+{'date': (1, 1, 1), 'name': 'NationFounded', 'event_data': {'nation_a': 'nation 7'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Administrator', 'person_a_role': 'administrator', 'nation_a': 'nation 0', 'person_a_prev_role': '', 'person_a': 'Hoeut Xayalu'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'administrator', 'nation_a': 'nation 0', 'person_a': 'Hoeut Xayalu'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'The Cycle', 'person_a_role': 'oracle', 'nation_a': 'nation 1', 'person_a_prev_role': '', 'person_a': 'Fueuobaac Louecm'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'oracle', 'nation_a': 'nation 1', 'person_a': 'Fueuobaac Louecm'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Sky Blue Period', 'person_a_role': 'artist', 'nation_a': 'nation 2', 'person_a_prev_role': '', 'person_a': 'Hewjip Aeerhs'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'artist', 'nation_a': 'nation 2', 'person_a': 'Hewjip Aeerhs'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'The Violet Period', 'person_a_role': 'historian', 'nation_a': 'nation 3', 'person_a_prev_role': '', 'person_a': 'Pioyhtm N'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'historian', 'nation_a': 'nation 3', 'person_a': 'Pioyhtm N'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Eieuogbt Period', 'person_a_role': 'artist', 'nation_a': 'nation 4', 'person_a_prev_role': '', 'person_a': 'Qeyet Kaeuz'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'artist', 'nation_a': 'nation 4', 'person_a': 'Qeyet Kaeuz'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'The Grey Period', 'person_a_role': 'oracle', 'nation_a': 'nation 5', 'person_a_prev_role': '', 'person_a': 'Ryyyrjyp Ycyeusuyxup'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'oracle', 'nation_a': 'nation 5', 'person_a': 'Ryyyrjyp Ycyeusuyxup'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'The Modern Period', 'person_a_role': 'scientist', 'nation_a': 'nation 6', 'person_a_prev_role': '', 'person_a': 'Uuxiaced Tiul'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'scientist', 'nation_a': 'nation 6', 'person_a': 'Uuxiaced Tiul'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Mischievous Cycle', 'person_a_role': 'oracle', 'nation_a': 'nation 7', 'person_a_prev_role': '', 'person_a': 'Aaodcoyc Ioelour'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'oracle', 'nation_a': 'nation 7', 'person_a': 'Aaodcoyc Ioelour'}}
+{'date': (1, 2, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'The Ymeeyejsep Cycle', 'person_a_role': 'historian', 'nation_a': 'nation 0', 'person_a_prev_role': '', 'person_a': 'Okreuyukeiilo Xokuyarys'}}
+{'date': (1, 2, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'historian', 'nation_a': 'nation 0', 'person_a': 'Okreuyukeiilo Xokuyarys'}}
+{'date': (1, 2, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 3', 'nation_b': 'nation 6'}}
+{'date': (1, 3, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 6'}}
+{'date': (1, 4, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 7'}}
+{'date': (1, 4, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 3', 'nation_b': 'nation 2'}}
+{'date': (1, 4, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 1'}}
+{'date': (1, 5, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'historian', 'art': 'Ruiu Kuoiwma Oees Hoeut Xayalu Ruiu Ueoumouotop (The Epic of Hoeut Xayalu the administrator) by Okreuyukeiilo Xokuyarys. It is a epic. ', 'nation_a': 'nation 0', 'person_a': 'Okreuyukeiilo Xokuyarys'}}
+{'date': (1, 5, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 2', 'nation_b': 'nation 0'}}
+{'date': (1, 6, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 1'}}
+{'date': (1, 9, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 7', 'nation_b': 'nation 4'}}
+{'date': (1, 10, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'historian', 'art': 'Paym Tuyizi Cuc Oiyxuuiituaiq (The Epic of Eieuogbt) by Pioyhtm N. It is a epic. ', 'nation_a': 'nation 3', 'person_a': 'Pioyhtm N'}}
+{'date': (1, 11, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 4'}}
+{'date': (1, 11, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 5', 'nation_b': 'nation 0'}}
+{'date': (2, 1, 1), 'name': 'ReligionDomainAdded', 'event_data': {'domain_a': 'fire', 'religion_a': 'Nerrreeaw', 'god_a': 'Xaxryuorsg'}}
+{'date': (2, 1, 1), 'name': 'ReligionDomainRemoved', 'event_data': {'domain_a': 'harvest', 'religion_a': 'Riiuflq', 'god_a': 'Wayecpl'}}
+{'date': (2, 1, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 4', 'nation_b': 'nation 3'}}
+{'date': (2, 2, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 6'}}
+{'date': (2, 2, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 2', 'nation_b': 'nation 1'}}
+{'date': (2, 5, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 3', 'nation_b': 'nation 7'}}
+{'date': (2, 7, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Hewjip Aeerhs (Hewjip Aeerhs) by Hewjip Aeerhs. It is a statue, made of wood. ', 'nation_a': 'nation 2', 'person_a': 'Hewjip Aeerhs'}}
+{'date': (2, 7, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 2', 'nation_b': 'nation 4'}}
+{'date': (2, 9, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 6'}}
+{'date': (2, 9, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'The Flower Period', 'person_a_role': 'historian', 'nation_a': 'nation 3', 'person_a_prev_role': 'historian', 'person_a': 'Pioyhtm N'}}
+{'date': (2, 10, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Revolutionary', 'person_a_role': 'revolutionary', 'nation_a': 'nation 0', 'person_a_prev_role': '', 'person_a': 'Iiasyyl Aeukioavzu'}}
+{'date': (2, 10, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'revolutionary', 'nation_a': 'nation 0', 'person_a': 'Iiasyyl Aeukioavzu'}}
+{'date': (2, 11, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 1', 'nation_b': 'nation 5'}}
+{'date': (3, 1, 1), 'name': 'ReligionDomainRemoved', 'event_data': {'domain_a': 'friendship', 'religion_a': 'Nerrreeaw', 'god_a': 'Koyxgbu'}}
+{'date': (3, 1, 1), 'name': 'ReligionDomainAdded', 'event_data': {'domain_a': 'friendship', 'religion_a': 'Riiuflq', 'god_a': 'Wayecpl'}}
+{'date': (3, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 6'}}
+{'date': (3, 1, 1), 'name': 'RearmUnit', 'event_data': {'weapons': 'Shortsword, Club', 'armor': 'Wood Armor', 'unit_a': 'Teuaitq', 'nation_a': 'nation 3'}}
+{'date': (3, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 1'}}
+{'date': (3, 1, 1), 'name': 'RearmUnit', 'event_data': {'weapons': 'Staff, Hammer', 'armor': 'Padded Armor', 'unit_a': 'Yiobx', 'nation_a': 'nation 4'}}
+{'date': (3, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 0'}}
+{'date': (3, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 4'}}
+{'date': (3, 1, 1), 'name': 'RearmUnit', 'event_data': {'weapons': 'Javelin, Dirk', 'armor': 'Cloth Armor', 'unit_a': 'Uye', 'nation_a': 'nation 6'}}
+{'date': (3, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 0'}}
+{'date': (3, 1, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 2'}}
+{'date': (3, 6, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Hewjip Aeerhs (Hewjip Aeerhs) by Hewjip Aeerhs. It is a statue, made of wood. ', 'nation_a': 'nation 2', 'person_a': 'Hewjip Aeerhs'}}
+{'date': (3, 6, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 5'}}
+{'date': (3, 8, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 5'}}
+{'date': (3, 9, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'oracle', 'art': 'Kem Byuyavayavgv Royu Layelweeidqiuobphyoayei (A Prophesy of Destruction) by Fueuobaac Louecm. It is a prophesy. This prophesy predicts that destruction will come in 463 years in the spring.', 'nation_a': 'nation 1', 'person_a': 'Fueuobaac Louecm'}}
+{'date': (3, 10, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 2', 'army_size': 97, 'reason': 'attack', 'city_b': 'Eieuogbt', 'city_a': 'Lyjreaeenv'}}
+{'date': (3, 10, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 4', 'nation_b': 'nation 6'}}
+{'date': (3, 10, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 2', 'army_size': 43, 'reason': 'attack', 'city_b': 'Eieuogbt', 'city_a': 'Yeaieqeah'}}
+{'date': (4, 1, 1), 'name': 'ReligionGodRemoved', 'event_data': {'religion_a': 'Jameeulue', 'god_a': 'Ooiluuo'}}
+{'date': (4, 1, 1), 'name': 'ReligionDomainRemoved', 'event_data': {'domain_a': 'the hearth', 'religion_a': 'Kyoubhz', 'god_a': 'K'}}
+{'date': (4, 1, 1), 'name': 'ReligionGodRemoved', 'event_data': {'religion_a': 'Auazd', 'god_a': 'Rauvvox'}}
+{'date': (4, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 7'}}
+{'date': (4, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 6'}}
+{'date': (4, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 5'}}
+{'date': (4, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 1'}}
+{'date': (4, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 4'}}
+{'date': (4, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 7'}}
+{'date': (4, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 3'}}
+{'date': (4, 1, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'historian', 'art': 'Ruiu Kuoiwma Oees Hoeut Xayalu Ruiu Ueoumouotop (The Epic of Hoeut Xayalu the administrator) by Okreuyukeiilo Xokuyarys. It is a epic. ', 'nation_a': 'nation 0', 'person_a': 'Okreuyukeiilo Xokuyarys'}}
+{'date': (4, 2, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 5', 'nation_b': 'nation 1'}}
+{'date': (4, 3, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Yeaieqeah Cycle', 'person_a_role': 'philosopher', 'nation_a': 'nation 4', 'person_a_prev_role': '', 'person_a': 'Yeokkaiz Keieybem'}}
+{'date': (4, 3, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'philosopher', 'nation_a': 'nation 4', 'person_a': 'Yeokkaiz Keieybem'}}
+{'date': (4, 3, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Cycle', 'person_a_role': 'writer', 'nation_a': 'nation 5', 'person_a_prev_role': '', 'person_a': 'Xeyxyeuvwd Puueqxd'}}
+{'date': (4, 3, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'writer', 'nation_a': 'nation 5', 'person_a': 'Xeyxyeuvwd Puueqxd'}}
+{'date': (4, 3, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 7', 'nation_b': 'nation 6'}}
+{'date': (4, 4, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 3', 'nation_b': 'nation 6'}}

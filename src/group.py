@@ -1,5 +1,7 @@
 import utility
 
+
+#Edit this for pathfinding
 GROUP_SPEED_MULTIPLIER = 10
 ARMY_SPEED_MULTIPLIER = 2 # Armies can move twice as far as other groups.
 

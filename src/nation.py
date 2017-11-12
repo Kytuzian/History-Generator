@@ -41,7 +41,10 @@ OFFICE_MODIFIER_MAX = 2
 
 GOVERNMENT_TYPES = ["Principality", "Commonwealth", "Kingdom", "Hegemony", "Khanate",
                     "Socialist State", "Sultanate", "Republic", "Democracy", "Theocracy",
-                    "Confederacy", "Oligarchy", "Aristocracy", "Meritocracy", "States"]
+                    "Confederacy", "Oligarchy", "Aristocracy", "Meritocracy", "States", #Kenny - Additions from here
+                    "Empire", "Tsardom", "Caliphate", "Emirate", "Tribes", "Clan"
+
+                    ]
 INIT_CITY_COUNT = 1
 
 CITY_FOUND_COST = 100000

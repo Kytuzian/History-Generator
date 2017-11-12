@@ -113,8 +113,12 @@ class Cell:
         self.make_id()
         
     # Determines whether it is legal for a group to move onto this square
+    #Kenny - detects whether or not the cell's terrain is water. If it is water unit can't move through
     def can_move(self, group):
-        return True # For now it is always legal
+        #if self.terrain.name == 'water':
+        #    return False
+        #else:
+        return True # For now it is always lega
 
     def get_info(self):
         res = {}

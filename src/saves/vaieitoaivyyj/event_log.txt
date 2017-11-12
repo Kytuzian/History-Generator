@@ -1,0 +1,450 @@
+{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 0', 'city_a': 'Jkouymzamaazwl'}}
+{'date': (1, 1, 1), 'name': 'NationFounded', 'event_data': {'nation_a': 'nation 0'}}
+{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 1', 'city_a': 'Xieienaaiguq'}}
+{'date': (1, 1, 1), 'name': 'NationFounded', 'event_data': {'nation_a': 'nation 1'}}
+{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 2', 'city_a': 'Iusyisyopp'}}
+{'date': (1, 1, 1), 'name': 'NationFounded', 'event_data': {'nation_a': 'nation 2'}}
+{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 3', 'city_a': 'Bayejekoecayub'}}
+{'date': (1, 1, 1), 'name': 'NationFounded', 'event_data': {'nation_a': 'nation 3'}}
+{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 4', 'city_a': 'Cyyavyaavyoooqyuymu'}}
+{'date': (1, 1, 1), 'name': 'NationFounded', 'event_data': {'nation_a': 'nation 4'}}
+{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 5', 'city_a': 'Ziuseiujit'}}
+{'date': (1, 1, 1), 'name': 'NationFounded', 'event_data': {'nation_a': 'nation 5'}}
+{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 6', 'city_a': 'Souuvgo'}}
+{'date': (1, 1, 1), 'name': 'NationFounded', 'event_data': {'nation_a': 'nation 6'}}
+{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 7', 'city_a': 'Uuahxixp'}}
+{'date': (1, 1, 1), 'name': 'NationFounded', 'event_data': {'nation_a': 'nation 7'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'The Flower Period', 'person_a_role': 'artist', 'nation_a': 'nation 0', 'person_a_prev_role': '', 'person_a': 'Dbeykoyemil Sauupiiyfaw'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'artist', 'nation_a': 'nation 0', 'person_a': 'Dbeykoyemil Sauupiiyfaw'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Daffodil Cycle', 'person_a_role': 'artist', 'nation_a': 'nation 1', 'person_a_prev_role': '', 'person_a': 'Fiouciiyqs Feiegeyys'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'artist', 'nation_a': 'nation 1', 'person_a': 'Fiouciiyqs Feiegeyys'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'The Jkouymzamaazwl Period', 'person_a_role': 'artist', 'nation_a': 'nation 2', 'person_a_prev_role': '', 'person_a': 'Oyepiocyi Siuiiihao'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'artist', 'nation_a': 'nation 2', 'person_a': 'Oyepiocyi Siuiiihao'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Administrator', 'person_a_role': 'administrator', 'nation_a': 'nation 3', 'person_a_prev_role': '', 'person_a': 'Euatxiuujujec Ctxiitijtxooy'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'administrator', 'nation_a': 'nation 3', 'person_a': 'Euatxiuujujec Ctxiitijtxooy'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'The Flower Period', 'person_a_role': 'artist', 'nation_a': 'nation 4', 'person_a_prev_role': '', 'person_a': 'Giehpeyypjo Hootioyqlp'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'artist', 'nation_a': 'nation 4', 'person_a': 'Giehpeyypjo Hootioyqlp'}}
+{'date': (1, 1, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 2'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'The Orange Period', 'person_a_role': 'artist', 'nation_a': 'nation 5', 'person_a_prev_role': '', 'person_a': 'Niaagzteia Znileeuimid'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'artist', 'nation_a': 'nation 5', 'person_a': 'Niaagzteia Znileeuimid'}}
+{'date': (1, 1, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 2'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Souuvgo Period', 'person_a_role': 'artist', 'nation_a': 'nation 6', 'person_a_prev_role': '', 'person_a': 'Tvmeevmyow Tfbyiafooossx'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'artist', 'nation_a': 'nation 6', 'person_a': 'Tvmeevmyow Tfbyiafooossx'}}
+{'date': (1, 1, 1), 'name': 'NationEliminated', 'event_data': {'nation_a': 'nation 7'}}
+{'date': (1, 2, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 5'}}
+{'date': (1, 3, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 3'}}
+{'date': (1, 4, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 5', 'nation_b': 'nation 0'}}
+{'date': (1, 6, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Niaagzteia Znileeuimid Coitza Oiwpvt (Niaagzteia Znileeuimid the Artist) by Niaagzteia Znileeuimid. It is a statue, made of glass. ', 'nation_a': 'nation 5', 'person_a': 'Niaagzteia Znileeuimid'}}
+{'date': (1, 7, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 2'}}
+{'date': (1, 8, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 2'}}
+{'date': (1, 8, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'General', 'person_a_role': 'general', 'nation_a': 'nation 3', 'person_a_prev_role': '', 'person_a': 'Xeuumwyx Bqkieelzuchdwi'}}
+{'date': (1, 8, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'general', 'nation_a': 'nation 3', 'person_a': 'Xeuumwyx Bqkieelzuchdwi'}}
+{'date': (1, 11, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 6', 'nation_b': 'nation 5'}}
+{'date': (2, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Noafaoefbyiboiex', 'god_a': 'Cymyyeafoavossr'}}
+{'date': (2, 1, 1), 'name': 'RearmUnit', 'event_data': {'weapons': 'Staff, Staff', 'armor': 'Leather Armor', 'unit_a': 'Tewtvmyvmyb', 'nation_a': 'nation 6'}}
+{'date': (2, 1, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 2', 'nation_b': 'nation 6'}}
+{'date': (2, 2, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 6', 'nation_b': 'nation 3'}}
+{'date': (2, 3, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 0'}}
+{'date': (2, 5, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 1', 'nation_b': 'nation 4'}}
+{'date': (2, 6, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 6', 'nation_b': 'nation 4'}}
+{'date': (2, 8, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Hero', 'person_a_role': 'hero', 'nation_a': 'nation 3', 'person_a_prev_role': '', 'person_a': 'Btalhuodiix Buaixpeuk'}}
+{'date': (2, 8, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'hero', 'nation_a': 'nation 3', 'person_a': 'Btalhuodiix Buaixpeuk'}}
+{'date': (2, 8, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'The Gold Cycle', 'person_a_role': 'oracle', 'nation_a': 'nation 5', 'person_a_prev_role': '', 'person_a': 'Dimxnotiyat Hteyejeoitsusied'}}
+{'date': (2, 8, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'oracle', 'nation_a': 'nation 5', 'person_a': 'Dimxnotiyat Hteyejeoitsusied'}}
+{'date': (2, 10, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 5', 'army_size': 10, 'reason': 'attack', 'city_b': 'Ziuseiujit', 'city_a': 'Jkouymzamaazwl'}}
+{'date': (2, 10, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 2'}}
+{'date': (3, 1, 1), 'name': 'ReligionGodRemoved', 'event_data': {'religion_a': 'Voayibaayx', 'god_a': 'Qobz'}}
+{'date': (3, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Xgurauvamxosx', 'god_a': 'Pmxiymxtmia'}}
+{'date': (3, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 2'}}
+{'date': (3, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 5'}}
+{'date': (3, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 2'}}
+{'date': (3, 2, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 5', 'army_size': 50, 'reason': 'attack', 'city_b': 'Ziuseiujit', 'city_a': 'Jkouymzamaazwl'}}
+{'date': (3, 3, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 4', 'nation_b': 'nation 5'}}
+{'date': (3, 4, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 5', 'army_size': 39, 'reason': 'attack', 'city_b': 'Ziuseiujit', 'city_a': 'Jkouymzamaazwl'}}
+{'date': (3, 4, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Gyoaqu (Elk) by Tvmeevmyow Tfbyiafooossx. It is a statue, made of copper. ', 'nation_a': 'nation 6', 'person_a': 'Tvmeevmyow Tfbyiafooossx'}}
+{'date': (3, 5, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 0'}}
+{'date': (3, 6, 1), 'name': 'Attack', 'event_data': {'remaining_soldiers': 36, 'success': True, 'city_b': 'Ziuseiujit', 'nation_a': 'nation 0', 'nation_b': 'nation 5'}}
+{'date': (3, 6, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 0', 'army_size': 36, 'reason': 'return levies', 'city_b': 'Jkouymzamaazwl', 'city_a': 'Ziuseiujit'}}
+{'date': (3, 6, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 0', 'army_size': 97, 'reason': 'attack', 'city_b': 'Ziuseiujit', 'city_a': 'Iusyisyopp'}}
+{'date': (3, 6, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 4', 'nation_b': 'nation 3'}}
+{'date': (3, 6, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 0'}}
+{'date': (3, 6, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 5'}}
+{'date': (3, 6, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 5'}}
+{'date': (3, 6, 1), 'name': 'NationEliminated', 'event_data': {'nation_a': 'nation 5'}}
+{'date': (3, 7, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 3'}}
+{'date': (3, 7, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Lexyoaqqizd (Taste) by Giehpeyypjo Hootioyqlp. It is a allegorical painting, made with tempera on panel. ', 'nation_a': 'nation 4', 'person_a': 'Giehpeyypjo Hootioyqlp'}}
+{'date': (3, 7, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 4', 'army_size': 63, 'reason': 'attack', 'city_b': 'Cyyavyaavyoooqyuymu', 'city_a': 'Souuvgo'}}
+{'date': (3, 8, 1), 'name': 'Attack', 'event_data': {'remaining_soldiers': 59, 'success': True, 'city_b': 'Cyyavyaavyoooqyuymu', 'nation_a': 'nation 6', 'nation_b': 'nation 4'}}
+{'date': (3, 8, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 6', 'army_size': 59, 'reason': 'return levies', 'city_b': 'Souuvgo', 'city_a': 'Cyyavyaavyoooqyuymu'}}
+{'date': (3, 8, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 4'}}
+{'date': (3, 8, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 3'}}
+{'date': (3, 8, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 0'}}
+{'date': (3, 8, 1), 'name': 'NationEliminated', 'event_data': {'nation_a': 'nation 4'}}
+{'date': (3, 10, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 0', 'army_size': 187, 'reason': 'attack', 'city_b': 'Ziuseiujit', 'city_a': 'Iusyisyopp'}}
+{'date': (3, 10, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 3', 'nation_b': 'nation 0'}}
+{'date': (3, 10, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 1'}}
+{'date': (3, 11, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 1'}}
+{'date': (4, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Voayibaayx', 'god_a': 'Auumzbyozwuyijbx'}}
+{'date': (4, 1, 1), 'name': 'ReligionGodRemoved', 'event_data': {'religion_a': 'Xgurauvamxosx', 'god_a': 'Pmxiymxtmia'}}
+{'date': (4, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 6'}}
+{'date': (4, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 3'}}
+{'date': (4, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 5'}}
+{'date': (4, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 4'}}
+{'date': (4, 1, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 3'}}
+{'date': (4, 2, 1), 'name': 'Attack', 'event_data': {'remaining_soldiers': 68, 'success': True, 'city_b': 'Ziuseiujit', 'nation_a': 'nation 2', 'nation_b': 'nation 0'}}
+{'date': (4, 2, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 2', 'army_size': 68, 'reason': 'return levies', 'city_b': 'Iusyisyopp', 'city_a': 'Ziuseiujit'}}
+{'date': (4, 2, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Azwil (Sky) by Niaagzteia Znileeuimid. It is a landscape painting, made with tempera on beaverboard. This is a knowledgably painted image of the sky.', 'nation_a': 'nation 0', 'person_a': 'Niaagzteia Znileeuimid'}}
+{'date': (4, 2, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 2', 'army_size': 81, 'reason': 'attack', 'city_b': 'Ziuseiujit', 'city_a': 'Jkouymzamaazwl'}}
+{'date': (4, 4, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 2', 'army_size': 72, 'reason': 'attack', 'city_b': 'Ziuseiujit', 'city_a': 'Souuvgo'}}
+{'date': (4, 6, 1), 'name': 'Attack', 'event_data': {'remaining_soldiers': 57, 'success': True, 'city_b': 'Ziuseiujit', 'nation_a': 'nation 0', 'nation_b': 'nation 2'}}
+{'date': (4, 6, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 2', 'army_size': 187, 'reason': 'evacuate', 'city_b': 'Iusyisyopp', 'city_a': 'Ziuseiujit'}}
+{'date': (4, 6, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 0', 'army_size': 57, 'reason': 'return levies', 'city_b': 'Jkouymzamaazwl', 'city_a': 'Ziuseiujit'}}
+{'date': (4, 7, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 6', 'army_size': 198, 'reason': 'attack', 'city_b': 'Cyyavyaavyoooqyuymu', 'city_a': 'Bayejekoecayub'}}
+{'date': (4, 8, 1), 'name': 'NationFounded', 'event_data': {'nation_a': 'nation 8'}}
+{'date': (4, 8, 1), 'name': 'Revolt', 'event_data': {'cities': ['Cyyavyaavyoooqyuymu'], 'nation_a': 'nation 6', 'nation_b': 'nation 8'}}
+{'date': (4, 8, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 6', 'nation_b': 'nation 8'}}
+{'date': (4, 8, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'The Xieienaaiguq Cycle', 'person_a_role': 'oracle', 'nation_a': 'nation 8', 'person_a_prev_role': '', 'person_a': 'Bazcfaoucbob Hjcobpatyr'}}
+{'date': (4, 8, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'oracle', 'nation_a': 'nation 8', 'person_a': 'Bazcfaoucbob Hjcobpatyr'}}
+{'date': (4, 8, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 3', 'army_size': 198, 'reason': 'reinforce', 'city_b': 'Bayejekoecayub', 'city_a': 'Cyyavyaavyoooqyuymu'}}
+{'date': (4, 8, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 6', 'army_size': 72, 'reason': 'reinforce', 'city_b': 'Souuvgo', 'city_a': 'Ziuseiujit'}}
+{'date': (4, 11, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 8'}}
+{'date': (4, 11, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 0', 'army_size': 377, 'reason': 'attack', 'city_b': 'Ziuseiujit', 'city_a': 'Iusyisyopp'}}
+{'date': (5, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Cyauviaonkyor', 'god_a': 'Peonks'}}
+{'date': (5, 1, 1), 'name': 'ReligionGodRemoved', 'event_data': {'religion_a': 'Xgurauvamxosx', 'god_a': 'Busycjteynjid'}}
+{'date': (5, 1, 1), 'name': 'ReligionDomainAdded', 'event_data': {'domain_a': 'peace', 'religion_a': 'Noafaoefbyiboiex', 'god_a': 'Mfzcoigofbqie'}}
+{'date': (5, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 6'}}
+{'date': (5, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 3'}}
+{'date': (5, 1, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 2', 'nation_b': 'nation 1'}}
+{'date': (5, 1, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 6', 'nation_b': 'nation 0'}}
+{'date': (5, 2, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 3'}}
+{'date': (5, 3, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 1', 'nation_b': 'nation 6'}}
+{'date': (5, 3, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 0', 'army_size': 142, 'reason': 'attack', 'city_b': 'Ziuseiujit', 'city_a': 'Souuvgo'}}
+{'date': (5, 3, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 8', 'nation_b': 'nation 3'}}
+{'date': (5, 4, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 8', 'army_size': 127, 'reason': 'attack', 'city_b': 'Cyyavyaavyoooqyuymu', 'city_a': 'Bayejekoecayub'}}
+{'date': (5, 4, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 8', 'nation_b': 'nation 0'}}
+{'date': (5, 6, 1), 'name': 'Attack', 'event_data': {'remaining_soldiers': 108, 'success': True, 'city_b': 'Cyyavyaavyoooqyuymu', 'nation_a': 'nation 3', 'nation_b': 'nation 8'}}
+{'date': (5, 6, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 3', 'army_size': 108, 'reason': 'return levies', 'city_b': 'Bayejekoecayub', 'city_a': 'Cyyavyaavyoooqyuymu'}}
+{'date': (5, 6, 1), 'name': 'NationFounded', 'event_data': {'nation_a': 'nation 9'}}
+{'date': (5, 6, 1), 'name': 'Revolt', 'event_data': {'cities': ['Bayejekoecayub'], 'nation_a': 'nation 3', 'nation_b': 'nation 9'}}
+{'date': (5, 6, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 3', 'nation_b': 'nation 9'}}
+{'date': (5, 6, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 8'}}
+{'date': (5, 6, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 8'}}
+{'date': (5, 6, 1), 'name': 'NationEliminated', 'event_data': {'nation_a': 'nation 8'}}
+{'date': (5, 7, 1), 'name': 'Attack', 'event_data': {'remaining_soldiers': 235, 'success': True, 'city_b': 'Ziuseiujit', 'nation_a': 'nation 2', 'nation_b': 'nation 0'}}
+{'date': (5, 7, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 2', 'army_size': 234, 'reason': 'return levies', 'city_b': 'Iusyisyopp', 'city_a': 'Ziuseiujit'}}
+{'date': (5, 7, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 8', 'nation_b': 'nation 0'}}
+{'date': (5, 7, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 3', 'army_size': 333, 'reason': 'attack', 'city_b': 'Cyyavyaavyoooqyuymu', 'city_a': 'Jkouymzamaazwl'}}
+{'date': (5, 7, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Mighty Period', 'person_a_role': 'oracle', 'nation_a': 'nation 9', 'person_a_prev_role': '', 'person_a': 'Buc Zccynkr'}}
+{'date': (5, 7, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'oracle', 'nation_a': 'nation 9', 'person_a': 'Buc Zccynkr'}}
+{'date': (5, 7, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 6', 'army_size': 142, 'reason': 'reinforce', 'city_b': 'Souuvgo', 'city_a': 'Ziuseiujit'}}
+{'date': (5, 8, 1), 'name': 'Attack', 'event_data': {'remaining_soldiers': 14, 'success': False, 'city_b': 'Bayejekoecayub', 'nation_a': 'nation 3', 'nation_b': 'nation 9'}}
+{'date': (5, 9, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 9', 'nation_b': 'nation 6'}}
+{'date': (5, 10, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 2', 'army_size': 450, 'reason': 'attack', 'city_b': 'Ziuseiujit', 'city_a': 'Souuvgo'}}
+{'date': (5, 11, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 2', 'army_size': 249, 'reason': 'attack', 'city_b': 'Ziuseiujit', 'city_a': 'Xieienaaiguq'}}
+{'date': (6, 1, 1), 'name': 'ReligionDomainAdded', 'event_data': {'domain_a': 'death', 'religion_a': 'Noafaoefbyiboiex', 'god_a': 'Zyofbyapy'}}
+{'date': (6, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 0'}}
+{'date': (6, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 3'}}
+{'date': (6, 1, 1), 'name': 'NotablePersonDeath', 'event_data': {'person_a_role': 'administrator', 'nation_a': 'nation 3', 'person_a': 'Euatxiuujujec Ctxiitijtxooy'}}
+{'date': (6, 1, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 2', 'army_size': 123, 'reason': 'attack', 'city_b': 'Ziuseiujit', 'city_a': 'Xieienaaiguq'}}
+{'date': (6, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Revolutionary', 'person_a_role': 'revolutionary', 'nation_a': 'nation 3', 'person_a_prev_role': '', 'person_a': 'Xyyaeng Cir'}}
+{'date': (6, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'revolutionary', 'nation_a': 'nation 3', 'person_a': 'Xyyaeng Cir'}}
+{'date': (6, 2, 1), 'name': 'Attack', 'event_data': {'remaining_soldiers': 272, 'success': True, 'city_b': 'Cyyavyaavyoooqyuymu', 'nation_a': 'nation 0', 'nation_b': 'nation 3'}}
+{'date': (6, 2, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 0', 'army_size': 240, 'reason': 'return levies', 'city_b': 'Jkouymzamaazwl', 'city_a': 'Cyyavyaavyoooqyuymu'}}
+{'date': (6, 2, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 3'}}
+{'date': (6, 2, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 9'}}
+{'date': (6, 2, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 3'}}
+{'date': (6, 2, 1), 'name': 'NationEliminated', 'event_data': {'nation_a': 'nation 3'}}
+{'date': (6, 3, 1), 'name': 'Attack', 'event_data': {'remaining_soldiers': 92, 'success': True, 'city_b': 'Ziuseiujit', 'nation_a': 'nation 1', 'nation_b': 'nation 2'}}
+{'date': (6, 3, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 1', 'army_size': 92, 'reason': 'return levies', 'city_b': 'Xieienaaiguq', 'city_a': 'Ziuseiujit'}}
+{'date': (6, 3, 1), 'name': 'NationFounded', 'event_data': {'nation_a': 'nation 10'}}
+{'date': (6, 3, 1), 'name': 'Revolt', 'event_data': {'cities': ['Xieienaaiguq'], 'nation_a': 'nation 1', 'nation_b': 'nation 10'}}
+{'date': (6, 3, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 1', 'nation_b': 'nation 10'}}
+{'date': (6, 3, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 0', 'army_size': 600, 'reason': 'attack', 'city_b': 'Cyyavyaavyoooqyuymu', 'city_a': 'Iusyisyopp'}}
+{'date': (6, 3, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 1', 'army_size': 373, 'reason': 'attack', 'city_b': 'Ziuseiujit', 'city_a': 'Souuvgo'}}
+{'date': (6, 3, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Souuvgo Period', 'person_a_role': 'artist', 'nation_a': 'nation 10', 'person_a_prev_role': '', 'person_a': 'Zkjaciiakjar Gcioeituaos'}}
+{'date': (6, 3, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'artist', 'nation_a': 'nation 10', 'person_a': 'Zkjaciiakjar Gcioeituaos'}}
+{'date': (6, 3, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Zkjaciiakjar Gcioeituaos Fciauycij Cwrieqikjioe (Zkjaciiakjar Gcioeituaos the Artist) by Zkjaciiakjar Gcioeituaos. It is a statue, made of wood. ', 'nation_a': 'nation 10', 'person_a': 'Zkjaciiakjar Gcioeituaos'}}
+{'date': (6, 3, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 10', 'nation_b': 'nation 1', 'army_size': 272, 'reason': 'attack', 'city_b': 'Ziuseiujit', 'city_a': 'Xieienaaiguq'}}
+{'date': (6, 3, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 6', 'army_size': 450, 'reason': 'reinforce', 'city_b': 'Souuvgo', 'city_a': 'Ziuseiujit'}}
+{'date': (6, 6, 1), 'name': 'Attack', 'event_data': {'remaining_soldiers': 171, 'success': True, 'city_b': 'Ziuseiujit', 'nation_a': 'nation 10', 'nation_b': 'nation 1'}}
+{'date': (6, 6, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 10', 'nation_b': 'nation 10', 'army_size': 171, 'reason': 'return levies', 'city_b': 'Xieienaaiguq', 'city_a': 'Ziuseiujit'}}
+{'date': (6, 6, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 1'}}
+{'date': (6, 6, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 10'}}
+{'date': (6, 6, 1), 'name': 'NationEliminated', 'event_data': {'nation_a': 'nation 1'}}
+{'date': (6, 7, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Flower Cycle', 'person_a_role': 'philosopher', 'nation_a': 'nation 0', 'person_a_prev_role': '', 'person_a': 'Fyyukozgw Soyl'}}
+{'date': (6, 7, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'philosopher', 'nation_a': 'nation 0', 'person_a': 'Fyyukozgw Soyl'}}
+{'date': (6, 7, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 6', 'army_size': 373, 'reason': 'reinforce', 'city_b': 'Souuvgo', 'city_a': 'Ziuseiujit'}}
+{'date': (6, 8, 1), 'name': 'Attack', 'event_data': {'remaining_soldiers': 384, 'success': True, 'city_b': 'Cyyavyaavyoooqyuymu', 'nation_a': 'nation 2', 'nation_b': 'nation 0'}}
+{'date': (6, 8, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 2', 'army_size': 384, 'reason': 'return levies', 'city_b': 'Iusyisyopp', 'city_a': 'Cyyavyaavyoooqyuymu'}}
+{'date': (6, 9, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 2', 'army_size': 360, 'reason': 'attack', 'city_b': 'Cyyavyaavyoooqyuymu', 'city_a': 'Jkouymzamaazwl'}}
+{'date': (6, 10, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Pryyoamuoj Tactoaia Meyol Haboeymeyuvzgom (Xyyaeng Cir the Revolutionary) by Dbeykoyemil Sauupiiyfaw. It is a statue, made of copper. ', 'nation_a': 'nation 0', 'person_a': 'Dbeykoyemil Sauupiiyfaw'}}
+{'date': (7, 1, 1), 'name': 'ReligionDomainAdded', 'event_data': {'domain_a': 'smithing', 'religion_a': 'Voayibaayx', 'god_a': 'Mow'}}
+{'date': (7, 1, 1), 'name': 'ReligionGodRemoved', 'event_data': {'religion_a': 'Xgurauvamxosx', 'god_a': 'Rawpuougat'}}
+{'date': (7, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 9'}}
+{'date': (7, 1, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 10', 'nation_b': 'nation 6'}}
+{'date': (7, 2, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 10', 'army_size': 569, 'reason': 'attack', 'city_b': 'Ziuseiujit', 'city_a': 'Souuvgo'}}
+{'date': (7, 3, 1), 'name': 'NationFounded', 'event_data': {'nation_a': 'nation 11'}}
+{'date': (7, 3, 1), 'name': 'Revolt', 'event_data': {'cities': ['Cyyavyaavyoooqyuymu'], 'nation_a': 'nation 2', 'nation_b': 'nation 11'}}
+{'date': (7, 3, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 2', 'nation_b': 'nation 11'}}
+{'date': (7, 3, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 9', 'nation_b': 'nation 10'}}
+{'date': (7, 3, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Cyyavyaavyoooqyuymu Cycle', 'person_a_role': 'artist', 'nation_a': 'nation 11', 'person_a_prev_role': '', 'person_a': 'Wueup Giaihiojyen'}}
+{'date': (7, 3, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'artist', 'nation_a': 'nation 11', 'person_a': 'Wueup Giaihiojyen'}}
+{'date': (7, 3, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 0', 'army_size': 360, 'reason': 'reinforce', 'city_b': 'Jkouymzamaazwl', 'city_a': 'Cyyavyaavyoooqyuymu'}}
+{'date': (7, 4, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 11'}}
+{'date': (7, 4, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 9', 'nation_b': 'nation 10', 'army_size': 289, 'reason': 'attack', 'city_b': 'Ziuseiujit', 'city_a': 'Bayejekoecayub'}}
+{'date': (7, 7, 1), 'name': 'Attack', 'event_data': {'remaining_soldiers': 466, 'success': True, 'city_b': 'Ziuseiujit', 'nation_a': 'nation 6', 'nation_b': 'nation 10'}}
+{'date': (7, 7, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 6', 'army_size': 446, 'reason': 'return levies', 'city_b': 'Souuvgo', 'city_a': 'Ziuseiujit'}}
+{'date': (7, 7, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 9', 'nation_b': 'nation 9', 'army_size': 289, 'reason': 'reinforce', 'city_b': 'Bayejekoecayub', 'city_a': 'Ziuseiujit'}}
+{'date': (7, 8, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 9'}}
+{'date': (7, 8, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 10'}}
+{'date': (7, 8, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'The Flower Period', 'person_a_role': 'artist', 'nation_a': 'nation 6', 'person_a_prev_role': 'artist', 'person_a': 'Tvmeevmyow Tfbyiafooossx'}}
+{'date': (7, 8, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 10', 'nation_b': 'nation 0'}}
+{'date': (7, 9, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 6', 'nation_b': 'nation 9'}}
+{'date': (7, 10, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 6', 'army_size': 163, 'reason': 'attack', 'city_b': 'Ziuseiujit', 'city_a': 'Jkouymzamaazwl'}}
+{'date': (7, 10, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 9'}}
+{'date': (7, 11, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Zaaiteeenwrl Fyeywwvycil Fciauycij Cwrieqikjioe (Fiouciiyqs Feiegeyys the Artist) by Fiouciiyqs Feiegeyys. It is a statue, made of marble. ', 'nation_a': 'nation 10', 'person_a': 'Fiouciiyqs Feiegeyys'}}
+{'date': (8, 1, 1), 'name': 'ReligionDomainAdded', 'event_data': {'domain_a': 'earth', 'religion_a': 'Fooawraeayt', 'god_a': 'Zeuakjuaaege'}}
+{'date': (8, 1, 1), 'name': 'NotablePersonDeath', 'event_data': {'person_a_role': 'oracle', 'nation_a': 'nation 0', 'person_a': 'Bazcfaoucbob Hjcobpatyr'}}
+{'date': (8, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 6'}}
+{'date': (8, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 0'}}
+{'date': (8, 3, 1), 'name': 'Attack', 'event_data': {'remaining_soldiers': 55, 'success': True, 'city_b': 'Ziuseiujit', 'nation_a': 'nation 0', 'nation_b': 'nation 6'}}
+{'date': (8, 3, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 0', 'army_size': 32, 'reason': 'return levies', 'city_b': 'Jkouymzamaazwl', 'city_a': 'Ziuseiujit'}}
+{'date': (8, 6, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Ffuarmauyl (Moose) by Niaagzteia Znileeuimid. It is a statue, made of bronze. ', 'nation_a': 'nation 0', 'person_a': 'Niaagzteia Znileeuimid'}}
+{'date': (8, 7, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Iusyisyopp Period', 'person_a_role': 'artist', 'nation_a': 'nation 11', 'person_a_prev_role': '', 'person_a': 'Tygsqieect Aojyiohiailuyuf'}}
+{'date': (8, 7, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'artist', 'nation_a': 'nation 11', 'person_a': 'Tygsqieect Aojyiohiailuyuf'}}
+{'date': (8, 8, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 11'}}
+{'date': (8, 11, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Fuis (Touch) by Niaagzteia Znileeuimid. It is a allegorical woodblock print, made with watercolor on wood. ', 'nation_a': 'nation 0', 'person_a': 'Niaagzteia Znileeuimid'}}
+{'date': (8, 11, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 11', 'nation_b': 'nation 10'}}
+{'date': (9, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Xgurauvamxosx', 'god_a': 'Mmolavoed'}}
+{'date': (9, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 2'}}
+{'date': (9, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 10'}}
+{'date': (9, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 9'}}
+{'date': (9, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 11'}}
+{'date': (9, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 10', 'nation_b': 'nation 6'}}
+{'date': (9, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 9', 'nation_b': 'nation 10'}}
+{'date': (9, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 10', 'nation_b': 'nation 2'}}
+{'date': (9, 1, 1), 'name': 'NotablePersonDeath', 'event_data': {'person_a_role': 'artist', 'nation_a': 'nation 10', 'person_a': 'Zkjaciiakjar Gcioeituaos'}}
+{'date': (9, 1, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Siuuzws (Taste) by Niaagzteia Znileeuimid. It is a allegorical painting, made with watercolor on beaverboard. ', 'nation_a': 'nation 0', 'person_a': 'Niaagzteia Znileeuimid'}}
+{'date': (9, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Hero', 'person_a_role': 'hero', 'nation_a': 'nation 10', 'person_a_prev_role': '', 'person_a': 'Kyyitciwe Faqciuqciep'}}
+{'date': (9, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'hero', 'nation_a': 'nation 10', 'person_a': 'Kyyitciwe Faqciuqciep'}}
+{'date': (9, 2, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 11', 'nation_b': 'nation 6'}}
+{'date': (9, 3, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 2', 'nation_b': 'nation 9'}}
+{'date': (9, 4, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'philosopher', 'art': 'Daoybvgl Jauebxox Myvgv (Letter from Souuvgo) by Fyyukozgw Soyl. It is a essay. ', 'nation_a': 'nation 0', 'person_a': 'Fyyukozgw Soyl'}}
+{'date': (9, 6, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Zcikjnunwe (Smell) by Fiouciiyqs Feiegeyys. It is a allegorical fresco, made with tempera on beaverboard. ', 'nation_a': 'nation 10', 'person_a': 'Fiouciiyqs Feiegeyys'}}
+{'date': (9, 7, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 2', 'nation_b': 'nation 10'}}
+{'date': (9, 7, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Miaufssoycow Hpssayyate Neamg Ngokuuho (Giehpeyypjo Hootioyqlp the Artist) by Giehpeyypjo Hootioyqlp. It is a scene painting, made with oil on paper. ', 'nation_a': 'nation 6', 'person_a': 'Giehpeyypjo Hootioyqlp'}}
+{'date': (9, 8, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 2'}}
+{'date': (9, 10, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 10', 'nation_b': 'nation 6'}}
+{'date': (10, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Vukpruccejzyeyk', 'god_a': 'Birgtaujknkg'}}
+{'date': (10, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Noafaoefbyiboiex', 'god_a': 'Cxjo'}}
+{'date': (10, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 9'}}
+{'date': (10, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 11'}}
+{'date': (10, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 9'}}
+{'date': (10, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 10', 'nation_b': 'nation 11'}}
+{'date': (10, 2, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 9', 'nation_b': 'nation 6'}}
+{'date': (10, 2, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 10', 'nation_b': 'nation 9'}}
+{'date': (10, 3, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 10'}}
+{'date': (10, 4, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 6'}}
+{'date': (10, 7, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 9'}}
+{'date': (10, 8, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 10', 'nation_b': 'nation 11'}}
+{'date': (10, 9, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'oracle', 'art': 'Qix Rijyoimaaojbcvoiaa Seux Eacfpeymff (A Prophesy of Judgement) by Dimxnotiyat Hteyejeoitsusied. It is a prophesy. This prophesy predicts that there will be judgement in 60 years.', 'nation_a': 'nation 0', 'person_a': 'Dimxnotiyat Hteyejeoitsusied'}}
+{'date': (10, 9, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 2'}}
+{'date': (10, 11, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Tvmeevmyow Tfbyiafooossx (Tvmeevmyow Tfbyiafooossx) by Giehpeyypjo Hootioyqlp. It is a scene painting, made with oil on panel. ', 'nation_a': 'nation 6', 'person_a': 'Giehpeyypjo Hootioyqlp'}}
+{'date': (11, 1, 1), 'name': 'ReligionGodRemoved', 'event_data': {'religion_a': 'Voayibaayx', 'god_a': 'Aoxouuuzgeuyq'}}
+{'date': (11, 1, 1), 'name': 'ReligionDomainRemoved', 'event_data': {'domain_a': 'storytelling', 'religion_a': 'Qusnyaoyum', 'god_a': 'Iipouqnuzvxiulru'}}
+{'date': (11, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 11'}}
+{'date': (11, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 2'}}
+{'date': (11, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 10', 'nation_b': 'nation 6'}}
+{'date': (11, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 9'}}
+{'date': (11, 1, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 11'}}
+{'date': (11, 2, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'oracle', 'art': 'Qix Rijyoimaaojbcvoiaa Seux Yuya (A Prophesy of Victory) by Dimxnotiyat Hteyejeoitsusied. It is a prophesy. It predicts there will be victory in 2 years.', 'nation_a': 'nation 0', 'person_a': 'Dimxnotiyat Hteyejeoitsusied'}}
+{'date': (11, 2, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'philosopher', 'art': 'Daoybvgl Jauebxox Myvgv (Letter from Souuvgo) by Fyyukozgw Soyl. It is a essay. ', 'nation_a': 'nation 0', 'person_a': 'Fyyukozgw Soyl'}}
+{'date': (11, 2, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 10', 'nation_b': 'nation 6'}}
+{'date': (11, 3, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 11'}}
+{'date': (11, 5, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 9', 'nation_b': 'nation 2'}}
+{'date': (11, 8, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 2', 'nation_b': 'nation 6'}}
+{'date': (11, 8, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Midqeskasklriocu (Ruifyoeuxouxe) by Wueup Giaihiojyen. It is a portrait painting, made with watercolor on panel. ', 'nation_a': 'nation 11', 'person_a': 'Wueup Giaihiojyen'}}
+{'date': (11, 10, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Miaufssoycow Hpssayyate (Giehpeyypjo Hootioyqlp) by Giehpeyypjo Hootioyqlp. It is a scene painting, made with oil on paper. ', 'nation_a': 'nation 6', 'person_a': 'Giehpeyypjo Hootioyqlp'}}
+{'date': (12, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Xgurauvamxosx', 'god_a': 'Rumyglahyiut'}}
+{'date': (12, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Noafaoefbyiboiex', 'god_a': 'Labfbekafoyassate'}}
+{'date': (12, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 6'}}
+{'date': (12, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 2'}}
+{'date': (12, 1, 1), 'name': 'TechResearch', 'event_data': {'tech_a': 'Mining I', 'nation_a': 'nation 0'}}
+{'date': (12, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 11'}}
+{'date': (12, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 10'}}
+{'date': (12, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 9', 'nation_b': 'nation 6'}}
+{'date': (12, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 9'}}
+{'date': (12, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 10', 'nation_b': 'nation 9'}}
+{'date': (12, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 10', 'nation_b': 'nation 0'}}
+{'date': (12, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 10', 'nation_b': 'nation 11'}}
+{'date': (12, 3, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'philosopher', 'art': 'Daoybvgl Jauebxox P (Letter from Ziuseiujit) by Fyyukozgw Soyl. It is a essay. ', 'nation_a': 'nation 0', 'person_a': 'Fyyukozgw Soyl'}}
+{'date': (12, 6, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 6'}}
+{'date': (12, 6, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 9', 'nation_b': 'nation 10'}}
+{'date': (12, 6, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 10', 'nation_b': 'nation 2'}}
+{'date': (12, 7, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 10', 'nation_b': 'nation 11'}}
+{'date': (12, 8, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 2'}}
+{'date': (12, 8, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 9', 'nation_b': 'nation 0'}}
+{'date': (12, 11, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 9', 'nation_b': 'nation 6'}}
+{'date': (13, 1, 1), 'name': 'ReligionDomainAdded', 'event_data': {'domain_a': 'the hearth', 'religion_a': 'Qusnyaoyum', 'god_a': 'Tasossn'}}
+{'date': (13, 1, 1), 'name': 'ReligionDomainAdded', 'event_data': {'domain_a': 'weaving', 'religion_a': 'Noafaoefbyiboiex', 'god_a': 'Zyofbyapy'}}
+{'date': (13, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 6'}}
+{'date': (13, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 6'}}
+{'date': (13, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 11'}}
+{'date': (13, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 10', 'nation_b': 'nation 6'}}
+{'date': (13, 1, 1), 'name': 'TechResearch', 'event_data': {'tech_a': 'Housing I', 'nation_a': 'nation 6'}}
+{'date': (13, 2, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'philosopher', 'art': 'Daoybvgl Jauebxox Tyayytheeeeiyekof (Letter from Xieienaaiguq) by Fyyukozgw Soyl. It is a essay. ', 'nation_a': 'nation 0', 'person_a': 'Fyyukozgw Soyl'}}
+{'date': (13, 2, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Kyyitciwe Faqciuqciep (Kyyitciwe Faqciuqciep) by Fiouciiyqs Feiegeyys. It is a portrait painting, made with tempera on panel. ', 'nation_a': 'nation 10', 'person_a': 'Fiouciiyqs Feiegeyys'}}
+{'date': (13, 3, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Moefeymoixaayjcayufboeyx (Hpoxibofampyycouzcg) by Tvmeevmyow Tfbyiafooossx. It is a statue, made of tin. ', 'nation_a': 'nation 6', 'person_a': 'Tvmeevmyow Tfbyiafooossx'}}
+{'date': (13, 3, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Tygsqieect Aojyiohiailuyuf (Tygsqieect Aojyiohiailuyuf) by Tygsqieect Aojyiohiailuyuf. It is a portrait fresco, made with watercolor on beaverboard. ', 'nation_a': 'nation 11', 'person_a': 'Tygsqieect Aojyiohiailuyuf'}}
+{'date': (13, 6, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'General', 'person_a_role': 'general', 'nation_a': 'nation 6', 'person_a_prev_role': '', 'person_a': 'Dyuhiifupekafb Gyoafboeklooabx'}}
+{'date': (13, 6, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'general', 'nation_a': 'nation 6', 'person_a': 'Dyuhiifupekafb Gyoafboeklooabx'}}
+{'date': (13, 6, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 11', 'nation_b': 'nation 6'}}
+{'date': (13, 6, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'General', 'person_a_role': 'general', 'nation_a': 'nation 11', 'person_a_prev_role': '', 'person_a': 'Goymio Jezsyuyf'}}
+{'date': (13, 6, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'general', 'nation_a': 'nation 11', 'person_a': 'Goymio Jezsyuyf'}}
+{'date': (13, 7, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 10'}}
+{'date': (13, 8, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 2', 'nation_b': 'nation 11'}}
+{'date': (13, 8, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 10', 'nation_b': 'nation 6'}}
+{'date': (13, 10, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Zkvaqocqor (Savannah) by Tvmeevmyow Tfbyiafooossx. It is a landscape painting, made with tempera on canvas. This is a poorly painted image of the savannah.', 'nation_a': 'nation 6', 'person_a': 'Tvmeevmyow Tfbyiafooossx'}}
+{'date': (13, 10, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Dyuhiifupekafb Gyoafboeklooabx (Dyuhiifupekafb Gyoafboeklooabx) by Giehpeyypjo Hootioyqlp. It is a statue, made of wood. ', 'nation_a': 'nation 6', 'person_a': 'Giehpeyypjo Hootioyqlp'}}
+{'date': (13, 10, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Hero', 'person_a_role': 'hero', 'nation_a': 'nation 11', 'person_a_prev_role': '', 'person_a': 'Guuigskoskh Ivsiyql'}}
+{'date': (13, 10, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'hero', 'nation_a': 'nation 11', 'person_a': 'Guuigskoskh Ivsiyql'}}
+{'date': (14, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 11'}}
+{'date': (14, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 2'}}
+{'date': (14, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 9', 'nation_b': 'nation 2'}}
+{'date': (14, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 9', 'nation_b': 'nation 6'}}
+{'date': (14, 1, 1), 'name': 'TechResearch', 'event_data': {'tech_a': 'Housing I', 'nation_a': 'nation 9'}}
+{'date': (14, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 10', 'nation_b': 'nation 2'}}
+{'date': (14, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 10', 'nation_b': 'nation 11'}}
+{'date': (14, 1, 1), 'name': 'NotablePersonDeath', 'event_data': {'person_a_role': 'artist', 'nation_a': 'nation 10', 'person_a': 'Fiouciiyqs Feiegeyys'}}
+{'date': (14, 2, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Pryyoamuoj Tactoaia (Xyyaeng Cir) by Dbeykoyemil Sauupiiyfaw. It is a statue, made of copper. ', 'nation_a': 'nation 0', 'person_a': 'Dbeykoyemil Sauupiiyfaw'}}
+{'date': (14, 2, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'General', 'person_a_role': 'general', 'nation_a': 'nation 11', 'person_a_prev_role': '', 'person_a': 'Ssuzyuurbs Iqeohgseeyuttyioynidy'}}
+{'date': (14, 2, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'general', 'nation_a': 'nation 11', 'person_a': 'Ssuzyuurbs Iqeohgseeyuttyioynidy'}}
+{'date': (14, 3, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Iuyjaaabuanjtourbieiqsoht (Iiqfqiiivxsam) by Oyepiocyi Siuiiihao. It is a statue, made of glass. ', 'nation_a': 'nation 2', 'person_a': 'Oyepiocyi Siuiiihao'}}
+{'date': (14, 3, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 9', 'nation_b': 'nation 2'}}
+{'date': (14, 5, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 9', 'nation_b': 'nation 11'}}
+{'date': (14, 5, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 11', 'nation_b': 'nation 0'}}
+{'date': (14, 6, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Miaufssoycow Hpssayyate (Giehpeyypjo Hootioyqlp) by Giehpeyypjo Hootioyqlp. It is a scene painting, made with oil on paper. ', 'nation_a': 'nation 6', 'person_a': 'Giehpeyypjo Hootioyqlp'}}
+{'date': (14, 7, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'philosopher', 'art': 'Doqgn Geooaibuq (On Capitalism) by Fyyukozgw Soyl. It is a essay. ', 'nation_a': 'nation 0', 'person_a': 'Fyyukozgw Soyl'}}
+{'date': (14, 7, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 2', 'nation_b': 'nation 10'}}
+{'date': (14, 8, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Maeybeyvxj (Mountain) by Niaagzteia Znileeuimid. It is a landscape painting, made with watercolor on panel. This is a masterfully painted image of the mountain.', 'nation_a': 'nation 0', 'person_a': 'Niaagzteia Znileeuimid'}}
+{'date': (14, 9, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 2', 'nation_b': 'nation 0'}}
+{'date': (14, 10, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Oyepiocyi Siuiiihao Fig Ieeyun (Oyepiocyi Siuiiihao the Artist) by Oyepiocyi Siuiiihao. It is a statue, made of wood. ', 'nation_a': 'nation 2', 'person_a': 'Oyepiocyi Siuiiihao'}}
+{'date': (14, 11, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 6', 'nation_b': 'nation 2'}}
+{'date': (15, 1, 1), 'name': 'ReligionDomainRemoved', 'event_data': {'domain_a': 'friendship', 'religion_a': 'Voayibaayx', 'god_a': 'Vymkopyeas'}}
+{'date': (15, 1, 1), 'name': 'NotablePersonDeath', 'event_data': {'person_a_role': 'artist', 'nation_a': 'nation 0', 'person_a': 'Dbeykoyemil Sauupiiyfaw'}}
+{'date': (15, 1, 1), 'name': 'RearmUnit', 'event_data': {'weapons': 'Sling, Club', 'armor': 'Chaimail', 'unit_a': 'Niayoxyauw', 'nation_a': 'nation 6'}}
+{'date': (15, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 9', 'nation_b': 'nation 10'}}
+{'date': (15, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 11', 'nation_b': 'nation 6'}}
+{'date': (15, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Scarlet Period', 'person_a_role': 'philosopher', 'nation_a': 'nation 0', 'person_a_prev_role': '', 'person_a': 'Jauomix Soyl'}}
+{'date': (15, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'philosopher', 'nation_a': 'nation 0', 'person_a': 'Jauomix Soyl'}}
+{'date': (15, 1, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 11', 'nation_b': 'nation 6'}}
+{'date': (15, 3, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Administrator', 'person_a_role': 'administrator', 'nation_a': 'nation 6', 'person_a_prev_role': '', 'person_a': 'Dvcyn Auamocbiujy'}}
+{'date': (15, 3, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'administrator', 'nation_a': 'nation 6', 'person_a': 'Dvcyn Auamocbiujy'}}
+{'date': (15, 5, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Wiuajix (Earth) by Tygsqieect Aojyiohiailuyuf. It is a landscape painting, made with tempera on beaverboard. This is a well painted image of the earth.', 'nation_a': 'nation 11', 'person_a': 'Tygsqieect Aojyiohiailuyuf'}}
+{'date': (15, 6, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 10', 'nation_b': 'nation 11'}}
+{'date': (15, 10, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'oracle', 'art': 'Byh Beyiljufuwx Vyc Jaoupcc Jcurout (A Prophesy of Final Peace) by Buc Zccynkr. It is a prophesy. This prophesy predicts that final peace will come in 684 years.', 'nation_a': 'nation 9', 'person_a': 'Buc Zccynkr'}}
+{'date': (16, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 9', 'nation_b': 'nation 0'}}
+{'date': (16, 1, 1), 'name': 'TechResearch', 'event_data': {'tech_a': 'Agriculture I', 'nation_a': 'nation 0'}}
+{'date': (16, 1, 1), 'name': 'TechResearch', 'event_data': {'tech_a': 'Stone Working', 'nation_a': 'nation 2'}}
+{'date': (16, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 10', 'nation_b': 'nation 6'}}
+{'date': (16, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 10'}}
+{'date': (16, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 11'}}
+{'date': (16, 2, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 10', 'nation_b': 'nation 6'}}
+{'date': (16, 4, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 9', 'nation_b': 'nation 6'}}
+{'date': (16, 6, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'philosopher', 'art': "Aaajyeol Suamuuiymzq Jauebxox Myvgveax (Defending 'Letter from Souuvgo') by Jauomix Soyl. It is a essay. ", 'nation_a': 'nation 0', 'person_a': 'Jauomix Soyl'}}
+{'date': (16, 9, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 10', 'nation_b': 'nation 0'}}
+{'date': (16, 11, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 9', 'nation_b': 'nation 0'}}
+{'date': (17, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Qusnyaoyum', 'god_a': 'Ggsu'}}
+{'date': (17, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 11', 'nation_b': 'nation 0'}}
+{'date': (17, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 0'}}
+{'date': (17, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 9', 'nation_b': 'nation 11'}}
+{'date': (17, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 10'}}
+{'date': (17, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 10', 'nation_b': 'nation 11'}}
+{'date': (17, 1, 1), 'name': 'TechResearch', 'event_data': {'tech_a': 'Agriculture I', 'nation_a': 'nation 10'}}
+{'date': (17, 2, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Guuigskoskh Ivsiyql (Guuigskoskh Ivsiyql) by Tygsqieect Aojyiohiailuyuf. It is a portrait painting, made with watercolor on paper. ', 'nation_a': 'nation 11', 'person_a': 'Tygsqieect Aojyiohiailuyuf'}}
+{'date': (17, 3, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 10', 'nation_b': 'nation 2'}}
+{'date': (17, 6, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 10', 'nation_b': 'nation 11'}}
+{'date': (17, 7, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 2', 'nation_b': 'nation 11'}}
+{'date': (17, 7, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 9', 'nation_b': 'nation 11'}}
+{'date': (17, 8, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'N (Lake) by Niaagzteia Znileeuimid. It is a landscape painting, made with oil on beaverboard. This is a masterfully painted image of the lake.', 'nation_a': 'nation 0', 'person_a': 'Niaagzteia Znileeuimid'}}
+{'date': (17, 8, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'oracle', 'art': 'Byh Puuai Vyc Jaoupcc Jcurout (A Foretelling of Final Peace) by Buc Zccynkr. It is a prophesy. This prophesy predicts that final peace will come in 107 years in the cold season.', 'nation_a': 'nation 9', 'person_a': 'Buc Zccynkr'}}
+{'date': (18, 1, 1), 'name': 'ReligionGodRemoved', 'event_data': {'religion_a': 'Qusnyaoyum', 'god_a': 'Ggsu'}}
+{'date': (18, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 10'}}
+{'date': (18, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 9', 'nation_b': 'nation 0'}}
+{'date': (18, 1, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'philosopher', 'art': 'Doqgn Youxxamyyyxa (On Skepticism) by Jauomix Soyl. It is a essay. ', 'nation_a': 'nation 0', 'person_a': 'Jauomix Soyl'}}
+{'date': (18, 2, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 10'}}
+{'date': (18, 3, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 11', 'nation_b': 'nation 0'}}
+{'date': (18, 5, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 2', 'nation_b': 'nation 0'}}
+{'date': (18, 6, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Yyevgl (Pond) by Niaagzteia Znileeuimid. It is a landscape painting, made with oil on paper. This is a adequately painted image of the pond.', 'nation_a': 'nation 0', 'person_a': 'Niaagzteia Znileeuimid'}}
+{'date': (18, 9, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 9', 'nation_b': 'nation 10'}}
+{'date': (18, 10, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Jauomix Soyl (Jauomix Soyl) by Niaagzteia Znileeuimid. It is a portrait woodblock print, made with oil on wood. ', 'nation_a': 'nation 0', 'person_a': 'Niaagzteia Znileeuimid'}}
+{'date': (19, 1, 1), 'name': 'ReligionGodRemoved', 'event_data': {'religion_a': 'Noafaoefbyiboiex', 'god_a': 'Cxjo'}}
+{'date': (19, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 2'}}
+{'date': (19, 1, 1), 'name': 'NotablePersonDeath', 'event_data': {'person_a_role': 'artist', 'nation_a': 'nation 2', 'person_a': 'Oyepiocyi Siuiiihao'}}
+{'date': (19, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 10', 'nation_b': 'nation 6'}}
+{'date': (19, 1, 1), 'name': 'RearmUnit', 'event_data': {'weapons': 'Falx, Dirk', 'armor': 'Chaimail', 'unit_a': 'Zuvyciakjcie', 'nation_a': 'nation 10'}}
+{'date': (19, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 11'}}
+{'date': (19, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Daffodil Cycle', 'person_a_role': 'historian', 'nation_a': 'nation 2', 'person_a_prev_role': '', 'person_a': 'Jcfiylreayryx Jullaeefegsu'}}
+{'date': (19, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'historian', 'nation_a': 'nation 2', 'person_a': 'Jcfiylreayryx Jullaeefegsu'}}
+{'date': (19, 4, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'historian', 'art': 'S Cooufqh Iuw Qirohz (A Study of Xieienaaiguq) by Jcfiylreayryx Jullaeefegsu. It is a historical essay. ', 'nation_a': 'nation 2', 'person_a': 'Jcfiylreayryx Jullaeefegsu'}}
+{'date': (19, 4, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Miaufssoycow Hpssayyate (Giehpeyypjo Hootioyqlp) by Giehpeyypjo Hootioyqlp. It is a scene painting, made with tempera on panel. ', 'nation_a': 'nation 6', 'person_a': 'Giehpeyypjo Hootioyqlp'}}
+{'date': (19, 5, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 6', 'nation_b': 'nation 10'}}
+{'date': (19, 6, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Fyyukozgw Soyl (Fyyukozgw Soyl) by Niaagzteia Znileeuimid. It is a portrait painting, made with tempera on beaverboard. ', 'nation_a': 'nation 0', 'person_a': 'Niaagzteia Znileeuimid'}}
+{'date': (19, 7, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'philosopher', 'art': "Aiomiyexoeamiq Yuz Sauiacouuroyf (Utilitarianism in 'Mountain') by Fyyukozgw Soyl. It is a essay. ", 'nation_a': 'nation 0', 'person_a': 'Fyyukozgw Soyl'}}
+{'date': (20, 1, 1), 'name': 'ReligionDomainRemoved', 'event_data': {'domain_a': 'wind', 'religion_a': 'Qusnyaoyum', 'god_a': 'Iiqfqiiivxsam'}}
+{'date': (20, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Cyauviaonkyor', 'god_a': 'Hyyourpooar'}}
+{'date': (20, 1, 1), 'name': 'ReligionDomainRemoved', 'event_data': {'domain_a': 'chaos', 'religion_a': 'Xgurauvamxosx', 'god_a': 'Cyievziijytad'}}
+{'date': (20, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 11'}}
+{'date': (20, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 9', 'nation_b': 'nation 6'}}
+{'date': (20, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 10', 'nation_b': 'nation 2'}}
+{'date': (20, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 11', 'nation_b': 'nation 0'}}
+{'date': (20, 1, 1), 'name': 'TechResearch', 'event_data': {'tech_a': 'Mining I', 'nation_a': 'nation 11'}}
+{'date': (20, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Red Cycle', 'person_a_role': 'artist', 'nation_a': 'nation 2', 'person_a_prev_role': '', 'person_a': 'Qosavsuupeu Iihit'}}
+{'date': (20, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'artist', 'nation_a': 'nation 2', 'person_a': 'Qosavsuupeu Iihit'}}
+{'date': (20, 3, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 2', 'nation_b': 'nation 10'}}
+{'date': (20, 3, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Miaufssoycow Hpssayyate (Giehpeyypjo Hootioyqlp) by Giehpeyypjo Hootioyqlp. It is a scene painting, made with tempera on beaverboard. ', 'nation_a': 'nation 6', 'person_a': 'Giehpeyypjo Hootioyqlp'}}
+{'date': (20, 6, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 11'}}
+{'date': (20, 8, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Ykzq (Sea) by Niaagzteia Znileeuimid. It is a landscape painting, made with oil on beaverboard. This is a knowledgably painted image of the sea.', 'nation_a': 'nation 0', 'person_a': 'Niaagzteia Znileeuimid'}}
+{'date': (20, 8, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 11', 'nation_b': 'nation 2'}}
+{'date': (20, 10, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 2'}}
+{'date': (20, 10, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Noble Cycle', 'person_a_role': 'scientist', 'nation_a': 'nation 9', 'person_a_prev_role': '', 'person_a': 'Jdiujiaoc Hxrynkfryiccyc'}}
+{'date': (20, 10, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'scientist', 'nation_a': 'nation 9', 'person_a': 'Jdiujiaoc Hxrynkfryiccyc'}}
+{'date': (20, 11, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 11', 'nation_b': 'nation 0'}}
+{'date': (21, 1, 1), 'name': 'ReligionDomainAdded', 'event_data': {'domain_a': 'wine', 'religion_a': 'Fooawraeayt', 'god_a': 'Zeuakjuaaege'}}
+{'date': (21, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 0'}}
+{'date': (21, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 6'}}
+{'date': (21, 1, 1), 'name': 'NotablePersonDeath', 'event_data': {'person_a_role': 'artist', 'nation_a': 'nation 6', 'person_a': 'Tvmeevmyow Tfbyiafooossx'}}
+{'date': (21, 1, 1), 'name': 'NotablePersonDeath', 'event_data': {'person_a_role': 'artist', 'nation_a': 'nation 6', 'person_a': 'Giehpeyypjo Hootioyqlp'}}
+{'date': (21, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 9', 'nation_b': 'nation 2'}}
+{'date': (21, 1, 1), 'name': 'TechResearch', 'event_data': {'tech_a': 'Agriculture I', 'nation_a': 'nation 9'}}
+{'date': (21, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 10', 'nation_b': 'nation 11'}}
+{'date': (21, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 9', 'nation_b': 'nation 11'}}
+{'date': (21, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'The Flower Cycle', 'person_a_role': 'artist', 'nation_a': 'nation 6', 'person_a_prev_role': '', 'person_a': 'Bssipfujaear Bfiteebepvr'}}
+{'date': (21, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'artist', 'nation_a': 'nation 6', 'person_a': 'Bssipfujaear Bfiteebepvr'}}
+{'date': (21, 2, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Bayejekoecayub Cycle', 'person_a_role': 'oracle', 'nation_a': 'nation 9', 'person_a_prev_role': 'oracle', 'person_a': 'Buc Zccynkr'}}
+{'date': (21, 4, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 10', 'nation_b': 'nation 11'}}
+{'date': (21, 6, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 9', 'nation_b': 'nation 11'}}
+{'date': (21, 8, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'philosopher', 'art': 'Doqgn Meyol Qaqgaa (On the Star) by Jauomix Soyl. It is a essay. ', 'nation_a': 'nation 0', 'person_a': 'Jauomix Soyl'}}
+{'date': (21, 8, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 2'}}
+{'date': (21, 10, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Flower Period', 'person_a_role': 'artist', 'nation_a': 'nation 6', 'person_a_prev_role': 'artist', 'person_a': 'Bssipfujaear Bfiteebepvr'}}
+{'date': (21, 10, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 10', 'nation_b': 'nation 2', 'army_size': 840, 'reason': 'attack', 'city_b': 'Iusyisyopp', 'city_a': 'Xieienaaiguq'}}
+{'date': (21, 11, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'philosopher', 'art': 'Doqgn Qix Noumf (On a Cliff) by Jauomix Soyl. It is a essay. ', 'nation_a': 'nation 0', 'person_a': 'Jauomix Soyl'}}
+{'date': (21, 11, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 9'}}
+{'date': (22, 1, 1), 'name': 'ReligionGodRemoved', 'event_data': {'religion_a': 'Qusnyaoyum', 'god_a': 'Roieskuayn'}}
+{'date': (22, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Vukpruccejzyeyk', 'god_a': 'Byiehqaueljx'}}
+{'date': (22, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 10'}}
+{'date': (22, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 2'}}
+{'date': (22, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 10'}}
+{'date': (22, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 10'}}
+{'date': (22, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 11', 'nation_b': 'nation 0'}}
+{'date': (22, 1, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 6', 'nation_b': 'nation 9'}}
+{'date': (22, 2, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 9', 'nation_b': 'nation 2'}}
+{'date': (22, 3, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Priest', 'person_a_role': 'priest', 'nation_a': 'nation 0', 'person_a_prev_role': '', 'person_a': 'Ciyuveyvgvgo Yuythouakood'}}
+{'date': (22, 3, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'priest', 'nation_a': 'nation 0', 'person_a': 'Ciyuveyvgvgo Yuythouakood'}}
+{'date': (22, 3, 1), 'name': 'ReligionCreated', 'event_data': {'person_a': 'Ciyuveyvgvgo Yuythouakood', 'religion_a': 'Wrzwoymmia', 'nation_a': 'nation 0', 'city_a': 'Jkouymzamaazwl'}}
+{'date': (22, 3, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'philosopher', 'art': "Giaukzl Yuz Xoiyjya Tactoaia Meyol Haboeymeyuvzgomeax (Modernism in 'Xyyaeng Cir the Revolutionary') by Fyyukozgw Soyl. It is a essay. ", 'nation_a': 'nation 0', 'person_a': 'Fyyukozgw Soyl'}}
+{'date': (22, 6, 1), 'name': 'Attack', 'event_data': {'remaining_soldiers': 461, 'success': True, 'city_b': 'Iusyisyopp', 'nation_a': 'nation 10', 'nation_b': 'nation 2'}}
+{'date': (22, 6, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 10', 'nation_b': 'nation 10', 'army_size': 193, 'reason': 'return levies', 'city_b': 'Xieienaaiguq', 'city_a': 'Iusyisyopp'}}
+{'date': (22, 6, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 11', 'nation_b': 'nation 2'}}
+{'date': (22, 6, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 9', 'nation_b': 'nation 2'}}
+{'date': (22, 6, 1), 'name': 'NationEliminated', 'event_data': {'nation_a': 'nation 2'}}

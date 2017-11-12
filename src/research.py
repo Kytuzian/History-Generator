@@ -125,6 +125,10 @@ mace = Weapon('Mace', 40, 7, 1.5, 6, 1, 1.8, 1.0, reload_time=5)
 axe = Weapon('Axe', 30, 7, 1.8, 8, 2, 2.5, 0.8, reload_time=7)
 morning_star = Weapon('Morning Star', 200, 7, 1.5, 8, 0, 2, 0.2, reload_time=10)
 
+#Short - Kenny Additions
+rapier = Weapon('Rapier', 100, 5, 1.5, 5, 0, 5, 0.2, reload_time=5)
+tanto = Weapon('Tanto', 25, 5, 1.8, 2, 1, 1.8, 1, reload_time=3)
+
 #Medium
 sword = Weapon('Sword', 100, 10, 2, 6, 3, 2, 1.1, reload_time=5)
 bastard_sword = Weapon('Bastard Sword', 150, 12, 2.3, 7, 2, 2, 1.5, reload_time=6)
@@ -133,6 +137,9 @@ bill = Weapon('Bill', 50, 12, 1.5, 6, 4, 1.5, 1.5, reload_time=8)
 flail = Weapon('Flail', 50, 12, 1.2, 6, 0, 2, 0.5, reload_time=12)
 falx = Weapon('Falx', 75, 14, 1.8, 8, 1, 2, 0.8, reload_time=7)
 
+#Medium - Kenny Additions
+great_axe = Weapon('Great Axe', 100, 14, 1.4, 10, 0, 2, 0.5, reload_time=10)
+
 #Long
 polehammer = Weapon('Polehammer', 100, 15, 1.0, 8, 2, 2, 1, reload_time=11)
 staff = Weapon('Staff', 10, 15, 0, 3, 3, 2, 2, reload_time=7)
@@ -140,10 +147,14 @@ spear = Weapon('Spear', 40, 20, 1.0, 4, 4, 1.5, 1.5, reload_time=7)
 pike = Weapon('Pike', 80, 25, 1.0, 5, 5, 1.5, 1.5, reload_time=9)
 sarissa = Weapon('Sarissa', 160, 35, 1.0, 7, 3, 2, 2, reload_time=12)
 
-all_melee_weapons = [unarmed, polehammer, kopis, mace, falx, club, hammer, dagger, rondel, dirk, shortsword, sword, bastard_sword, claymore, spear, staff, bill, pike, sarissa, axe, flail, morning_star]
-weapon_list = [polehammer, sword, mace, falx, shortsword, bastard_sword, claymore, spear, staff, pike, sarissa, axe, flail, morning_star, bill]
+#Long - Kenny Additions
+halberd = Weapon('Halberd', 140, 20, 1.0, 8, 2, 2, 1, reload_time=12)
+poleaxe = Weapon('Poleaxe', 90, 14, 1.0, 6, 2, 2, 1, reload_time=10)
 
-sidearm_list = [dagger, club, mace, kopis, hammer, rondel, dirk, staff, shortsword, axe, spear]
+all_melee_weapons = [unarmed, tanto, halberd, poleaxe, great_axe, rapier, polehammer, kopis, mace, falx, club, hammer, dagger, rondel, dirk, shortsword, sword, bastard_sword, claymore, spear, staff, bill, pike, sarissa, axe, flail, morning_star]
+weapon_list = [tanto, halberd, poleaxe, great_axe, rapier, polehammer, sword, mace, falx, shortsword, bastard_sword, claymore, spear, staff, pike, sarissa, axe, flail, morning_star, bill]
+
+sidearm_list = [tanto, dagger, club, mace, kopis, hammer, rondel, dirk, staff, shortsword, axe, spear]
 basic_weapon_list = [club, mace, hammer, staff, shortsword, axe, spear]
 
 sling = Weapon('Sling', 15, 250, 0, 3, 1, 1.8, 1, reload_time=60, ammunition=25, projectile_speed=7)
@@ -155,8 +166,15 @@ longbow = Weapon('Longbow', 200, 400, 0.5, 6, 1, 2.5, 1, reload_time=90, ammunit
 crossbow = Weapon('Crossbow', 250, 450, 1.5, 10, 1, 1, 1, reload_time=200, ammunition=15, projectile_speed=20)
 sling_staff = Weapon('Sling Staff', 60, 300, 0, 5, 2, 2, 1, reload_time=60, ammunition=20, projectile_speed=12)
 
-all_ranged_weapons = [atlatl, sling, shortbow, longbow, javelin, bow, crossbow, sling_staff]
-ranged_weapon_list = [sling, atlatl, javelin, shortbow, longbow, bow, crossbow, sling_staff]
+#Ranged - Kenny Additions
+#don't know if handguns will be suited to the time-period but adding anyways
+handgun = Weapon('Handgun', 500, 350, 1.5, 30, 1, 1, 1, reload_time=400, ammunition=15, projectile_speed=40)
+
+#Ranged Siege - Kenny Additions
+trebuchet = Weapon('Trebuchet', 750, 550, 1.5, 60, 1, 1, 1, reload_time=800, ammunition=5, projectile_speed=30)
+
+all_ranged_weapons = [atlatl, sling, shortbow, longbow, javelin, bow, crossbow, sling_staff, handgun, trebuchet]
+ranged_weapon_list = [sling, atlatl, javelin, shortbow, longbow, bow, crossbow, sling_staff, handgun, trebuchet]
 
 basic_ranged_weapon_list = [sling, javelin, shortbow, bow]
 
@@ -167,10 +185,15 @@ wood_armor = Armor('Wood Armor', 300, 0, 5, 0.3)
 chainmail = Armor('Chaimail', 1000, 1, 8, 0.25)
 plate = Armor('Plate', 2000, 2, 12, 0.15)
 
-armor_list = [cloth_armor, padded_armor, leather_armor, wood_armor, chainmail, plate]
+#Armor - Kenny Additions
+gambeson = Armor('Gambeson', 600, 1, 5, 0.35)
+hauberk = Armor('Hauberk', 1300, 2, 9, 0.30)
+lamellar = Armor('Lamellar', 1700, 2, 10, 0.25)
 
-armor_list = [wood_armor, chainmail, plate]
-basic_armor_list = [cloth_armor, leather_armor, wood_armor, padded_armor]
+armor_list = [gambeson, hauberk, lamellar, cloth_armor, padded_armor, leather_armor, wood_armor, chainmail, plate]
+
+armor_list = [wood_armor, hauberk, lamellar, chainmail, plate]
+basic_armor_list = [gambeson, cloth_armor, leather_armor, wood_armor, padded_armor]
 
 #------------------------------
 
