@@ -79,6 +79,7 @@ GOVERNMENT_TYPE_BONUSES["Confederacy"] = {'food': 1, 'morale': 1.5, 'efficiency'
 GOVERNMENT_TYPE_BONUSES["Meritocracy"] = {'food': 1, 'morale': 0.75, 'efficiency': 2, 'tolerance': 1, 'conscription': 1}
 GOVERNMENT_TYPE_BONUSES["Aristocracy"] = {'food': 1, 'morale': 1, 'efficiency': 0.75, 'tolerance': 1, 'conscription': 1.5}
 GOVERNMENT_TYPE_BONUSES["Oligarchy"] = {'food': 1, 'morale': 1, 'efficiency': 0.75, 'tolerance': 1, 'conscription': 1.5}
+GOVERNMENT_TYPE_BONUSES["Hegemony"] = {'food': 1, 'morale': 0.5, 'efficiency': 1, 'tolerance': 1, 'conscription': 2}
 
 GOVERNMENT_TYPE_BONUSES["Empire"] = {'food': 0.5, 'morale': 0.25, 'efficiency': 1.5, 'tolerance': 0.5, 'conscription': 3}
 GOVERNMENT_TYPE_BONUSES["Tsardom"] = {'food': 1, 'morale': 0.35, 'efficiency': 0.75, 'tolerance': 1, 'conscription': 2.5}

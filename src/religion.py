@@ -209,7 +209,10 @@ class Religion:
     def get_role_weights(self):
         role_weights = {}
         for role in people.PERSON_ROLES:
+            #print role
             role_weights[role] = 0
+
+        #print role_weights['professor']
 
         for god in self.gods:
             for domain in god.domains:
