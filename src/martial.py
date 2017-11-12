@@ -13,6 +13,9 @@ from battle import TROOP_RADIUS
 
 from research import all_ranged_weapons, unarmed
 
+import events
+import event_analysis
+
 class Troop:
     @classmethod
     def init_troop(cls, name, nation):
@@ -77,7 +80,7 @@ class Troop:
 
     #Creates another troop to add to the troop tree
     @classmethod
-    def new_troop(cls, self, nation):
+    def new_troop(cls, self, nation, parent):
         name = nation.language.make_word(nation.language.name_length, True)
 
         ranged = random.choice([False, True])
@@ -99,6 +102,8 @@ class Troop:
         armor = random.choice(nation.armor_list)
 
         elite = random.randint(2, 6)
+
+        parent.events.append(events.EventTroopCreated('TroopCreated', {'nation_a': nation.name, 'army_a': name, 'equip_a':weapons, 'armor_a':armor}, parent.get_current_date()))
 
         return cls(name, strength, health, 0, ranged, speed, discipline, rank_size, ranks, weapons, armor, elite, self.tier + 1, [])
 
@@ -240,12 +245,14 @@ class Troop:
         for stat in self.stats_history[history_index]:
             self.stats_display.insert(END, '{}: {}'.format(utility.displayify_text(stat), self.stats_history[history_index][stat]))
 
-    def add_number(self, number, nation):
+    def add_number(self, number, nation, parent):
         self.number += number
+
+        parent.events.append(events.EventArmyRaised('ArmyRaised', {'nation_a': nation.name, 'army_a': self.name, 'raised_a':number}, parent.get_current_date()))
 
         if self.number > self.elite**sqrt(self.tier): #If we have enough troops, we will create another, better, rank of troops
             if len(self.upgrades) < 3:
-                self.upgrades.append(Troop.new_troop(self, nation))
+                self.upgrades.append(Troop.new_troop(self, nation, parent))
 
                 self.upgrades[-1].upgrades = [] #Because it wants to put itself as an upgrade, for some reason. TODO
 

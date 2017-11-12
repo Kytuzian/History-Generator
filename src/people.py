@@ -40,7 +40,7 @@ PERSON_ROLES = {'general': {'art_create_chance': 0, 'art_create_variance': 0},
                 'historian': {'art_create_chance': 40, 'art_create_variance': 10},#Kenny Addition
 
                 'conqueror': {'art_create_chance': 0, 'art_create_variance': 0},
-                'empreror': {'art_create_chance': 0, 'art_create_variance': 0},
+                'emperor': {'art_create_chance': 0, 'art_create_variance': 0},
                 'lord': {'art_create_chance': 0, 'art_create_variance': 0},
                 'duke': {'art_create_chance': 0, 'art_create_variance': 0},
                 'priest': {'art_create_chance': 10, 'art_create_variance': 10},

@@ -50,7 +50,7 @@ class Weapon:
         if material != None and self.material_multiplier > 0:
             effective_attack = int(effective_attack * self.material_multiplier * material.effect_strength)
 
-        return random.randint(0, effective_attack)
+        return random.randint(0, int(effective_attack))
 
     def get_defense(self, material):
         effective_defense = self.defense
@@ -58,7 +58,7 @@ class Weapon:
         if material != None and self.material_multiplier > 0:
             effective_defense = int(effective_defense * self.material_multiplier * material.effect_strength)
 
-        return random.randint(0, effective_defense)
+        return random.randint(0, int(effective_defense))
 
     def copy(self):
         return Weapon(self.name, self.cost, self.range, self.material_multiplier, self.attack, self.defense, self.attack_skill_multiplier, self.defense_skill_multiplier, self.reload_time, self.ammunition, self.projectile_speed)
@@ -97,7 +97,7 @@ class Armor:
         if material != None and self.material_multiplier > 0:
             effective_defense = int(effective_defense * self.material_multiplier * material.effect_strength)
 
-        return random.randint(0, effective_defense)
+        return random.randint(0, int(effective_defense))
 
     def copy(self):
         return Armor(self.name, self.cost, self.material_multiplier, self.defense, self.defense_skill_multiplier)

@@ -49,6 +49,22 @@ building_effects['Lab'] = {'population_capacity': 2, 'research_rate': 5, 'cost':
 building_effects['Market'] = {'tax_score': 100, 'money_output': 1000, 'cost': 1500, 'size': 60}
 building_effects['Caravansary'] = {'population_capacity': 5, 'caravan_chance': 20, 'cost': 2000, 'size': 90}
 
+#Kenny - Additions
+building_effects['Guildhouse'] = {'population_capacity': 20, 'research_rate': 2, 'caravan_chance': 20, 'money_output': 500, 'cost': 4000, 'size': 100}
+building_effects['College'] = {'population_capacity': 20,  'research_rate': 3, 'cost': 3500, 'size': 100}
+building_effects['Inn'] = {'population_capacity': 50,  'tax_score': 5, 'cost': 1000, 'size': 100}
+building_effects['Baracks'] = {'population_capacity': 15,  'tax_score': 5, 'cost': 500, 'size': 80}
+building_effects['Blacksmith'] = {'population_capacity': 2,  'tax_score': 5, 'cost': 350, 'size': 10}
+building_effects['Church'] = {'population_capacity': 5,  'tax_score': 5, 'cost': 200, 'size': 40}
+building_effects['Underkeep'] = {'population_capacity': 5,  'tax_score': 5, 'cost': 700, 'size': 100}
+building_effects['Sewer'] = {'population_capacity': 12,  'tax_score': 5, 'cost': 1200, 'size': 90}
+building_effects['Graveyard'] = {'population_capacity': 2,  'tax_score': 5, 'cost': 100, 'size': 30}
+building_effects['Carpenter House'] = {'population_capacity': 3,  'tax_score': 5, 'cost': 50, 'size': 10}
+building_effects['School of Combat'] = {'population_capacity': 14,  'tax_score': 5, 'cost': 900, 'size': 50}
+building_effects['Dockyard'] = {'population_capacity': 3,  'tax_score': 5, 'cost': 2300, 'size': 90}
+building_effects['Court'] = {'population_capacity': 6,  'tax_score': 5, 'cost': 1500, 'size': 30}
+building_effects['Workshop'] = {'population_capacity': 10,  'tax_score': 5, 'cost': 1700, 'size': 35}
+
 def base_resources():
     return {'leather': 0, 'wood': 0, 'cloth': 0, 'metal': 0, 'food': 0}
 
@@ -175,6 +191,20 @@ def base_buildings(city):
     buildings.append(Building('Lab', city, building_effects['Lab'], 0))
     buildings.append(Building('Market', city, building_effects['Market'], 0))
     buildings.append(Building('Caravansary', city, building_effects['Caravansary'],0 ))
+
+    buildings.append(Building('Guildhouse', city, building_effects['Guildhouse'],0 ))
+    buildings.append(Building('College', city, building_effects['College'],0 ))
+    buildings.append(Building('Inn', city, building_effects['Inn'],0 ))
+    buildings.append(Building('Baracks', city, building_effects['Baracks'],0 ))
+    buildings.append(Building('Underkeep', city, building_effects['Underkeep'],0 ))
+    buildings.append(Building('Church', city, building_effects['Church'],0 ))
+    buildings.append(Building('Sewer', city, building_effects['Sewer'],0 ))
+    buildings.append(Building('Graveyard', city, building_effects['Graveyard'],0 ))
+    buildings.append(Building('Carpenter House', city, building_effects['Carpenter House'],0 ))
+    buildings.append(Building('School of Combat', city, building_effects['School of Combat'],0 ))
+    buildings.append(Building('Dockyard', city, building_effects['Dockyard'],0 ))
+    buildings.append(Building('Court', city, building_effects['Court'],0 ))
+    buildings.append(Building('Workshop', city, building_effects['Workshop'],0 ))
     return buildings
 
 class City:
@@ -788,11 +818,13 @@ class City:
         if not self.army:
             self.army = self.nation.army_structure.zero()
 
-        self.army.add_number(conscripted, self.nation)
+        self.army.add_number(conscripted, self.nation, self.parent)
+
 
         if not self.nation.army_structure.make_upgrade_list() == self.army.zero().make_upgrade_list():
             self.nation.army_structure = self.nation.army_structure.merge_structure(self.army).zero()
             self.army.merge_all(self.nation.army_structure)
+
 
     def building_count(self):
         return sum([cell.building_count() for cell in self.cells])
