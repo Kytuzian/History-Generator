@@ -1075,12 +1075,12 @@ class Battle:
             a_cur = self.a_army.size() + a_force_size
             b_cur = self.b_army.size() + b_force_size
 
-            sys.stdout.write("\rBattle for {}: {}(Soldiers: {}) vs. {}(Soldiers: {})".format(self.city.name, self.a.name.short_name(), a_cur, self.b.name.short_name(), b_cur))
+            sys.stdout.write("\rBattle of {}: {}(Soldiers: {}) vs. {}(Soldiers: {})".format(self.city.name, self.a.name.short_name(), a_cur, self.b.name.short_name(), b_cur))
             sys.stdout.flush()
 
             if not self.over:
                 if self.use_graphics:
-                    self.parent.title("Battle for {}: {}(Reinforcements: {}) vs. {}(Reinforcements: {})".format(self.city.name, self.a.name.short_name(), self.a_army.size(), self.b.name.short_name(), self.b_army.size()))
+                    self.parent.title("Battle of {}: {}(Reinforcements: {}) vs. {}(Reinforcements: {})".format(self.city.name, self.a.name.short_name(), self.a_army.size(), self.b.name.short_name(), self.b_army.size()))
 
                     self.after_id = self.parent.after(self.battle_speed.get(), self.main_phase)
 

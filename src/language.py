@@ -36,7 +36,7 @@ def generate_sound_word(length):
 # for i in xrange(10):
 #     print(generate_sound_word(random.randint(2, 8)))
 
-MODIFIERS = ["Grand", "Federated", "Democratic", "People's", "Free", "Illustrious", "Glorious", "United"]
+MODIFIERS = ["Grand", "Holy", "Constitutional", "Parliamentary", "Federated", "Democratic", "People's", "Free", "Illustrious", "Glorious", "United", "Imperial", "Sovereign", "Regal"]
 
 class NationName:
     def __init__(self, modifiers, government_type, places):

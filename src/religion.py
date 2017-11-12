@@ -30,10 +30,18 @@ TOLERANCE_MULTIPLIER = 1
 MAX_BASE_TOLERANCE = 100
 
 INTOLERANT_DOMAINS = ['war', 'fire', 'death', 'lightning', 'thunder',
-                      'wind', 'chaos', 'the underworld']
+                      'wind', 'chaos', 'the underworld', #Kenny - Addition
+                      'blight', 'disease', 'conquest', 'sacrifice',
+                      'lust', 'revenge', 'gluttony', 'envy', 'wrath',
+                      'xenophobia', 'zeal', 'apathy'
+                      ]
 TOLERANT_DOMAINS = ['peace', 'wisdom', 'children', 'knowledge',
                     'writing', 'music', 'storytelling', 'friendship',
-                    'the hearth', 'unity']
+                    'the hearth', 'unity', #Kenny - Addition
+                    'piety', 'charity', 'books', 'writing', 
+                    'tales', 'mastery', 'observations', 'understanding',
+                    'morale', 'fervor', 'keen', 'passion'
+                    ]
 
 DOMAINS = {'fire': {'general': 0.5},
            'wind': {'artist': 1},
@@ -59,17 +67,42 @@ DOMAINS = {'fire': {'general': 0.5},
            'thunder': {'artist': 1},
            'friendship': {},
            'wine': {},
-           'weaving': {},
+           'weaving': {'seneschal':1},
            'the sun': {},
            'the hearth': {},
            'the moon': {},
            'the sky': {},
            'messenger': {},
            'chaos': {'revolutionary': 1},
-           'unity': {},
-           'the underworld': {},
-           'creation': {},
-           'everything': {} # For monotheistic religions
+           'unity': {'drillmaster':1, 'quartermaster':1},
+           'the underworld': {'conqueror':1},
+           'creation': {'emperor':1},
+           'everything': {}, # For monotheistic religions
+
+           'blight': {'revolutionary': 0.5},
+           'disease': {},
+           'conquest': {'scientist': 0.5, 'general':0.5},
+           'sacrifice': {'oracle': 0.5},
+           'lust': {'artist': 0.5},
+           'revenge': {'hero': 0.5, 'revolutionary':0.5},
+           'gluttony': {'composer': 1, 'artist':1, 'writer':1},
+           'envy': {'historian': 0.5, 'oracle': 1},
+           'wrath': {'revolutionary': 0.5, 'hero':1},
+           'xenophobia': {'hero': 1, 'general':1},
+           'zeal': {'revolutionary': 0.5, 'hero':0.5, 'general':0.5},
+           'apathy': {'philosopher':0.5, 'scientist':0.5},
+
+           'piety': {'oracle':1, 'prophet':0.5, 'priest':1, 'bishop':0.75},
+           'charity': {'hero':1, 'professor':1},
+           'books': {'writer':1, 'bard':1},
+           'writing': {'writer':1, 'composer':1},
+           'mastery': {'master':1, 'professional':1},
+           'observations': {'philosopher':0.5, 'scientist':0.5, 'professor':0.5},
+           'understanding': {'philosopher':1, 'professor':1},
+           'morale': {'singer':1, 'lord':1},
+           'fervor': {'revolutionary':0.5, 'scientist':0.5},
+           'keen': {'general':0.5, 'administrator':0.5},
+           'passion': {'hero':1, 'administrator':1}
            }
 
 class God:
