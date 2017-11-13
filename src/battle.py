@@ -184,7 +184,7 @@ class Soldier:
             
 
             if target_defense_bonus:
-               defense = int(defense * 3/2)
+               defense = int((defense * 3/2) * self.target.weapons[1].defense_skill_multiplier)
 
             if is_two_handed:
                 attack *= 2
