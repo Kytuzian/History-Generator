@@ -41,7 +41,11 @@ OFFICE_MODIFIER_MAX = 2
 
 GOVERNMENT_TYPES = ["Principality", "Commonwealth", "Kingdom", "Hegemony", "Khanate",
                     "Socialist State", "Sultanate", "Republic", "Democracy", "Theocracy",
-                    "Confederacy", "Oligarchy", "Aristocracy", "Meritocracy", "States"]
+                    "Confederacy", "Oligarchy", "Aristocracy", "Meritocracy", "States", #Kenny - Additions from here
+                    "Empire", "Tsardom", "Caliphate", "Emirate", "Tribes", "Clan",
+                    "Duchy", "Autocracy"
+
+                    ]
 INIT_CITY_COUNT = 1
 
 CITY_FOUND_COST = 100000
@@ -76,6 +80,15 @@ GOVERNMENT_TYPE_BONUSES["Meritocracy"] = {'food': 1, 'morale': 0.75, 'efficiency
 GOVERNMENT_TYPE_BONUSES["Aristocracy"] = {'food': 1, 'morale': 1, 'efficiency': 0.75, 'tolerance': 1, 'conscription': 1.5}
 GOVERNMENT_TYPE_BONUSES["Oligarchy"] = {'food': 1, 'morale': 1, 'efficiency': 0.75, 'tolerance': 1, 'conscription': 1.5}
 GOVERNMENT_TYPE_BONUSES["Hegemony"] = {'food': 1, 'morale': 0.5, 'efficiency': 1, 'tolerance': 1, 'conscription': 2}
+
+GOVERNMENT_TYPE_BONUSES["Empire"] = {'food': 0.5, 'morale': 0.25, 'efficiency': 1.5, 'tolerance': 0.5, 'conscription': 3}
+GOVERNMENT_TYPE_BONUSES["Tsardom"] = {'food': 1, 'morale': 0.35, 'efficiency': 0.75, 'tolerance': 1, 'conscription': 2.5}
+GOVERNMENT_TYPE_BONUSES["Caliphate"] = {'food': 0.75, 'morale': 1.5, 'efficiency': 1, 'tolerance': 0.25, 'conscription': 2}
+GOVERNMENT_TYPE_BONUSES["Emirate"] = {'food': 1.5, 'morale': 0.75, 'efficiency': 1, 'tolerance': 0.25, 'conscription': 2}
+GOVERNMENT_TYPE_BONUSES["Tribes"] = {'food': 1.5, 'morale': 1, 'efficiency': 0.1, 'tolerance': 0.5, 'conscription': 1.5}
+GOVERNMENT_TYPE_BONUSES["Clan"] = {'food': 0.75, 'morale': 1, 'efficiency': 0.75, 'tolerance': 0.5, 'conscription': 2}
+GOVERNMENT_TYPE_BONUSES["Duchy"] = {'food': 1.75, 'morale': 1.5, 'efficiency': 0.75, 'tolerance': 1, 'conscription': 1.25}
+GOVERNMENT_TYPE_BONUSES["Autocracy"] = {'food': 0.25, 'morale': 1, 'efficiency': 1.5, 'tolerance': 0.25, 'conscription': 4}
 
 class Nation:
     def __init__(self, parent, cities=None):
@@ -132,6 +145,10 @@ class Nation:
 
         self.armor_list = random.sample(armor_list, 2)
         self.basic_armor_list = random.sample(basic_armor_list, 2)
+        
+        self.mount_list = random.sample(mount_list, 2)
+        self.basic_mount_list = random.sample(basic_mount_list, 2)
+        self.mount_none = mount_none
 
         self.army_structure = Troop.init_troop(self.language.make_word(self.language.name_length, True), self)
 
@@ -151,6 +168,7 @@ class Nation:
             place_name = self.language.make_name_word()
 
         self.name = NationName(random.sample(MODIFIERS, max(0, random.randint(0, 8) - 5)), random.choice(GOVERNMENT_TYPES), [place_name])
+
 
         #Otherwise we were initialized with some cities and such stuff
         if len(self.cities) == 0:
@@ -603,6 +621,8 @@ class Nation:
             amount += weapon.cost
 
         amount += troop.armor.cost
+        
+        amount += troop.mount.cost
 
         # print('{} ({},{},{}) costs {}'.format(troop.name, troop.tier, troop.weapons, troop.armor, amount))
 
