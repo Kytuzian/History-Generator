@@ -245,7 +245,7 @@ falx = Weapon('Falx', 75, 14, 1.8, 8, 1, 2, 0.8, reload_time=7, armor_pierce=-1)
 great_axe = Weapon('Great Axe', 100, 14, 1.4, 10, 0, 2, 0.5, reload_time=10)
 
 war_hammer = Weapon('War hammer', 250, 14, 1.6, 15, 0, 2, 0, reload_time=13, armor_pierce=1)
-short_spear = Weapon('Short Spear', 50, 12, 1.2, 5, 2, 1.8, 1.2, reload_time=9, armor_pierce=1)
+short_spear = Weapon('Short Spear', 50, 10, 1.2, 5, 2, 1.8, 1.2, reload_time=9, armor_pierce=1)
 scimitar = Weapon('Scimitar', 80, 10, 2.0, 5, 0, 2, 0.5, reload_time=4, armor_pierce=-1)
 estoc = Weapon('Estoc', 175, 12, 2.2, 8, 2, 1, 1.5, reload_time=8)
 gladius = Weapon('Gladius', 120, 8, 1.8, 7, 1, 2, 1.5, reload_time=7)
@@ -306,7 +306,7 @@ atlatl = Weapon('Atlatl', 150, 175, 0.5, 8, 1, 2.0, 1, reload_time=70, ammunitio
 shortbow = Weapon('Shortbow', 75, 300, 0.5, 4, 1, 2, 1, reload_time=70, ammunition=15, projectile_speed=10, projectile_size=6)
 bow = Weapon('Bow', 125, 350, 0.5, 5, 1, 2, 1, reload_time=80, ammunition=15, projectile_speed=12, projectile_size=8)
 longbow = Weapon('Longbow', 200, 400, 0.5, 6, 1, 2.5, 1, reload_time=90, ammunition=15, projectile_speed=14, armor_pierce=1, projectile_size=9)
-crossbow = Weapon('Crossbow', 250, 450, 1.5, 10, 1, 1, 1, reload_time=200, ammunition=15, projectile_speed=20, armor_pierce=1, projectile_size=4)
+crossbow = Weapon('Crossbow', 250, 450, 1.5, 10, 1, 1, 1, reload_time=120, ammunition=15, projectile_speed=20, armor_pierce=1, projectile_size=4)
 sling_staff = Weapon('Sling Staff', 60, 300, 0, 5, 2, 2, 1, reload_time=60, ammunition=20, projectile_speed=12, armor_pierce=-1, projectile_size=2)
 
 #Ranged - Kenny Additions
@@ -319,31 +319,31 @@ stones = Weapon('Stones', 0, 80, 0, 1, 0, 1.8, 1, reload_time=30, ammunition=100
 darts = Weapon('Darts', 3, 80, 0, 2, 0, 1.8, 1, reload_time=20, ammunition=30, projectile_speed=5, armor_pierce=1, projectile_size=1)
 pilum = Weapon('Pilum', 100, 200, 0, 12, 0, 2, 1, reload_time=10, ammunition=3, projectile_speed=6, armor_pierce=1, projectile_size=12)
 
-recurve_bow = Weapon('Recurve Bow', 200, 320, 0.8, 7, 1, 3, 1, reload_time=90, ammunition=15, projectile_speed=14, armor_pierce=1, projectile_size=7)
-war_bow = Weapon('War Bow', 185, 350, 0.5, 8, 0.5, 2, 0.5, reload_time=100, ammunition=15, projectile_speed=13, armor_pierce=1, projectile_size=8)
+recurve_bow = Weapon('Recurve Bow', 200, 320, 0.8, 7, 1, 3, 1, reload_time=75, ammunition=15, projectile_speed=14, armor_pierce=1, projectile_size=7)
+war_bow = Weapon('War Bow', 185, 350, 0.5, 8, 0.5, 2, 0.5, reload_time=80, ammunition=15, projectile_speed=13, armor_pierce=1, projectile_size=8)
 self_bow = Weapon('Self Bow', 145, 300, 0.5, 6, 1, 2, 1, reload_time=70, ammunition=15, projectile_speed=12, armor_pierce=-1, projectile_size=6)
 hunting_bow = Weapon('Hunting Bow', 105, 280, 0.3, 4, 1, 2.5, 1, reload_time=60, ammunition=15, projectile_speed=10, armor_pierce=-1, projectile_size=4)
 
-arbalest = Weapon('Arbalest', 300, 500, 1.5, 12, 1, 1, 1, reload_time=250, ammunition=15, projectile_speed=30, armor_pierce=1, projectile_size=4)
-hunting_crossbow = Weapon('Hunting Crossbow', 200, 400, 1.5, 8, 1, 1, 1, reload_time=150, ammunition=15, projectile_speed=15, armor_pierce=-1, projectile_size=2)
+arbalest = Weapon('Arbalest', 300, 500, 1.5, 12, 1, 1, 1, reload_time=150, ammunition=15, projectile_speed=30, armor_pierce=1, projectile_size=4)
+hunting_crossbow = Weapon('Hunting Crossbow', 200, 400, 1.5, 8, 1, 1, 1, reload_time=100, ammunition=15, projectile_speed=15, armor_pierce=-1, projectile_size=2)
 
-handgun = Weapon('Handgun', 500, 350, 1.5, 30, 1, 1, 1, reload_time=400, ammunition=15, projectile_speed=40, armor_pierce=1, projectile_size=1)
-flintlock_pistol = Weapon('Flintlock Pistol', 400, 200, 1.5, 20, 1, 1, 1, reload_time=350, ammunition=15, projectile_speed=30, projectile_size=1)
-flintlock_rifle = Weapon('Flintlock Rifle', 600, 380, 1.5, 33, 1, 1, 1, reload_time=450, ammunition=15, projectile_speed=50, armor_pierce=1, projectile_size=1)
-matchlock_rifle = Weapon('Matchlock Rifle', 650, 400, 1.5, 35, 1, 1, 1, reload_time=470, ammunition=15, projectile_speed=50, armor_pierce=1, projectile_size=1)
-blunderbuss = Weapon('Blunderbuss', 550, 200, 1.5, 50, 1, 1, 1, reload_time=500, ammunition=15, projectile_speed=30, projectile_size=2)
-arquebus = Weapon('Arquebus', 700, 400, 1.5, 40, 1, 1, 1, reload_time=500, ammunition=15, projectile_speed=45, armor_pierce=1, projectile_size=1)
-musket = Weapon('Musket', 1000, 500, 1.5, 50, 1, 1, 1, reload_time=600, ammunition=15, projectile_speed=60, armor_pierce=1, projectile_size=1)
+handgun = Weapon('Handgun', 500, 350, 1.5, 30, 1, 1, 1, reload_time=200, ammunition=15, projectile_speed=40, armor_pierce=1, projectile_size=1)
+flintlock_pistol = Weapon('Flintlock Pistol', 400, 200, 1.5, 20, 1, 1, 1, reload_time=170, ammunition=15, projectile_speed=30, projectile_size=1)
+flintlock_rifle = Weapon('Flintlock Rifle', 600, 380, 1.5, 33, 1, 1, 1, reload_time=250, ammunition=15, projectile_speed=50, armor_pierce=1, projectile_size=1)
+matchlock_rifle = Weapon('Matchlock Rifle', 650, 400, 1.5, 35, 1, 1, 1, reload_time=270, ammunition=15, projectile_speed=50, armor_pierce=1, projectile_size=1)
+blunderbuss = Weapon('Blunderbuss', 550, 200, 1.5, 50, 1, 1, 1, reload_time=300, ammunition=15, projectile_speed=30, projectile_size=2)
+arquebus = Weapon('Arquebus', 700, 400, 1.5, 40, 1, 1, 1, reload_time=300, ammunition=15, projectile_speed=45, armor_pierce=1, projectile_size=1)
+musket = Weapon('Musket', 1000, 500, 1.5, 50, 1, 1, 1, reload_time=320, ammunition=15, projectile_speed=60, armor_pierce=1, projectile_size=1)
 
 
 #Ranged Siege - Kenny Additions
-trebuchet = Weapon('Trebuchet', 950, 600, 1.5, 60, 1, 1, 1, reload_time=800, ammunition=5, projectile_speed=30, siege_weapon=True, projectile_size=20)
-scorpio = Weapon('Scorpio', 700, 500, 1.5, 40, 1, 1, 1, reload_time=700, ammunition=20, projectile_speed=60, siege_weapon=True, projectile_size=7)
-ballista = Weapon('Ballista', 600, 500, 1.5, 42, 1, 1, 1, reload_time=800, ammunition=20, projectile_speed=50, siege_weapon=True, projectile_size=9)
-onager = Weapon('Onager', 750, 550, 1.5, 50, 1, 1, 1, reload_time=700, ammunition=10, projectile_speed=25, siege_weapon=True, projectile_size=19)
-mortar = Weapon('Mortar', 850, 600, 1.5, 55, 1, 1, 1, reload_time=750, ammunition=10, projectile_speed=20, siege_weapon=True, projectile_size=17)
-cannon = Weapon('Cannon', 1000, 650, 1.5, 60, 1, 1, 1, reload_time=1000, ammunition=10, projectile_speed=45, siege_weapon=True, projectile_size=18)
-catapult = Weapon('Catapult', 750, 530, 1.5, 60, 1, 1, 1, reload_time=600, ammunition=30, projectile_speed=25, siege_weapon=True, projectile_size=19)
+trebuchet = Weapon('Trebuchet', 950, 600, 1.5, 60, 1, 1, 1, reload_time=800/2, ammunition=5, projectile_speed=30, siege_weapon=True, projectile_size=20)
+scorpio = Weapon('Scorpio', 700, 500, 1.5, 40, 1, 1, 1, reload_time=700/2, ammunition=20, projectile_speed=60, siege_weapon=True, projectile_size=7)
+ballista = Weapon('Ballista', 600, 500, 1.5, 42, 1, 1, 1, reload_time=800/2, ammunition=20, projectile_speed=50, siege_weapon=True, projectile_size=9)
+onager = Weapon('Onager', 750, 550, 1.5, 50, 1, 1, 1, reload_time=700/2, ammunition=10, projectile_speed=25, siege_weapon=True, projectile_size=19)
+mortar = Weapon('Mortar', 850, 600, 1.5, 55, 1, 1, 1, reload_time=750/2, ammunition=10, projectile_speed=20, siege_weapon=True, projectile_size=17)
+cannon = Weapon('Cannon', 1000, 650, 1.5, 60, 1, 1, 1, reload_time=1000/2, ammunition=10, projectile_speed=45, siege_weapon=True, projectile_size=18)
+catapult = Weapon('Catapult', 750, 530, 1.5, 60, 1, 1, 1, reload_time=600/2, ammunition=30, projectile_speed=25, siege_weapon=True, projectile_size=19)
 
 
 all_ranged_weapons = [scorpio, ballista, onager, mortar, cannon, catapult, musket, arquebus, blunderbuss, matchlock_rifle, flintlock_rifle, flintlock_pistol, arbalest, hunting_crossbow, recurve_bow, war_bow, self_bow, hunting_bow, throwing_knives, throwing_axes, throwing_daggers, jarid, stones, darts, atlatl, sling, shortbow, longbow, javelin, bow, crossbow, sling_staff, handgun, trebuchet]

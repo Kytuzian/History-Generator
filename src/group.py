@@ -123,13 +123,13 @@ class Group:
 
         self.path_ids = []
         # DRAW THE PATH SQUARES HERE
-        for x, y in self.cur_path:
-            id = self.canvas.create_rectangle(int(x) * utility.CELL_SIZE,
-                                              int(y) * utility.CELL_SIZE,
-                                              int(x) * utility.CELL_SIZE + utility.CELL_SIZE,
-                                              int(y) * utility.CELL_SIZE + utility.CELL_SIZE,
-                                              fill=self.color, width=0)
-            self.path_ids.append(id)
+        # for x, y in self.cur_path:
+        #     id = self.canvas.create_rectangle(int(x) * utility.CELL_SIZE,
+        #                                       int(y) * utility.CELL_SIZE,
+        #                                       int(x) * utility.CELL_SIZE + utility.CELL_SIZE,
+        #                                       int(y) * utility.CELL_SIZE + utility.CELL_SIZE,
+        #                                       fill=self.color, width=0)
+        #     self.path_ids.append(id)
 
         self.canvas.tag_raise(self.id)
 
@@ -161,7 +161,6 @@ class Group:
         if utility.rough_match(self.x, self.end_x, GROUP_SPEED_MULTIPLIER) and utility.rough_match(self.y, self.end_y, GROUP_SPEED_MULTIPLIER):
             self.canvas.delete(self.id)
             self.on_end(self)
-            self.end_move()
 
             return True
 
