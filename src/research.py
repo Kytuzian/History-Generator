@@ -52,6 +52,23 @@ class Weapon:
 
         return res
 
+    def upgrade(self, level):
+        self.range += random.randint(0, level)
+
+        self.material_multiplier += random.randint(0, level)
+
+        self.attack += random.randint(0, level)
+        self.defense += random.randint(0, level)
+
+        self.reload_time += random.randint(0, level)
+        self.ammunition += random.randint(0, level) * 5
+        self.projectile_speed += random.randint(0, level)  
+
+    def upgrade_skill(self, level):
+        self.attack_skill_multiplier += random.randint(0, level) / 5
+        self.defense_skill_multiplier += random.randint(0, level) / 5
+
+
     def get_attack(self, material):
         effective_attack = self.attack
 
@@ -102,6 +119,22 @@ class Armor:
 
         return res
 
+    def upgrade(self, level):
+        #self.range += random.randint(0, level)
+
+        self.material_multiplier += random.randint(0, level)
+
+        #self.attack += random.randint(0, level)
+        self.defense += random.randint(0, level) * 2
+
+        #self.reload_time += random.randint(0, level)
+        #self.ammunition += random.randint(0, level) * 5
+        #self.projectile_speed += random.randint(0, level) 
+
+    def upgrade_skill(self, level):
+        #self.attack_skill_multiplier += random.randint(0, level)
+        self.defense_skill_multiplier += random.randint(0, level) / 5
+
     def get_defense(self, material):
         effective_defense = self.defense
 
@@ -111,13 +144,56 @@ class Armor:
         return random.randint(0, int(effective_defense))
 
     def copy(self):
-        return Armor(self.name, self.cost, self.material_multiplier, self.defense, self.defense_skill_multiplier)
+        return Armor(self.name, self.cost, self.material_multiplier, self.defense, self.defense_skill_multiplier, self.heavy)
 
     def __call__(self):
         return self.copy()
 
     def __repr__(self):
         return '{} (x{}): {} ({})'.format(self.name, self.material_multiplier, self.defense, self.defense_skill_multiplier)
+
+class Mount:
+    def __init__(self, name, cost, speed, attack, defense, attack_skill_multiplier, defense_skill_multiplier, heavy=False):
+        self.name = name
+
+        self.cost = cost
+
+        self.speed = speed
+        self.attack = attack
+        self.defense = defense
+        self.attack_skill_multiplier = attack_skill_multiplier
+        self.defense_skill_multiplier = defense_skill_multiplier
+
+        self.heavy = heavy
+
+    def get_info(self):
+        res = {}
+
+        res['name'] = self.name
+        res['cost'] = self.cost
+        res['speed'] = speed
+        res['attack'] = attack
+        res['defense'] = self.defense
+        res['attack_skill_multiplier'] = self.attack_skill_multiplier
+        res['defense_skill_multiplier'] = self.defense_skill_multiplier
+        res['heavy'] = heavy
+
+        return res
+
+
+    def get_defense(self):
+        effective_defense = self.defense
+        return random.randint(0, int(effective_defense))
+
+    def copy(self):
+        return Armor(self.name, self.cost, self.speed, self.attack, self.defense, self.attack_skill_multiplier, self.defense_skill_multiplier, self.heavy)
+
+    def __call__(self):
+        return self.copy()
+
+    def __repr__(self):
+        return '{} (x{}): {} ({})'.format(self.name, self.material_multiplier, self.defense)
+
 
 #------------------------------
 # WEAPON AND ARMOR DEFINITIONS
@@ -132,7 +208,7 @@ kopis = Weapon('Kopis', 40, 6, 1.8, 6, 1, 2, 1, reload_time=3, armor_pierce=-1)
 shortsword = Weapon('Shortsword', 50, 7, 1.8, 5, 2, 2, 1.1, reload_time=4, armor_pierce=-1)
 club = Weapon('Club', 10, 7, 0, 5, 2, 1, 1, reload_time=6)
 hammer = Weapon('Hammer', 25, 7, 1.3, 6, 1, 1.5, 0.8, reload_time=5, armor_pierce=1)
-mace = Weapon('Mace', 40, 7, 1.5, 6, 1, 1.8, 1.0, reload_time=5)
+mace = Weapon('Mace', 40, 7, 1.5, 6, 1, 1.8, 1.0, reload_time=5, armor_pierce=1)
 axe = Weapon('Axe', 30, 7, 1.8, 8, 2, 2.5, 0.8, reload_time=7)
 morning_star = Weapon('Morning Star', 200, 7, 1.5, 8, 0, 2, 0.2, reload_time=10, armor_pierce=1)
 
@@ -188,7 +264,7 @@ goedendag = Weapon('Goedendag', 20, 11, 1.1, 4, 2, 1.5, 1, reload_time=7, armor_
 
 #Long
 polehammer = Weapon('Polehammer', 100, 15, 1.0, 8, 2, 2, 1, reload_time=11, armor_pierce=1)
-staff = Weapon('Staff', 10, 15, 0, 3, 3, 2, 2, reload_time=7, armor_pierce=-1)
+staff = Weapon('Staff', 20, 7, 1.0, 1, 1, 2, 2, reload_time=7)
 spear = Weapon('Spear', 40, 20, 1.0, 4, 4, 1.5, 1.5, reload_time=7, armor_pierce=1)
 pike = Weapon('Pike', 80, 25, 1.0, 5, 5, 1.5, 1.5, reload_time=9, armor_pierce=1)
 sarissa = Weapon('Sarissa', 160, 35, 1.0, 7, 3, 2, 2, reload_time=12)
@@ -221,7 +297,7 @@ pavise = Weapon('Pavise Shield', 200, 3, 1.5, 0.75, 25, 1, 2, reload_time=15, sh
 all_melee_weapons = [unarmed, pick, hatchet, macuahuitl, falchion, sabre, cleaver, sickle, katana, war_axe, battle_axe, knife, hand_axe, war_hammer, short_spear, scimitar, estoc, gladius, daikatana, nodachi, maul, short_voulge, zweihander, flamberge, clamshell, longsword, goedendag, bardiche, voulge, naginata, war_spear, sledgehammer, glaive, lance, tanto, halberd, poleaxe, great_axe, rapier, polehammer, kopis, mace, falx, club, hammer, dagger, rondel, dirk, shortsword, sword, bastard_sword, claymore, spear, staff, bill, pike, sarissa, axe, flail, morning_star]
 weapon_list = [tanto, halberd, poleaxe, great_axe, rapier, polehammer, sword, mace, falx, shortsword, bastard_sword, claymore, spear, staff, pike, sarissa, axe, flail, morning_star, bill]
 
-sidearm_list = [shield, leather_shield, wooden_shield, buckler, round_shield, kite_shield, heater_shield, board_shield, tower_shield, pavise, pick, hatchet, falchion, sabre, cleaver, sickle, knife, hand_axe, tanto, dagger, club, mace, kopis, hammer, rondel, dirk, staff, shortsword, axe, spear]
+sidearm_list = [unarmed, shield, leather_shield, wooden_shield, buckler, round_shield, kite_shield, heater_shield, board_shield, tower_shield, pavise, pick, hatchet, falchion, sabre, cleaver, sickle, knife, hand_axe, tanto, dagger, club, mace, kopis, hammer, rondel, dirk, staff, shortsword, axe, spear]
 basic_weapon_list = [katana, macuahuitl, falchion, sabre, war_axe, battle_axe, goedendag, short_spear, short_voulge, club, mace, hammer, staff, shortsword, axe, spear]
 
 sling = Weapon('Sling', 15, 250, 0, 3, 1, 1.8, 1, reload_time=60, ammunition=25, projectile_speed=7, armor_pierce=-1, projectile_size=2)
@@ -322,6 +398,28 @@ armor_list = [lorica, byrnie, desert_mail, surcoat, brigandine, corrazina, scale
 
 armor_list = [royal_armor, royal_mail, holy_armor, holy_mail,lorica, byrnie, desert_mail, surcoat, brigandine, corrazina, scale_armor, coat_plate, cuir_bouilli, wood_armor, hauberk, lamellar, chainmail, plate]
 basic_armor_list = [tunic, robe, fur_coat, jerkin, linen_shirt, aketon, tabard, ragged_armor, tribal_wrappings, gambeson, cloth_armor, leather_armor, wood_armor, padded_armor]
+
+
+#elf, name, cost, speed, attack, defense, attack_skill_multiplier, defense_skill_multiplier, heavy=False
+mount_none = Mount('None', 0, 0, 0, 0, 0, 0)
+
+camel = Mount('Camel', 200, 5/2, 1, 0, 0.2, 0.2)
+donkey = Mount('Donkey', 100, 3/2, 0, 1, 0.1, 0.3)
+rouncey = Mount('Rouncey', 300, 6/2, 1, 1, 0.2, 0.1)
+horse = Mount('Donkey', 400, 7/2, 3, 1, 0.2, 0.2)
+destrier = Mount('Destrier', 500, 8/2, 1, 3, 0.3, 0.3)
+courser = Mount('Courser', 600, 10/2, 2, 1, 0.4, 0.3)
+
+cataphract = Mount('Cataphract', 1200, 4/2, 2, 5, 0.5, 1.3, heavy=True)
+charger = Mount('Charger', 1500, 7/2, 5, 2, 1.4, 0.4, heavy=True)
+warhorse = Mount('Warhorse', 1300, 5/2, 3, 3, 1.4, 1.3, heavy=True)
+barded_warhorse = Mount('Barded Warhorse', 1800, 4/2, 2, 4, 1.3, 1.4, heavy=True)
+elephant = Mount('Elephant', 2000, 3/2, 7, 7, 1.8, 2.3, heavy=True)
+
+
+
+basic_mount_list = [camel, donkey, rouncey, horse]
+mount_list = [camel, donkey, rouncey, horse, destrier, courser, cataphract, charger, warhorse, barded_warhorse, elephant]
 
 #------------------------------
 

@@ -1,467 +1,148 @@
-{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 0', 'city_a': 'Lopuugfec'}}
+{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 0', 'city_a': 'Nvjyaqux'}}
 {'date': (1, 1, 1), 'name': 'NationFounded', 'event_data': {'nation_a': 'nation 0'}}
-{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 1', 'city_a': 'Dgmal'}}
+{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 1', 'city_a': 'Gmh'}}
 {'date': (1, 1, 1), 'name': 'NationFounded', 'event_data': {'nation_a': 'nation 1'}}
-{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 2', 'city_a': 'Eainb'}}
+{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 2', 'city_a': 'Voyush'}}
 {'date': (1, 1, 1), 'name': 'NationFounded', 'event_data': {'nation_a': 'nation 2'}}
-{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 3', 'city_a': 'Eyvceizkuk'}}
+{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 3', 'city_a': 'Ezrb'}}
 {'date': (1, 1, 1), 'name': 'NationFounded', 'event_data': {'nation_a': 'nation 3'}}
-{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 4', 'city_a': 'Piaasdj'}}
+{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 4', 'city_a': 'Voqauehj'}}
 {'date': (1, 1, 1), 'name': 'NationFounded', 'event_data': {'nation_a': 'nation 4'}}
-{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 5', 'city_a': 'Iueryus'}}
+{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 5', 'city_a': 'Fieoagyi'}}
 {'date': (1, 1, 1), 'name': 'NationFounded', 'event_data': {'nation_a': 'nation 5'}}
-{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 6', 'city_a': 'Taah'}}
+{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 6', 'city_a': 'Zfieah'}}
 {'date': (1, 1, 1), 'name': 'NationFounded', 'event_data': {'nation_a': 'nation 6'}}
-{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 7', 'city_a': 'Jyeiklaoik'}}
+{'date': (1, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 7', 'city_a': 'Oairoaitayl'}}
 {'date': (1, 1, 1), 'name': 'NationFounded', 'event_data': {'nation_a': 'nation 7'}}
-{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Daffodil Period', 'person_a_role': 'artist', 'nation_a': 'nation 0', 'person_a_prev_role': '', 'person_a': 'Uvoam Zeiuhuuoks'}}
-{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'artist', 'nation_a': 'nation 0', 'person_a': 'Uvoam Zeiuhuuoks'}}
-{'date': (1, 1, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 7'}}
-{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Flower Period', 'person_a_role': 'composer', 'nation_a': 'nation 1', 'person_a_prev_role': '', 'person_a': 'Kosyaee Vchijw'}}
-{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'composer', 'nation_a': 'nation 1', 'person_a': 'Kosyaee Vchijw'}}
-{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Priest', 'person_a_role': 'priest', 'nation_a': 'nation 2', 'person_a_prev_role': '', 'person_a': 'Biuyjcoyefyg Jeyigab'}}
-{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'priest', 'nation_a': 'nation 2', 'person_a': 'Biuyjcoyefyg Jeyigab'}}
-{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Revolutionary', 'person_a_role': 'revolutionary', 'nation_a': 'nation 3', 'person_a_prev_role': '', 'person_a': 'Xaoixped Fiihyg'}}
-{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'revolutionary', 'nation_a': 'nation 3', 'person_a': 'Xaoixped Fiihyg'}}
-{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Professional', 'person_a_role': 'professional', 'nation_a': 'nation 4', 'person_a_prev_role': '', 'person_a': 'Qyy Aeuucdy'}}
-{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'professional', 'nation_a': 'nation 4', 'person_a': 'Qyy Aeuucdy'}}
-{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Conqueror', 'person_a_role': 'conqueror', 'nation_a': 'nation 5', 'person_a_prev_role': '', 'person_a': 'Ruia Quiope'}}
-{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'conqueror', 'nation_a': 'nation 5', 'person_a': 'Ruia Quiope'}}
-{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'The White Period', 'person_a_role': 'scientist', 'nation_a': 'nation 6', 'person_a_prev_role': '', 'person_a': 'Xznoyowk Woeaende'}}
-{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'scientist', 'nation_a': 'nation 6', 'person_a': 'Xznoyowk Woeaende'}}
-{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'The Fast Cycle', 'person_a_role': 'oracle', 'nation_a': 'nation 7', 'person_a_prev_role': '', 'person_a': 'Vuyaheox Oyit'}}
-{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'oracle', 'nation_a': 'nation 7', 'person_a': 'Vuyaheox Oyit'}}
-{'date': (1, 2, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 5'}}
-{'date': (1, 2, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 7'}}
-{'date': (1, 2, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 2'}}
-{'date': (1, 3, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 6'}}
-{'date': (1, 4, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Uvoam Zeiuhuuoks Teq Txuwgfl (Uvoam Zeiuhuuoks the Artist) by Uvoam Zeiuhuuoks. It is a scene painting, made with tempera on wood. ', 'nation_a': 'nation 0', 'person_a': 'Uvoam Zeiuhuuoks'}}
-{'date': (1, 4, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 3', 'nation_b': 'nation 7'}}
-{'date': (1, 4, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 1'}}
-{'date': (1, 4, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 1'}}
-{'date': (1, 5, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 3'}}
-{'date': (1, 5, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'scientist', 'art': 'Wuoot Xznoyowk Woeaende Jioiqndaz (The Xznoyowk Woeaende Experiment) by Xznoyowk Woeaende. It is a scientific essay. The experiment was marginally unsuccessful.', 'nation_a': 'nation 6', 'person_a': 'Xznoyowk Woeaende'}}
-{'date': (1, 7, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 3', 'nation_b': 'nation 5'}}
-{'date': (1, 7, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 7'}}
-{'date': (1, 8, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 2'}}
-{'date': (1, 8, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 3'}}
-{'date': (1, 8, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 6', 'nation_b': 'nation 5'}}
-{'date': (1, 10, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 2'}}
-{'date': (1, 10, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 3'}}
-{'date': (1, 11, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 6', 'nation_b': 'nation 7'}}
-{'date': (2, 1, 1), 'name': 'ReligionDomainRemoved', 'event_data': {'domain_a': 'war', 'religion_a': 'Atfcuap', 'god_a': 'Jeaenid'}}
-{'date': (2, 1, 1), 'name': 'ReligionDomainAdded', 'event_data': {'domain_a': 'passion', 'religion_a': 'Iqkxeyuw', 'god_a': 'Zoaxryw'}}
-{'date': (2, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Teiyokr', 'god_a': 'Qyiyy'}}
-{'date': (2, 1, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 7'}}
-{'date': (2, 2, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 1', 'nation_b': 'nation 6'}}
-{'date': (2, 2, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 1'}}
-{'date': (2, 4, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 1'}}
-{'date': (2, 4, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 6'}}
-{'date': (2, 8, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 4'}}
-{'date': (3, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 2'}}
-{'date': (3, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 7'}}
-{'date': (3, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 2'}}
-{'date': (3, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 7'}}
-{'date': (3, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 4'}}
-{'date': (3, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 7'}}
-{'date': (3, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 5'}}
-{'date': (3, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 6'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Romantic Period', 'person_a_role': 'scientist', 'nation_a': 'nation 0', 'person_a_prev_role': '', 'person_a': 'Vybaiq Nnyybgg'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'scientist', 'nation_a': 'nation 0', 'person_a': 'Vybaiq Nnyybgg'}}
+{'date': (1, 1, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 4'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'General', 'person_a_role': 'general', 'nation_a': 'nation 1', 'person_a_prev_role': '', 'person_a': 'Moyumiao Uouxin'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'general', 'nation_a': 'nation 1', 'person_a': 'Moyumiao Uouxin'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'The Daffodil Cycle', 'person_a_role': 'historian', 'nation_a': 'nation 2', 'person_a_prev_role': '', 'person_a': 'Fiiud Giuocleoop'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'historian', 'nation_a': 'nation 2', 'person_a': 'Fiiud Giuocleoop'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Flower Period', 'person_a_role': 'philosopher', 'nation_a': 'nation 3', 'person_a_prev_role': '', 'person_a': 'Qxiaq Luajon'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'philosopher', 'nation_a': 'nation 3', 'person_a': 'Qxiaq Luajon'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Master', 'person_a_role': 'master', 'nation_a': 'nation 4', 'person_a_prev_role': '', 'person_a': 'Foqoc Qmcygij'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'master', 'nation_a': 'nation 4', 'person_a': 'Foqoc Qmcygij'}}
+{'date': (1, 1, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 4', 'nation_b': 'nation 2'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'General', 'person_a_role': 'general', 'nation_a': 'nation 5', 'person_a_prev_role': '', 'person_a': 'Eaopoc Foayjp'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'general', 'nation_a': 'nation 5', 'person_a': 'Eaopoc Foayjp'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'The Flower Period', 'person_a_role': 'historian', 'nation_a': 'nation 6', 'person_a_prev_role': '', 'person_a': 'Piuirp Eeftug'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'historian', 'nation_a': 'nation 6', 'person_a': 'Piuirp Eeftug'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'The Long Period', 'person_a_role': 'oracle', 'nation_a': 'nation 7', 'person_a_prev_role': '', 'person_a': 'Keauj Laa'}}
+{'date': (1, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'oracle', 'nation_a': 'nation 7', 'person_a': 'Keauj Laa'}}
+{'date': (1, 2, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 2'}}
+{'date': (1, 2, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 4'}}
+{'date': (1, 2, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 1'}}
+{'date': (1, 2, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 6', 'nation_b': 'nation 2'}}
+{'date': (1, 3, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 0'}}
+{'date': (1, 3, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 7'}}
+{'date': (1, 4, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 7', 'nation_b': 'nation 5'}}
+{'date': (1, 5, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 5', 'nation_b': 'nation 2'}}
+{'date': (1, 6, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 1', 'nation_b': 'nation 6'}}
+{'date': (1, 6, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 1'}}
+{'date': (1, 6, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 0'}}
+{'date': (1, 6, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 7', 'nation_b': 'nation 2'}}
+{'date': (1, 9, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 3', 'nation_b': 'nation 4'}}
+{'date': (1, 9, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 4'}}
+{'date': (1, 9, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 6', 'nation_b': 'nation 5'}}
+{'date': (1, 10, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 1', 'nation_b': 'nation 5'}}
+{'date': (2, 1, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 6', 'nation_b': 'nation 7'}}
+{'date': (2, 4, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 3', 'nation_b': 'nation 0'}}
+{'date': (2, 6, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 3', 'nation_b': 'nation 2'}}
+{'date': (2, 6, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 6', 'nation_b': 'nation 3'}}
+{'date': (2, 9, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 5', 'nation_b': 'nation 3'}}
+{'date': (2, 11, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 3', 'nation_b': 'nation 7'}}
+{'date': (3, 1, 1), 'name': 'ReligionDomainRemoved', 'event_data': {'domain_a': 'morale', 'religion_a': 'Trhrw', 'god_a': 'Tieiheuyhj'}}
+{'date': (3, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 1'}}
+{'date': (3, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 5'}}
+{'date': (3, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 4'}}
+{'date': (3, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 3'}}
+{'date': (3, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 6'}}
+{'date': (3, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 1'}}
 {'date': (3, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 7'}}
-{'date': (3, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 3'}}
-{'date': (3, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 1'}}
-{'date': (3, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 0'}}
-{'date': (3, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 5'}}
-{'date': (3, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 7'}}
-{'date': (3, 1, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 0'}}
-{'date': (3, 1, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 6'}}
-{'date': (3, 2, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 3', 'nation_b': 'nation 2'}}
-{'date': (3, 2, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 6', 'nation_b': 'nation 2'}}
-{'date': (3, 3, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 2'}}
-{'date': (3, 3, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 2', 'army_size': 9, 'reason': 'attack', 'city_b': 'Eainb', 'city_a': 'Eyvceizkuk'}}
-{'date': (3, 5, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 1'}}
-{'date': (3, 6, 1), 'name': 'Attack', 'event_data': {'remaining_soldiers': 6, 'success': True, 'city_b': 'Eainb', 'nation_a': 'nation 3', 'nation_b': 'nation 2'}}
-{'date': (3, 6, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 3', 'army_size': 6, 'reason': 'return levies', 'city_b': 'Eyvceizkuk', 'city_a': 'Eainb'}}
-{'date': (3, 6, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Itvreparuooiroxautwfq (Aeosrylyyi) by Uvoam Zeiuhuuoks. It is a statue, made of copper. ', 'nation_a': 'nation 0', 'person_a': 'Uvoam Zeiuhuuoks'}}
-{'date': (3, 6, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 2'}}
-{'date': (3, 6, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 2'}}
-{'date': (3, 6, 1), 'name': 'NationEliminated', 'event_data': {'nation_a': 'nation 2'}}
-{'date': (3, 10, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 1'}}
-{'date': (3, 10, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 4'}}
-{'date': (3, 11, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 3', 'army_size': 71, 'reason': 'attack', 'city_b': 'Eainb', 'city_a': 'Lopuugfec'}}
-{'date': (4, 1, 1), 'name': 'ReligionGodRemoved', 'event_data': {'religion_a': 'Atfcuap', 'god_a': 'Jeaenid'}}
-{'date': (4, 1, 1), 'name': 'ReligionGodRemoved', 'event_data': {'religion_a': 'Iqkxeyuw', 'god_a': 'Zoawcf'}}
-{'date': (4, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 3'}}
-{'date': (4, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 4'}}
-{'date': (4, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 6'}}
-{'date': (4, 1, 1), 'name': 'RearmUnit', 'event_data': {'weapons': 'Battle Axe, Short Voulge', 'armor': 'Tribal Wrappings', 'unit_a': 'Mtyw', 'nation_a': 'nation 3'}}
-{'date': (4, 1, 1), 'name': 'NotablePersonDeath', 'event_data': {'person_a_role': 'priest', 'nation_a': 'nation 3', 'person_a': 'Biuyjcoyefyg Jeyigab'}}
-{'date': (4, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 7'}}
-{'date': (4, 1, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 3'}}
-{'date': (4, 3, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 1', 'nation_b': 'nation 7'}}
-{'date': (4, 3, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 3', 'nation_b': 'nation 6'}}
-{'date': (4, 4, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 3', 'army_size': 105, 'reason': 'attack', 'city_b': 'Eainb', 'city_a': 'Taah'}}
-{'date': (4, 5, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 4'}}
-{'date': (4, 5, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 6'}}
-{'date': (4, 5, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 3', 'nation_b': 'nation 0'}}
-{'date': (4, 5, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'scientist', 'art': 'Wuoot Xznoyowk Woeaende Jioiqndaz (The Xznoyowk Woeaende Experiment) by Xznoyowk Woeaende. It is a scientific essay. The experiment was successful.', 'nation_a': 'nation 6', 'person_a': 'Xznoyowk Woeaende'}}
-{'date': (4, 9, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 5', 'nation_b': 'nation 6'}}
-{'date': (4, 9, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 3', 'army_size': 224, 'reason': 'attack', 'city_b': 'Eainb', 'city_a': 'Taah'}}
-{'date': (5, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 5'}}
+{'date': (3, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 5'}}
+{'date': (3, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 2'}}
+{'date': (3, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 5'}}
+{'date': (3, 1, 1), 'name': 'RearmUnit', 'event_data': {'weapons': 'Bow, Round Shield', 'armor': 'Tribal Wrappings', 'unit_a': 'Tyaiggq', 'nation_a': 'nation 6'}}
+{'date': (3, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Lord', 'person_a_role': 'lord', 'nation_a': 'nation 0', 'person_a_prev_role': '', 'person_a': 'Ngdiiakd Voyrz'}}
+{'date': (3, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'lord', 'nation_a': 'nation 0', 'person_a': 'Ngdiiakd Voyrz'}}
+{'date': (3, 2, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 1'}}
+{'date': (3, 2, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 4', 'nation_b': 'nation 6'}}
+{'date': (3, 4, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 4'}}
+{'date': (3, 4, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 4'}}
+{'date': (3, 5, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 1'}}
+{'date': (3, 6, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 1', 'nation_b': 'nation 7'}}
+{'date': (3, 6, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 2', 'nation_b': 'nation 5'}}
+{'date': (3, 7, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'oracle', 'art': 'Aua Hiooiryrarupjy Kyaydqg Auameauilayovoaegm (A Foretelling of Armageddon) by Keauj Laa. It is a prophesy. This prophesy predicts that there will be armageddon in 224 years.', 'nation_a': 'nation 7', 'person_a': 'Keauj Laa'}}
+{'date': (3, 10, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 0'}}
+{'date': (3, 10, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 2', 'army_size': 35, 'reason': 'attack', 'city_b': 'Voyush', 'city_a': 'Oairoaitayl'}}
+{'date': (3, 11, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'historian', 'art': 'Qyhsij Keaytrp Wog Fiiud Giuocleoop Qyhsij Oiahsk (The Epic of Fiiud Giuocleoop the historian) by Fiiud Giuocleoop. It is a epic. ', 'nation_a': 'nation 2', 'person_a': 'Fiiud Giuocleoop'}}
+{'date': (4, 1, 1), 'name': 'ReligionDomainRemoved', 'event_data': {'domain_a': 'charity', 'religion_a': 'Lqgyiq', 'god_a': 'Eel'}}
+{'date': (4, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Ueey', 'god_a': 'Aaiduh'}}
+{'date': (4, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 2'}}
+{'date': (4, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 3'}}
+{'date': (4, 1, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 1', 'nation_b': 'nation 5'}}
+{'date': (4, 1, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 0', 'army_size': 18, 'reason': 'attack', 'city_b': 'Nvjyaqux', 'city_a': 'Gmh'}}
+{'date': (4, 1, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'philosopher', 'art': 'Gjfaan Eaamo Wqpeh Guuihiezuaetaq (The Rise of Altruism) by Qxiaq Luajon. It is a essay. ', 'nation_a': 'nation 3', 'person_a': 'Qxiaq Luajon'}}
+{'date': (4, 3, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Hero', 'person_a_role': 'hero', 'nation_a': 'nation 3', 'person_a_prev_role': '', 'person_a': 'Wzprihuzw Weizqpp'}}
+{'date': (4, 3, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'hero', 'nation_a': 'nation 3', 'person_a': 'Wzprihuzw Weizqpp'}}
+{'date': (4, 3, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 6', 'nation_b': 'nation 1'}}
+{'date': (4, 4, 1), 'name': 'Attack', 'event_data': {'remaining_soldiers': 35, 'success': True, 'city_b': 'Voyush', 'nation_a': 'nation 7', 'nation_b': 'nation 2'}}
+{'date': (4, 4, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 7', 'army_size': 35, 'reason': 'return levies', 'city_b': 'Oairoaitayl', 'city_a': 'Voyush'}}
+{'date': (4, 4, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 2'}}
+{'date': (4, 4, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 2'}}
+{'date': (4, 4, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 2', 'nation_b': 'nation 5'}}
+{'date': (4, 4, 1), 'name': 'NationEliminated', 'event_data': {'nation_a': 'nation 2'}}
+{'date': (4, 8, 1), 'name': 'Attack', 'event_data': {'remaining_soldiers': 18, 'success': True, 'city_b': 'Nvjyaqux', 'nation_a': 'nation 1', 'nation_b': 'nation 0'}}
+{'date': (4, 8, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 1', 'army_size': 18, 'reason': 'return levies', 'city_b': 'Gmh', 'city_a': 'Nvjyaqux'}}
+{'date': (4, 8, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 4'}}
+{'date': (4, 8, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 1'}}
+{'date': (4, 8, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 0'}}
+{'date': (4, 8, 1), 'name': 'NationEliminated', 'event_data': {'nation_a': 'nation 0'}}
+{'date': (4, 9, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 3', 'nation_b': 'nation 5'}}
+{'date': (4, 9, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 3', 'army_size': 52, 'reason': 'attack', 'city_b': 'Ezrb', 'city_a': 'Oairoaitayl'}}
+{'date': (5, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Vofeiyfbfo', 'god_a': 'Vcvo'}}
+{'date': (5, 1, 1), 'name': 'ReligionGodRemoved', 'event_data': {'religion_a': 'Yoignyyasc', 'god_a': 'Auufxx'}}
+{'date': (5, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Lqgyiq', 'god_a': 'Iljieijvv'}}
 {'date': (5, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 4'}}
-{'date': (5, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 5'}}
-{'date': (5, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 1'}}
-{'date': (5, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 4'}}
-{'date': (5, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 0'}}
-{'date': (5, 1, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 3', 'army_size': 128, 'reason': 'attack', 'city_b': 'Eainb', 'city_a': 'Lopuugfec'}}
-{'date': (5, 1, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 4'}}
-{'date': (5, 3, 1), 'name': 'Attack', 'event_data': {'remaining_soldiers': 88, 'success': True, 'city_b': 'Eainb', 'nation_a': 'nation 6', 'nation_b': 'nation 3'}}
-{'date': (5, 3, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 6', 'army_size': 88, 'reason': 'return levies', 'city_b': 'Taah', 'city_a': 'Eainb'}}
-{'date': (5, 3, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 6', 'army_size': 128, 'reason': 'attack', 'city_b': 'Eainb', 'city_a': 'Iueryus'}}
-{'date': (5, 4, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 5'}}
-{'date': (5, 4, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 6', 'army_size': 205, 'reason': 'attack', 'city_b': 'Eainb', 'city_a': 'Eyvceizkuk'}}
-{'date': (5, 5, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 7'}}
-{'date': (5, 7, 1), 'name': 'Attack', 'event_data': {'remaining_soldiers': 175, 'success': True, 'city_b': 'Eainb', 'nation_a': 'nation 3', 'nation_b': 'nation 6'}}
-{'date': (5, 7, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 3', 'army_size': 175, 'reason': 'return levies', 'city_b': 'Eyvceizkuk', 'city_a': 'Eainb'}}
-{'date': (5, 7, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 3', 'nation_b': 'nation 1'}}
-{'date': (5, 8, 1), 'name': 'Attack', 'event_data': {'remaining_soldiers': 216, 'success': True, 'city_b': 'Eainb', 'nation_a': 'nation 6', 'nation_b': 'nation 3'}}
-{'date': (5, 8, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 6', 'army_size': 216, 'reason': 'return levies', 'city_b': 'Taah', 'city_a': 'Eainb'}}
-{'date': (5, 8, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'scientist', 'art': 'U Wnnaaoall Zeoa Raaoeotvwl (A Study of Chemistry) by Xznoyowk Woeaende. It is a scientific essay. ', 'nation_a': 'nation 6', 'person_a': 'Xznoyowk Woeaende'}}
-{'date': (5, 10, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 6', 'army_size': 224, 'reason': 'attack', 'city_b': 'Eainb', 'city_a': 'Eyvceizkuk'}}
-{'date': (6, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Haoawon', 'god_a': 'Euinak'}}
-{'date': (6, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 1'}}
-{'date': (6, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 4'}}
-{'date': (6, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 6'}}
-{'date': (6, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 4'}}
-{'date': (6, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 5'}}
-{'date': (6, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 7'}}
-{'date': (6, 1, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 5'}}
-{'date': (6, 2, 1), 'name': 'Attack', 'event_data': {'remaining_soldiers': 221, 'success': True, 'city_b': 'Eainb', 'nation_a': 'nation 3', 'nation_b': 'nation 6'}}
-{'date': (6, 2, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 3', 'army_size': 218, 'reason': 'return levies', 'city_b': 'Eyvceizkuk', 'city_a': 'Eainb'}}
-{'date': (6, 2, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 4'}}
-{'date': (6, 4, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 3', 'army_size': 113, 'reason': 'attack', 'city_b': 'Eainb', 'city_a': 'Dgmal'}}
-{'date': (6, 6, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 6'}}
-{'date': (6, 6, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 1'}}
-{'date': (7, 1, 1), 'name': 'ReligionGodRemoved', 'event_data': {'religion_a': 'Iqkxeyuw', 'god_a': 'Zoaxryw'}}
-{'date': (7, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Haoawon', 'god_a': 'Deaukla'}}
-{'date': (7, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 7'}}
-{'date': (7, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 5'}}
-{'date': (7, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 7'}}
-{'date': (7, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 1'}}
-{'date': (7, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 6'}}
-{'date': (7, 1, 1), 'name': 'RearmUnit', 'event_data': {'weapons': 'Hunting Crossbow, Club', 'armor': 'Aketon', 'unit_a': 'Kyeihyau', 'nation_a': 'nation 4'}}
-{'date': (7, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 2'}}
-{'date': (7, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 6'}}
-{'date': (7, 1, 1), 'name': 'RearmUnit', 'event_data': {'weapons': 'Ballista, Falchion', 'armor': 'Byrnie', 'unit_a': 'Uovkoet', 'nation_a': 'nation 6'}}
-{'date': (7, 1, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 1', 'nation_b': 'nation 6'}}
-{'date': (7, 1, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 3', 'nation_b': 'nation 1'}}
-{'date': (7, 1, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 4', 'nation_b': 'nation 5'}}
-{'date': (7, 1, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 6', 'nation_b': 'nation 4'}}
-{'date': (7, 2, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 4'}}
-{'date': (7, 3, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 7'}}
-{'date': (7, 3, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 7', 'nation_b': 'nation 6'}}
-{'date': (7, 6, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 1'}}
-{'date': (7, 7, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 3', 'nation_b': 'nation 5'}}
-{'date': (7, 8, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 5', 'nation_b': 'nation 6'}}
-{'date': (7, 9, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 3', 'nation_b': 'nation 7'}}
-{'date': (8, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Ybkcis', 'god_a': 'Eoxjkozvi'}}
-{'date': (8, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 6'}}
-{'date': (8, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 7'}}
-{'date': (8, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 4'}}
-{'date': (8, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 6'}}
-{'date': (8, 1, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 3'}}
-{'date': (8, 3, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'oracle', 'art': 'Yuf Eeohauihayeyv Gayer Goiug (A Foretelling of Peace) by Vuyaheox Oyit. It is a prophesy. It predicts there will be peace in 3 years.', 'nation_a': 'nation 7', 'person_a': 'Vuyaheox Oyit'}}
-{'date': (8, 3, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 7', 'nation_b': 'nation 1'}}
-{'date': (8, 6, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Uvoam Zeiuhuuoks Teq Txuwgfl (Uvoam Zeiuhuuoks the Artist) by Uvoam Zeiuhuuoks. It is a statue, made of wood. ', 'nation_a': 'nation 0', 'person_a': 'Uvoam Zeiuhuuoks'}}
-{'date': (8, 7, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 4'}}
-{'date': (8, 8, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Leykio (Elk) by Uvoam Zeiuhuuoks. It is a scene painting, made with oil on panel. ', 'nation_a': 'nation 0', 'person_a': 'Uvoam Zeiuhuuoks'}}
-{'date': (9, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 7'}}
-{'date': (9, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 1'}}
-{'date': (9, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 6'}}
-{'date': (9, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 1'}}
-{'date': (9, 1, 1), 'name': 'NotablePersonDeath', 'event_data': {'person_a_role': 'composer', 'nation_a': 'nation 1', 'person_a': 'Kosyaee Vchijw'}}
-{'date': (9, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 0'}}
-{'date': (9, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 4'}}
-{'date': (9, 1, 1), 'name': 'TechResearch', 'event_data': {'tech_a': 'Agriculture I', 'nation_a': 'nation 3'}}
-{'date': (9, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 4'}}
-{'date': (9, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 4'}}
-{'date': (9, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'The Flower Period', 'person_a_role': 'artist', 'nation_a': 'nation 1', 'person_a_prev_role': '', 'person_a': 'Zivuidr Jihkaiemsf'}}
-{'date': (9, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'artist', 'nation_a': 'nation 1', 'person_a': 'Zivuidr Jihkaiemsf'}}
-{'date': (9, 2, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 6'}}
-{'date': (9, 4, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 3', 'nation_b': 'nation 1'}}
-{'date': (9, 5, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 3'}}
-{'date': (9, 5, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'scientist', 'art': 'U Wnnaaoall Zeoa Raaoeotvwl (A Study of Chemistry) by Xznoyowk Woeaende. It is a scientific essay. ', 'nation_a': 'nation 6', 'person_a': 'Xznoyowk Woeaende'}}
-{'date': (9, 6, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 5'}}
-{'date': (9, 7, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 4', 'nation_b': 'nation 6'}}
-{'date': (9, 9, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 3'}}
-{'date': (9, 9, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 6', 'nation_b': 'nation 1'}}
-{'date': (9, 10, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 5', 'nation_b': 'nation 1'}}
-{'date': (9, 11, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 7'}}
-{'date': (10, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Iqkxeyuw', 'god_a': 'Gboxne'}}
-{'date': (10, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 1'}}
-{'date': (10, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 4'}}
-{'date': (10, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 7'}}
-{'date': (10, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 6'}}
-{'date': (10, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 6'}}
-{'date': (10, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 6'}}
-{'date': (10, 1, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 7', 'nation_b': 'nation 1'}}
-{'date': (10, 3, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 1', 'nation_b': 'nation 4'}}
-{'date': (10, 9, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 4'}}
-{'date': (11, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Iqkxeyuw', 'god_a': 'Wyouwyouw'}}
-{'date': (11, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Ziyehyq', 'god_a': 'Syyos'}}
-{'date': (11, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 5'}}
-{'date': (11, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 6'}}
-{'date': (11, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 1'}}
-{'date': (11, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 7'}}
-{'date': (11, 2, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 1', 'nation_b': 'nation 3'}}
-{'date': (11, 5, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 4', 'nation_b': 'nation 0'}}
-{'date': (11, 6, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 6', 'nation_b': 'nation 0'}}
-{'date': (11, 8, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 3', 'nation_b': 'nation 6'}}
-{'date': (12, 1, 1), 'name': 'ReligionDomainRemoved', 'event_data': {'domain_a': 'peace', 'religion_a': 'Ybkcis', 'god_a': 'Rtbobpfs'}}
-{'date': (12, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 7'}}
-{'date': (12, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 6'}}
-{'date': (12, 2, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 3', 'nation_b': 'nation 7'}}
-{'date': (12, 2, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 4', 'nation_b': 'nation 6'}}
-{'date': (12, 3, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Uvoam Zeiuhuuoks Teq Txuwgfl (Uvoam Zeiuhuuoks the Artist) by Uvoam Zeiuhuuoks. It is a statue, made of copper. ', 'nation_a': 'nation 0', 'person_a': 'Uvoam Zeiuhuuoks'}}
-{'date': (12, 3, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 5', 'nation_b': 'nation 0'}}
-{'date': (12, 3, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 7', 'nation_b': 'nation 6'}}
-{'date': (12, 4, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Uvoam Zeiuhuuoks Teq Txuwgfl (Uvoam Zeiuhuuoks the Artist) by Uvoam Zeiuhuuoks. It is a statue, made of copper. ', 'nation_a': 'nation 0', 'person_a': 'Uvoam Zeiuhuuoks'}}
-{'date': (12, 5, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 1'}}
-{'date': (13, 1, 1), 'name': 'ReligionDomainRemoved', 'event_data': {'domain_a': 'charity', 'religion_a': 'Haoawon', 'god_a': 'Hiyepmt'}}
-{'date': (13, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 0'}}
-{'date': (13, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 1'}}
-{'date': (13, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 1'}}
-{'date': (13, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 1'}}
-{'date': (13, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 3'}}
-{'date': (13, 1, 1), 'name': 'TechResearch', 'event_data': {'tech_a': 'Housing I', 'nation_a': 'nation 3'}}
-{'date': (13, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 7'}}
-{'date': (13, 2, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 3', 'nation_b': 'nation 1'}}
-{'date': (13, 2, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 6', 'nation_b': 'nation 1'}}
-{'date': (13, 2, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'oracle', 'art': 'Yuf Eeohauihayeyv Gayer Oououqyuyya (A Foretelling of Victory) by Vuyaheox Oyit. It is a prophesy. It predicts there will be victory in 8 years.', 'nation_a': 'nation 7', 'person_a': 'Vuyaheox Oyit'}}
-{'date': (13, 4, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 7', 'nation_b': 'nation 5'}}
-{'date': (13, 7, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'oracle', 'art': 'Yuf Faeulieyjtyaie Gayer Goiug (A Prophesy of Peace) by Vuyaheox Oyit. It is a prophesy. It predicts that peace will come in 4 years.', 'nation_a': 'nation 7', 'person_a': 'Vuyaheox Oyit'}}
-{'date': (13, 11, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 7'}}
-{'date': (14, 1, 1), 'name': 'ReligionDomainAdded', 'event_data': {'domain_a': 'everything', 'religion_a': 'Teiyokr', 'god_a': 'Peyiebiyg'}}
-{'date': (14, 1, 1), 'name': 'ReligionGodRemoved', 'event_data': {'religion_a': 'Ybkcis', 'god_a': 'Eyudaoifh'}}
-{'date': (14, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Haoawon', 'god_a': 'Jaietzayyv'}}
-{'date': (14, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 1'}}
-{'date': (14, 1, 1), 'name': 'RearmUnit', 'event_data': {'weapons': 'Katana, Club', 'armor': 'Aketon', 'unit_a': 'Zugmooiytkuf', 'nation_a': 'nation 1'}}
-{'date': (14, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 6'}}
-{'date': (14, 1, 1), 'name': 'TechResearch', 'event_data': {'tech_a': 'Housing I', 'nation_a': 'nation 5'}}
-{'date': (14, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 6'}}
-{'date': (14, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 7'}}
-{'date': (14, 1, 1), 'name': 'TechResearch', 'event_data': {'tech_a': 'Housing I', 'nation_a': 'nation 7'}}
-{'date': (14, 4, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 7', 'nation_b': 'nation 6'}}
-{'date': (14, 5, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 4'}}
-{'date': (14, 5, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 7', 'nation_b': 'nation 1'}}
-{'date': (14, 6, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Uvoam Zeiuhuuoks Teq Txuwgfl (Uvoam Zeiuhuuoks the Artist) by Uvoam Zeiuhuuoks. It is a statue, made of wood. ', 'nation_a': 'nation 0', 'person_a': 'Uvoam Zeiuhuuoks'}}
-{'date': (14, 6, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 5', 'nation_b': 'nation 6'}}
-{'date': (14, 6, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'scientist', 'art': 'Wuoot Xznoyowk Woeaende Jioiqndaz (The Xznoyowk Woeaende Experiment) by Xznoyowk Woeaende. It is a scientific essay. The experiment was sort of unsuccessful.', 'nation_a': 'nation 6', 'person_a': 'Xznoyowk Woeaende'}}
-{'date': (15, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Jauoicey', 'god_a': 'Iqooybarig'}}
-{'date': (15, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 3'}}
-{'date': (15, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 1'}}
-{'date': (15, 1, 1), 'name': 'RearmUnit', 'event_data': {'weapons': 'Club, Katana', 'armor': 'Jerkin', 'unit_a': 'Zugmooiytkuf', 'nation_a': 'nation 1'}}
-{'date': (15, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 5'}}
-{'date': (15, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 1'}}
-{'date': (15, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 7'}}
-{'date': (15, 2, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 7', 'nation_b': 'nation 0'}}
-{'date': (15, 4, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 1', 'nation_b': 'nation 5'}}
-{'date': (15, 5, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'oracle', 'art': 'Yuf Faeulieyjtyaie Gayer Goiug (A Prophesy of Peace) by Vuyaheox Oyit. It is a prophesy. It predicts there will be peace in 3 years.', 'nation_a': 'nation 7', 'person_a': 'Vuyaheox Oyit'}}
-{'date': (15, 7, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 3'}}
-{'date': (15, 8, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Revolutionary', 'person_a_role': 'revolutionary', 'nation_a': 'nation 0', 'person_a_prev_role': '', 'person_a': 'Ltayukx Koaaypie'}}
-{'date': (15, 8, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'revolutionary', 'nation_a': 'nation 0', 'person_a': 'Ltayukx Koaaypie'}}
-{'date': (15, 9, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Professional', 'person_a_role': 'professional', 'nation_a': 'nation 0', 'person_a_prev_role': '', 'person_a': 'Vaueofuaun Tuyeckg'}}
-{'date': (15, 9, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'professional', 'nation_a': 'nation 0', 'person_a': 'Vaueofuaun Tuyeckg'}}
-{'date': (15, 10, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 1', 'nation_b': 'nation 6'}}
-{'date': (15, 10, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 3', 'nation_b': 'nation 6'}}
-{'date': (16, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Iqkxeyuw', 'god_a': 'Gohckqr'}}
-{'date': (16, 1, 1), 'name': 'ReligionDomainAdded', 'event_data': {'domain_a': 'the sun', 'religion_a': 'Teiyokr', 'god_a': 'Oiinaaow'}}
-{'date': (16, 1, 1), 'name': 'ReligionDomainRemoved', 'event_data': {'domain_a': 'mastery', 'religion_a': 'Ybkcis', 'god_a': 'Rtbobpfs'}}
-{'date': (16, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Haoawon', 'god_a': 'Dyiideeuyd'}}
-{'date': (16, 1, 1), 'name': 'RearmUnit', 'event_data': {'weapons': 'Blunderbuss, Kite Shield', 'armor': 'Chaimail', 'unit_a': 'Gnlylhq', 'nation_a': 'nation 0'}}
-{'date': (16, 1, 1), 'name': 'NotablePersonDeath', 'event_data': {'person_a_role': 'artist', 'nation_a': 'nation 1', 'person_a': 'Zivuidr Jihkaiemsf'}}
-{'date': (16, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 0'}}
-{'date': (16, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 6'}}
-{'date': (16, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 0'}}
-{'date': (16, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 6'}}
-{'date': (16, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 1'}}
-{'date': (16, 1, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 5'}}
-{'date': (16, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Prophet', 'person_a_role': 'prophet', 'nation_a': 'nation 1', 'person_a_prev_role': '', 'person_a': 'Keeabeoif Quouytr'}}
-{'date': (16, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'prophet', 'nation_a': 'nation 1', 'person_a': 'Keeabeoif Quouytr'}}
-{'date': (16, 1, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 7', 'nation_b': 'nation 1'}}
-{'date': (16, 1, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 8', 'city_a': 'Wiceeau'}}
-{'date': (16, 1, 1), 'name': 'NationFounded', 'event_data': {'nation_a': 'nation 8'}}
-{'date': (16, 2, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'The Flower Period', 'person_a_role': 'oracle', 'nation_a': 'nation 8', 'person_a_prev_role': '', 'person_a': 'Yyujknvui Vtiauex'}}
-{'date': (16, 2, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'oracle', 'nation_a': 'nation 8', 'person_a': 'Yyujknvui Vtiauex'}}
-{'date': (16, 3, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Piaasdj Period', 'person_a_role': 'historian', 'nation_a': 'nation 8', 'person_a_prev_role': '', 'person_a': 'Leaificy Luoutikee'}}
-{'date': (16, 3, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'historian', 'nation_a': 'nation 8', 'person_a': 'Leaificy Luoutikee'}}
-{'date': (16, 3, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 8', 'nation_b': 'nation 7'}}
-{'date': (16, 4, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 1', 'nation_b': 'nation 3'}}
-{'date': (16, 5, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 6', 'nation_b': 'nation 4'}}
-{'date': (16, 6, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 8', 'nation_b': 'nation 4'}}
-{'date': (16, 10, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'historian', 'art': 'Dysyuf Daxyuukfr Waiuk Dysyuf Jeupiw Waiuk Dysyuf Vuaykoekxkeyk Waiuk Yiukuxnw Kypur Dysyuf Vupnkasyee Luyispueymol Waiuk Haaif (The Legacy of The Treaty of The Confederacy of Piaasdj and The Parliamentary Republic of Taah) by Leaificy Luoutikee. It is a historical essay. The author, Leaificy Luoutikee believes that the legacy is of minor historical importance.', 'nation_a': 'nation 8', 'person_a': 'Leaificy Luoutikee'}}
-{'date': (16, 10, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 8', 'nation_b': 'nation 1'}}
-{'date': (16, 11, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 8'}}
-{'date': (17, 1, 1), 'name': 'ReligionDomainRemoved', 'event_data': {'domain_a': 'piety', 'religion_a': 'Iqkxeyuw', 'god_a': 'Keyujqgmf'}}
-{'date': (17, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 3'}}
-{'date': (17, 1, 1), 'name': 'TechResearch', 'event_data': {'tech_a': 'Stone Working', 'nation_a': 'nation 0'}}
-{'date': (17, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 4'}}
-{'date': (17, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 5'}}
-{'date': (17, 1, 1), 'name': 'TechResearch', 'event_data': {'tech_a': 'Mining I', 'nation_a': 'nation 6'}}
-{'date': (17, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 5'}}
-{'date': (17, 1, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 6'}}
-{'date': (17, 1, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 3', 'nation_b': 'nation 0'}}
-{'date': (17, 2, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 5', 'nation_b': 'nation 8'}}
-{'date': (17, 3, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 8', 'army_size': 555, 'reason': 'attack', 'city_b': 'Wiceeau', 'city_a': 'Iueryus'}}
-{'date': (17, 4, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 5', 'nation_b': 'nation 6'}}
-{'date': (17, 5, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 1'}}
-{'date': (17, 6, 1), 'name': 'Attack', 'event_data': {'remaining_soldiers': 539, 'success': True, 'city_b': 'Wiceeau', 'nation_a': 'nation 5', 'nation_b': 'nation 8'}}
-{'date': (17, 6, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 5', 'army_size': 392, 'reason': 'return levies', 'city_b': 'Iueryus', 'city_a': 'Wiceeau'}}
-{'date': (17, 6, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 5', 'nation_b': 'nation 3'}}
-{'date': (17, 6, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 8'}}
-{'date': (17, 6, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 8', 'nation_b': 'nation 7'}}
-{'date': (17, 6, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 8', 'nation_b': 'nation 1'}}
-{'date': (17, 6, 1), 'name': 'NationEliminated', 'event_data': {'nation_a': 'nation 8'}}
-{'date': (17, 7, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 5', 'army_size': 744, 'reason': 'attack', 'city_b': 'Wiceeau', 'city_a': 'Eyvceizkuk'}}
-{'date': (17, 7, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 4', 'nation_b': 'nation 1'}}
-{'date': (17, 7, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 8', 'nation_b': 'nation 4'}}
-{'date': (17, 8, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 7'}}
-{'date': (17, 9, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 5', 'army_size': 480, 'reason': 'attack', 'city_b': 'Wiceeau', 'city_a': 'Taah'}}
-{'date': (17, 10, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 3', 'nation_b': 'nation 7'}}
-{'date': (18, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 5'}}
-{'date': (18, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 1'}}
-{'date': (18, 1, 1), 'name': 'TechResearch', 'event_data': {'tech_a': 'Stone Working', 'nation_a': 'nation 1'}}
-{'date': (18, 1, 1), 'name': 'TechResearch', 'event_data': {'tech_a': 'Stone Working', 'nation_a': 'nation 3'}}
-{'date': (18, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 4'}}
-{'date': (18, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 6'}}
-{'date': (18, 1, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 4', 'nation_b': 'nation 5'}}
-{'date': (18, 3, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 5', 'army_size': 180, 'reason': 'attack', 'city_b': 'Wiceeau', 'city_a': 'Taah'}}
-{'date': (18, 4, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 5', 'army_size': 401, 'reason': 'attack', 'city_b': 'Wiceeau', 'city_a': 'Piaasdj'}}
-{'date': (18, 4, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'historian', 'art': 'Rioow Joiayvx Irous Ruia Quiope (The Epic of Ruia Quiope) by Leaificy Luoutikee. It is a epic. ', 'nation_a': 'nation 5', 'person_a': 'Leaificy Luoutikee'}}
-{'date': (18, 7, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 4', 'nation_b': 'nation 0'}}
-{'date': (18, 8, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 5', 'nation_b': 'nation 1'}}
-{'date': (18, 9, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 7', 'nation_b': 'nation 1'}}
-{'date': (18, 10, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 5', 'army_size': 356, 'reason': 'attack', 'city_b': 'Wiceeau', 'city_a': 'Dgmal'}}
-{'date': (18, 11, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 5', 'army_size': 487, 'reason': 'attack', 'city_b': 'Wiceeau', 'city_a': 'Eainb'}}
-{'date': (19, 1, 1), 'name': 'ReligionGodRemoved', 'event_data': {'religion_a': 'Teiyokr', 'god_a': 'Oiinaaow'}}
-{'date': (19, 1, 1), 'name': 'ReligionDomainAdded', 'event_data': {'domain_a': 'fire', 'religion_a': 'Ziyehyq', 'god_a': 'Xyhaeajyaewuo'}}
-{'date': (19, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 1'}}
-{'date': (19, 1, 1), 'name': 'TechResearch', 'event_data': {'tech_a': 'Stone Working', 'nation_a': 'nation 4'}}
-{'date': (19, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 7'}}
-{'date': (19, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 4'}}
-{'date': (19, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 6'}}
-{'date': (19, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 0'}}
-{'date': (19, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 7'}}
-{'date': (19, 1, 1), 'name': 'Attack', 'event_data': {'remaining_soldiers': 356, 'success': True, 'city_b': 'Wiceeau', 'nation_a': 'nation 1', 'nation_b': 'nation 5'}}
-{'date': (19, 1, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 1', 'army_size': 230, 'reason': 'return levies', 'city_b': 'Dgmal', 'city_a': 'Wiceeau'}}
-{'date': (19, 1, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 0'}}
-{'date': (19, 1, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 1', 'army_size': 1193, 'reason': 'attack', 'city_b': 'Wiceeau', 'city_a': 'Jyeiklaoik'}}
-{'date': (19, 3, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 6', 'nation_b': 'nation 5'}}
-{'date': (19, 3, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 1', 'army_size': 912, 'reason': 'attack', 'city_b': 'Wiceeau', 'city_a': 'Jyeiklaoik'}}
-{'date': (19, 4, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 1', 'army_size': 623, 'reason': 'attack', 'city_b': 'Wiceeau', 'city_a': 'Piaasdj'}}
-{'date': (19, 5, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 3', 'nation_b': 'nation 6'}}
-{'date': (19, 6, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 1', 'army_size': 782, 'reason': 'attack', 'city_b': 'Wiceeau', 'city_a': 'Piaasdj'}}
-{'date': (19, 6, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 5', 'nation_b': 'nation 7'}}
-{'date': (19, 7, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'oracle', 'art': 'Yuf Faeulieyjtyaie Gayer Goiug (A Prophesy of Peace) by Vuyaheox Oyit. It is a prophesy. It predicts that peace will come in 7 years.', 'nation_a': 'nation 7', 'person_a': 'Vuyaheox Oyit'}}
-{'date': (19, 7, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 7', 'nation_b': 'nation 0'}}
-{'date': (19, 8, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 4', 'nation_b': 'nation 7'}}
-{'date': (20, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Haoawon', 'god_a': 'Wuyaocaooq'}}
-{'date': (20, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 1'}}
-{'date': (20, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 1'}}
-{'date': (20, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 1'}}
-{'date': (20, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 8'}}
-{'date': (20, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 6'}}
-{'date': (20, 1, 1), 'name': 'NotablePersonDeath', 'event_data': {'person_a_role': 'scientist', 'nation_a': 'nation 6', 'person_a': 'Xznoyowk Woeaende'}}
-{'date': (20, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Revolutionary', 'person_a_role': 'revolutionary', 'nation_a': 'nation 6', 'person_a_prev_role': '', 'person_a': 'Zoeqhen Xoev'}}
-{'date': (20, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'revolutionary', 'nation_a': 'nation 6', 'person_a': 'Zoeqhen Xoev'}}
-{'date': (20, 4, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 4', 'nation_b': 'nation 1'}}
-{'date': (20, 4, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 7', 'nation_b': 'nation 3'}}
-{'date': (20, 7, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Uvoam Zeiuhuuoks Teq Txuwgfl (Uvoam Zeiuhuuoks the Artist) by Uvoam Zeiuhuuoks. It is a statue, made of bronze. ', 'nation_a': 'nation 0', 'person_a': 'Uvoam Zeiuhuuoks'}}
-{'date': (20, 9, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'artist', 'art': 'Voyumaa (Fish) by Uvoam Zeiuhuuoks. It is a statue, made of copper. ', 'nation_a': 'nation 0', 'person_a': 'Uvoam Zeiuhuuoks'}}
-{'date': (20, 9, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 7', 'nation_b': 'nation 6'}}
-{'date': (21, 1, 1), 'name': 'ReligionDomainAdded', 'event_data': {'domain_a': 'weaving', 'religion_a': 'Teiyokr', 'god_a': 'Qyiyy'}}
-{'date': (21, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Ziyehyq', 'god_a': 'Qiouhl'}}
-{'date': (21, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 0'}}
-{'date': (21, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 1'}}
-{'date': (21, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 6'}}
-{'date': (21, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 5'}}
-{'date': (21, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 5'}}
-{'date': (21, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 7'}}
-{'date': (21, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 6'}}
-{'date': (21, 3, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 3', 'nation_b': 'nation 6'}}
-{'date': (21, 4, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 4', 'nation_b': 'nation 6'}}
-{'date': (21, 5, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 7', 'nation_b': 'nation 5'}}
-{'date': (21, 6, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 4', 'nation_b': 'nation 0'}}
-{'date': (21, 10, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Hero', 'person_a_role': 'hero', 'nation_a': 'nation 4', 'person_a_prev_role': '', 'person_a': 'Saedeaox Ziyywyaygvh'}}
-{'date': (21, 10, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'hero', 'nation_a': 'nation 4', 'person_a': 'Saedeaox Ziyywyaygvh'}}
-{'date': (21, 10, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 4', 'nation_b': 'nation 5'}}
-{'date': (21, 10, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 5', 'nation_b': 'nation 6'}}
-{'date': (22, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 3'}}
-{'date': (22, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 1'}}
-{'date': (22, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 6'}}
-{'date': (22, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 0'}}
-{'date': (22, 1, 1), 'name': 'TechResearch', 'event_data': {'tech_a': 'Agriculture I', 'nation_a': 'nation 7'}}
-{'date': (22, 5, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 1'}}
-{'date': (22, 5, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 7', 'nation_b': 'nation 6'}}
-{'date': (22, 6, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 7', 'nation_b': 'nation 1'}}
-{'date': (22, 9, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 1', 'army_size': 202, 'reason': 'attack', 'city_b': 'Wiceeau', 'city_a': 'Jyeiklaoik'}}
-{'date': (22, 11, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 4', 'nation_b': 'nation 1'}}
-{'date': (23, 1, 1), 'name': 'ReligionGodRemoved', 'event_data': {'religion_a': 'Iqkxeyuw', 'god_a': 'Ejonje'}}
-{'date': (23, 1, 1), 'name': 'ReligionDomainAdded', 'event_data': {'domain_a': 'music', 'religion_a': 'Haoawon', 'god_a': 'Jaietzayyv'}}
-{'date': (23, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 5'}}
-{'date': (23, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 6'}}
-{'date': (23, 1, 1), 'name': 'TechResearch', 'event_data': {'tech_a': 'Agriculture I', 'nation_a': 'nation 1'}}
-{'date': (23, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 7'}}
-{'date': (23, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 0'}}
-{'date': (23, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 5'}}
-{'date': (23, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 6'}}
-{'date': (23, 3, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 6'}}
-{'date': (23, 3, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 7', 'nation_b': 'nation 0'}}
-{'date': (23, 4, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 4', 'nation_b': 'nation 5'}}
-{'date': (23, 4, 1), 'name': 'CityFounded', 'event_data': {'nation_a': 'nation 9', 'city_a': 'Yyyzrp'}}
-{'date': (23, 4, 1), 'name': 'NationFounded', 'event_data': {'nation_a': 'nation 9'}}
-{'date': (23, 5, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Professor', 'person_a_role': 'professor', 'nation_a': 'nation 9', 'person_a_prev_role': '', 'person_a': 'Trviyetfok Yeanuus'}}
-{'date': (23, 5, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'professor', 'nation_a': 'nation 9', 'person_a': 'Trviyetfok Yeanuus'}}
-{'date': (23, 5, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 9', 'nation_b': 'nation 3'}}
-{'date': (23, 7, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'oracle', 'art': 'Yuf Faeulieyjtyaie Gayer Yoenaiik (A Prophesy of Destruction) by Vuyaheox Oyit. It is a prophesy. This prophesy predicts that there will be destruction in 110 years in the summer.', 'nation_a': 'nation 7', 'person_a': 'Vuyaheox Oyit'}}
-{'date': (23, 8, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 9'}}
-{'date': (23, 9, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 9'}}
-{'date': (23, 10, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 9', 'army_size': 189, 'reason': 'attack', 'city_b': 'Yyyzrp', 'city_a': 'Eyvceizkuk'}}
-{'date': (23, 11, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 5', 'nation_b': 'nation 0'}}
-{'date': (24, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Atfcuap', 'god_a': 'Bouicex'}}
-{'date': (24, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Ziyehyq', 'god_a': 'Quiezieibq'}}
-{'date': (24, 1, 1), 'name': 'ReligionDomainAdded', 'event_data': {'domain_a': 'luck', 'religion_a': 'Haoawon', 'god_a': 'Deaukla'}}
-{'date': (24, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 3'}}
-{'date': (24, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 0'}}
-{'date': (24, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 4'}}
-{'date': (24, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 3'}}
-{'date': (24, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 5'}}
-{'date': (24, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 6'}}
-{'date': (24, 3, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 1'}}
-{'date': (24, 5, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 6', 'nation_b': 'nation 1'}}
-{'date': (24, 6, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 4'}}
-{'date': (24, 7, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 9', 'nation_b': 'nation 6'}}
-{'date': (24, 8, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 3', 'nation_b': 'nation 5'}}
-{'date': (24, 8, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'oracle', 'art': 'Yuf Faeulieyjtyaie Gayer Ieupjea Goiug (A Prophesy of Final Peace) by Vuyaheox Oyit. It is a prophesy. This prophesy predicts that there will be final peace in 843 years in the warm season.', 'nation_a': 'nation 7', 'person_a': 'Vuyaheox Oyit'}}
-{'date': (24, 11, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 1'}}
-{'date': (24, 11, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 6', 'nation_b': 'nation 7'}}
-{'date': (25, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Ybkcis', 'god_a': 'Yevcbez'}}
-{'date': (25, 1, 1), 'name': 'ReligionDomainAdded', 'event_data': {'domain_a': 'envy', 'religion_a': 'Haoawon', 'god_a': 'Eyepiyirts'}}
-{'date': (25, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 0'}}
-{'date': (25, 1, 1), 'name': 'TechResearch', 'event_data': {'tech_a': 'Housing I', 'nation_a': 'nation 0'}}
-{'date': (25, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 0'}}
-{'date': (25, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 6'}}
-{'date': (25, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 6'}}
-{'date': (25, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 1'}}
-{'date': (25, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 0'}}
-{'date': (25, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 9', 'nation_b': 'nation 5'}}
-{'date': (25, 1, 1), 'name': 'Attack', 'event_data': {'remaining_soldiers': 184, 'success': True, 'city_b': 'Yyyzrp', 'nation_a': 'nation 3', 'nation_b': 'nation 9'}}
-{'date': (25, 1, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 3', 'army_size': 158, 'reason': 'return levies', 'city_b': 'Eyvceizkuk', 'city_a': 'Yyyzrp'}}
-{'date': (25, 1, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 0', 'nation_b': 'nation 7'}}
-{'date': (25, 1, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 3', 'army_size': 1179, 'reason': 'attack', 'city_b': 'Yyyzrp', 'city_a': 'Iueryus'}}
-{'date': (25, 1, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 6', 'nation_b': 'nation 0'}}
-{'date': (25, 1, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 7', 'nation_b': 'nation 5'}}
-{'date': (25, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 9', 'nation_b': 'nation 3'}}
-{'date': (25, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 0', 'nation_b': 'nation 9'}}
-{'date': (25, 1, 1), 'name': 'NationEliminated', 'event_data': {'nation_a': 'nation 9'}}
-{'date': (25, 4, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 1', 'nation_b': 'nation 7'}}
-{'date': (25, 5, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'historian', 'art': 'Rioow Qaguoofuoeroaw Irous Tpieyvus Iia (The Effectiveness of Desert Mail) by Leaificy Luoutikee. It is a historical essay. The paper says that desert mail is exceedingly ineffective.', 'nation_a': 'nation 5', 'person_a': 'Leaificy Luoutikee'}}
+{'date': (5, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 3'}}
+{'date': (5, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 0'}}
+{'date': (5, 1, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 7'}}
+{'date': (5, 1, 1), 'name': 'NotablePersonDeath', 'event_data': {'person_a_role': 'master', 'nation_a': 'nation 4', 'person_a': 'Foqoc Qmcygij'}}
+{'date': (5, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 5'}}
+{'date': (5, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 5'}}
+{'date': (5, 1, 1), 'name': 'NotablePersonPeriod', 'event_data': {'period_name': 'Grey Period', 'person_a_role': 'writer', 'nation_a': 'nation 4', 'person_a_prev_role': '', 'person_a': 'Oyyqyc Yeyez'}}
+{'date': (5, 1, 1), 'name': 'NotablePersonBirth', 'event_data': {'person_a_role': 'writer', 'nation_a': 'nation 4', 'person_a': 'Oyyqyc Yeyez'}}
+{'date': (5, 1, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 5', 'nation_b': 'nation 6'}}
+{'date': (5, 5, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 3'}}
+{'date': (5, 5, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'historian', 'art': 'P Eahvayyg Efif Pxfayomrwtm (The Epic of Voqauehj) by Piuirp Eeftug. It is a epic. ', 'nation_a': 'nation 6', 'person_a': 'Piuirp Eeftug'}}
+{'date': (5, 5, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 6', 'army_size': 88, 'reason': 'attack', 'city_b': 'Zfieah', 'city_a': 'Oairoaitayl'}}
+{'date': (5, 6, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'philosopher', 'art': 'Gjfaan Eaamo Wqpeh Qielprp (The Rise of Utilitarianism) by Qxiaq Luajon. It is a essay. ', 'nation_a': 'nation 3', 'person_a': 'Qxiaq Luajon'}}
+{'date': (5, 8, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 5'}}
+{'date': (5, 8, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 6', 'army_size': 17, 'reason': 'attack', 'city_b': 'Zfieah', 'city_a': 'Oairoaitayl'}}
+{'date': (5, 9, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'historian', 'art': 'Sof Waerodem Kyaydqg Keauj Laa Sof Meeaegad (The Epic of Keauj Laa the oracle) by Fiiud Giuocleoop. It is a epic. ', 'nation_a': 'nation 7', 'person_a': 'Fiiud Giuocleoop'}}
+{'date': (5, 10, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 4', 'nation_b': 'nation 1'}}
+{'date': (5, 10, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'historian', 'art': 'Sof Waerodem Kyaydqg Keauj Laa Sof Meeaegad (The Epic of Keauj Laa the oracle) by Fiiud Giuocleoop. It is a epic. ', 'nation_a': 'nation 7', 'person_a': 'Fiiud Giuocleoop'}}
+{'date': (5, 11, 1), 'name': 'Attack', 'event_data': {'remaining_soldiers': 52, 'success': True, 'city_b': 'Ezrb', 'nation_a': 'nation 7', 'nation_b': 'nation 3'}}
+{'date': (5, 11, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 7', 'army_size': 52, 'reason': 'return levies', 'city_b': 'Oairoaitayl', 'city_a': 'Ezrb'}}
+{'date': (5, 11, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 4'}}
+{'date': (5, 11, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 3'}}
+{'date': (5, 11, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 3', 'nation_b': 'nation 5'}}
+{'date': (5, 11, 1), 'name': 'DiplomacyTradeEnd', 'event_data': {'nation_a': 'nation 1', 'nation_b': 'nation 3'}}
+{'date': (5, 11, 1), 'name': 'NationEliminated', 'event_data': {'nation_a': 'nation 3'}}
+{'date': (5, 12, 1), 'name': 'Attack', 'event_data': {'remaining_soldiers': 86, 'success': True, 'city_b': 'Zfieah', 'nation_a': 'nation 7', 'nation_b': 'nation 6'}}
+{'date': (5, 12, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 7', 'army_size': 86, 'reason': 'return levies', 'city_b': 'Oairoaitayl', 'city_a': 'Zfieah'}}
+{'date': (6, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Vofeiyfbfo', 'god_a': 'Nmronh'}}
+{'date': (6, 1, 1), 'name': 'ReligionGodAdded', 'event_data': {'religion_a': 'Lqgyiq', 'god_a': 'Ejfn'}}
+{'date': (6, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 1'}}
+{'date': (6, 1, 1), 'name': 'TechResearch', 'event_data': {'tech_a': 'Housing I', 'nation_a': 'nation 1'}}
+{'date': (6, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 4', 'nation_b': 'nation 6'}}
+{'date': (6, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 6', 'nation_b': 'nation 2'}}
+{'date': (6, 1, 1), 'name': 'DiplomacyWarEnd', 'event_data': {'nation_a': 'nation 5', 'nation_b': 'nation 6'}}
+{'date': (6, 1, 1), 'name': 'NationEliminated', 'event_data': {'nation_a': 'nation 6'}}
+{'date': (6, 2, 1), 'name': 'ArmyDispatched', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 1', 'army_size': 173, 'reason': 'attack', 'city_b': 'Nvjyaqux', 'city_a': 'Oairoaitayl'}}
+{'date': (6, 6, 1), 'name': 'DiplomacyTrade', 'event_data': {'nation_a': 'nation 7', 'nation_b': 'nation 4'}}
+{'date': (6, 8, 1), 'name': 'ArtCreated', 'event_data': {'person_a_role': 'historian', 'art': 'Sof Waerodem Kyaydqg Yeirwuos (The Epic of Voqauehj) by Piuirp Eeftug. It is a epic. ', 'nation_a': 'nation 7', 'person_a': 'Piuirp Eeftug'}}
+{'date': (6, 9, 1), 'name': 'DiplomacyWar', 'event_data': {'reason': 'economic', 'nation_a': 'nation 7', 'nation_b': 'nation 5'}}

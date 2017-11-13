@@ -145,6 +145,10 @@ class Nation:
 
         self.armor_list = random.sample(armor_list, 2)
         self.basic_armor_list = random.sample(basic_armor_list, 2)
+        
+        self.mount_list = random.sample(mount_list, 2)
+        self.basic_mount_list = random.sample(basic_mount_list, 2)
+        self.mount_none = mount_none
 
         self.army_structure = Troop.init_troop(self.language.make_word(self.language.name_length, True), self)
 
@@ -164,6 +168,7 @@ class Nation:
             place_name = self.language.make_name_word()
 
         self.name = NationName(random.sample(MODIFIERS, max(0, random.randint(0, 8) - 5)), random.choice(GOVERNMENT_TYPES), [place_name])
+
 
         #Otherwise we were initialized with some cities and such stuff
         if len(self.cities) == 0:
@@ -616,6 +621,8 @@ class Nation:
             amount += weapon.cost
 
         amount += troop.armor.cost
+        
+        amount += troop.mount.cost
 
         # print('{} ({},{},{}) costs {}'.format(troop.name, troop.tier, troop.weapons, troop.armor, amount))
 

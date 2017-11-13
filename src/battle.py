@@ -24,12 +24,16 @@ SWITCH_TARGET_COUNT = 8
 #The maximum number of troops on either side of the battle
 BATTLE_SIZE = 350
 
+
+#battle porportions
+#troop quality
+
 #Kenny Additions
 # 1 unit of ranged from one unit of melee
 TROOP_RATIO = 1
 
 class Soldier:
-    def __init__(self, unit, name, health, strength, ranged, weapons, armor, discipline, canvas):
+    def __init__(self, unit, name, health, strength, ranged, weapons, armor, discipline, canvas, mount, quality):
         self.unit = unit
 
         self.name = name
@@ -40,6 +44,8 @@ class Soldier:
 
         self.weapons = weapons
         self.armor = armor
+        self.mount = mount
+        self.quality = quality
 
         if self.ranged:
             use_weapon = self.get_ranged_weapon()
@@ -134,29 +140,76 @@ class Soldier:
 
             attack = self.get_melee_attack(best_material)
             defense = self.target.get_melee_defense(best_enemy_material)
+            #other_attack = self.get_sidearm_attack(best_material)
 
-            is_shield = self.weapons[1].shield
+            target_is_shield = self.target.weapons[1].shield
+            target_is_ranged = self.target.ranged
+            target_off_handed = self.target.weapons[0].name != self.target.weapons[1].name
+            target_defense_bonus = (target_off_handed) and (not target_is_ranged) and (not target_is_shield)
+
             armor_pierce = self.get_melee_weapon().armor_pierce
+            is_shield = self.weapons[1].shield
             is_heavy = self.target.armor.heavy                     
+            is_two_handed = self.weapons[0].name == self.weapons[1].name 
+
+            # if not is_shield and not is_two_handed:
+            #     
+            #     other_armor_pierce = self.get_switch_weapon().armor_pierce
+
+            #     temp_defense = 0
+            #     temp_defense_other = 0
+
+            #     if is_heavy:
+            #         if other_armor_pierce:
+            #             temp_defense_other = defense/2
+            #         else:
+            #             temp_defense_other = defense*2
+            #         if armor_pierce:
+            #             temp_defense = defense/2
+            #         else:
+            #             temp_defense = defense * 2
+            #     else:
+            #         if other_armor_pierce:
+            #             temp_defense_other = defense*2
+            #         else:
+            #             temp_defense_other = defense/2
+            #         if armor_pierce:
+            #             temp_defense = defense*2
+            #         else:
+            #             temp_defense = defense / 2
+
+                # if (other_attack - temp_defense_other) > (attack - temp_defense):
+                #     self.switch_weapons() 
+
+            
+
+            if target_defense_bonus:
+               defense = int(defense * 3/2)
+
+            if is_two_handed:
+                attack *= 2
 
             if is_shield:
                 attack = int(attack/2)
-                print self.name + " does "+ str(attack) +" damage because of their shield!"
+               # print self.name + " does "+ str(attack) +" damage because of their shield!"
 
             if is_heavy:
                 if armor_pierce == 1:
                     defense /= 2
-                    print self.name + " pierced through " +self.target.name +"'s armor: " + str(defense)
+                #    print self.name + " pierced through " +self.target.name +"'s armor: " + str(defense)
                 elif armor_pierce == -1:
                     defense *= 2
-                    print self.name + " attack glanced off " +self.target.name +"'s armor: " + str(defense)
+                 #   print self.name + " attack glanced off " +self.target.name +"'s armor: " + str(defense)
             else:
                 if armor_pierce == 1:
                     defense *= 2
-                    print self.name + " attack was cushioned by " +self.target.name +"'s armor: " + str(defense)
+                  #  print self.name + " attack was cushioned by " +self.target.name +"'s armor: " + str(defense)
                 elif armor_pierce == -1:
                     defense /= 2
-                    print self.name + " attack sliced through " +self.target.name +"'s armor: " + str(defense)
+                   # print self.name + " attack sliced through " +self.target.name +"'s armor: " + str(defense)
+
+            if self.target.mount != None:
+                attack *= int(self.get_melee_weapon().range/5)
 
             stats[self.name]['attacks'] += 1
             stats[self.name][weapon]['attacks'] += 1
@@ -240,7 +293,7 @@ class Soldier:
 
                 if self.canvas:
                     color = self.canvas.itemcget(self.id, 'fill')
-                    proj[-1].id = self.canvas.create_oval(self.x, self.y, self.x + self.get_projectile_size(), self.y + 2, width=0, fill=color)
+                    proj[-1].id = self.canvas.create_oval(self.x, self.y, self.x + 2, self.y + self.get_projectile_size(), width=0, fill=color)
 
                 proj[-1].skip_step = d // self.get_projectile_speed() // 2
                 proj[-1].kill_range = d // self.get_projectile_speed() * 2
@@ -256,6 +309,17 @@ class Soldier:
 
     def get_melee_weapon(self):
         if self.unit.soldier_type.originally_ranged:
+            return self.weapons[1]
+        else:
+            return self.weapons[0]
+
+    def switch_weapons(self):
+        temp = self.weapons[0] 
+        self.weapons[0] = self.weapons[1]
+        self.weapons[1] = temp
+
+    def get_switch_weapon(self):
+        if self.get_melee_weapon() == self.weapons[0]:
             return self.weapons[1]
         else:
             return self.weapons[0]
@@ -303,6 +367,21 @@ class Soldier:
             else:
                 return random.randint(0, 1)
 
+    def get_sidearm_attack(self, material):
+        other_weapon = self.get_switch_weapons()
+
+        if other_weapon == None: #This could happen if ALL of our weapons have broken.
+            other_weapon = unarmed()
+
+        other_weapon_attack = other_weapon.get_attack(material)
+        other_normal_attack = other_weapon.attack_skill_multiplier * random.randint(0, self.strength)
+        other_result = other_weapon_attack + other_normal_attack - fatigue_loss
+
+        if result > 0:
+            return result
+        else:
+            return random.randint(0, 1)
+
     def get_melee_attack(self, material):
         fatigue_loss = random.randint(0, self.fatigue // 2)
 
@@ -312,10 +391,18 @@ class Soldier:
         if use_weapon == None: #This could happen if ALL of our weapons have broken.
             use_weapon = unarmed()
 
+
         weapon_attack = use_weapon.get_attack(material)
+        
+
         normal_attack = use_weapon.attack_skill_multiplier * random.randint(0, self.strength)
+        
+
 
         result = weapon_attack + normal_attack - fatigue_loss
+        
+        if self.mount != None:
+            result += int((self.mount.attack + self.mount.attack_skill_multiplier * random.randint(0, self.strength)) * (1/4))
 
         # print('{} from weapon ({}), {} from strength, {} lost from fatigue = {}'.format(weapon_attack, use_weapon.name, normal_attack, fatigue_loss, result))
 
@@ -329,6 +416,21 @@ class Soldier:
         armor_defense = self.armor.get_defense(material)
         skill_defense = self.armor.defense_skill_multiplier * random.randint(0, self.strength)
         is_shield = self.weapons[1].shield
+
+        if self.mount != None:
+            mount_defense = int(self.mount.defense * (1/4))
+
+            if self.mount.heavy:
+                mount_defense *= 2
+                fatigue_loss *= 2
+
+            armor_defense += mount_defense
+
+            mount_defense_skill = int(self.mount.defense_skill_multiplier * random.randint(0, self.strength) * (1/4))
+
+            skill_defense += mount_defense_skill
+
+
 
         return max(0, armor_defense + skill_defense - fatigue_loss)
 
@@ -549,8 +651,13 @@ class Unit:
                             return position.soldier
 
     def get_effective_speed(self):
-        return int(math.log(self.soldier_type.speed, 2)) * TROOP_MOVEMENT_SPEED
+        mount_speed = 0
 
+        if self.soldier_type.mount != None:
+            mount_speed = self.soldier_type.mount.speed
+
+        return int(math.log(self.soldier_type.speed, 2)) * (TROOP_MOVEMENT_SPEED + mount_speed)
+ 
     def get_movement_vector(self, vector_format='xy'):
         if self.target != None and not self.soldier_type.ranged:
             if not self.in_range():
@@ -689,7 +796,7 @@ class Battle:
 
                 sx, sy = random.randint(xmin, xmax), random.randint(ymin, ymax)
 
-            force[-1].soldiers.append(Soldier(force[-1], army.name, army.health, army.strength, army.ranged, army.weapons, army.armor, army.discipline, self.canvas))
+            force[-1].soldiers.append(Soldier(force[-1], army.name, army.health, army.strength, army.ranged, army.weapons, army.armor, army.discipline, self.canvas, army.mount, army.quality))
 
             x,y = sx + len(force[-1].soldiers[:-1]) % army.rank_size * (TROOP_RADIUS + 1), sy + len(force[-1].soldiers[:-1]) / army.rank_size * (TROOP_RADIUS + 1)
 
@@ -725,7 +832,11 @@ class Battle:
             unit.setup_ranks()
             unit.setup_ammunition()
             if self.use_graphics:
-                unit.name_id = self.canvas.create_text(unit.x, unit.y, text=("{} ({}; {}): {}, {}".format(unit.soldier_type.name, ', '.join(map(lambda w: w.name, unit.soldier_type.weapons)), unit.soldier_type.armor.name, unit.soldier_type.strength, unit.soldier_type.health)))
+                #print unit.soldier_type.name+" "+str(unit.soldier_type.quality)
+                if unit.soldier_type.mount.name == 'None':
+                    unit.name_id = self.canvas.create_text(unit.x, unit.y, text=("{} ({}; {}): {}, {}".format(unit.soldier_type.name, ', '.join(map(lambda w: w.name, unit.soldier_type.weapons)), unit.soldier_type.armor.name, unit.soldier_type.strength, unit.soldier_type.health)))
+                else:
+                    unit.name_id = self.canvas.create_text(unit.x, unit.y, text=("{} ({}; {}): {}, {}, {}".format(unit.soldier_type.name, ', '.join(map(lambda w: w.name, unit.soldier_type.weapons)), unit.soldier_type.armor.name, unit.soldier_type.strength, unit.soldier_type.health, unit.soldier_type.mount.name)))
 
         if limit <= 0:
             return
@@ -790,25 +901,25 @@ class Battle:
 
                             if is_shield:
                                 damage = int(damage/2)
-                                print p.launcher.name + "'s ranged attack was deflected by "+p.target.name+"'s shield: "+str(damage)
+                               # print p.launcher.name + "'s ranged attack was deflected by "+p.target.name+"'s shield: "+str(damage)
                             elif not is_heavy:
                                 damage *= 2
-                                print p.launcher.name + "'s ranged attack was left unprotected by "+p.target.name+"'s lack of a shield: "+str(damage)
+                                #print p.launcher.name + "'s ranged attack was left unprotected by "+p.target.name+"'s lack of a shield: "+str(damage)
 
                             if is_heavy:
                                 if armor_pierce == 1:
                                     defense /= 2
-                                    print p.launcher.name + "'s ranged attack pierced  "+p.target.name+"'s heavy armor:  "+str(damage)
+                                 #   print p.launcher.name + "'s ranged attack pierced  "+p.target.name+"'s heavy armor:  "+str(damage)
                                 elif armor_pierce == -1:
                                     defense *= 2
-                                    print p.launcher.name + "'s ranged attack glanced off of "+p.target.name+"'s hevy armor: "+str(damage)
+                                  #  print p.launcher.name + "'s ranged attack glanced off of "+p.target.name+"'s hevy armor: "+str(damage)
                             else:
                                 if armor_pierce == 1:
                                     defense *= 2
-                                    print p.launcher.name + "'s ranged attack was cushioned by "+p.target.name+"'s light armor: "+str(damage)
+                                   # print p.launcher.name + "'s ranged attack was cushioned by "+p.target.name+"'s light armor: "+str(damage)
                                 elif armor_pierce == -1:
                                     defense /= 2
-                                    print p.launcher.name + "'s ranged attack impacted "+p.target.name+"'s light armor: "+str(damage)
+                                    #print p.launcher.name + "'s ranged attack impacted "+p.target.name+"'s light armor: "+str(damage)
 
                             if random.randint(0, p.target.discipline) == 0:
                                 p.target.fatigue += 1

@@ -51,22 +51,22 @@ class Group:
 
         while x != self.end_x or y != self.end_y:
             moves += 1
-            if x < len(self.parent.cells) - 1 and (self.parent.cells[x + 1][y].can_move(self) or self.has_boat):
+            if x < len(self.parent.cells) - 1:# and (self.parent.cells[x + 1][y].can_move(self) or self.has_boat):
                 if not (x + 1, y) in visited:
                     visited[(x + 1, y)] = True
                     open.append((x + 1, y, x, y, moves))
 
-            if x > 0 and (self.parent.cells[x - 1][y].can_move(self) or self.has_boat):
+            if x > 0:#and (self.parent.cells[x - 1][y].can_move(self) or self.has_boat):
                 if not (x - 1, y) in visited:
                     visited[(x - 1, y)] = True
                     open.append((x - 1, y, x, y, moves))
 
-            if y < len(self.parent.cells[x]) - 1 and (self.parent.cells[x][y + 1].can_move(self) or self.has_boat):
+            if y < len(self.parent.cells[x]) - 1:# and (self.parent.cells[x][y + 1].can_move(self) or self.has_boat):
                 if not (x, y + 1) in visited:
                     visited[(x, y + 1)] = True
                     open.append((x, y + 1, x, y, moves))
 
-            if y > 0 and (self.parent.cells[x][y - 1].can_move(self) or self.has_boat):
+            if y > 0 :#and (self.parent.cells[x][y - 1].can_move(self) or self.has_boat):
                 if not (x, y - 1) in visited:
                     visited[(x, y - 1)] = True
                     open.append((x, y - 1, x, y, moves))
@@ -161,6 +161,7 @@ class Group:
         if utility.rough_match(self.x, self.end_x, GROUP_SPEED_MULTIPLIER) and utility.rough_match(self.y, self.end_y, GROUP_SPEED_MULTIPLIER):
             self.canvas.delete(self.id)
             self.on_end(self)
+            self.end_move()
 
             return True
 
