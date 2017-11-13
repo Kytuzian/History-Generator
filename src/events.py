@@ -83,6 +83,10 @@ class Event:
             return EventNotablePersonPeriod(dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'ArtCreated':
             return EventArtCreated(dict['name'], dict['event_data'], dict['date'])
+        elif dict['name'] == 'ArmyRaised':
+            return EventArmyRaised(dict['name'], dict['event_data'], dict['date'])
+        elif dict['name'] == 'TroopCreated':
+            return EventTroopCreated(dict['name'], dict['event_data'], dict['date'])
         else:
             return Event(dict['name'], dict['event_data'], dict['date'])
 
@@ -91,6 +95,26 @@ class Event:
 
     def __repr__(self):
         return str(self.to_dict())
+
+class EventArmyRaised(Event):
+    def setup(self):
+        self.nation_name = self.event_data['nation_a']
+        self.army_name = self.event_data['army_a']
+        self.number_raised = self.event_data['raised_a']
+
+    def text_version(self):
+        return '{} raised an army of {} {} on {}.'.format(get_nation_name(self.nation_name), self.number_raised, self.army_name, self.equipment_name, self.date)
+
+class EventTroopCreated(Event):
+    def setup(self):
+        self.nation_name = self.event_data['nation_a']
+        self.army_name = self.event_data['army_a']
+        self.equipment_name = self.event_data['equip_a']
+        self.armor_name = self.event_data['armor_a']
+
+    def text_version(self):
+        return '{} created a new troop, {}, wielding {}, {}, and {} on {}.'.format(get_nation_name(self.nation_name), self.army_name, self.equipment_name[0].name, self.equipment_name[1].name, self.armor_name.name, self.date)
+
 
 class EventNationFounded(Event):
     def setup(self):
