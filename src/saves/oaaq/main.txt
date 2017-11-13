@@ -1,1 +1,0 @@
-{'date': (1, 1, 1), 'width': 166, 'ids': {'cell': 27555, 'group': 2, 'nation': 7}, 'old_nations': {}, 'height': 166}
