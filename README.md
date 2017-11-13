@@ -1,4 +1,4 @@
-#Installation
+# Installation
 You will need Python 2.7 (preinstalled on OS X and some Linux (I think, don't know for sure, but I'm sure you can handle it)). If you're using Windows just go to https://www.python.org/ and get 2.7.
 
 All you need to do then is navigate to the place where you uncompressed it, and type the following:
@@ -12,7 +12,7 @@ The simulation will then just run. Read the mechanics below for more information
 DISCLAIMER:
 None of the below information is guaranteed to be current/accurate at any point, although I will try to update it.
 
-#Mechanics Overview
+# Mechanics Overview
 At the beginning, the game generates a number of nations. Each of these has their own languages (see language below), name, religion, cities, armies in each of those cities, notable people, and works of art.
 
 Nations also have several base stats, a tax rate, morale (revolts will start to occur when this is too low, usually happens when losing a war), army spending (this is an amount that dictates how much money is put into recruiting soldiers).
@@ -27,14 +27,14 @@ For ranged units, there is a counter which determines when they can shoot. It va
 
 When an army has no more units, the battle will end (they are always fights to the death of the entire army. I know it's not entirely realistic, but this is much easier to implement and I plan to implement morale for armies at a later date (if its no longer on the to-do list, assume I've done it and I'm just too lazy to change this description)). The winning (only if the attackers, of course) army conquers a single city from the losers and all of it's production, improvements, et cetera will now contribute to the conquering nation. Additionally, the winners will gain morale, and the losers will lose morale.
 
-#Weapons and Armor
+# Weapons and Armor
 Weapons have several stats: attack, defense, a material multiplier, and both attack and defense skill multipliers. To calculate the attack with a weapon, the user first calculates the effective attack from the weapon. This is done by taking the material multiplier of the weapon and multiplying it by the strength of the material the weapon is made out of. Then the weapon's attack is a random number from 0 to the weapon's effective attack. Then the soldier's strength is multiplied by the attack skill multiplier, and the two values are added.
 
 The process is the same for defense, except with defense values instead of attack values.
 
 For armor, the process is also the same, and armor, naturally, does not contribute to attack.
 
-#Nation
+# Nation
 A group of cities all joined together with armies to attack and carvans to trade with other nations.
 The nation also shares a common religion (and this doesn't change, there is no conversion yet) and language.
 Nations also have a collection of notable people, and a collection of works of art.
@@ -58,7 +58,7 @@ Notable people can be any of the following:
 - Hero: Currently no purpose.
 - Administrator: Increase the tax rate.
 
-#Art
+# Art
 This includes literature, music, as well as "normal" visual arts (paintings, statues, et cetera).
 
 See the Art Detail section for...details about art.
@@ -74,7 +74,7 @@ See the Art Detail section for...details about art.
 - Essays
 - Poems
 
-#City
+# City
 Cities are the building blocks of nations. Each city contains some amount of people, some amount of land (organized into cells), produces and consumes food and other resources (leather, cloth, metal, and wood), and builds buildings.
 
 Cells can only contain a certain number of buildings in them, although this limit can be increased by researches (see the Tech section for more details). Cells by default can contain a total of 100.
@@ -99,7 +99,7 @@ Cities contain buildings as well. There following are the types of buildings and
 | Market        	|            	| 100       	|      	|      	|         	|       	|       	| 1000  	|                	| 60   	| 1500 	|               	|
 | Caravansary   	| 5          	|           	|      	|      	|         	|       	|       	|       	| 20             	| 90   	| 2000 	|               	|
 
-#Battles
+# Battles
 There are four main components of battles: soldiers, projectiles, units, and the battle itself.
 - Soldiers
     - Each soldier belongs to a unit (see below for more details).
@@ -173,7 +173,7 @@ There are four main components of battles: soldiers, projectiles, units, and the
 - Optimization
     - This is one of the slowest parts of the simulation at the moment, so if anyone has any ideas about optimization or wants to actually contribute to the code, that'd be great.
 
-#Weapons and Armor
+# Weapons and Armor
 
 
 | Name          | Cost | Range | Material Multiplier | Attack | Defense | Attack Multiplier | Defense Mutliplier | Reload Time | Ammo | Projectile Speed |
@@ -216,7 +216,7 @@ There are four main components of battles: soldiers, projectiles, units, and the
 | Plate         | 2000 |       | 2                   |        | 12      |                   | 0.15               |             |      |                  |
 |               |      |       |                     |        |         |                   |                    |             |      |                  |
 
-#Religion
+# Religion
 Religions can be either monotheistic or polytheistic, but this affects nothing game mechanics wise.
 A monotheistic religion will only have one god (of "everything"), but a polytheistic religion will have some random number of gods, whose domains can be any of the following (and they can have up to 4 domains): fire, wind, water, air, lightning, death, children, fertility, harvest, wisdom, war, smithing, animals, earth, rivers. Each god will have an importance score, ranging from 0 (so unimportant it literally affects nothing) to 10 (it pretty much determines the outlook of the entire religion).
 
@@ -229,9 +229,7 @@ The only important statistic of a religion is its tolerance. A religion has a ba
 
 Additionally, religions change over time. A god that was once known as a war god can also become a fire god (or even a peace god), even losing his original domain of war although. Pantheons can also gain more gods (unless it's a monotheistic religion, and religions don't switch from monotheism to polytheism or vice versa, at the moment) and lose gods.
 
-#Language
-I'm no linguist, so the way the languages are created is probably not at all right, but here it is:
-
+# Language
 Each language has a list of:
 - Letters (letters can appear more than once to change their frequency)
 - Starting letters (these are the only letters than can appear at the beginning of words)
@@ -248,7 +246,7 @@ Steps to create a new word:
 3. Fill the middle of the words with either vowels or a letter section.
 4. End the word with one of the letters in the ending letters list
 
-#Art Details
+# Art Details
 Each art type has an associated list of possible titles/subjects (they're the same thing, at the moment).
 The possibilities are listed below.
 

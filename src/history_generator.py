@@ -88,7 +88,7 @@ class Main:
         # Don't write blank messages to the log
         if message == '':
             return
-        
+
         if self.db != None:
             self.db.gen_log_insert(self.get_real_date(), message)
 
@@ -200,14 +200,14 @@ class Main:
     def create_gui(self):
         self.parent.columnconfigure(3, weight=1)
         self.parent.rowconfigure(13, weight=1)
-        
+
         self.parent.bind('<MouseWheel>', self.on_vertical)
         self.parent.bind('<Shift-MouseWheel>', self.on_horizontal)
         self.parent.bind('<Left>', lambda _: self.scroll_canvas(-utility.SCROLL_SPEED, 0))
         self.parent.bind('<Right>', lambda _: self.scroll_canvas(utility.SCROLL_SPEED, 0))
         self.parent.bind('<Up>', lambda _: self.scroll_canvas(0, -utility.SCROLL_SPEED))
         self.parent.bind('<Down>', lambda _: self.scroll_canvas(0, utility.SCROLL_SPEED))
-        
+
         self.canvas = Canvas(self.parent, bd=1, relief=RIDGE, scrollregion=(0, 0, utility.S_WIDTH, utility.S_HEIGHT))
         self.canvas.bind('<Button-1>', self.get_cell_information)
         self.canvas.config(background='white')
