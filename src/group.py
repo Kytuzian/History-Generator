@@ -56,7 +56,7 @@ class Group:
                     visited[(x + 1, y)] = True
                     open.append((x + 1, y, x, y, moves))
 
-            if x > 0:#and (self.parent.cells[x - 1][y].can_move(self) or self.has_boat):
+            if x > 0:# and (self.parent.cells[x - 1][y].can_move(self) or self.has_boat):
                 if not (x - 1, y) in visited:
                     visited[(x - 1, y)] = True
                     open.append((x - 1, y, x, y, moves))
@@ -66,7 +66,7 @@ class Group:
                     visited[(x, y + 1)] = True
                     open.append((x, y + 1, x, y, moves))
 
-            if y > 0 :#and (self.parent.cells[x][y - 1].can_move(self) or self.has_boat):
+            if y > 0:# and (self.parent.cells[x][y - 1].can_move(self) or self.has_boat):
                 if not (x, y - 1) in visited:
                     visited[(x, y - 1)] = True
                     open.append((x, y - 1, x, y, moves))
@@ -87,17 +87,50 @@ class Group:
             closed.append((x, y, px, py, moves))
 
         # Rebuild the path from the last node we chose, which should be the one that got us to the target
-        x, y, px, py, _ = closed.pop()
-        while px != int(self.x) or py != int(self.y):
-            self.cur_path.append((x, y))
+        if closed:
+            x, y, px, py, _ = closed.pop()
+            while px != int(self.x) or py != int(self.y):
+                self.cur_path.append((x, y))
 
-            for i, (x1, y1, px1, py1, _) in enumerate(closed):
-                if x1 == px and y1 == py:
-                    x, y, px, py, _ = closed.pop(i)
-                    break
+                for i, (x1, y1, px1, py1, _) in enumerate(closed):
+                    if x1 == px and y1 == py:
+                        x, y, px, py, _ = closed.pop(i)
+                        break
 
-        # Reverse it back it starts at the last node, not the first like it should
-        self.cur_path = self.cur_path[::-1]
+            # Reverse it back it starts at the last node, not the first like it should
+            self.cur_path = self.cur_path[::-1]
+
+    # def can_reach(self):
+    #     open = []
+    #     visited = {}
+
+    #     x, y = int(self.x), int(self.y)
+    #     moves = 0
+
+    #     while x != self.end_x or y != self.end_y:
+    #         moves += 1
+    #         if x < len(self.parent.cells) - 1 and (self.parent.cells[x + 1][y].can_move(self) or self.has_boat):
+    #             if not (x + 1, y) in visited:
+    #                 visited[(x + 1, y)] = True
+    #                 open.append((x + 1, y, x, y, moves))
+
+    #         if x > 0 and (self.parent.cells[x - 1][y].can_move(self) or self.has_boat):
+    #             if not (x - 1, y) in visited:
+    #                 visited[(x - 1, y)] = True
+    #                 open.append((x - 1, y, x, y, moves))
+
+    #         if y < len(self.parent.cells[x]) - 1 and (self.parent.cells[x][y + 1].can_move(self) or self.has_boat):
+    #             if not (x, y + 1) in visited:
+    #                 visited[(x, y + 1)] = True
+    #                 open.append((x, y + 1, x, y, moves))
+
+    #         if y > 0 and (self.parent.cells[x][y - 1].can_move(self) or self.has_boat):
+    #             if not (x, y - 1) in visited:
+    #                 visited[(x, y - 1)] = True
+    #                 open.append((x, y - 1, x, y, moves))
+
+    #     #I don't know why I did this - Kenn
+    #     return open
 
     def get_info(self):
         res = {}

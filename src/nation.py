@@ -58,7 +58,8 @@ REARM_CHANCE = 5
 
 TAX_MULTIPLIER = 2
 
-NAME_SWITCH_THRESHOLD = 30
+#in order to prevent extremeley long late game names
+NAME_SWITCH_THRESHOLD = 70
 
 NOTABLE_PERSON_BIRTH_CHANCE = 150
 
@@ -125,11 +126,14 @@ class Nation:
         self.culture = culture.Culture(self)
 
         self.ruler = None
+        self.main_religion = None
 
         self.at_war = []
         self.allied = []
         self.trading = []
         self.relations = {}
+
+        self.troop_tree = []
 
         self.treaties = []
 
@@ -163,17 +167,66 @@ class Nation:
         self.elite = random.randint(3, 6)
 
         if len(self.cities) > 0:
-            place_name = self.cities[0].name
+            if random.randint(0, 2) == 0:
+                place_name = self.cities[0].name
+            else:
+                place_name = self.language.make_name_word() 
         else:
             place_name = self.language.make_name_word()
 
         self.name = NationName(random.sample(MODIFIERS, max(0, random.randint(0, 8) - 5)), random.choice(GOVERNMENT_TYPES), [place_name])
+        #self.continent = 
 
 
         #Otherwise we were initialized with some cities and such stuff
         if len(self.cities) == 0:
             for i in xrange(INIT_CITY_COUNT):
                 self.create_city(self.name.places[0])
+#doesn't work at the moment
+    def update_tree(self, troop):
+        for t in self.troop_tree:
+            if t.name == troop.name:
+                self.troop_tree.remove(t)
+
+        self.troop_tree.append(troop)
+
+    def show_troop_tree_gui(self):
+        self.gui_window = Tk()
+        self.gui_window.title(self.name.short_name()+' Troop Tree')
+        self.gui_window.geometry("600x625+0+0")
+        self.gui_window.config(background='white')
+
+        self.gui_window.columnconfigure(5, weight=1)
+
+        self.start_label = gui.Label(self.gui_window, text=self.name.short_name()+' Troop Tree')
+        self.start_label.grid(row=0, sticky=W)
+
+        self.troops_display = Listbox(self.gui_window)
+        self.troops_display.grid(row=1, sticky=N+S+E+W, columnspan=6) 
+
+
+        self.troops_display.delete(0, END)
+
+        for troop in self.troop_tree:
+            self.troops_display.insert(END, '-----------')
+            name_text = 'Tier {} Troop: {} '.format(troop.tier, troop.name)
+
+            # for i in xrange(troop.elite):
+            #     name_text += '*'
+
+            self.troops_display.insert(END, name_text)
+            self.troops_display.insert(END, 'Stats: Health - {}, Strength - {}, Speed - {}, Discipline - {}'.format(troop.health, troop.strength, troop.speed, troop.discipline))
+            self.troops_display.insert(END, 'Weapons: {} | {}, Armor: {}, Mount: {}'.format(troop.weapons[0].name, troop.weapons[1].name, troop.armor.name, troop.mount.name))
+
+
+            upgradeText = 'Upgrades: '
+
+            for (i, upgrade) in enumerate(troop.upgrades):
+                #print "upgrade"+ upgrade.name
+                upgradeText += "Tier "+str(upgrade.tier)+ ": "+ upgrade.name + " | " 
+
+            self.troops_display.insert(END, upgradeText)
+           
 
     def show_information_gui(self):
         self.gui_window = Tk()
@@ -198,17 +251,23 @@ class Nation:
         self.morale_label = gui.Label(self.gui_window, text='Morale: {}'.format(self.morale))
         self.morale_label.grid(row=4, columnspan=2, sticky=W)
 
-        # self.religion_label = Label(self.gui_window, text='Religion: ')
-        # self.religion_label.grid(row=5, sticky=W)
-        #
-        # self.religion_button = Button(self.gui_window, text=self.religion.name, command=self.religion.show_information_gui)
-        # self.religion_button.grid(row=5, column=1, sticky=W)
+        self.religion_label = Label(self.gui_window, text='Main Religion: ')
+        self.religion_label.grid(row=5, sticky=W)
+        
+        if self.main_religion != None:
+            self.religion_button = Button(self.gui_window, text=self.main_religion.name, command=self.main_religion.show_information_gui)
+            self.religion_button.grid(row=5, column=1, sticky=W)
+        else:
+            self.religion_label = Label(self.gui_window, text='Religion: Secular')
 
         self.army_structure_button = gui.Button(self.gui_window, text='Army', command=self.army_structure.show_information_gui)
         self.army_structure_button.grid(row=6, column=0, sticky=W)
 
         self.culture_button = gui.Button(self.gui_window, text='Culture', command=self.culture.show_information_gui)
         self.culture_button.grid(row=6, column=1, sticky=W)
+
+        self.army_structure_button = gui.Button(self.gui_window, text='Troop Tree', command=self.show_troop_tree_gui)
+        self.army_structure_button.grid(row=6, column=2, sticky=W)
 
         self.display_selector_label = gui.Label(self.gui_window, text='Display:')
         self.display_selector_label.grid(row=7, sticky=W)
@@ -459,6 +518,7 @@ class Nation:
 
         if self.ruler != None:
             self.mod_morale(self.ruler.effectiveness**2)
+            self.main_religion = self.ruler.religion
 
         for person in self.notable_people:
             person.handle_monthly()
@@ -590,6 +650,18 @@ class Nation:
                 if person.periods[-1].role == 'priest':
                     # Priests can either make the nation more or less tolerant, depending
                     amount = (1 - person.effectiveness) * PRIEST_TOLERANCE_BONUS
+
+                    val += amount
+
+                if person.periods[-1].role == 'bishop':
+                    # Priests can either make the nation more or less tolerant, depending
+                    amount = (1 - person.effectiveness) * (PRIEST_TOLERANCE_BONUS * 2)
+
+                    val += amount
+
+                if person.periods[-1].role == 'prophet':
+                    # Priests can either make the nation more or less tolerant, depending
+                    amount = (1 - person.effectiveness) * (PRIEST_TOLERANCE_BONUS * 3)
 
                     val += amount
 
@@ -806,7 +878,8 @@ class Nation:
                             city.army.add_to(city.army.name, conscripted)
 
                             action = self.parent.do_attack(self, city, enemy, attacking_city)
-                            self.moving_armies.append(Group(self.parent, self.id, city.army, (fx, fy), (dx, dy), self.color, lambda s: False, action, self.parent.canvas, is_army=True))
+                        
+                            self.moving_armies.append(Group(self.parent, self.id, city.army, (fx, fy), (dx, dy), self.color, lambda s: False, action, self.parent.canvas, is_army=True, has_boat=(city.resources['boats'] > 0)))
 
                             self.parent.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': self.id, 'nation_b': enemy.id, 'city_a': city.name, 'city_b': attacking_city.name, 'reason': 'attack', 'army_size': city.army.size()}, self.parent.get_current_date()))
 

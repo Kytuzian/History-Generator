@@ -172,7 +172,11 @@ class Person:
         self.target = None
         self.travel = None
 
-        self.religion = religion
+        #added secularism
+        if random.randint(0, 100) > 5:
+            self.religion = religion
+        else:
+            self.religion = None
 
         # Each artist's life is separated into one (or many periods)
         self.periods = []
@@ -281,9 +285,10 @@ class Person:
             res[period.role] += period.length * LENGTH_ROLE_INFLUENCE
             res[period.role] += len(period.art) * ART_ROLE_INFLUENCE
 
-        religion_weights = self.religion.get_role_weights()
-        for (role, weight) in religion_weights.iteritems():
-            res[role] += weight * RELIGION_ROLE_INFLUENCE
+        if self.religion != None:
+            religion_weights = self.religion.get_role_weights()
+            for (role, weight) in religion_weights.iteritems():
+                res[role] += weight * RELIGION_ROLE_INFLUENCE
 
         return res
 
