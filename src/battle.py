@@ -129,8 +129,6 @@ class Soldier:
                 self.ranged = True
                 return
 
-        # print(self.reload, self.reload_counter)
-
         if self.in_range() and self.reload >= self.reload_counter:
             if not self.name in stats:
                 stats[self.name] = utility.base_soldier_stats()
@@ -140,7 +138,6 @@ class Soldier:
 
             attack = self.get_melee_attack(best_material)
             defense = self.target.get_melee_defense(best_enemy_material)
-            #other_attack = self.get_sidearm_attack(best_material)
 
             target_is_shield = self.target.weapons[1].shield
             target_is_ranged = self.target.ranged
@@ -148,40 +145,11 @@ class Soldier:
             target_defense_bonus = (target_off_handed) and (not target_is_ranged) and (not target_is_shield)
 
             armor_pierce = self.get_melee_weapon().armor_pierce
+
+            # TODO: Add a graphical indication that a unit has a shield.
             is_shield = self.weapons[1].shield
-            is_heavy = self.target.armor.heavy                     
-            is_two_handed = self.weapons[0].name == self.weapons[1].name 
-
-            # if not is_shield and not is_two_handed:
-            #     
-            #     other_armor_pierce = self.get_switch_weapon().armor_pierce
-
-            #     temp_defense = 0
-            #     temp_defense_other = 0
-
-            #     if is_heavy:
-            #         if other_armor_pierce:
-            #             temp_defense_other = defense/2
-            #         else:
-            #             temp_defense_other = defense*2
-            #         if armor_pierce:
-            #             temp_defense = defense/2
-            #         else:
-            #             temp_defense = defense * 2
-            #     else:
-            #         if other_armor_pierce:
-            #             temp_defense_other = defense*2
-            #         else:
-            #             temp_defense_other = defense/2
-            #         if armor_pierce:
-            #             temp_defense = defense*2
-            #         else:
-            #             temp_defense = defense / 2
-
-                # if (other_attack - temp_defense_other) > (attack - temp_defense):
-                #     self.switch_weapons() 
-
-            
+            is_heavy = self.target.armor.heavy
+            is_two_handed = self.weapons[0].name == self.weapons[1].name
 
             if target_defense_bonus:
                defense = int((defense * 3/2) * self.target.weapons[1].defense_skill_multiplier)
@@ -191,22 +159,17 @@ class Soldier:
 
             if is_shield:
                 attack = int(attack/2)
-               # print self.name + " does "+ str(attack) +" damage because of their shield!"
 
             if is_heavy:
                 if armor_pierce == 1:
                     defense /= 2
-                #    print self.name + " pierced through " +self.target.name +"'s armor: " + str(defense)
                 elif armor_pierce == -1:
                     defense *= 2
-                 #   print self.name + " attack glanced off " +self.target.name +"'s armor: " + str(defense)
             else:
                 if armor_pierce == 1:
                     defense *= 2
-                  #  print self.name + " attack was cushioned by " +self.target.name +"'s armor: " + str(defense)
                 elif armor_pierce == -1:
                     defense /= 2
-                   # print self.name + " attack sliced through " +self.target.name +"'s armor: " + str(defense)
 
             if self.target.mount != None:
                 attack *= int(self.get_melee_weapon().range/5)
@@ -219,8 +182,8 @@ class Soldier:
             if random.randint(0, self.target.discipline) == 0:
                 self.target.fatigue += 1
 
+            # Heavy armor makes the unit more tired.
             if is_heavy:
-                print self.target.name + "'s heavy armor is tiring the unit"
                 self.target.fatigue *= 2
 
             if attack > defense:
@@ -229,8 +192,6 @@ class Soldier:
                 stats[self.name][weapon]['attacks_won'] += 1
 
                 self.target.health -= 1
-            # elif defense > attack and d < self.target.get_melee_weapon().range:
-            #     self.health -= 1
 
             if self.target.health <= 0:
                 stats['troops_killed'] += 1
@@ -293,7 +254,7 @@ class Soldier:
 
                 if self.canvas:
                     color = self.canvas.itemcget(self.id, 'fill')
-                    proj[-1].id = self.canvas.create_oval(self.x, self.y, self.x + 2, self.y + self.get_projectile_size(), width=0, fill=color)
+                    proj[-1].id = self.canvas.create_oval(self.x, self.y, self.x + self.get_projectile_size(), self.y + self.get_projectile_size(), width=0, fill=color)
 
                 proj[-1].skip_step = d // self.get_projectile_speed() // 2
                 proj[-1].kill_range = d // self.get_projectile_speed() * 2
@@ -314,9 +275,7 @@ class Soldier:
             return self.weapons[0]
 
     def switch_weapons(self):
-        temp = self.weapons[0] 
-        self.weapons[0] = self.weapons[1]
-        self.weapons[1] = temp
+        self.weapons[0], self.weapons[1] = self.weapons[1], self.weapons[0]
 
     def get_switch_weapon(self):
         if self.get_melee_weapon() == self.weapons[0]:
@@ -363,7 +322,7 @@ class Soldier:
             # print('{} from weapon ({}), {} from strength, {} lost from fatigue = {}'.format(weapon_attack, use_weapon.name, normal_attack, fatigue_loss, result))
 
             if result > 0:
-                return result 
+                return result
             else:
                 return random.randint(0, 1)
 
@@ -393,14 +352,14 @@ class Soldier:
 
 
         weapon_attack = use_weapon.get_attack(material)
-        
+
 
         normal_attack = use_weapon.attack_skill_multiplier * random.randint(0, self.strength)
-        
+
 
 
         result = weapon_attack + normal_attack - fatigue_loss
-        
+
         if self.mount != None:
             result += int((self.mount.attack + self.mount.attack_skill_multiplier * random.randint(0, self.strength)) * (1/4))
 
@@ -657,7 +616,7 @@ class Unit:
             mount_speed = self.soldier_type.mount.speed
 
         return int(math.log(self.soldier_type.speed, 2)) * (TROOP_MOVEMENT_SPEED + mount_speed)
- 
+
     def get_movement_vector(self, vector_format='xy'):
         if self.target != None and not self.soldier_type.ranged:
             if not self.in_range():
@@ -751,7 +710,7 @@ class Battle:
 
         self.attacking_city = attacking_city
         self.city = city
-        
+
         self.fast_battles = fast_battles
         if self.fast_battles:
             self.use_graphics = False
@@ -894,10 +853,10 @@ class Battle:
 
                             #Allow the troop being hit by the projectile to try and defend a little.
                             defense = p.target.get_ranged_defense(owner_nation.tech.get_best_in_category('material'))
-                            is_shield = p.target.weapons[1].shield 
+                            is_shield = p.target.weapons[1].shield
                             armor_pierce = p.launcher.get_ranged_weapon().armor_pierce
                             siege_weapon = p.launcher.get_ranged_weapon().siege_weapon
-                            is_heavy = p.target.armor.heavy                     
+                            is_heavy = p.target.armor.heavy
 
                             if is_shield:
                                 damage = int(damage/2)
@@ -1041,7 +1000,7 @@ class Battle:
             total += len(i.soldiers)
 
         return total
-    
+
     def main_phase(self):
         if self.fast_battles:
             self.fast_battle_main()
@@ -1067,7 +1026,7 @@ class Battle:
                 return result
             else:
                 return random.randint(0, 1)
-        
+
         def get_melee_attack(troop, material):
             if troop.ranged:
                 use_weapon = troop.weapons[1]
@@ -1126,7 +1085,7 @@ class Battle:
                 self.b_stats[b_unit.name] = utility.base_soldier_stats()
                 self.b_stats[b_unit.name][b_unit.weapons[0].name] = utility.base_weapon_stats()
                 self.b_stats[b_unit.name][b_unit.weapons[1].name] = utility.base_weapon_stats()
-            
+
             sys.stdout.write("\rBattle for {}: {}(Soldiers: {}) vs. {}(Soldiers: {})".format(self.city.name, self.a.name.short_name(), self.a_army.size(), self.b.name.short_name(), self.b_army.size()))
             sys.stdout.flush()
 
@@ -1136,14 +1095,14 @@ class Battle:
             if a_unit.ranged:
                 damage = get_ranged_damage(a_unit, a_material)
                 defense = get_ranged_defense(b_unit, b_material)
-                
+
                 self.a_stats['projectiles_launched'] += 1
                 self.a_stats[a_unit.name]['projectiles_launched'] += 1
                 self.a_stats[a_unit.name][a_unit.weapons[0].name]['attacks'] += 1
 
                 if defense < damage:
                     b_health -= damage - defense
-                    
+
                     self.a_stats['projectiles_hit'] += 1
                     self.a_stats[a_unit.name]['projectiles_hit'] += 1
                     self.a_stats[a_unit.name][a_unit.weapons[0].name]['attacks_won'] += 1
@@ -1154,14 +1113,14 @@ class Battle:
             if b_unit.ranged:
                 damage = get_ranged_damage(b_unit, b_material)
                 defense = get_ranged_defense(a_unit, a_material)
-                
+
                 self.b_stats['projectiles_launched'] += 1
                 self.b_stats[b_unit.name]['projectiles_launched'] += 1
                 self.b_stats[b_unit.name][b_unit.weapons[0].name]['attacks'] += 1
 
                 if defense < damage:
                     a_health -= damage - defense
-                    
+
                     self.b_stats['projectiles_hit'] += 1
                     self.b_stats[b_unit.name]['projectiles_hit'] += 1
                     self.b_stats[b_unit.name][b_unit.weapons[0].name]['attacks_won'] += 1
@@ -1171,7 +1130,7 @@ class Battle:
 
             while a_health > 0 and b_health > 0:
                 a_attack = get_melee_attack(a_unit, a_material)
-                b_defense = get_melee_defense(b_unit, b_material)                
+                b_defense = get_melee_defense(b_unit, b_material)
                 self.a_stats[a_unit.name]['attacks'] += 1
                 if a_unit.ranged:
                     a_melee = a_unit.weapons[1]
@@ -1183,7 +1142,7 @@ class Battle:
                     self.a_stats[a_unit.name]['attacks_won'] += 1
                     self.a_stats['attacks_won'] += 1
                     self.a_stats[a_unit.name][a_melee.name]['attacks_won'] += 1
-                    
+
                     b_health -= 1
 
                     if b_health <= 0:
@@ -1205,7 +1164,7 @@ class Battle:
                     self.b_stats[b_unit.name]['attacks_won'] += 1
                     self.b_stats['attacks_won'] += 1
                     self.b_stats[b_unit.name][b_melee.name]['attacks_won'] += 1
-                
+
                     a_health -= 1
 
                     if a_health <= 0:
