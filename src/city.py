@@ -49,9 +49,6 @@ building_effects['Lab'] = {'population_capacity': 2, 'research_rate': 5, 'cost':
 building_effects['Market'] = {'tax_score': 100, 'money_output': 1000, 'cost': 1500, 'size': 60}
 building_effects['Caravansary'] = {'population_capacity': 5, 'caravan_chance': 20, 'cost': 2000, 'size': 90}
 
-
-
-#Kenny - Additions
 building_effects['Small Hut'] = {'population_capacity': 1, 'tax_score': 1, 'cost': 1, 'size': 1}
 building_effects['Hut'] = {'population_capacity': 2, 'tax_score': 2, 'cost': 2, 'size': 2}
 building_effects['Long Hut'] = {'population_capacity': 4, 'tax_score': 5, 'cost': 5, 'size': 4}
@@ -73,24 +70,22 @@ building_effects['Bank'] = {'population_capacity': 8, 'money_output': 3000,  'co
 building_effects['Guildhouse'] = {'population_capacity': 20, 'research_rate': 2, 'caravan_chance': 20, 'money_output': 500, 'cost': 4000, 'size': 50}
 building_effects['College'] = {'population_capacity': 20,  'research_rate': 3, 'cost': 3500, 'size': 50}
 building_effects['Inn'] = {'population_capacity': 50,  'tax_score': 5, 'money_output':500,'cost': 1000, 'size': 40}
-building_effects['Baracks'] = {'population_capacity': 15,  'sergeants':1, 'morale_bonus': 25, 'train_bonus':5, 'weapons':2,'cost': 500, 'size': 30}
-building_effects['Blacksmith'] = {'population_capacity': 2,  'weapons': 10, 'cost': 350, 'size': 10}
+# building_effects['Baracks'] = {'population_capacity': 15,  'sergeants':1, 'morale_bonus': 25, 'train_bonus':5, 'weapons':2,'cost': 500, 'size': 30}
+# building_effects['Blacksmith'] = {'population_capacity': 2,  'weapons': 10, 'cost': 350, 'size': 10}
 building_effects['Church'] = {'population_capacity': 5,  'tax_score': 5, 'cost': 200, 'size': 40}
-building_effects['Gun Smith'] = {'population_capacity': 5,  'gunpowder': 10, 'weapons':2, 'cost': 700, 'size': 50}
 building_effects['Sewer'] = {'population_capacity': 12,  'tax_score': 5, 'morale':25, 'cost': 1200, 'size': 35}
-building_effects['Graveyard'] = {'population_capacity': 2,  'morale': -5, 'gunpowder':5,'cost': 100, 'size': 30}
+building_effects['Graveyard'] = {'population_capacity': 2,  'morale': -2, 'cost': 100, 'size': 30}
 building_effects['Carpenter House'] = {'population_capacity': 3,  'money_output':1000, 'cost': 50, 'size': 10}
 
-building_effects['School of Combat'] = {'population_capacity': 10,  'train_bonus':20, 'weapons': 5, 'sergeants':2,'cost': 900, 'size': 50}
 building_effects['Dockyard'] = {'population_capacity': 3, 'wood':-5, 'boats':1,'cost': 2300, 'size': 20}
 building_effects['Court'] = {'population_capacity': 6,  'morale_bonus': 25, 'cost': 1500, 'size': 30}
 building_effects['Workshop'] = {'population_capacity': 10,  'cloth': 5, 'metal':5, 'wood':5, 'cost': 1700, 'size': 35}
 
 def base_resources():
-    return {'leather': 0, 'wood': 0, 'cloth': 0, 'metal': 0, 'food': 0, 'boats':0, 'weapons':0, 'gunpowder':0, 'sergeants':0}
+    return {'leather': 0, 'wood': 0, 'cloth': 0, 'metal': 0, 'food': 0, 'boats':0, 'gunpowder':0}
 
 def base_resource_prices():
-    return {'leather': 50, 'wood': 75, 'cloth': 50, 'metal': 150, 'food': 10, 'boats':250, 'weapons':80, 'gunpowder':200, 'sergeants':300}
+    return {'leather': 50, 'wood': 75, 'cloth': 50, 'metal': 150, 'food': 10, 'boats':1500, 'gunpowder':200}
 
 class Building:
     def __init__(self, name, city, effects, number):
@@ -245,16 +240,15 @@ def base_buildings(city):
     buildings.append(Building('College', city, building_effects['College'],0 ))
     buildings.append(Building('Inn', city, building_effects['Inn'],0 ))
     buildings.append(Building('Bank', city, building_effects['Bank'],0 ))
-    buildings.append(Building('Baracks', city, building_effects['Baracks'],0 ))
-    buildings.append(Building('Gun Smith', city, building_effects['Gun Smith'],0 ))
+    # buildings.append(Building('Baracks', city, building_effects['Baracks'],0 ))
     buildings.append(Building('Church', city, building_effects['Church'],0 ))
     buildings.append(Building('Sewer', city, building_effects['Sewer'],0 ))
     buildings.append(Building('Graveyard', city, building_effects['Graveyard'],0 ))
     buildings.append(Building('Carpenter House', city, building_effects['Carpenter House'],0 ))
-    buildings.append(Building('School of Combat', city, building_effects['School of Combat'],0 ))
     buildings.append(Building('Dockyard', city, building_effects['Dockyard'],0 ))
     buildings.append(Building('Court', city, building_effects['Court'],0 ))
     buildings.append(Building('Workshop', city, building_effects['Workshop'],0 ))
+
     return buildings
 
 class City:
@@ -562,7 +556,7 @@ class City:
             if len(self.nation.cities) > 0: #this shouldn't happen because the army should fight to the death first
                 return_destination = random.choice(self.nation.cities)
                 self.nation.moving_armies.append(Group(self.parent, self.nation.name, self.army, self.position, return_destination.position, self.nation.color, lambda s: False, self.parent.reinforce(self.nation, return_destination), self.parent.canvas, is_army=True, has_boat=(self.resources['boats'] > 0)))
-                
+
                 self.parent.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': self.nation.id, 'nation_b': self.nation.id, 'city_a': self.name, 'city_b': return_destination.name, 'reason': 'evacuate', 'army_size': self.army.size()}, self.parent.get_current_date()))
 
         if self.is_capital: #We lose twice as much morale for losing the capital
@@ -889,15 +883,9 @@ class City:
         self.army.add_number(conscripted, self.nation)
         self.army.train(train_bonus)
 
-        if (self.resources['weapons'] - conscripted) > 0:
-            self.army.upgrade_gear()
-            self.resources['weapons'] -= conscripted
-
-
         if not self.nation.army_structure.make_upgrade_list() == self.army.zero().make_upgrade_list():
             self.nation.army_structure = self.nation.army_structure.merge_structure(self.army).zero()
             self.army.merge_all(self.nation.army_structure)
-
 
     def building_count(self):
         return sum([cell.building_count() for cell in self.cells])
@@ -916,7 +904,7 @@ class City:
         if self.population > self.population_capacity:
             self.morale -= MORALE_NOT_ENOUGH_HOUSING
 
-        #Kenny Additions
+        # TODO: Refactor building effects application to make more consistent (not just here)
         morale_bonus_a = 0
         for cell in self.cells:
             for building in cell.buildings:
