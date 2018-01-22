@@ -163,10 +163,10 @@ class Cell:
 
     def get_available_building_capacity(self):
         multiplier = 1.0
-        if self.owner != None:
+        if self.owner is not None:
             best = self.owner.nation.tech.get_best_in_category('compact_building')
 
-            if best != None:
+            if best is not None:
                 multiplier = best.multiplier
 
         return multiplier * self.building_capacity - self.get_total_buiding_size()
@@ -215,7 +215,7 @@ class Cell:
 
     def get_temperature(self):
         #The base temperature never changes, so we only need to calculate it once.
-        if self.temperature == None:
+        if self.temperature is None:
             self.temperature = temperature(self.terrain.height * MAX_HEIGHT, self.y, utility.S_HEIGHT) * (1 - self.temperature_multiplier)
 
         return self.temperature
@@ -253,7 +253,7 @@ class Cell:
 
     def reset_color(self):
         if self.id >= 0:
-            if self.owner != None:
+            if self.owner is not None:
                 self.parent.canvas.itemconfig(self.id, fill=self.owner.nation.color)
             else:
                 self.parent.canvas.itemconfig(self.id, fill=self.terrain.color)
@@ -262,7 +262,7 @@ class Cell:
         start_x, start_y = self.x * utility.CELL_SIZE, self.y * utility.CELL_SIZE
         end_x, end_y = start_x + utility.CELL_SIZE, start_y + utility.CELL_SIZE
         try:
-            if self.owner != None:
+            if self.owner is not None:
                 self.id = self.parent.canvas.create_rectangle(start_x, start_y, end_x, end_y, width=0, fill=self.owner.nation.color)
             else:
                 self.id = self.parent.canvas.create_rectangle(start_x, start_y, end_x, end_y, width=0, fill=self.terrain.color)
@@ -284,7 +284,7 @@ class Cell:
         self.owning_nation_label = gui.Label(self.gui_window, text='Owning nation: ')
         self.owning_nation_label.grid(row=2, sticky=W)
 
-        if self.owner != None:
+        if self.owner is not None:
             self.owning_city_button = gui.Button(self.gui_window, text=self.owner.name, command=self.owner.show_information_gui)
             self.owning_nation_button = gui.Button(self.gui_window, text=self.owner.nation.name, command=self.owner.nation.show_information_gui)
         else:
@@ -305,7 +305,7 @@ class Cell:
         self.buildings_display.grid(row=4, column=0, columnspan=3, sticky=W+E)
 
     def update_self(self):
-        if self.owner == None:
+        if self.owner is None:
             self.parent.canvas.itemconfig(self.id, fill=self.terrain.color)
         else:
             self.parent.canvas.itemconfig(self.id, fill=self.owner.nation.color)
@@ -316,16 +316,16 @@ class Cell:
         self.update_self()
 
     def change_owner(self, new_owner, new_type=None):
-        if self.owner != None: #Remove this cell from the list of owned cells
+        if self.owner is not None: #Remove this cell from the list of owned cells
             self.owner.remove_cell(self)
 
         #This must be before .add_cell
-        if new_type != None:
+        if new_type is not None:
             self.change_type(new_type)
 
         self.owner = new_owner
 
-        if self.owner != None:
+        if self.owner is not None:
             for building in self.buildings:
                 building.city = new_owner
             self.owner.add_cell(self)

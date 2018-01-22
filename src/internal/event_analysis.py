@@ -37,7 +37,7 @@ class Result:
 
 class Analyser:
     def __init__(self, event_log=None, fname='event_log.txt'):
-        if event_log == None:
+        if event_log is None:
             self.event_list = self.load_events(fname)
         else:
             self.event_list = event_log

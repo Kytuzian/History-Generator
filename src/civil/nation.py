@@ -70,45 +70,49 @@ NOTABLE_PERSON_BIRTH_CHANCE = 150
 
 PRIEST_TOLERANCE_BONUS = 5
 
-GOVERNMENT_TYPE_BONUSES = {}
-GOVERNMENT_TYPE_BONUSES["Principality"] = {'food': 1, 'morale': 0.75, 'efficiency': 1, 'tolerance': 1,
-                                           'conscription': 1.5}
-GOVERNMENT_TYPE_BONUSES["Kingdom"] = {'food': 1, 'morale': 0.75, 'efficiency': 1, 'tolerance': 1, 'conscription': 1.5}
-GOVERNMENT_TYPE_BONUSES["Sultanate"] = {'food': 1, 'morale': 0.75, 'efficiency': 1, 'tolerance': 1, 'conscription': 1.5}
-GOVERNMENT_TYPE_BONUSES["Khanate"] = {'food': 1, 'morale': 0.75, 'efficiency': 1, 'tolerance': 1, 'conscription': 1.5}
-GOVERNMENT_TYPE_BONUSES["Socialist State"] = {'food': 2, 'morale': 0.5, 'efficiency': 1, 'tolerance': 1,
-                                              'conscription': 1}
-GOVERNMENT_TYPE_BONUSES["States"] = {'food': 1, 'morale': 1, 'efficiency': 1, 'tolerance': 1, 'conscription': 1}
-GOVERNMENT_TYPE_BONUSES["Commonwealth"] = {'food': 1, 'morale': 1, 'efficiency': 1, 'tolerance': 1, 'conscription': 1}
-GOVERNMENT_TYPE_BONUSES["Democracy"] = {'food': 1, 'morale': 2, 'efficiency': 0.75, 'tolerance': 1, 'conscription': 1}
-GOVERNMENT_TYPE_BONUSES["Republic"] = {'food': 1, 'morale': 1.5, 'efficiency': 1, 'tolerance': 1, 'conscription': 1}
-GOVERNMENT_TYPE_BONUSES["Theocracy"] = {'food': 1, 'morale': 1.5, 'efficiency': 1, 'tolerance': 0.5, 'conscription': 1}
-GOVERNMENT_TYPE_BONUSES["Confederacy"] = {'food': 1, 'morale': 1.5, 'efficiency': 0.75, 'tolerance': 1,
-                                          'conscription': 1}
-GOVERNMENT_TYPE_BONUSES["Meritocracy"] = {'food': 1, 'morale': 0.75, 'efficiency': 2, 'tolerance': 1, 'conscription': 1}
-GOVERNMENT_TYPE_BONUSES["Aristocracy"] = {'food': 1, 'morale': 1, 'efficiency': 0.75, 'tolerance': 1,
-                                          'conscription': 1.5}
-GOVERNMENT_TYPE_BONUSES["Oligarchy"] = {'food': 1, 'morale': 1, 'efficiency': 0.75, 'tolerance': 1, 'conscription': 1.5}
-GOVERNMENT_TYPE_BONUSES["Hegemony"] = {'food': 1, 'morale': 0.5, 'efficiency': 1, 'tolerance': 1, 'conscription': 2}
-
-GOVERNMENT_TYPE_BONUSES["Empire"] = {'food': 0.5, 'morale': 0.25, 'efficiency': 1.5, 'tolerance': 0.5,
-                                     'conscription': 3}
-GOVERNMENT_TYPE_BONUSES["Tsardom"] = {'food': 1, 'morale': 0.35, 'efficiency': 0.75, 'tolerance': 1,
-                                      'conscription': 2.5}
-GOVERNMENT_TYPE_BONUSES["Caliphate"] = {'food': 0.75, 'morale': 1.5, 'efficiency': 1, 'tolerance': 0.25,
-                                        'conscription': 2}
-GOVERNMENT_TYPE_BONUSES["Emirate"] = {'food': 1.5, 'morale': 0.75, 'efficiency': 1, 'tolerance': 0.25,
-                                      'conscription': 2}
-GOVERNMENT_TYPE_BONUSES["Tribes"] = {'food': 1.5, 'morale': 1, 'efficiency': 0.1, 'tolerance': 0.5, 'conscription': 1.5}
-GOVERNMENT_TYPE_BONUSES["Clan"] = {'food': 0.75, 'morale': 1, 'efficiency': 0.75, 'tolerance': 0.5, 'conscription': 2}
-GOVERNMENT_TYPE_BONUSES["Duchy"] = {'food': 1.75, 'morale': 1.5, 'efficiency': 0.75, 'tolerance': 1,
-                                    'conscription': 1.25}
-GOVERNMENT_TYPE_BONUSES["Autocracy"] = {'food': 0.25, 'morale': 1, 'efficiency': 1.5, 'tolerance': 0.25,
-                                        'conscription': 4}
+GOVERNMENT_TYPE_BONUSES = {"Principality": {'food': 1, 'morale': 0.75, 'efficiency': 1, 'tolerance': 1,
+                                            'conscription': 1.5},
+                           "Kingdom": {'food': 1, 'morale': 0.75, 'efficiency': 1, 'tolerance': 1, 'conscription': 1.5},
+                           "Sultanate": {'food': 1, 'morale': 0.75, 'efficiency': 1, 'tolerance': 1,
+                                         'conscription': 1.5},
+                           "Khanate": {'food': 1, 'morale': 0.75, 'efficiency': 1, 'tolerance': 1, 'conscription': 1.5},
+                           "Socialist State": {'food': 2, 'morale': 0.5, 'efficiency': 1, 'tolerance': 1,
+                                               'conscription': 1},
+                           "States": {'food': 1, 'morale': 1, 'efficiency': 1, 'tolerance': 1, 'conscription': 1},
+                           "Commonwealth": {'food': 1, 'morale': 1, 'efficiency': 1, 'tolerance': 1, 'conscription': 1},
+                           "Democracy": {'food': 1, 'morale': 2, 'efficiency': 0.75, 'tolerance': 1, 'conscription': 1},
+                           "Republic": {'food': 1, 'morale': 1.5, 'efficiency': 1, 'tolerance': 1, 'conscription': 1},
+                           "Theocracy": {'food': 1, 'morale': 1.5, 'efficiency': 1, 'tolerance': 0.5,
+                                         'conscription': 1},
+                           "Confederacy": {'food': 1, 'morale': 1.5, 'efficiency': 0.75, 'tolerance': 1,
+                                           'conscription': 1},
+                           "Meritocracy": {'food': 1, 'morale': 0.75, 'efficiency': 2, 'tolerance': 1,
+                                           'conscription': 1},
+                           "Aristocracy": {'food': 1, 'morale': 1, 'efficiency': 0.75, 'tolerance': 1,
+                                           'conscription': 1.5},
+                           "Oligarchy": {'food': 1, 'morale': 1, 'efficiency': 0.75, 'tolerance': 1,
+                                         'conscription': 1.5},
+                           "Hegemony": {'food': 1, 'morale': 0.5, 'efficiency': 1, 'tolerance': 1, 'conscription': 2},
+                           "Empire": {'food': 0.5, 'morale': 0.25, 'efficiency': 1.5, 'tolerance': 0.5,
+                                      'conscription': 3},
+                           "Tsardom": {'food': 1, 'morale': 0.35, 'efficiency': 0.75, 'tolerance': 1,
+                                       'conscription': 2.5},
+                           "Caliphate": {'food': 0.75, 'morale': 1.5, 'efficiency': 1, 'tolerance': 0.25,
+                                         'conscription': 2},
+                           "Emirate": {'food': 1.5, 'morale': 0.75, 'efficiency': 1, 'tolerance': 0.25,
+                                       'conscription': 2},
+                           "Tribes": {'food': 1.5, 'morale': 1, 'efficiency': 0.1, 'tolerance': 0.5,
+                                      'conscription': 1.5},
+                           "Clan": {'food': 0.75, 'morale': 1, 'efficiency': 0.75, 'tolerance': 0.5, 'conscription': 2},
+                           "Duchy": {'food': 1.75, 'morale': 1.5, 'efficiency': 0.75, 'tolerance': 1,
+                                     'conscription': 1.25},
+                           "Autocracy": {'food': 0.25, 'morale': 1, 'efficiency': 1.5, 'tolerance': 0.25,
+                                         'conscription': 4}}
 
 
 class Nation:
     def __init__(self, parent, cities=None):
+        self.displaying = ''
         self.language = language.Language()  # Create a new, random language
 
         self.age = 0
@@ -123,7 +127,7 @@ class Nation:
         x = random.randint(int(CELLS_WIDTH * 0.1), int(CELLS_WIDTH * 0.9))
         y = random.randint(int(CELLS_HEIGHT * 0.1), int(CELLS_HEIGHT * 0.9))
 
-        if cities != None:
+        if cities is not None:
             self.cities = cities
 
             for city in self.cities:
@@ -272,7 +276,7 @@ class Nation:
         self.religion_label = Label(self.gui_window, text='Main Religion: ')
         self.religion_label.grid(row=5, sticky=W)
 
-        if self.main_religion != None:
+        if self.main_religion is not None:
             self.religion_button = Button(self.gui_window, text=self.main_religion.name,
                                           command=self.main_religion.show_information_gui)
             self.religion_button.grid(row=5, column=1, sticky=W)
@@ -312,68 +316,10 @@ class Nation:
 
         self.listbox_display.bind('<Double-Button-1>', self.selected)
 
-        self.displaying = ''
-
     def save(self, path):
         self.parent.db.save_nation(self)
         self.parent.db.save_name(self.name)
         return
-
-        res = {}
-        res['id'] = self.id
-        res['age'] = self.age
-        res['money'] = self.money
-        res['morale'] = self.morale
-        res['tax_rate'] = self.tax_rate
-        res['elite'] = self.elite
-        res['army_spending'] = self.army_spending
-        res['at_war'] = map(lambda nation: nation.id, self.at_war)
-        res['trading'] = map(lambda nation: nation.id, self.trading)
-        res['allied'] = map(lambda nation: nation.id, self.allied)
-        res['relations'] = self.relations
-        res['name'] = self.name.get_info()
-        res['ruler'] = self.ruler.name
-        res['treaties'] = []
-
-        # The actual treaty data in stored in the treaties folder, so we only need the ids here
-        for treaty in self.treaties:
-            res['treaties'].append(treaty.treaty_id)
-
-        res['caravans'] = []
-        for caravan in self.caravans:
-            res['caravans'].append(caravan.get_info())
-
-        res['moving_armies'] = []
-        for moving_army in self.moving_armies:
-            res['moving_armies'].append(moving_army.get_info())
-
-        res['sidearm_list'] = map(lambda eqp: eqp.get_info(), self.sidearm_list)
-        res['basic_weapon_list'] = map(lambda eqp: eqp.get_info(), self.basic_weapon_list)
-        res['weapon_list'] = map(lambda eqp: eqp.get_info(), self.weapon_list)
-        res['basic_ranged_weapon_list'] = map(lambda eqp: eqp.get_info(), self.basic_ranged_weapon_list)
-        res['ranged_weapon_list'] = map(lambda eqp: eqp.get_info(), self.ranged_weapon_list)
-
-        res['armor_list'] = map(lambda eqp: eqp.get_info(), self.armor_list)
-        res['basic_armor_list'] = map(lambda eqp: eqp.get_info(), self.basic_armor_list)
-
-        if self.current_research != None:
-            res['current_research'] = self.current_research.name
-        else:
-            res['current_research'] = None
-
-        self.army_structure.save(path)
-        self.tech.save(path)
-
-        for person in self.notable_people:
-            person.save(path + 'people/')
-
-        for city in self.cities:
-            city.save(path + 'cities/')
-
-        self.culture.save(path)
-
-        with open(path + 'main.txt', 'w') as f:
-            f.write(str(res))
 
     def selected(self, event):
         if self.displaying == 'city':  # We can't select any other options
@@ -532,13 +478,13 @@ class Nation:
             army.step(None)  # run the calculations but don't actually move yet
 
     def handle_people_monthly(self):
-        if self.ruler == None or not self.ruler.alive:
+        if self.ruler is None or not self.ruler.alive:
             self.ruler = self.add_person()
 
         if random.randint(0, NOTABLE_PERSON_BIRTH_CHANCE) == 0:
             self.add_person()
 
-        if self.ruler != None:
+        if self.ruler is not None:
             self.mod_morale(self.ruler.effectiveness ** 2)
             self.main_religion = self.ruler.religion
 
@@ -586,7 +532,7 @@ class Nation:
 
         for x in self.parent.cells:
             for y in x:
-                if y.owner == None and y.terrain.is_settleable():
+                if y.owner is None and y.terrain.is_settleable():
                     candidates.append(y)
 
         return candidates
@@ -616,7 +562,7 @@ class Nation:
 
         self.mod_morale(city.MORALE_INCREMENT)
 
-        if self.parent.cells[self.cities[-1].position[0]][self.cities[-1].position[1]].owner == None:
+        if self.parent.cells[self.cities[-1].position[0]][self.cities[-1].position[1]].owner is None:
             self.parent.change_cell_ownership(self.cities[-1].position[0], self.cities[-1].position[1], self.cities[-1],
                                               new_type='city')
 
@@ -792,8 +738,8 @@ class Nation:
             if random.randint(0, found_city_chance) == 0 and self.money > CITY_FOUND_COST:
                 self.create_city()
 
-            if self.current_research == None or self.current_research.is_unlocked():
-                if self.current_research != None and self.current_research.is_unlocked():
+            if self.current_research is None or self.current_research.is_unlocked():
+                if self.current_research is not None and self.current_research.is_unlocked():
                     self.parent.events.append(events.EventTechResearch('TechResearch', {'nation_a': self.id,
                                                                                         'tech_a': self.current_research.name},
                                                                        self.parent.get_current_date()))
@@ -971,14 +917,14 @@ class Nation:
                 if nation in self.trading:
                     trade_treaty = self.get_treaty_with(nation, 'trade')
 
-                    if trade_treaty != None:
+                    if trade_treaty is not None:
                         self.relations[nation.id] += trade_treaty[self.id]['caravans_received'] / trade_treaty.length(
                             self.parent.get_current_date())
 
                 if nation in self.at_war:
                     war_treaty = self.get_treaty_with(nation, 'war')
 
-                    if war_treaty != None:
+                    if war_treaty is not None:
                         # This way, if we lose more troops than them, our relations will go down even more, even though they go down by default just for being at war
 
                         relative_troops_lost = min(-1, war_treaty[nation.id]['troops_lost'] - war_treaty[self.id][

@@ -51,7 +51,7 @@ class Soldier:
         else:
             use_weapon = self.get_melee_weapon()
 
-        if use_weapon == None:
+        if use_weapon is None:
             self.reload = 0
             self.reload_counter = 0
         else:
@@ -79,16 +79,16 @@ class Soldier:
         self.rank_position = None
 
     def step(self, proj, best_material, best_enemy_material, stats, enemy_stats):
-        if self.target != None: #If we have a target, make sure it still exists.
+        if self.target is not None: #If we have a target, make sure it still exists.
             if not self.target in self.unit.target.soldiers:
                 self.target = None
 
-        if self.ranged and self.target == None:
+        if self.ranged and self.target is None:
             self.target = random.choice(self.unit.target.soldiers)
         else:
             self.target = utility.get_nearest_enemy(self, self.unit.target.soldiers)
 
-        if self.target != None:
+        if self.target is not None:
             self.target.targeted = self
         else:
             return
@@ -170,7 +170,7 @@ class Soldier:
                 elif armor_pierce == -1:
                     defense /= 2
 
-            if self.target.mount != None:
+            if self.target.mount is not None:
                 attack *= int(self.get_melee_weapon().range/5)
 
             stats[self.name]['attacks'] += 1
@@ -285,7 +285,7 @@ class Soldier:
     def get_projectile_speed(self):
         weapon = self.get_ranged_weapon()
 
-        if weapon != None:
+        if weapon is not None:
             return weapon.projectile_speed
         else:
             return 0
@@ -293,7 +293,7 @@ class Soldier:
     def get_projectile_size(self):
         weapon = self.get_ranged_weapon()
 
-        if weapon != None:
+        if weapon is not None:
             return weapon.projectile_size
         else:
             return 0
@@ -310,7 +310,7 @@ class Soldier:
         #Find our ranged weapon. Should be first, but better to check in case it's not.
         use_weapon = self.get_ranged_weapon()
 
-        if use_weapon == None: #Shouldn't actually happen, but just in case.
+        if use_weapon is None: #Shouldn't actually happen, but just in case.
             return random.randint(0, 1)
         else:
             weapon_attack = use_weapon.get_attack(material)
@@ -329,7 +329,7 @@ class Soldier:
         fatigue_loss = random.randint(0, self.fatigue // 2)
         other_weapon = self.get_switch_weapon()
 
-        if other_weapon == None: #This could happen if ALL of our weapons have broken.
+        if other_weapon is None: #This could happen if ALL of our weapons have broken.
             other_weapon = unarmed()
 
         other_weapon_attack = other_weapon.get_attack(material)
@@ -347,7 +347,7 @@ class Soldier:
         #Find our melee weapon
         use_weapon = self.get_melee_weapon()
 
-        if use_weapon == None: #This could happen if ALL of our weapons have broken.
+        if use_weapon is None: #This could happen if ALL of our weapons have broken.
             use_weapon = unarmed()
 
 
@@ -360,7 +360,7 @@ class Soldier:
 
         result = weapon_attack + normal_attack - fatigue_loss
 
-        if self.mount != None:
+        if self.mount is not None:
             result += int((self.mount.attack + self.mount.attack_skill_multiplier * random.randint(0, self.strength)) * (1/4))
 
         # print('{} from weapon ({}), {} from strength, {} lost from fatigue = {}'.format(weapon_attack, use_weapon.name, normal_attack, fatigue_loss, result))
@@ -376,7 +376,7 @@ class Soldier:
         skill_defense = self.armor.defense_skill_multiplier * random.randint(0, self.strength)
         is_shield = self.weapons[1].shield
 
-        if self.mount != None:
+        if self.mount is not None:
             mount_defense = int(self.mount.defense * (1/4))
 
             if self.mount.heavy:
@@ -399,7 +399,7 @@ class Soldier:
         #Find our ranged weapon. Should be first, but better to check in case it's not.
         use_weapon = self.get_melee_weapon()
 
-        if use_weapon == None: #This could happen if ALL of our weapons have broken.
+        if use_weapon is None: #This could happen if ALL of our weapons have broken.
             use_weapon = unarmed()
 
         weapon_defense = use_weapon.get_defense(material)
@@ -416,7 +416,7 @@ class Soldier:
             return random.randint(0, 1)
 
     def in_range(self):
-        if self.target != None:
+        if self.target is not None:
             tx, ty = self.target.x, self.target.y
 
             d = utility.distance((tx, ty), (self.x, self.y))
@@ -429,7 +429,7 @@ class Soldier:
             return False
 
     def move(self):
-        if self.rank_position != None:
+        if self.rank_position is not None:
             self.rank_position.calculate_position()
 
             tx, ty = self.rank_position.x, self.rank_position.y
@@ -469,14 +469,14 @@ class RankPosition:
         self.soldier = None
 
     def change_soldier(self, soldier):
-        if soldier.rank_position != None:
+        if soldier.rank_position is not None:
             soldier.rank_position.soldier = None
 
         soldier.rank_position = self
         self.soldier = soldier
 
     def has_soldier(self):
-        return self.soldier != None
+        return self.soldier is not None
 
     def calculate_position(self):
         d1 = ((len(self.unit.ranks[0]) - 1) / 2.0 - self.position) * (TROOP_RADIUS + 1)
@@ -536,7 +536,7 @@ class Unit:
             if weapon.name in map(lambda w: w.name, all_ranged_weapons):
                 use_weapon = weapon
 
-        if use_weapon == None:
+        if use_weapon is None:
             self.ammunition = 0
         else:
             self.ammunition = use_weapon.ammunition * len(self.soldiers)
@@ -562,7 +562,7 @@ class Unit:
             self.canvas.delete(soldier.id)
             self.canvas.delete(soldier.weapon_id)
 
-        if soldier.targeted != None:
+        if soldier.targeted is not None:
             soldier.targeted.target = None
 
         self.soldiers.remove(soldier)
@@ -571,7 +571,7 @@ class Unit:
             soldier.rank_position.soldier = None
 
         if len(self.soldiers) == 0:
-            if self.targeted != None:
+            if self.targeted is not None:
                 self.targeted.target = None
 
             self.force.remove(self)
@@ -586,7 +586,7 @@ class Unit:
                 if not position.has_soldier():
                     next_soldier = self.get_next_soldier(rank_i, position_i)
 
-                    if next_soldier != None:
+                    if next_soldier is not None:
                         position.change_soldier(self.get_next_soldier(rank_i, position_i))
 
         #clear out empty ranks
@@ -612,13 +612,13 @@ class Unit:
     def get_effective_speed(self):
         mount_speed = 0
 
-        if self.soldier_type.mount != None:
+        if self.soldier_type.mount is not None:
             mount_speed = self.soldier_type.mount.speed
 
         return int(math.log(self.soldier_type.speed, 2)) * (TROOP_MOVEMENT_SPEED + mount_speed)
 
     def get_movement_vector(self, vector_format='xy'):
-        if self.target != None and not self.soldier_type.ranged:
+        if self.target is not None and not self.soldier_type.ranged:
             if not self.in_range():
                 d = utility.distance((self.x, self.y), (self.target.x, self.target.y))
                 dx = self.target.x - self.x
@@ -658,7 +658,7 @@ class Unit:
         return False
 
     def move(self):
-        if self.target != None:
+        if self.target is not None:
             tx, ty = self.target.get_position()
             self.dx, self.dy = tx - self.x, ty - self.y
 
@@ -953,7 +953,7 @@ class Battle:
                 return True
 
             if len(current_unit.soldiers) == 0: #No soldiers, remove this and untarget
-                if current_unit.targeted != None:
+                if current_unit.targeted is not None:
                     current_unit.targeted.target = None
 
                 force.remove(current_unit)
@@ -964,17 +964,17 @@ class Battle:
                 self.canvas.coords(current_unit.name_id, current_unit.x, current_unit.y - 20)
 
             #Targeting stuff
-            if current_unit.target != None: #if we have a target make sure it still exists
+            if current_unit.target is not None: #if we have a target make sure it still exists
                 if not current_unit.target in enemy_force:
                     current_unit.target = None
                 elif len(current_unit.target.soldiers) == 0:
                     current_unit.target = None
 
             #If we don't have a target, target the closest unit.
-            if current_unit.target == None or random.randint(0, SWITCH_TARGET_COUNT) == 0:
+            if current_unit.target is None or random.randint(0, SWITCH_TARGET_COUNT) == 0:
                 current_unit.target = utility.get_nearest_enemy(current_unit, enemy_force)
 
-                if current_unit.target != None:
+                if current_unit.target is not None:
                     current_unit.target.targeted = current_unit
                 else:
                     continue
@@ -984,7 +984,7 @@ class Battle:
 
             for soldier in current_unit.soldiers:
                 #Targeting stuff
-                if current_unit.target == None:
+                if current_unit.target is None:
                     break
                 if len(current_unit.target.soldiers) == 0:
                     break
@@ -1089,7 +1089,7 @@ class Battle:
             sys.stdout.write("\rBattle for {}: {}(Soldiers: {}) vs. {}(Soldiers: {})".format(self.city.name, self.a.name.short_name(), self.a_army.size(), self.b.name.short_name(), self.b_army.size()))
             sys.stdout.flush()
 
-            if a_unit == None or b_unit == None:
+            if a_unit is None or b_unit is None:
                 raise Exception('Couldn\'t find any units!')
 
             if a_unit.ranged:

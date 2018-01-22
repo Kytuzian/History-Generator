@@ -120,7 +120,7 @@ def create_art(nation, creator):
     gen = generator.Form(gen_forms, custom_weights=creator.periods[-1].custom_weights)
     subject, content = gen.generate(nation=nation, creator=creator)
 
-    if subject != None:
+    if subject is not None:
         creator.periods[-1].custom_weights = gen.custom_weights
 
         material_gen = None
@@ -131,7 +131,7 @@ def create_art(nation, creator):
 
         name = utility.titlecase(nation.language.translateTo(subject))
 
-        if material_gen != None:
+        if material_gen is not None:
             material = material_gen.generate(nation=nation, creator=creator)[0]
             creator.periods[-1].custom_weights = material_gen.custom_weights
 
@@ -140,10 +140,12 @@ def create_art(nation, creator):
         return None
 
 class Culture:
-    def __init__(self, nation, art=[]):
+    def __init__(self, nation, art=None):
+        if art is None:
+            art = []
         self.nation = nation
 
-        self.art = []
+        self.art = art
 
         self.art_display = None
 
@@ -244,7 +246,7 @@ class Art:
         self.current_nation_label.grid(row=i, column=0, sticky=W)
         i += 1
 
-        if self.location == None:
+        if self.location is None:
             location_name = 'Lost'
         else:
             location_name = self.location.name
@@ -299,7 +301,7 @@ class Art:
         res['content'] = self.content
         res['material'] = self.material
 
-        if self.location != None:
+        if self.location is not None:
             res['location'] = self.location.name
         else:
             res['location'] = None

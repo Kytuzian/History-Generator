@@ -20,7 +20,9 @@ WAR_CITY_MULTIPLIER = 1000
 WAR_END_DIVISOR = 20.0
 
 class Treaty:
-    def __init__(self, parent, starting_date, nation_a, nation_b, treaty_type, signing_city=None, treaty_details={}):
+    def __init__(self, parent, starting_date, nation_a, nation_b, treaty_type, signing_city=None, treaty_details=None):
+        if treaty_details is None:
+            treaty_details = {}
         self.parent = parent
 
         self.treaty_id = self.parent.get_next_id('treaty')
@@ -35,7 +37,7 @@ class Treaty:
         self.last_requested_date = self.starting_date
         self.status_changed = False
 
-        if signing_city != None:
+        if signing_city is not None:
             self.signing_city = signing_city
         else:
             capitals = []
@@ -83,18 +85,11 @@ class Treaty:
         self.is_current = True
 
     def save(self, path):
-        res = {}
-        res['id'] = self.treaty_id
+        res = {'id': self.treaty_id, 'starting_date': self.starting_date, 'ending_date': self.ending_date,
+               'nation_a': self.nation_a.id, 'nation_b': self.nation_b.id, 'names': self.names,
+               'last_requested_date': self.last_requested_date, 'status_changed': self.status_changed}
 
-        res['starting_date'] = self.starting_date
-        res['ending_date'] = self.ending_date
-        res['nation_a'] = self.nation_a.id
-        res['nation_b'] = self.nation_b.id
-        res['names'] = self.names
-        res['last_requested_date'] = self.last_requested_date
-        res['status_changed'] = self.status_changed
-
-        if self.signing_city != None:
+        if self.signing_city is not None:
             res['signing_city'] = self.signing_city.name
         else:
             res['signing_city'] = self.signing_city
@@ -189,7 +184,7 @@ class Treaty:
             self.nation_a.trading.remove(self.nation_b)
             self.nation_b.trading.remove(self.nation_a)
 
-            if ender == None:
+            if ender is None:
                 ender = self.nation_a
             self.parent.events.append(events.EventDiplomacyTradeEnd('DiplomacyTradeEnd', {'nation_a': ender.id, 'nation_b': self.get_other_nation(ender).id}, self.parent.get_current_date()))
             self.parent.write_to_gen_log(self.parent.events[-1].text_version())
@@ -209,7 +204,7 @@ class Treaty:
     def get_treaty_name(self, current_date, requesting_nation):
         if self.status_changed or current_date > self.last_requested_date or not requesting_nation.id in self.names or len(self.names[requesting_nation.id]) == 0:
             custom_tags = {}
-            if self.signing_city != None:
+            if self.signing_city is not None:
                 custom_tags['signing_city'] = [self.signing_city.name]
             else:
                 custom_tags['signing_city'] = [str(self.nation_a.name), str(self.nation_b.name)]
@@ -217,7 +212,7 @@ class Treaty:
             custom_tags['nation_a'] = [str(self.nation_a.name)]
             custom_tags['nation_b'] = [str(self.nation_b.name)]
 
-            if self.ending_date != None:
+            if self.ending_date is not None:
                 treaty_length = utility.get_time_span_length(self.starting_date, self.ending_date)
             else:
                 treaty_length = utility.get_time_span_length(self.starting_date, current_date)
@@ -256,18 +251,9 @@ class BattleHistory:
         self.b_stats = b_stats
 
     def save(self, path):
-        res = {}
-        res['id'] = self.battle_id
-        res['location'] = self.location.name
-        res['winner'] = self.winner.id
-
-        res['nation_a'] = self.nation_a.id
-        res['nation_b'] = self.nation_b.id
-
-        res['date'] = self.date
-
-        res['a_stats'] = self.a_stats
-        res['b_stats'] = self.b_stats
+        res = {'id': self.battle_id, 'location': self.location.name, 'winner': self.winner.id,
+               'nation_a': self.nation_a.id, 'nation_b': self.nation_b.id, 'date': self.date, 'a_stats': self.a_stats,
+               'b_stats': self.b_stats}
 
         with open(path + self.battle_id + '.txt', 'w') as f:
             f.write(str(res))

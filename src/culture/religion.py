@@ -95,7 +95,6 @@ DOMAINS = {'fire': {'general': 0.5},
            'piety': {'oracle':1, 'prophet':0.5, 'priest':1, 'bishop':0.75},
            'charity': {'hero':1, 'professor':1},
            'books': {'writer':1, 'bard':1},
-           'writing': {'writer':1, 'composer':1},
            'mastery': {'master':1, 'professional':1},
            'observations': {'philosopher':0.5, 'scientist':0.5, 'professor':0.5},
            'understanding': {'philosopher':1, 'professor':1},
@@ -192,7 +191,7 @@ class Religion:
         self.adherents = {}
 
     def add_god(self, domains=None):
-        if domains == None:
+        if domains is None:
             self.gods.append(God(self.language.make_name_word(), self, random.sample(DOMAINS.keys(), random.randint(1, 4))))
         else:
             self.gods.append(God(self.language.make_name_word(), self, domains))

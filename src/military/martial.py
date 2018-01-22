@@ -48,7 +48,12 @@ class Troop:
 
         return cls(name, strength, health, 0, ranged, speed, discipline, rank_size, ranks, weapons, armor, elite, tier, [], mount, troop_nation=nation)
 
-    def __init__(self, name, strength, health, number, ranged, speed, discipline, rank_size, ranks, weapons, armor, elite, tier, upgrades, mount, stats_history=[], arms_history=[], troop_nation=None):
+    def __init__(self, name, strength, health, number, ranged, speed, discipline, rank_size, ranks, weapons, armor, elite, tier, upgrades, mount,
+                 stats_history=None, arms_history=None, troop_nation=None):
+        if arms_history is None:
+            arms_history = []
+        if stats_history is None:
+            stats_history = []
         self.name = name
         self.strength = strength
         self.health = health
@@ -76,19 +81,19 @@ class Troop:
 
         self.nation = troop_nation
 
-        if arms_history == []:
+        if not arms_history:
             self.arms_history = [(self.weapons, self.armor)]
         else:
             self.arms_history = arms_history
 
-        if stats_history == []:
+        if not stats_history:
             self.stats_history = [utility.base_soldier_stats()]
         else:
             self.stats_history = stats_history
 
         self.quality = 0
 
-        if self.nation != None:
+        if self.nation is not None:
             self.nation.troop_tree.append(self)
 
         self.experience = 1
@@ -387,7 +392,7 @@ class Troop:
             for upgrade in self.upgrades:
                 val = upgrade.add_to(type, number)
 
-                if val != None:
+                if val is not None:
                     return self
 
             return None

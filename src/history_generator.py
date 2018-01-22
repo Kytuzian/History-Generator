@@ -90,7 +90,7 @@ class Main:
         if message == '':
             return
 
-        if self.db != None:
+        if self.db is not None:
             self.db.gen_log_insert(self.get_real_date(), message)
 
         # print(message)
@@ -462,7 +462,7 @@ class Main:
             self.nation_selector.insert(END, nation)
 
     def get_cell_information(self, event):
-        if self.parent.focus_get() != None:
+        if self.parent.focus_get() is not None:
             cell_x, cell_y = event.x // utility.CELL_SIZE, event.y // utility.CELL_SIZE
 
             self.cells[cell_x][cell_y].show_information_gui()
@@ -516,12 +516,11 @@ class Main:
         self.write_out_events('event_log.txt')
         shutil.copyfile('event_log.txt', 'saves/{}/event_log.txt'.format(self.world_name))
 
-        res = {}
-        res['date'] = self.get_current_date()
-        res['width'] = utility.S_WIDTH // utility.CELL_SIZE
-        res['height'] = utility.S_HEIGHT // utility.CELL_SIZE
-        res['old_nations'] = self.old_nations
-        res['ids'] = self.ids
+        res = {'date': self.get_current_date(),
+               'width': utility.S_WIDTH // utility.CELL_SIZE,
+               'height': utility.S_HEIGHT // utility.CELL_SIZE,
+               'old_nations': self.old_nations,
+               'ids': self.ids}
 
         with open('saves/{}/main.txt'.format(self.world_name), 'w') as f:
             f.write(str(res))

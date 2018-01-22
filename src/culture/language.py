@@ -162,7 +162,7 @@ class Language:
 
         self.name_length = name_length
 
-        if base_language != None:
+        if base_language is not None:
             self.create_from_language(base_language)
         else:
             self.create()
@@ -199,7 +199,7 @@ class Language:
 
         self.vowels = self.getVowels()
 
-        if self.vowels == []:
+        if not self.vowels:
             self.vowels = ['a']
 
         self.vowel_frequency = random.randint(4, 10)
@@ -218,7 +218,7 @@ class Language:
 
         self.vowels = self.getVowels()
 
-        if self.vowels == []:
+        if not self.vowels:
             self.vowels = ['a']
         #print("Vowels", self.vowels)
 

@@ -15,7 +15,7 @@ class DB:
         cursor = self.conn.cursor()
         
         res = []
-        if params == None:
+        if params is None:
             res = list(cursor.execute(query))
         else:
             res = list(cursor.execute(query, params))
@@ -37,7 +37,7 @@ class DB:
 
         cursor = self.conn.cursor()
         
-        if params == None:
+        if params is None:
             cursor.execute(statement)
         else:
             cursor.execute(statement, params)

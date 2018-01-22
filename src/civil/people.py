@@ -71,7 +71,7 @@ class Period:
         self.custom_weights = {}
         self.art = []
 
-        if role != None:
+        if role is not None:
             self.role = role
         else:
             # Could possibly change roles. This is less likely if the person has spent more time in a particular role, and if they have created more works.
@@ -83,8 +83,7 @@ class Period:
         base_create_variance = PERSON_ROLES[self.role]['art_create_variance']
         self.art_create_chance = base_create_chance + random.randint(-base_create_variance, base_create_variance)
 
-        custom_tags = {}
-        custom_tags['role'] = [self.role]
+        custom_tags = {'role': [self.role]}
 
         if (self.art_create_chance - base_create_variance // 10) > base_create_chance:
             custom_tags['creation_rate'] = ['prolific', 'productive', 'creative']
@@ -101,15 +100,11 @@ class Period:
         self.name = gen.generate(nation=self.person.nation, creator=self.person)[0]
 
     def get_info(self):
-        res = {}
-        res['length'] = self.length
-        res['custom_weights'] = self.custom_weights
-        res['art_create_chance'] = self.art_create_chance
-        res['role'] = self.role
-        res['name'] = self.name
         # We store the actual art data in the cultures for the various nations
         # We'll retrieve it when we load the game.
-        res['art'] = map(lambda art: art.name, self.art)
+        res = {'length': self.length, 'custom_weights': self.custom_weights,
+               'art_create_chance': self.art_create_chance, 'role': self.role, 'name': self.name,
+               'art': map(lambda art: art.name, self.art)}
 
         return res
 
@@ -191,16 +186,9 @@ class Person:
         self.nation.parent.write_to_gen_log(e.text_version())
 
     def save(self, path):
-        res = {}
-        res['name'] = self.name
-        res['home'] = self.home.name
-        res['city'] = self.city.name
-        res['age'] = self.age
-        res['religion'] = self.religion.name
-        res['effectiveness'] = self.effectiveness
-        res['alive'] = self.alive
+        res = {'name': self.name, 'home': self.home.name, 'city': self.city.name, 'age': self.age,
+               'religion': self.religion.name, 'effectiveness': self.effectiveness, 'alive': self.alive, 'periods': []}
 
-        res['periods'] = []
         for period in self.periods:
             res['periods'].append(period.get_info())
 
@@ -243,7 +231,7 @@ class Person:
         self.select_period(self.periods[-1].name)
 
     def select_period(self, period_override=None):
-        if period_override == None:
+        if period_override is None:
             period_name = self.period_choice.get()
         else:
             period_name = period_override
@@ -262,7 +250,7 @@ class Person:
             self.period_art_display.insert(END, '{} ({})'.format(art.name, art.subject))
 
     def select_art(self, event, period_override=None):
-        if period_override == None:
+        if period_override is None:
             period_name = self.period_choice.get()
         else:
             period_name = period_override
@@ -287,7 +275,7 @@ class Person:
             res[period.role] += period.length * LENGTH_ROLE_INFLUENCE
             res[period.role] += len(period.art) * ART_ROLE_INFLUENCE
 
-        if self.religion != None:
+        if self.religion is not None:
             religion_weights = self.religion.get_role_weights()
             for (role, weight) in religion_weights.iteritems():
                 res[role] += weight * RELIGION_ROLE_INFLUENCE
@@ -330,16 +318,16 @@ class Person:
         self.target = None
 
     def handle_monthly(self):
-        if self.target != None:
+        if self.target is not None:
             self.travel.step([])
 
         if self.alive:
-            if self.target == None and random.randint(0, RELOCATE_CHANCE) == 0:
+            if self.target is None and random.randint(0, RELOCATE_CHANCE) == 0:
                 if self.city != self.home:
                     if random.randint(0, GO_HOME) == 0:
                         self.target = self.home
 
-                if self.target == None:
+                if self.target is None:
                     self.target = random.choice(self.nation.cities)
 
                 self.travel = group.Group(self.nation.parent, self.name, [self], self.city.position, self.target.position, self.nation.color, None, self.arrival, self.nation.parent.canvas)
@@ -349,7 +337,7 @@ class Person:
             if not self == self.nation.ruler:
                 if self.periods[-1].role == 'scientist':
                     amount = self.effectiveness**2 * SCIENTIST_RESEARCH_BONUS
-                    if self.nation.current_research != None:
+                    if self.nation.current_research is not None:
                         self.nation.current_research.do_research(amount)
                 elif self.periods[-1].role == 'revolutionary':
                     self.nation.mod_morale(-self.effectiveness**2)
@@ -358,7 +346,7 @@ class Person:
                 if random.randint(0, self.periods[-1].art_create_chance) == 0:
                     new_art = culture.create_art(self.nation, self)
 
-                    if new_art != None:
+                    if new_art is not None:
                         self.nation.culture.add_art(new_art)
                         self.periods[-1].art.append(new_art)
 

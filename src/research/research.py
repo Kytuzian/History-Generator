@@ -72,7 +72,7 @@ class Weapon:
     def get_attack(self, material):
         effective_attack = self.attack
 
-        if material != None and self.material_multiplier > 0:
+        if material is not None and self.material_multiplier > 0:
             effective_attack = int(effective_attack * self.material_multiplier * material.effect_strength)
 
         return random.randint(0, int(effective_attack))
@@ -80,7 +80,7 @@ class Weapon:
     def get_defense(self, material):
         effective_defense = self.defense
 
-        if material != None and self.material_multiplier > 0:
+        if material is not None and self.material_multiplier > 0:
             effective_defense = int(effective_defense * self.material_multiplier * material.effect_strength)
 
         return random.randint(0, int(effective_defense))
@@ -138,7 +138,7 @@ class Armor:
     def get_defense(self, material):
         effective_defense = self.defense
 
-        if material != None and self.material_multiplier > 0:
+        if material is not None and self.material_multiplier > 0:
             effective_defense = int(effective_defense * self.material_multiplier * material.effect_strength)
 
         return random.randint(0, int(effective_defense))
@@ -510,7 +510,7 @@ class Tech:
         else:
             for next_tech in self.next_techs:
                 res = next_tech.get_tech(tech_name)
-                if res != None:
+                if res is not None:
                     return res
 
             return None

@@ -224,13 +224,13 @@ def show_dict(d, depth=1, recurse=True, gen=None):
     for stat, v in sorted(d.items()):
         if isinstance(v, dict):
             if recurse:
-                if gen != None:
+                if gen is not None:
                     gen.write_to_gen_log('{}{}:'.format('\t' * depth, displayify_text(stat)))
                 else:
                     print('{}{}:'.format('\t' * depth, displayify_text(stat)))
                 show_dict(v, depth=depth + 1, recurse=recurse, gen=gen)
         else:
-            if gen != None:
+            if gen is not None:
                 gen.write_to_gen_log('{}{}: {}'.format('\t' * depth, displayify_text(stat), v))
             else:
                 print('{}{}: {}'.format('\t' * depth, displayify_text(stat), v))
@@ -252,10 +252,10 @@ def zip_dict_with(f, a, b, f_single=None):
         if k in b:
             res[k] = f(a[k], b[k])
         else:
-            if f_single != None:
+            if f_single is not None:
                 res[k] = f_single(a[k])
 
-    if f_single != None:
+    if f_single is not None:
         for k in b:
             if not k in res:
                 res[k] = f_single(b[k])
@@ -385,7 +385,7 @@ def show_bar(i, total, start_time=None, width=80, message='', number_limit=False
     i = min(total, i)
 
     time_message = ''
-    if start_time != None:
+    if start_time is not None:
         elapsed = time.time() - start_time
         if number_limit:
             estimated_remaining = elapsed / float(i) * float(total - i)
@@ -472,7 +472,7 @@ def count_freq(l):
 # Adapted from:
 # http://stackoverflow.com/questions/3679694/a-weighted-version-of-random-choice
 def weighted_random_choice(choices, weight=None):
-    if weight == None:
+    if weight is None:
         weight = lambda i, _: len(choices) - i  # Makes it more likely to select early indexes.
 
     total = sum(weight(i, v) for i, v in enumerate(choices))
@@ -488,7 +488,7 @@ def weighted_random_choice(choices, weight=None):
 
 
 def rough_match(a, b, tolerance):
-    return a + tolerance >= b and a - tolerance <= b
+    return a + tolerance >= b >= a - tolerance
 
 
 def clamp(a, maxv, minv):

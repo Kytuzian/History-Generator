@@ -51,8 +51,8 @@ ADJECTIVES = ['red', 'blue', 'green', 'yellow', 'orange', 'purple', 'white',
               'devious', 'mischievous', 'noble', 'smart', 'scarlet', 'gold', 'navy',
               'periwinkle', 'peridot', 'violet', 'grey', 'chartreuse', 'indigo', 'sky blue']
 VERBS = ['run', 'walk', 'look', 'drop', 'cause', 'rain', 'fly', 'make',
-              'precipitate', 'fight', 'take', 'snow',
-              'write', 'read', 'talk', 'speak', 'transfix', 'roll']
+         'precipitate', 'fight', 'take', 'snow',
+         'write', 'read', 'talk', 'speak', 'transfix', 'roll']
 PREPOSITIONS = ['around', 'in', 'of', 'by', 'under', 'above', 'before', 'at', 'with']
 
 PREPOSITION_FORMS = ['<article><gerund> <n>', '<article><n>',
@@ -102,15 +102,16 @@ IRREGULAR_VERBS = {'run': {'all;past;all': 'ran'}}
 # This order matters.
 # Verbs, gerunds, and past participles must be after base verbs, to properly get the -ing suffix.
 # Philosophies must be at the end to get the -ism suffix.
-base_words = MEDIUMS + PAINTS + SKETCHING + MATERIALS + ANIMALS + NATURE +\
-             NOUNS + ADJECTIVES + VERBS + PREPOSITIONS +\
+base_words = MEDIUMS + PAINTS + SKETCHING + MATERIALS + ANIMALS + NATURE + \
+             NOUNS + ADJECTIVES + VERBS + PREPOSITIONS + \
              CONJUCTIONS + PHILOSOPHIES
+
 
 def is_valid(nation):
     def f(choice):
         if choice in ['<god>', '<notable_person>', '<notable_person_role>', '<name>', '<art>',
-                 '<art_creator>', '<battle>']:
-            if nation != None:
+                      '<art_creator>', '<battle>']:
+            if nation is not None:
                 if choice in ['art', 'art_creator']:
                     if len(nation.culture.art) == 0:
                         return False
@@ -120,10 +121,16 @@ def is_valid(nation):
             else:
                 return False
         return True
+
     return f
 
+
 class Form:
-    def __init__(self, texts, custom_tags={}, custom_weights={}):
+    def __init__(self, texts, custom_tags=None, custom_weights=None):
+        if custom_weights is None:
+            custom_weights = {}
+        if custom_tags is None:
+            custom_tags = {}
         self.tags = {}
         self.chosen_tags = {}
 
@@ -222,7 +229,7 @@ class Form:
 
         # Handle regular verbs
         if tense == 'pres':
-            if number == 'pl' or person == '2': # Second person is always plural because English
+            if number == 'pl' or person == '2':  # Second person is always plural because English
                 return verb
             else:
                 return verb + 's'
@@ -315,7 +322,7 @@ class Form:
 
                 # Get the full tag and remove the brackets
                 group = utility.get_container(base, '<', '>', i)
-                base = base.replace(group, group[2:-2]) # Remove the containing stuff
+                base = base.replace(group, group[2:-2])  # Remove the containing stuff
 
             # Checks if tags exist. Replaces the tag's text with the first tag that exists. Otherwise replaces it with nothing.
             while '<tagexists' in base:
@@ -346,7 +353,8 @@ class Form:
                 select = utility.separate_container(select_section, '<', '>', ',')
                 valid_select = filter(is_valid(nation), select)
                 search = '<' + select_section + '>'
-                replacement = '<{}>'.format('> <'.join(random.sample(valid_select, random.randint(1, len(valid_select)))))
+                replacement = '<{}>'.format(
+                    '> <'.join(random.sample(valid_select, random.randint(1, len(valid_select)))))
 
                 base = base.replace(search, replacement)
 
@@ -368,59 +376,61 @@ class Form:
             while '<philosophy>' in base:
                 base = base.replace('<philosophy>', self.choice(PHILOSOPHIES), 1)
             while '<nation>' in base:
-                if nation != None:
+                if nation is not None:
                     base = base.replace('<nation>', str(self.choice(nation.parent.nations).name), 1)
                 else:
                     base = base.replace('<nation>', '')
             while '<notable_person>' in base:
-                if nation != None:
+                if nation is not None:
                     base = base.replace('<notable_person>', self.choice(nation.notable_people).name, 1)
                 else:
                     base = base.replace('<notable_person>', '')
             while '<notable_person_role>' in base:
-                if nation != None:
+                if nation is not None:
                     person = self.choice(nation.notable_people)
-                    base = base.replace('<notable_person_role>', '{} the {}'.format(person.name, person.periods[-1].role), 1)
+                    base = base.replace('<notable_person_role>',
+                                        '{} the {}'.format(person.name, person.periods[-1].role), 1)
                 else:
                     base = base.replace('<notable_person_role>', '')
             while '<god>' in base:
-                if nation != None:
+                if nation is not None:
                     religion_populations = nation.get_nation_religion_populations()
                     if len(religion_populations) > 0:
-                        religion,_ = utility.weighted_random_choice(religion_populations, weight=lambda i,(_,adherents): adherents)
+                        religion, _ = utility.weighted_random_choice(religion_populations,
+                                                                     weight=lambda i, (_, adherents): adherents)
                         base = base.replace('<god>', self.choice(religion.gods).name, 1)
                     else:
                         base = base.replace('<god>', '')
                 else:
                     base = base.replace('<god>', '')
             while '<name>' in base:
-                if nation != None:
+                if nation is not None:
                     base = base.replace('<name>', nation.language.generate_name(), 1)
                 else:
                     base = base.replace('<name>', '')
             while '<art>' in base:
-                if nation != None and len(nation.culture.art) > 0:
+                if nation is not None and len(nation.culture.art) > 0:
                     base = base.replace('<art>', '\'{}\''.format(self.choice(nation.culture.art).subject), 1)
                 else:
                     base = base.replace('<art>', '')
             while '<art_creator>' in base:
-                if nation != None and len(nation.culture.art) > 0:
+                if nation is not None and len(nation.culture.art) > 0:
                     art = self.choice(nation.culture.art)
                     base = base.replace('<art_creator>', '{}\'s \'{}\''.format(art.creator.name, art.subject), 1)
                 else:
                     base = base.replace('<art_creator>', '')
             while '<place>' in base:
-                if nation != None and len(nation.parent.get_all_cities()) > 0:
+                if nation is not None and len(nation.parent.get_all_cities()) > 0:
                     base = base.replace('<place>', self.choice(nation.parent.get_all_cities()).name, 1)
                 else:
                     base = base.replace('<place>', '')
             while '<nation_place>' in base:
-                if nation != None and len(nation.cities) > 0:
+                if nation is not None and len(nation.cities) > 0:
                     base = base.replace('<nation_place>', self.choice(nation.cities).name, 1)
                 else:
                     base = base.replace('<nation_place>', '')
             while '<battle>' in base:
-                if nation != None and len(nation.parent.battle_history) > 0:
+                if nation is not None and len(nation.parent.battle_history) > 0:
                     battle = self.choice(nation.parent.battle_history)
 
                     battle_bases = ['<The Battle of|The Battle for|>{}'.format(battle.location.name)]
@@ -428,13 +438,14 @@ class Form:
                 else:
                     base = base.replace('<battle>', '')
             while '<treaty>' in base:
-                if nation != None and len(nation.parent.treaties) > 0:
-                    treaty = self.choice(nation.parent.treaties).get_treaty_name(nation.parent.get_current_date(), nation)
+                if nation is not None and len(nation.parent.treaties) > 0:
+                    treaty = self.choice(nation.parent.treaties).get_treaty_name(nation.parent.get_current_date(),
+                                                                                 nation)
                     base = base.replace('<treaty>', treaty)
                 else:
                     base = base.replace('<treaty>', '')
             while '<nation_treaty>' in base:
-                if nation != None and len(nation.treaties) > 0:
+                if nation is not None and len(nation.treaties) > 0:
                     treaty = self.choice(nation.treaties).get_treaty_name(nation.parent.get_current_date(), nation)
                     base = base.replace('<nation_treaty>', treaty)
                 else:
@@ -458,7 +469,7 @@ class Form:
             while '<adj>' in base:
                 base = base.replace('<adj>', self.choice(ADJECTIVES), 1)
 
-            if creator != None:
+            if creator is not None:
                 if '<self>' in base:
                     base = base.replace('<self>', creator.name)
                 if '<self_role>' in base:
@@ -470,7 +481,7 @@ class Form:
                 if rand_type == 'int':
                     minimum, maximum = int(minimum), int(maximum)
                     res = random.randint(minimum, maximum)
-                elif rand_type == 'om': # Float
+                elif rand_type == 'om':  # Float
                     minimum, maximum = float(minimum), float(maximum)
                     res = random.random() * (maximum - minimum) + minimum
 
@@ -572,7 +583,8 @@ class Form:
                                 pluralized = IRREGULAR_PLURALS[next_word]
                             else:
                                 pluralized = str(next_word)
-                                if next_word.endswith('s') or next_word.endswith('x') or next_word.endswith('ch') or next_word.endswith('sh'):
+                                if next_word.endswith('s') or next_word.endswith('x') or next_word.endswith(
+                                        'ch') or next_word.endswith('sh'):
                                     pluralized += 'es'
                                 elif next_word.endswith('y'):
                                     pluralized = pluralized[:-1] + 'ies'
@@ -600,10 +612,16 @@ class Form:
 
             self.chosen_tags[tag] = base
 
-def gen_simple_form(form, nation=None, creator=None, custom_tags={}, custom_weights={}):
+
+def gen_simple_form(form, nation=None, creator=None, custom_tags=None, custom_weights=None):
+    if custom_tags is None:
+        custom_tags = {}
+    if custom_weights is None:
+        custom_weights = {}
     gen = Form([[form]], custom_tags=custom_tags, custom_weights=custom_weights)
 
     return gen.generate(nation=nation, creator=creator)[0]
+
 
 if __name__ == '__main__':
     a = Form([['<pl>goose']])

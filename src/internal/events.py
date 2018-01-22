@@ -139,7 +139,7 @@ class EventReligionCreated(Event):
         self.religion_name = self.event_data['religion_a']
 
     def text_version(self):
-        if self.founder != None:
+        if self.founder is not None:
             return '{}: The religion of {} was founded in the city of {} in the nation of {} by {}.'.format(self.date, self.religion_name, get_nation_name(self.nation), self.city, self.nation, self.founder)
         else:
             return '{}: The religion of {} was founded in the city of {} in the nation of {}.'.format(self.date, self.religion_name, get_nation_name(self.nation), self.city, self.nation)

@@ -167,7 +167,7 @@ class Group:
 
             return True
 
-        if self.on_step != None:
+        if self.on_step is not None:
             self.on_step(self)
 
         # Do simple movement for all non-army groups, as they aren't as important
