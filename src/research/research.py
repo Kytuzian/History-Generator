@@ -1,5 +1,3 @@
-from Tkinter import *
-
 import random
 
 import internal.utility as utility

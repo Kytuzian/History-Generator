@@ -15,8 +15,6 @@ def get_nation_name(id):
 
     raise Exception('{} not found in {}'.format(id, map(lambda nation: (nation.id, nation.name), main.nations)))
 
-    return None
-
 class Event:
     def __init__(self, name, event_data, date):
         self.name = name
@@ -101,6 +99,7 @@ class EventArmyRaised(Event):
         self.nation_name = self.event_data['nation_a']
         self.army_name = self.event_data['army_a']
         self.number_raised = self.event_data['raised_a']
+        self.equipment_name = self.event_data['equipment']
 
     def text_version(self):
         return '{} raised an army of {} {} on {}.'.format(get_nation_name(self.nation_name), self.number_raised, self.army_name, self.equipment_name, self.date)

@@ -1,15 +1,8 @@
-import culture.language as language
-import culture.religion as religion
-
 import internal.events as events
 import internal.event_analysis as event_analysis
 import internal.group as group
 import internal.gui as gui
 import internal.utility as utility
-
-import military.martial as martial
-
-import research.research as research
 
 import math
 import random
@@ -543,11 +536,9 @@ class City:
                     new_nation.notable_people.append(person)
         else:
             raise Exception('{} not in {}'.format(self.name, map(lambda c: c.name, self.nation.cities)))
-            return
 
         if original_cities == len(self.nation.cities):
             raise Exception('{} was not removed from {}.'.format(self.name, map(lambda c: c.name, self.nation.cities)))
-            return
 
         # If there is an army still here, we should send it away first, instead of just deleting it from existence.
         if self.army.size() > 0:

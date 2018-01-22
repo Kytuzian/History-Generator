@@ -4,7 +4,6 @@ import random
 from Tkinter import *
 
 import internal.utility as utility
-import noise
 import civil.city as city
 import internal.gui as gui
 

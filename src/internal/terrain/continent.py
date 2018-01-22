@@ -1,9 +1,3 @@
-from Tkinter import *
-
-import random
-
-import utility
-
 class Continent:
     def __init__(self, rootCell):
         self.rootCell = rootCell
@@ -15,5 +9,3 @@ class Continent:
 
     def add_cell(self, cell):
         self.cells.append(cell)
-
-

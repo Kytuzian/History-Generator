@@ -12,13 +12,10 @@ import civil.city as city
 import civil.diplomacy as diplomacy
 import civil.nation as nation
 
-import culture.language as language
-import culture.culture as culture
 import culture.religion as religion
 
 import internal.events as events
 import internal.event_analysis as event_analysis
-import internal.terrain.continent as continent
 import internal.terrain.terrain as terrain
 import internal.terrain.noise as noise
 import internal.db as db
@@ -26,7 +23,6 @@ import internal.gui as gui
 import internal.group as group
 
 import military.battle as battle
-import military.martial as martial
 
 DEFAULT_SIMULATION_SPEED = 300  # ms
 
@@ -715,10 +711,11 @@ class Main:
             else:  # if a third party is involved, let's just return back home
                 if len(sender.cities) > 0:
                     return_destination = random.choice(sender.cities)
-                    sender.moving_armies.append(group.Group(self, sender.name, reinforcing.members, reinforce_city.position,
-                                                      return_destination.position, sender.color, lambda s: False,
-                                                      self.reinforce(sender, return_destination), self.canvas,
-                                                      is_army=True))
+                    sender.moving_armies.append(
+                        group.Group(self, sender.name, reinforcing.members, reinforce_city.position,
+                                    return_destination.position, sender.color, lambda s: False,
+                                    self.reinforce(sender, return_destination), self.canvas,
+                                    is_army=True))
 
                     self.events.append(events.EventArmyDispatched('ArmyDispatched',
                                                                   {'nation_a': sender.id, 'nation_b': sender.id,
@@ -743,9 +740,10 @@ class Main:
             else:  # if a third party is involved, let's just return back home
                 return_destination = random.choice(sender.cities)
                 sender.moving_armies.append(
-                    group.Group(self, sender.name, reinforcing.members, reinforce_city.position, return_destination.position,
-                          sender.color, lambda s: False, self.reinforce(sender, return_destination), self.canvas,
-                          is_army=True))
+                    group.Group(self, sender.name, reinforcing.members, reinforce_city.position,
+                                return_destination.position,
+                                sender.color, lambda s: False, self.reinforce(sender, return_destination), self.canvas,
+                                is_army=True))
 
                 self.events.append(events.EventArmyDispatched('ArmyDispatched',
                                                               {'nation_a': sender.id, 'nation_b': sender.id,
@@ -795,8 +793,9 @@ class Main:
             if attacking_army.size() == 0:
                 attacking_army.add_number(1, attacker)
 
-            currentBattle = battle.Battle(attacker, attacking_army, defender, defending_army, attacking_city, city, self.end_battle,
-                                   use_graphics=self.graphical_battles, fast_battles=self.fast_battles)
+            currentBattle = battle.Battle(attacker, attacking_army, defender, defending_army, attacking_city, city,
+                                          self.end_battle,
+                                          use_graphics=self.graphical_battles, fast_battles=self.fast_battles)
             currentBattle.setup_soldiers()
 
             if not currentBattle.check_end_battle():
@@ -814,7 +813,8 @@ class Main:
                 return_destination = random.choice(attacker.cities)
                 attacker.moving_armies.append(
                     group.Group(self, attacker.name, attacking_army, city.position, return_destination.position,
-                                attacker.color, lambda s: False, self.reinforce(attacker, return_destination), self.canvas,
+                                attacker.color, lambda s: False, self.reinforce(attacker, return_destination),
+                                self.canvas,
                                 is_army=True))
 
                 self.events.append(events.EventArmyDispatched('ArmyDispatched',

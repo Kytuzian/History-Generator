@@ -1,5 +1,4 @@
 from Tkinter import *
-from time import sleep
 
 import random
 import math
@@ -8,8 +7,6 @@ import internal.gui as gui
 import internal.utility as utility
 
 from battle import TROOP_RADIUS
-
-from research.research import all_ranged_weapons, unarmed
 
 class Troop:
     @classmethod

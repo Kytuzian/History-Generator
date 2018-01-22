@@ -1,27 +1,20 @@
-import internal.utility as utility
-
 import civil.city as city
-
-import military.martial as martial
-
-import culture.language as language
-
-import internal.group as group
-
-import culture.religion as religion
-
-import research.research as research
-
 import civil.people as people
 
 import culture.culture as culture
-import internal.gui as gui
+import culture.language as language
 
+import internal.group as group
+import internal.utility as utility
+import internal.gui as gui
 import internal.events as events
 import internal.event_analysis as event_analysis
 
-from math import *
-import os
+import military.martial as martial
+
+import research.research as research
+
+import math
 import random
 
 from Tkinter import *
@@ -507,9 +500,9 @@ class Nation:
             total += city.morale
         if total != 0:
             if total < 0:
-                self.mod_morale(-math.log(-total, 2))
+                self.mod_morale(-math.math.log(-total, 2))
             else:
-                self.mod_morale(math.log(total, 2))
+                self.mod_morale(math.math.log(total, 2))
 
         self.handle_people_monthly()
 
@@ -732,7 +725,7 @@ class Nation:
             # Because as there's no more space, people want to go to a new city
             try:
                 found_city_chance = max(1, int(
-                    len(self.cities) ** 4 * math.log(city.population_capacity - city.population)))
+                    len(self.cities) ** 4 * math.math.log(city.population_capacity - city.population)))
             except:  # Log is negative
                 found_city_chance = max(1, len(self.cities) ** 4)
             if random.randint(0, found_city_chance) == 0 and self.money > CITY_FOUND_COST:
@@ -752,7 +745,7 @@ class Nation:
                 else:  # There's nothing left to research
                     self.current_research = None
             else:
-                self.current_research.do_research(random.randint(1, int(log(city.population + 1) ** 2 + 1)))
+                self.current_research.do_research(random.randint(1, int(math.log(city.population + 1) ** 2 + 1)))
 
                 for cell in city.cells:
                     for building in cell.buildings:
@@ -816,11 +809,11 @@ class Nation:
 
                     # The revolting nation increases their morale because they're now free from whatever issues they saw with the old regime
                     revolted_nation.mod_morale(
-                        city.MORALE_INCREMENT * len(revolted_cities) * int(log(army_revolted + 2)))
+                        city.MORALE_INCREMENT * len(revolted_cities) * int(math.log(army_revolted + 2)))
 
                     # The old nation increases their morale because the haters are now gone.
                     self.mod_morale(len(revolted_cities) * city.MORALE_INCREMENT * int(
-                        log(sum([city.army.size() for city in self.cities]) + 2)))
+                        math.log(sum([city.army.size() for city in self.cities]) + 2)))
 
                     self.parent.write_to_gen_log('{}:'.format(self.parent.get_current_date()))
                     self.parent.write_to_gen_log(
@@ -933,7 +926,7 @@ class Nation:
                         self.relations[nation.id] += relative_troops_lost / war_treaty.length(
                             self.parent.get_current_date())
 
-                max_relation_change = int(log(self.get_tolerance() + nation.get_tolerance() + 1))
+                max_relation_change = int(math.log(self.get_tolerance() + nation.get_tolerance() + 1))
 
                 self.relations[nation.id] += random.randint(-max_relation_change // 2, max_relation_change // 2)
 
@@ -965,7 +958,7 @@ class Nation:
 
                     effective_money = max(self.money ** 2, 1)  # The less money we have, the more we want to trade.
                     trade_chance = int(
-                        max(24, log(effective_money) + self.get_tolerance() - 3 * self.relations[other.id]))
+                        max(24, math.log(effective_money) + self.get_tolerance() - 3 * self.relations[other.id]))
 
                     # print('War chance with {} ({}) is {}'.format(other.name.short_name(), self.relations[other.id], normal_war_chance))
                     # print('Holy war chance with {} ({}) is {}'.format(other.name.short_name(), self.relations[other.id], holy_war_chance))
