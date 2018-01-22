@@ -15,6 +15,7 @@ import utility
 
 from battle import *
 from nation import *
+from continent import *
 from city import *
 from martial import *
 from language import *
@@ -61,6 +62,7 @@ class Main:
         self.cells = []
 
         self.nations = []
+        self.coninents = []
         self.religions = []
 
         self.is_continuous = False
@@ -129,6 +131,70 @@ class Main:
     def on_horizontal(self, event):
         self.scroll_canvas(-event.delta, 0)
 
+    #0 Right
+    #1 Left
+    #2 Bottom
+    #3 Top
+
+    def get_neighbor_cells(self, cell, cells):
+        return [cells[cell.x + 1][cell.y], cells[cell.x - 1][cell.y], cells[cell.x][cell.y + 1], cells[cell.x][cell.y - 1]]
+
+    # def find_cells_in_continent(self, start_cell, cells):
+    #     start_x = start_cell.x
+    #     start_y = start_cell.y
+
+    #     continent = Continent(start_cell)
+    #     start_cell.continent = continent
+
+    #     end_reached = False
+
+    #     visited = {}
+
+    #     while(not end_reached):
+
+    #         # if start_x < len(cells) - 1 and not cells[start_x + 1][start_y].terrain.is_water():
+    #         #     cell = cells[start_x + 1][start_y]
+
+    #         #     if not (start_x + 1, start_y) in visited:
+    #         #         visited[(start_x + 1, start_y)] = True
+    #         #         continent.add_cell(cell)
+    #         #         cell.continent = continent
+    #         #         cells[start_x + 1][start_y].terrain.color = utility.rgb_color(0, 0, 0)
+    #         #         start_x += 1
+
+    #         # if start_y < len(cells) - 1 and not cells[start_x][start_y + 1].terrain.is_water():
+    #         #     cell = cells[start_x][start_y + 1]
+                
+    #         #     if not (start_x, start_y + 1) in visited:
+    #         #         visited[(start_x, start_y + 1)] = True
+    #         #         continent.add_cell(cell)
+    #         #         cell.continent = continent
+    #         #         cells[start_x][start_y + 1].terrain.color = utility.rgb_color(0, 0, 0)
+    #         #         start_y += 1
+
+    #         # if start_x > 0 and not cells[start_x - 1][start_y].terrain.is_water():
+    #         #     cell = cells[start_x - 1][start_y]#.terrain.color = utility.rgb_color(0, 0, 0)
+
+    #         #     if not (start_x - 1, start_y) in visited:
+    #         #         visited[(start_x - 1, start_y)] = True
+    #         #         continent.add_cell(cell)
+    #         #         cell.continent = continent
+    #         #         cells[start_x - 1][start_y].terrain.color = utility.rgb_color(0, 0, 0)
+    #         #         start_x -= 1
+
+    #         # if start_y > 0 and not cells[start_x][start_y - 1].terrain.is_water():
+    #         #     cell = cells[start_x][start_y - 1]#.terrain.color = utility.rgb_color(0, 0, 0)
+
+    #         #     if not (start_x, start_y - 1) in visited:
+    #         #         visited[(start_x, start_y - 1)] = True
+    #         #         continent.add_cell(cell)
+    #         #         cell.continent = continent
+    #         #         cells[start_x][start_y - 1].terrain.color = utility.rgb_color(0, 0, 0)
+    #         #         start_y -= 1
+
+
+    #     self.continents.append(continent)
+
     def setup(self):
         self.create_gui()
 
@@ -157,6 +223,15 @@ class Main:
                 cell.reset_color()
 
         print('')
+
+        # for x, row in enumerate(self.cells):
+        #     for y, cell in enumerate(row):
+        #         if cell.terrain.name == 'water':
+        #             continue
+        #         else:
+        #             find_cells_in_continent(cell)
+
+        
 
         self.nations = []
         self.religions = []

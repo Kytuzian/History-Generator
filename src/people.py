@@ -37,7 +37,26 @@ PERSON_ROLES = {'general': {'art_create_chance': 0, 'art_create_variance': 0},
                 'revolutionary': {'art_create_chance': 0, 'art_create_variance': 0},
                 'hero': {'art_create_chance': 0, 'art_create_variance': 0},
                 'administrator': {'art_create_chance': 0, 'art_create_variance': 0},
-                'historian': {'art_create_chance': 40, 'art_create_variance': 10}}
+                'historian': {'art_create_chance': 40, 'art_create_variance': 10},#Kenny Addition
+
+                'conqueror': {'art_create_chance': 0, 'art_create_variance': 0},
+                'emperor': {'art_create_chance': 0, 'art_create_variance': 0},
+                'lord': {'art_create_chance': 0, 'art_create_variance': 0},
+                'duke': {'art_create_chance': 0, 'art_create_variance': 0},
+                'priest': {'art_create_chance': 10, 'art_create_variance': 10},
+                'bishop': {'art_create_chance': 30, 'art_create_variance': 30},
+                'prophet': {'art_create_chance': 50, 'art_create_variance': 50},
+                'count': {'art_create_chance': 0, 'art_create_variance': 0},
+                'bard': {'art_create_chance': 40, 'art_create_variance': 90},
+                'singer': {'art_create_chance': 25, 'art_create_variance': 75},
+                'musician': {'art_create_chance': 100, 'art_create_variance': 5},
+                'quartermaster': {'art_create_chance': 0, 'art_create_variance': 0},
+                'drillmaster': {'art_create_chance': 0, 'art_create_variance': 0},
+                'seneschal': {'art_create_chance': 25, 'art_create_variance': 25},
+                'professor': {'art_create_chance': 50, 'art_create_variance': 75},
+                'master': {'art_create_chance': 75, 'art_create_variance': 50},
+                'professional': {'art_create_chance': 15, 'art_create_variance': 100}
+                }
 
 PERIOD_FORMS = [['<|The> <titlecase><<color>|<flower>|flower|<adj>|<<place>|<nation_place>|<nation_place>>> <Period|Cycle>']]
 
@@ -153,7 +172,11 @@ class Person:
         self.target = None
         self.travel = None
 
-        self.religion = religion
+        #added secularism
+        if random.randint(0, 100) > 5:
+            self.religion = religion
+        else:
+            self.religion = None
 
         # Each artist's life is separated into one (or many periods)
         self.periods = []
@@ -262,9 +285,10 @@ class Person:
             res[period.role] += period.length * LENGTH_ROLE_INFLUENCE
             res[period.role] += len(period.art) * ART_ROLE_INFLUENCE
 
-        religion_weights = self.religion.get_role_weights()
-        for (role, weight) in religion_weights.iteritems():
-            res[role] += weight * RELIGION_ROLE_INFLUENCE
+        if self.religion != None:
+            religion_weights = self.religion.get_role_weights()
+            for (role, weight) in religion_weights.iteritems():
+                res[role] += weight * RELIGION_ROLE_INFLUENCE
 
         return res
 
