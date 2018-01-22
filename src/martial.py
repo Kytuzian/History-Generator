@@ -42,11 +42,11 @@ class Troop:
 
         if random.randint(0, 100) < elite + 5:
             mount = random.choice(nation.basic_mount_list)
-        
+
 
         tier = 1
 
-        print "Unknown nation has created a new unit: " + str(name) + ", armed with: " + str(weapons[0].name) +", " + str(weapons[1].name) + ", "+str(armor.name)+", "+str(mount.name)+" elite: "+str(elite)
+        # print "Unknown nation has created a new unit: " + str(name) + ", armed with: " + str(weapons[0].name) +", " + str(weapons[1].name) + ", "+str(armor.name)+", "+str(mount.name)+" elite: "+str(elite)
 
         return cls(name, strength, health, 0, ranged, speed, discipline, rank_size, ranks, weapons, armor, elite, tier, [], mount, troop_nation=nation)
 
@@ -125,7 +125,7 @@ class Troop:
         if random.randint(0, 100) < (elite * 2) + 5:
             mount = random.choice(nation.mount_list)
 
-        print str(nation.name) + " created a new unit: " + str(name) + ", armed with: " + str(weapons[0].name) +", " + str(weapons[1].name) + ", "+str(armor.name)+", "+str(mount.name)
+        # print str(nation.name) + " created a new unit: " + str(name) + ", armed with: " + str(weapons[0].name) +", " + str(weapons[1].name) + ", "+str(armor.name)+", "+str(mount.name)
         #e.append(events.EventTroopCreated('TroopCreated', {'nation_a': nation.name, 'army_a': name, 'equip_a':weapons, 'armor_a':armor}, s_parent.get_current_date()))
 
         return cls(name, strength, health, 0, ranged, speed, discipline, rank_size, ranks, weapons, armor, elite, self.tier + 1, [], mount, troop_nation=nation)
@@ -158,31 +158,6 @@ class Troop:
         res['stats_history'] = self.stats_history
 
         return res
-
-    def train(self, amount):
-        return 0
-        #self.elite += random.randint(0, amount)
-        #print self.elite
-
-    def upgrade_gear(self):
-        return 0
-        # if self.quality > 6:
-        #     return
-
-        # self.quality += 1
-
-        # #print "upgrading " + str(self.weapons[0].attack)
-
-        # self.weapons[0].upgrade(1)
-        # self.weapons[0].upgrade_skill(1)
-
-        # #Sprint "upgrading to" + str(self.weapons[0].attack)
-
-        # self.weapons[1].upgrade(1)
-        # self.weapons[1].upgrade_skill(1)
-
-        # self.armor.upgrade(1)
-        # self.armor.upgrade_skill(1)
 
     def save(self, path):
         with open(path + 'army_structure.txt', 'w') as f:
