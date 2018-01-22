@@ -51,6 +51,8 @@ class Group:
 
         while x != self.end_x or y != self.end_y:
             moves += 1
+
+            # TODO: Handle having/not having boats
             if x < len(self.parent.cells) - 1:# and (self.parent.cells[x + 1][y].can_move(self) or self.has_boat):
                 if not (x + 1, y) in visited:
                     visited[(x + 1, y)] = True
@@ -100,38 +102,6 @@ class Group:
             # Reverse it back it starts at the last node, not the first like it should
             self.cur_path = self.cur_path[::-1]
 
-    # def can_reach(self):
-    #     open = []
-    #     visited = {}
-
-    #     x, y = int(self.x), int(self.y)
-    #     moves = 0
-
-    #     while x != self.end_x or y != self.end_y:
-    #         moves += 1
-    #         if x < len(self.parent.cells) - 1 and (self.parent.cells[x + 1][y].can_move(self) or self.has_boat):
-    #             if not (x + 1, y) in visited:
-    #                 visited[(x + 1, y)] = True
-    #                 open.append((x + 1, y, x, y, moves))
-
-    #         if x > 0 and (self.parent.cells[x - 1][y].can_move(self) or self.has_boat):
-    #             if not (x - 1, y) in visited:
-    #                 visited[(x - 1, y)] = True
-    #                 open.append((x - 1, y, x, y, moves))
-
-    #         if y < len(self.parent.cells[x]) - 1 and (self.parent.cells[x][y + 1].can_move(self) or self.has_boat):
-    #             if not (x, y + 1) in visited:
-    #                 visited[(x, y + 1)] = True
-    #                 open.append((x, y + 1, x, y, moves))
-
-    #         if y > 0 and (self.parent.cells[x][y - 1].can_move(self) or self.has_boat):
-    #             if not (x, y - 1) in visited:
-    #                 visited[(x, y - 1)] = True
-    #                 open.append((x, y - 1, x, y, moves))
-
-    #     #I don't know why I did this - Kenn
-    #     return open
-
     def get_info(self):
         res = {}
         res['name'] = self.name
@@ -156,13 +126,13 @@ class Group:
 
         self.path_ids = []
         # DRAW THE PATH SQUARES HERE
-        # for x, y in self.cur_path:
-        #     id = self.canvas.create_rectangle(int(x) * utility.CELL_SIZE,
-        #                                       int(y) * utility.CELL_SIZE,
-        #                                       int(x) * utility.CELL_SIZE + utility.CELL_SIZE,
-        #                                       int(y) * utility.CELL_SIZE + utility.CELL_SIZE,
-        #                                       fill=self.color, width=0)
-        #     self.path_ids.append(id)
+        for x, y in self.cur_path:
+            id = self.canvas.create_rectangle(int(x) * utility.CELL_SIZE,
+                                              int(y) * utility.CELL_SIZE,
+                                              int(x) * utility.CELL_SIZE + utility.CELL_SIZE,
+                                              int(y) * utility.CELL_SIZE + utility.CELL_SIZE,
+                                              fill=self.color, width=0)
+            self.path_ids.append(id)
 
         self.canvas.tag_raise(self.id)
 
@@ -208,3 +178,4 @@ class Group:
                          self.y + float(self.end_y - self.y) / dist * GROUP_SPEED_MULTIPLIER)
 
         return False
+
