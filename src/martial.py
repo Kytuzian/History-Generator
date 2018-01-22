@@ -159,6 +159,31 @@ class Troop:
 
         return res
 
+    def train(self, amount):
+        return 0
+        #self.elite += random.randint(0, amount)
+        #print self.elite
+
+    def upgrade_gear(self):
+        return 0
+        # if self.quality > 6:
+        #     return
+
+        # self.quality += 1
+
+        # #print "upgrading " + str(self.weapons[0].attack)
+
+        # self.weapons[0].upgrade(1)
+        # self.weapons[0].upgrade_skill(1)
+
+        # #Sprint "upgrading to" + str(self.weapons[0].attack)
+
+        # self.weapons[1].upgrade(1)
+        # self.weapons[1].upgrade_skill(1)
+
+        # self.armor.upgrade(1)
+        # self.armor.upgrade_skill(1)
+
     def save(self, path):
         with open(path + 'army_structure.txt', 'w') as f:
             f.write(str(self.get_info()))
