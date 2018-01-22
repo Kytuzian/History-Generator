@@ -2,11 +2,11 @@ from Tkinter import *
 
 import random
 
-import culture
-import generator
-import group
-import events
-import utility
+import culture.culture as culture
+import culture.generator as generator
+import internal.group as group
+import internal.events as events
+import internal.utility as utility
 
 AVERAGE_MAX_LIFE_EXPECTANCY = 60
 
@@ -43,7 +43,6 @@ PERSON_ROLES = {'general': {'art_create_chance': 0, 'art_create_variance': 0},
                 'emperor': {'art_create_chance': 0, 'art_create_variance': 0},
                 'lord': {'art_create_chance': 0, 'art_create_variance': 0},
                 'duke': {'art_create_chance': 0, 'art_create_variance': 0},
-                'priest': {'art_create_chance': 10, 'art_create_variance': 10},
                 'bishop': {'art_create_chance': 30, 'art_create_variance': 30},
                 'prophet': {'art_create_chance': 50, 'art_create_variance': 50},
                 'count': {'art_create_chance': 0, 'art_create_variance': 0},
@@ -262,8 +261,11 @@ class Person:
         for art in self.periods[period_index].art:
             self.period_art_display.insert(END, '{} ({})'.format(art.name, art.subject))
 
-    def select_art(self, event):
-        period_name = period_override
+    def select_art(self, event, period_override=None):
+        if period_override == None:
+            period_name = self.period_choice.get()
+        else:
+            period_name = period_override
 
         period_index = 0
         for i, period in enumerate(self.periods):

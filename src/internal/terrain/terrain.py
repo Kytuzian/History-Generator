@@ -3,12 +3,10 @@ import random
 
 from Tkinter import *
 
-# from PIL import Image
-
-import utility
+import internal.utility as utility
 import noise
-import city
-import gui
+import civil.city as city
+import internal.gui as gui
 
 MAX_HEIGHT = 4000
 
@@ -122,7 +120,7 @@ class Cell:
         if self.terrain.is_water():
             self.can_pass = False
 
-        
+
     # Determines whether it is legal for a group to move onto this square
     #Kenny - detects whether or not the cell's terrain is water. If it is water unit can't move through
     def can_move(self, group):
@@ -374,7 +372,7 @@ class Cloud:
         self.age = 0
 
     def add_water(self, amount):
-        self.water += water
+        self.water += amount
 
     def precipitate(self):
         if self.age > self.wait:

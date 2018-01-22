@@ -1,8 +1,8 @@
 from Tkinter import *
 
-import language
-import utility
-import gui
+import culture.language as language
+import internal.utility as utility
+import internal.gui as gui
 
 class Translation:
     def __init__(self, alien_lang, text_to_translate):

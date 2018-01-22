@@ -3,11 +3,12 @@ from Tkinter import *
 import random
 import re
 
-import gui
-import research
-import utility
-
 import generator
+
+import internal.gui as gui
+import internal.utility as utility
+
+import research.research as research
 
 ART_CATEGORIES = {'artist': ['drawing', 'statue'],
                   'writer': ['play', 'novel', 'essay', 'poem', 'myth'],

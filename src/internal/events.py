@@ -1,6 +1,6 @@
 import ast
 
-import culture
+import culture.culture as culture
 
 main = None
 

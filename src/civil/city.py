@@ -1,16 +1,18 @@
-import utility
+import culture.language as language
+import culture.religion as religion
 
-from martial import *
-from language import *
-from group import *
-from religion import *
-from research import *
-import gui
+import internal.events as events
+import internal.event_analysis as event_analysis
+import internal.group as group
+import internal.gui as gui
+import internal.utility as utility
 
-import events
-import event_analysis
+import military.martial as martial
+
+import research.research as research
 
 import math
+import random
 
 from Tkinter import *
 
@@ -439,7 +441,8 @@ class City:
 	religion = self.get_random_religion()
 
         dx, dy = trade_city.position #Send it to a random city
-	self.caravans.append(Group(self.parent, "caravan", (religion, resource_send), (cx, cy), (dx, dy), self.nation.color, lambda s: False, trade_city.receive_caravan(self), self.nation.parent.canvas, has_boat=(self.resources['boats'] > 0)))
+	self.caravans.append(
+        group.Group(self.parent, "caravan", (religion, resource_send), (cx, cy), (dx, dy), self.nation.color, lambda s: False, trade_city.receive_caravan(self), self.nation.parent.canvas, has_boat=(self.resources['boats'] > 0)))
 
     def receive_caravan(self, city):
         def f(caravan):
@@ -555,7 +558,8 @@ class City:
         if self.army.size() > 0:
             if len(self.nation.cities) > 0: #this shouldn't happen because the army should fight to the death first
                 return_destination = random.choice(self.nation.cities)
-                self.nation.moving_armies.append(Group(self.parent, self.nation.name, self.army, self.position, return_destination.position, self.nation.color, lambda s: False, self.parent.reinforce(self.nation, return_destination), self.parent.canvas, is_army=True, has_boat=(self.resources['boats'] > 0)))
+                self.nation.moving_armies.append(
+                    group.Group(self.parent, self.nation.name, self.army, self.position, return_destination.position, self.nation.color, lambda s: False, self.parent.reinforce(self.nation, return_destination), self.parent.canvas, is_army=True, has_boat=(self.resources['boats'] > 0)))
 
                 self.parent.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': self.nation.id, 'nation_b': self.nation.id, 'city_a': self.name, 'city_b': return_destination.name, 'reason': 'evacuate', 'army_size': self.army.size()}, self.parent.get_current_date()))
 
@@ -591,7 +595,8 @@ class City:
             send_army.add_to(send_army.name, self.army.number)
             self.army.number = 0
 
-            self.nation.moving_armies.append(Group(self.parent, self.nation.name, send_army, self.position, attacking_city.position, self.nation.color, lambda s: False, self.parent.return_levies(self.nation, attacking_city), self.parent.canvas, is_army=True))
+            self.nation.moving_armies.append(
+                group.Group(self.parent, self.nation.name, send_army, self.position, attacking_city.position, self.nation.color, lambda s: False, self.parent.return_levies(self.nation, attacking_city), self.parent.canvas, is_army=True))
 
             self.parent.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': self.nation.id, 'nation_b': self.nation.id, 'city_a': self.name, 'city_b': attacking_city.name, 'reason': 'return levies', 'army_size': send_army.size()}, self.parent.get_current_date()))
 
@@ -850,7 +855,7 @@ class City:
 
     def handle_army(self):
         if not self.army:
-            self.army = nation.army_structure.zero()
+            self.army = self.nation.army_structure.zero()
 
 
         train_bonus = self.handle_train_bonus()
@@ -922,7 +927,7 @@ class City:
 
         if self.population < self.calculate_population_capacity():
             t = float(self.resources['food']) / self.population * self.population_capacity / self.population
-            rate = 1.0 / (1.0 + self.population**0.5 * e**(-t)) / 9.0
+            rate = 1.0 / (1.0 + self.population ** 0.5 * math.e ** (-t)) / 9.0
             new_pop = self.population * (1.0 + rate/12.0)**12.0 + 2
             # print(self.resources['food'], self.population_capacity, self.population, t, rate, new_pop)
             change = new_pop - self.population

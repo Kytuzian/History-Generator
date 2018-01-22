@@ -1,11 +1,9 @@
-import utility
-from nation import *
-
-import random
-
 import generator
 
+import internal.utility as utility
+
 from math import *
+import random
 
 vowel_sounds = ['ah', 'ae', 'aa', 'uh', 'eh', 'ee', 'ar', 'er', 'ow', 'ih', 'aw', 'oi',
                 'oo', 'ou', 'or', 'our', 'i']

@@ -4,14 +4,12 @@ from time import sleep
 import random
 import math
 
-import utility
+import internal.gui as gui
+import internal.utility as utility
 
-import gui
-from nation import *
-from language import *
 from battle import TROOP_RADIUS
 
-from research import all_ranged_weapons, unarmed
+from research.research import all_ranged_weapons, unarmed
 
 class Troop:
     @classmethod
@@ -159,6 +157,7 @@ class Troop:
 
         return res
 
+    # TODO: Make these actually do something
     def train(self, amount):
         return 0
         #self.elite += random.randint(0, amount)
@@ -328,7 +327,7 @@ class Troop:
         self.number += number
         #e.append(events.EventArmyRaised('ArmyRaised', {'nation_a': nation.name, 'army_a': self.name, 'raised_a':number}, s_parent.get_current_date()))
 
-        if self.number > self.elite**sqrt(self.tier): #If we have enough troops, we will create another, better, rank of troops
+        if self.number > self.elite** math.sqrt(self.tier): #If we have enough troops, we will create another, better, rank of troops
             if len(self.upgrades) < 3:
                 self.upgrades.append(Troop.new_troop(self, nation))
 

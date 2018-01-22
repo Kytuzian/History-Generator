@@ -1,4 +1,7 @@
 import random
+import shlex
+import struct
+import subprocess
 import time
 
 import tkFont
@@ -8,6 +11,8 @@ from math import *
 import sys
 import platform
 
+import os
+
 START_BATTLES_MINIMIZED = False
 
 S_WIDTH = 1000
@@ -16,14 +21,16 @@ S_HEIGHT = 1000
 DISPLAY_WIDTH = 1280
 DISPLAY_HEIGHT = 720
 
-CELL_SIZE = 6 #cells are squares, this is the side length
+CELL_SIZE = 6  # cells are squares, this is the side length
 
 SCROLL_SPEED = CELL_SIZE
+
 
 def listbox_capacity(listbox):
     font = tkFont.Font(listbox, listbox['font'])
 
     return listbox.winfo_height() / font.metrics()['ascent']
+
 
 def count(l):
     res = {}
@@ -35,6 +42,7 @@ def count(l):
 
     return res
 
+
 def tuplize(l):
     res = l
 
@@ -43,6 +51,7 @@ def tuplize(l):
             res[i] = tuplize(res[i])
 
     return tuple(res)
+
 
 def get_time_span_length(start_date, end_date):
     year_dif, month_dif, day_dif = end_date[0] - start_date[0], end_date[1] - start_date[1], end_date[2] - start_date[2]
@@ -57,6 +66,7 @@ def get_time_span_length(start_date, end_date):
 
     return year_dif, month_dif, day_dif
 
+
 def get_container(s, start, end, start_pos):
     level = 1
 
@@ -64,7 +74,7 @@ def get_container(s, start, end, start_pos):
     while i < len(s):
         if s[i] == start:
             level += 1
-        elif s[i] ==end:
+        elif s[i] == end:
             level -= 1
             if level == 0:
                 break
@@ -72,6 +82,7 @@ def get_container(s, start, end, start_pos):
         i += 1
 
     return s[start_pos:i]
+
 
 def find_container_of(s, start, end, char):
     # Start here, and go back until we find the starting bracket
@@ -113,6 +124,7 @@ def find_container_of(s, start, end, char):
 
     return start_pos, end_pos
 
+
 # So that if an inner section is detected, its entire contents are ignored
 # For example, separate_container('<test|test1>|test2', '<', '>', '|') will return ['<test|test1>', 'test2']
 def separate_container(s, start, end, char):
@@ -137,6 +149,7 @@ def separate_container(s, start, end, char):
 
     return result
 
+
 def titlecase(s):
     new_words = []
     for word in s.split():
@@ -151,13 +164,16 @@ def titlecase(s):
 
     return ' '.join(new_words)
 
+
 def capitalize_first_letter(s):
     return s[0].upper() + s[1:]
+
 
 def displayify_text(s):
     words = s.split('_')
     words = map(capitalize_first_letter, words)
     return ' '.join(words)
+
 
 def base_war_stats():
     base = {}
@@ -166,6 +182,7 @@ def base_war_stats():
     base['troops_killed'] = 0
 
     return base
+
 
 def base_stats():
     base = {}
@@ -179,6 +196,7 @@ def base_stats():
 
     return base
 
+
 def base_soldier_stats():
     base = {}
 
@@ -191,6 +209,7 @@ def base_soldier_stats():
 
     return base
 
+
 def base_weapon_stats():
     base = {}
 
@@ -199,6 +218,7 @@ def base_weapon_stats():
     base['kills'] = 0
 
     return base
+
 
 def show_dict(d, depth=1, recurse=True, gen=None):
     for stat, v in sorted(d.items()):
@@ -215,11 +235,14 @@ def show_dict(d, depth=1, recurse=True, gen=None):
             else:
                 print('{}{}: {}'.format('\t' * depth, displayify_text(stat), v))
 
+
 def fst(t):
     return t[0]
 
+
 def snd(t):
     return t[1]
+
 
 # Finds the corresponding keys in a dictionary and applies the function to both, creating a new dictionary
 # f_single is used if the key appears in only one of the dictionaries
@@ -239,7 +262,8 @@ def zip_dict_with(f, a, b, f_single=None):
 
     return res
 
-def get_nearest_enemy(unit, check, check_unit = None):
+
+def get_nearest_enemy(unit, check, check_unit=None):
     min_distance = 1000000000
 
     target = None
@@ -254,8 +278,10 @@ def get_nearest_enemy(unit, check, check_unit = None):
 
     return target
 
+
 def rgb_color(r, g, b):
     return '#{}{}{}'.format(hex(r)[2:].ljust(2, '0'), hex(g)[2:].ljust(2, '0'), hex(b)[2:].ljust(2, '0'))
+
 
 # From https://gist.github.com/jtriley/1108174
 def get_terminal_size():
@@ -275,8 +301,9 @@ def get_terminal_size():
     if current_os in ['Linux', 'Darwin'] or current_os.startswith('CYGWIN'):
         tuple_xy = _get_terminal_size_linux()
     if tuple_xy is None:
-        tuple_xy = (80, 25)      # default value
+        tuple_xy = (80, 25)  # default value
     return tuple_xy
+
 
 def _get_terminal_size_windows():
     try:
@@ -319,6 +346,7 @@ def _get_terminal_size_linux():
             return cr
         except:
             pass
+
     cr = ioctl_GWINSZ(0) or ioctl_GWINSZ(1) or ioctl_GWINSZ(2)
     if not cr:
         try:
@@ -334,11 +362,14 @@ def _get_terminal_size_linux():
             return None
     return int(cr[1]), int(cr[0])
 
+
 terminal_width = -1
-def show_bar(i, total, start_time=None, width=80, message='', number_limit = False):
+
+
+def show_bar(i, total, start_time=None, width=80, message='', number_limit=False):
     global terminal_width
     if terminal_width == -1:
-        terminal_width,_ = get_terminal_size()
+        terminal_width, _ = get_terminal_size()
         terminal_width -= 1
 
     if terminal_width != -1:
@@ -371,37 +402,62 @@ def show_bar(i, total, start_time=None, width=80, message='', number_limit = Fal
     else:
         bar_chunks = int(float(i) / float(total) * (width - len(message) - 2))
 
-    sys.stdout.write('\r{}'.format(message) + '[{}{}]'.format('=' * bar_chunks, ' ' * (width - bar_chunks - len(message) - 2)))
+    sys.stdout.write(
+        '\r{}'.format(message) + '[{}{}]'.format('=' * bar_chunks, ' ' * (width - bar_chunks - len(message) - 2)))
     sys.stdout.flush()
 
+
 def calculate_interception(v_e, v_p, (x_e, y_e), (x_p, y_p), theta_e):
-    t1 = -(v_e*x_e*cos(theta_e) - v_e*x_p*cos(theta_e) + v_e*y_e*sin(theta_e) - v_e*y_p*sin(theta_e) + sqrt(-(v_e**2*sin(theta_e)**2 - v_p**2)*x_e**2 + 2*(v_e**2*sin(theta_e)**2 - v_p**2)*x_e*x_p - (v_e**2*sin(theta_e)**2 - v_p**2)*x_p**2 - (v_e**2*cos(theta_e)**2 - v_p**2)*y_e**2 - (v_e**2*cos(theta_e)**2 - v_p**2)*y_p**2 + 2*(v_e**2*x_e*cos(theta_e)*sin(theta_e) - v_e**2*x_p*cos(theta_e)*sin(theta_e))*y_e - 2*(v_e**2*x_e*cos(theta_e)*sin(theta_e) - v_e**2*x_p*cos(theta_e)*sin(theta_e) - (v_e**2*cos(theta_e)**2 - v_p**2)*y_e)*y_p))/((cos(theta_e)**2 + sin(theta_e)**2)*v_e**2 - v_p**2)
-    t2 = -(v_e*x_e*cos(theta_e) - v_e*x_p*cos(theta_e) + v_e*y_e*sin(theta_e) - v_e*y_p*sin(theta_e) - sqrt(-(v_e**2*sin(theta_e)**2 - v_p**2)*x_e**2 + 2*(v_e**2*sin(theta_e)**2 - v_p**2)*x_e*x_p - (v_e**2*sin(theta_e)**2 - v_p**2)*x_p**2 - (v_e**2*cos(theta_e)**2 - v_p**2)*y_e**2 - (v_e**2*cos(theta_e)**2 - v_p**2)*y_p**2 + 2*(v_e**2*x_e*cos(theta_e)*sin(theta_e) - v_e**2*x_p*cos(theta_e)*sin(theta_e))*y_e - 2*(v_e**2*x_e*cos(theta_e)*sin(theta_e) - v_e**2*x_p*cos(theta_e)*sin(theta_e) - (v_e**2*cos(theta_e)**2 - v_p**2)*y_e)*y_p))/((cos(theta_e)**2 + sin(theta_e)**2)*v_e**2 - v_p**2)
+    t1 = -(v_e * x_e * cos(theta_e) - v_e * x_p * cos(theta_e) + v_e * y_e * sin(theta_e) - v_e * y_p * sin(
+        theta_e) + sqrt(-(v_e ** 2 * sin(theta_e) ** 2 - v_p ** 2) * x_e ** 2 + 2 * (
+                v_e ** 2 * sin(theta_e) ** 2 - v_p ** 2) * x_e * x_p - (
+                                    v_e ** 2 * sin(theta_e) ** 2 - v_p ** 2) * x_p ** 2 - (
+                                    v_e ** 2 * cos(theta_e) ** 2 - v_p ** 2) * y_e ** 2 - (
+                                    v_e ** 2 * cos(theta_e) ** 2 - v_p ** 2) * y_p ** 2 + 2 * (
+                                    v_e ** 2 * x_e * cos(theta_e) * sin(theta_e) - v_e ** 2 * x_p * cos(theta_e) * sin(
+                                theta_e)) * y_e - 2 * (
+                                    v_e ** 2 * x_e * cos(theta_e) * sin(theta_e) - v_e ** 2 * x_p * cos(theta_e) * sin(
+                                theta_e) - (v_e ** 2 * cos(theta_e) ** 2 - v_p ** 2) * y_e) * y_p)) / (
+                     (cos(theta_e) ** 2 + sin(theta_e) ** 2) * v_e ** 2 - v_p ** 2)
+    t2 = -(v_e * x_e * cos(theta_e) - v_e * x_p * cos(theta_e) + v_e * y_e * sin(theta_e) - v_e * y_p * sin(
+        theta_e) - sqrt(-(v_e ** 2 * sin(theta_e) ** 2 - v_p ** 2) * x_e ** 2 + 2 * (
+                v_e ** 2 * sin(theta_e) ** 2 - v_p ** 2) * x_e * x_p - (
+                                    v_e ** 2 * sin(theta_e) ** 2 - v_p ** 2) * x_p ** 2 - (
+                                    v_e ** 2 * cos(theta_e) ** 2 - v_p ** 2) * y_e ** 2 - (
+                                    v_e ** 2 * cos(theta_e) ** 2 - v_p ** 2) * y_p ** 2 + 2 * (
+                                    v_e ** 2 * x_e * cos(theta_e) * sin(theta_e) - v_e ** 2 * x_p * cos(theta_e) * sin(
+                                theta_e)) * y_e - 2 * (
+                                    v_e ** 2 * x_e * cos(theta_e) * sin(theta_e) - v_e ** 2 * x_p * cos(theta_e) * sin(
+                                theta_e) - (v_e ** 2 * cos(theta_e) ** 2 - v_p ** 2) * y_e) * y_p)) / (
+                     (cos(theta_e) ** 2 + sin(theta_e) ** 2) * v_e ** 2 - v_p ** 2)
 
     if t1 > 0:
-        n = x_e-x_p+v_e*t1*cos(theta_e)
+        n = x_e - x_p + v_e * t1 * cos(theta_e)
         d = v_p * t1
         if n > d:
-            n = d - 1 * 10^-10
+            n = d - 1 * 10 ^ -10
         theta_p1 = acos(n / d)
 
         return (t1, theta_p1)
     else:
-        n = x_e-x_p+v_e*t2*cos(theta_e)
+        n = x_e - x_p + v_e * t2 * cos(theta_e)
         d = v_p * t2
         if n > d:
-            n = d - 1 * 10^-10
-        theta_p1 = acos(n / d)
+            n = d - 1 * 10 ^ -10
+        theta_p2 = acos(n / d)
 
         return (t2, theta_p2)
+
 
 def calculate_xy_vector((magnitude, angle)):
     return (magnitude * cos(angle), magnitude * sin(angle))
 
+
 def calculate_polar_vector((dx, dy)):
-    magnitude = sqrt(dx**2 + dy**2)
+    magnitude = sqrt(dx ** 2 + dy ** 2)
 
     return (magnitude, atan2(dy, dx))
+
 
 def count_freq(l):
     res = {}
@@ -412,11 +468,12 @@ def count_freq(l):
             res[i] += 1
     return res
 
+
 # Adapted from:
 # http://stackoverflow.com/questions/3679694/a-weighted-version-of-random-choice
 def weighted_random_choice(choices, weight=None):
     if weight == None:
-        weight = lambda i, _: len(choices) - i #Makes it more likely to select early indexes.
+        weight = lambda i, _: len(choices) - i  # Makes it more likely to select early indexes.
 
     total = sum(weight(i, v) for i, v in enumerate(choices))
     r = random.uniform(0, total)
@@ -429,8 +486,10 @@ def weighted_random_choice(choices, weight=None):
         accum += w
     return choices[0]
 
+
 def rough_match(a, b, tolerance):
     return a + tolerance >= b and a - tolerance <= b
+
 
 def clamp(a, maxv, minv):
     if a > maxv:
@@ -440,8 +499,10 @@ def clamp(a, maxv, minv):
     else:
         return a
 
+
 def product(l):
     return reduce(lambda a, b: a * b, l)
+
 
 def flatten(l):
     result = []
@@ -450,6 +511,7 @@ def flatten(l):
         result += sub_l
 
     return result
+
 
 def mutate(l, amount, base="qwertyuiopasdfghjklzxcvbnm"):
     result = []
@@ -462,19 +524,22 @@ def mutate(l, amount, base="qwertyuiopasdfghjklzxcvbnm"):
 
     return l
 
+
 def distance((x1, y1), (x2, y2)):
-    return sqrt((x1-x2)**2 + (y1-y2)**2)
+    return sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
+
 
 def distance_squared((x1, y1), (x2, y2)):
-    return (x1 - x2)**2 + (y1 - y2)**2
+    return (x1 - x2) ** 2 + (y1 - y2) ** 2
 
-#This is faster than just do a distance check because we only have to calculate half of it sometimes.
-#Full calculation is slower, but it's faster on average.
+
+# This is faster than just do a distance check because we only have to calculate half of it sometimes.
+# Full calculation is slower, but it's faster on average.
 def collided((x1, y1, r1), (x2, y2, r2)):
-    x_dist = (x1 - x2)**2
-    length = (r1 + r2)**2
+    x_dist = (x1 - x2) ** 2
+    length = (r1 + r2) ** 2
     if x_dist < length:
-        y_dist = (y1 - y2)**2
+        y_dist = (y1 - y2) ** 2
         if y_dist < length:
             return y_dist + x_dist < length
         else:
@@ -482,8 +547,9 @@ def collided((x1, y1, r1), (x2, y2, r2)):
     else:
         return False
 
+
 def intersect((x, y), check, radius=1, ignore_exact=False):
-    for index,((cx, cy), cradius) in enumerate(check):
+    for index, ((cx, cy), cradius) in enumerate(check):
         if collided((x, y, radius), (cx, cy, cradius)):
             if ignore_exact and x == cx and y == cy:
                 return -1

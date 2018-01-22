@@ -3,10 +3,10 @@ import utility
 
 from Tkinter import *
 
-import events
-import event_analysis
-import gui
-import people
+import internal.events as events
+import internal.event_analysis as event_analysis
+import internal.gui as gui
+import civil.people as people
 
 #In percent
 MONOTHEISM_CHANCE = 20
@@ -38,7 +38,7 @@ INTOLERANT_DOMAINS = ['war', 'fire', 'death', 'lightning', 'thunder',
 TOLERANT_DOMAINS = ['peace', 'wisdom', 'children', 'knowledge',
                     'writing', 'music', 'storytelling', 'friendship',
                     'the hearth', 'unity', #Kenny - Addition
-                    'piety', 'charity', 'books', 'writing', 
+                    'piety', 'charity', 'books', 'writing',
                     'tales', 'mastery', 'observations', 'understanding',
                     'morale', 'fervor', 'keen', 'passion'
                     ]

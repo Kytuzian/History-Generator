@@ -3,11 +3,10 @@ from Tkinter import *
 import math
 import random
 import sys
-from time import sleep
 
-import utility
+import internal.utility as utility
 
-from research import all_ranged_weapons, unarmed
+from research.research import all_ranged_weapons, unarmed
 
 PROJECTILE_MOVEMENT_SPEED = 6
 PROJECTILE_RADIUS = 3
@@ -327,14 +326,15 @@ class Soldier:
                 return random.randint(0, 1)
 
     def get_sidearm_attack(self, material):
-        other_weapon = self.get_switch_weapons()
+        fatigue_loss = random.randint(0, self.fatigue // 2)
+        other_weapon = self.get_switch_weapon()
 
         if other_weapon == None: #This could happen if ALL of our weapons have broken.
             other_weapon = unarmed()
 
         other_weapon_attack = other_weapon.get_attack(material)
         other_normal_attack = other_weapon.attack_skill_multiplier * random.randint(0, self.strength)
-        other_result = other_weapon_attack + other_normal_attack - fatigue_loss
+        result = other_weapon_attack + other_normal_attack - fatigue_loss
 
         if result > 0:
             return result

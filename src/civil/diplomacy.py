@@ -1,9 +1,9 @@
 import math
 import random
 
-import events
-import utility
-import generator
+import internal.events as events
+import internal.utility as utility
+import culture.generator as generator
 
 TREATY_NAMES = {'trade': [['The Treaty of <signing_city>',
                            'Trade Deal of <signing_year>',

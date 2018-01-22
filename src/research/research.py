@@ -2,7 +2,7 @@ from Tkinter import *
 
 import random
 
-import utility
+import internal.utility as utility
 
 class Weapon:
     def __init__(self, name, cost, range, material_multiplier, attack, defense, attack_skill_multiplier, defense_skill_multiplier, reload_time=0, ammunition=0, projectile_speed=0, shield=False, armor_pierce=0, siege_weapon=False, projectile_size=5):
@@ -115,7 +115,7 @@ class Armor:
         res['material_multiplier'] = self.material_multiplier
         res['defense'] = self.defense
         res['defense_skill_multiplier'] = self.defense_skill_multiplier
-        res['heavy'] = heavy
+        res['heavy'] = self.heavy
 
         return res
 
@@ -171,12 +171,12 @@ class Mount:
 
         res['name'] = self.name
         res['cost'] = self.cost
-        res['speed'] = speed
-        res['attack'] = attack
+        res['speed'] = self.speed
+        res['attack'] = self.attack
         res['defense'] = self.defense
         res['attack_skill_multiplier'] = self.attack_skill_multiplier
         res['defense_skill_multiplier'] = self.defense_skill_multiplier
-        res['heavy'] = heavy
+        res['heavy'] = self.heavy
 
         return res
 
@@ -186,13 +186,13 @@ class Mount:
         return random.randint(0, int(effective_defense))
 
     def copy(self):
-        return Armor(self.name, self.cost, self.speed, self.attack, self.defense, self.attack_skill_multiplier, self.defense_skill_multiplier, self.heavy)
+        return Mount(self.name, self.cost, self.speed, self.attack, self.defense, self.attack_skill_multiplier, self.defense_skill_multiplier, self.heavy)
 
     def __call__(self):
         return self.copy()
 
     def __repr__(self):
-        return '{} (x{}): {} ({})'.format(self.name, self.material_multiplier, self.defense)
+        return '{} ({}, {})'.format(self.name, self.attack, self.defense)
 
 
 #------------------------------
@@ -520,7 +520,7 @@ class Tech:
             return self.is_unlocked()
         else:
             for next_tech in self.next_techs:
-                if has_tech(next_tech, tech_name):
+                if next_tech.has_tech(tech_name):
                     return True
 
             return False
