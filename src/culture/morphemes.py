@@ -1,6 +1,22 @@
 import random
 
-from culture.language import analyze_word
+
+# Returns the characteristics and such of the word
+# Morphemes, is plural and such
+def analyze_word(word):
+    res = {}
+    res['word'] = word
+
+    if word.endswith('es'):
+        res['plural'] = 'es'
+    elif word.endswith('s'):
+        res['plural'] = 's'
+    elif word.startswith('re'):
+        res['again'] = 're'
+    elif word.endswith('ing'):
+        res['gerund'] = 'ing'
+
+    return res
 
 
 class Morphemes:

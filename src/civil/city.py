@@ -1,6 +1,5 @@
 import internal.events as events
 import internal.event_analysis as event_analysis
-import internal.group as group
 import internal.gui as gui
 import internal.utility as utility
 
@@ -8,6 +7,10 @@ import math
 import random
 
 from Tkinter import *
+
+from civil.resources import base_resources, base_resource_prices
+from internal.group.caravan import Caravan
+from internal.group.group import Group
 
 CELL_POPULATION_CAPACITY = 10
 
@@ -25,16 +28,6 @@ GARRISON_MORALE_BONUS = 2.5  # Multiplier
 
 SEND_CARAVAN_CHANCE = 10
 CARAVAN_RELIGION_CHANCE = 10
-
-TRADE_GOOD_PRICE = 25
-
-
-def base_resources():
-    return {'leather': 0, 'wood': 0, 'cloth': 0, 'metal': 0, 'food': 0, 'boats': 0, 'gunpowder': 0}
-
-
-def base_resource_prices():
-    return {'leather': 50, 'wood': 75, 'cloth': 50, 'metal': 150, 'food': 10, 'boats': 1500, 'gunpowder': 200}
 
 
 class City:
@@ -167,6 +160,18 @@ class City:
 
         return res
 
+    def handle_religious_conversion(self, converting_religion, magnitude):
+        for (check_religion, adherents) in self.get_religion_populations():
+            if check_religion != converting_religion:
+                converted_population = min(adherents, random.randint(0, magnitude))
+
+                self.handle_population_change(-converted_population)
+
+                if self.name in converting_religion.adherents:
+                    converting_religion.adherents[self.name] += converted_population
+                else:
+                    converting_religion.adherents[self.name] = converted_population
+
     def handle_caravans(self):
         if random.randint(0, SEND_CARAVAN_CHANCE) == 0:
             self.send_caravan()
@@ -184,8 +189,8 @@ class City:
 
         return res
 
-    def send_caravan(self):
-        cx, cy = self.position
+    def select_trade_city(self):
+        trade_city = None
 
         if len(self.nation.trading) > 0 and random.randint(0, 2) == 0:
             partner = random.choice(self.nation.trading)
@@ -195,81 +200,21 @@ class City:
 
                 trade_treaty = self.nation.get_treaty_with(partner, 'trade')
                 trade_treaty[self.nation.id]['caravans_sent'] += 1
-            else:  # There was a problem, just exit the function.
-                return
         else:
             trade_city = random.choice(self.nation.cities)
 
-        # We obviously don't need to send them something if they have more of it than we do.
-        resource_diff = self.get_resource_differences(trade_city)
-        resource_send = {}
+        return trade_city
 
-        for resource in resource_diff:
-            if resource_diff[resource] > 0:
-                resource_send[resource] = random.randint(1, int(resource_diff[resource]))
+    def send_caravan(self):
+        cx, cy = self.position
 
-        # This is to ensure that all caravans make at least some money
-        resource_send['trade_goods'] = random.randint(1, int(math.log(self.population)) ** 2 + 1)
+        destination_city = self.select_trade_city()
 
-        # Each caravan has a random religion.
-        religion = self.get_random_religion()
+        if destination_city is None:
+            return
 
-        dx, dy = trade_city.position  # Send it to a random city
-        self.caravans.append(
-            group.Group(self.parent, "caravan", (religion, resource_send), (cx, cy), (dx, dy), self.nation.color,
-                        lambda s: False, trade_city.receive_caravan(self), self.nation.parent.canvas,
-                        has_boat=(self.resources['boats'] > 0)))
-
-    def receive_caravan(self, city):
-        def f(caravan):
-            caravan_religion, caravan_resources = caravan.members
-            city.caravans.remove(caravan)
-
-            # Construct a demand ranking
-            consumption_ranking = sorted(self.consumed_resources.items(), key=utility.snd)
-            res_count = float(len(consumption_ranking))
-            resource_mults = {k: (res_count / 2.0 - i) / res_count for i, (k, v) in enumerate(consumption_ranking)}
-            prices = base_resource_prices()
-
-            for resource in prices:
-                prices[resource] *= resource_mults[resource]
-
-            profit = 0
-            for resource in caravan_resources:
-                if resource in prices:
-                    profit += caravan_resources[resource] * prices[resource]
-                elif resource == 'trade_goods':
-                    profit += TRADE_GOOD_PRICE * caravan_resources[resource]
-
-            profit = int(profit)
-
-            # print('{} made a profit of {} while trading {} with {}'.format(city.nation.name.short_name(), profit, caravan_resources, self.nation.name.short_name()))
-
-            self.nation.money += profit
-
-            if city.nation != self.nation:  # Trading with ourselves doesn't give any bonus
-                city.nation.money += profit // 2  # The senders only makes half as much
-
-                trade_treaty = self.nation.get_treaty_with(city.nation, 'trade')
-
-                if trade_treaty is not None:  # Although this should always be the case, really.
-                    trade_treaty[self.nation.id]['caravans_received'] += 1
-                    trade_treaty[self.nation.id]['money'] += profit
-                    trade_treaty[city.nation.id]['money'] += profit // 2
-
-            # The religion of the caravan influences the religion of this city (but only if they have a different religion than the caravan)
-            religion_populations = self.get_religion_populations()
-            for (religion, adherents) in religion_populations:
-                if religion != caravan_religion:
-                    if random.randint(0, CARAVAN_RELIGION_CHANCE):
-                        self.handle_population_change(-1)
-
-                        if self.name in caravan_religion.adherents:
-                            caravan_religion.adherents[self.name] += 1
-                        else:
-                            caravan_religion.adherents[self.name] = 1
-
-        return f
+        caravan = Caravan(self.parent, self.get_random_religion(), self, destination_city, self.resources['boats'] > 0)
+        self.caravans.append(caravan)
 
     def rearm_army(self, unit):
         self.army.rearm(unit.name, unit.weapons, unit.armor, unit.mount)
@@ -335,10 +280,10 @@ class City:
             if len(self.nation.cities) > 0:  # this shouldn't happen because the army should fight to the death first
                 return_destination = random.choice(self.nation.cities)
                 self.nation.moving_armies.append(
-                    group.Group(self.parent, self.nation.name, self.army, self.position, return_destination.position,
-                                self.nation.color, lambda s: False,
-                                self.parent.reinforce(self.nation, return_destination), self.parent.canvas,
-                                is_army=True, has_boat=(self.resources['boats'] > 0)))
+                    Group(self.parent, self.nation.name, self.army, self.position, return_destination.position,
+                          self.nation.color, lambda s: False,
+                          self.parent.reinforce(self.nation, return_destination),
+                          is_army=True, has_boat=(self.resources['boats'] > 0)))
 
                 self.parent.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': self.nation.id,
                                                                                         'nation_b': self.nation.id,
@@ -381,9 +326,9 @@ class City:
             self.army.number = 0
 
             self.nation.moving_armies.append(
-                group.Group(self.parent, self.nation.name, send_army, self.position, attacking_city.position,
-                            self.nation.color, lambda s: False, self.parent.return_levies(self.nation, attacking_city),
-                            self.parent.canvas, is_army=True))
+                Group(self.parent, self.nation.name, send_army, self.position, attacking_city.position,
+                      self.nation.color, lambda s: False, self.parent.return_levies(self.nation, attacking_city),
+                      is_army=True))
 
             self.parent.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': self.nation.id,
                                                                                     'nation_b': self.nation.id,
@@ -621,6 +566,7 @@ class City:
 
                         # Take care of all of these shenanigans.
                         self.parent.create_religion(self, self.nation, founder=self.nation.notable_people[-1])
+                        religion.adherents[self.name] += 1
                     else:
                         religion.adherents[self.name] += 1
 

@@ -1,10 +1,8 @@
 import math
 import random
 
-import culture.form
+from culture.form import Form
 from civil.diplomacy import TRADE_CARAVAN_MULTIPLIER, WAR_CITY_MULTIPLIER, TRADE_END_DIVISOR, TREATY_NAMES
-
-import culture.generator as generator
 
 import internal.utility as utility
 import internal.events as events

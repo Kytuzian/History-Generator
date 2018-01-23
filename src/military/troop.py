@@ -4,7 +4,7 @@ from Tkconstants import W, E, END
 from Tkinter import Tk, Canvas, StringVar, OptionMenu, Listbox
 
 from internal import utility as utility, gui as gui
-from military.battle import TROOP_RADIUS
+from military.soldier import TROOP_RADIUS
 
 
 class Troop:

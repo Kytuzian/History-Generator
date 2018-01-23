@@ -6,104 +6,16 @@ import internal.events as events
 import internal.event_analysis as event_analysis
 import internal.gui as gui
 import civil.people as people
-
-from culture.god import God
+from god import God, DOMAINS
 
 # In percent
 MONOTHEISM_CHANCE = 20
-
-IMPORTANCE_CHANGE_CHANCE = 30  # In percent
-IMPORTANCE_CHANGE_AMOUNT = 2
 
 # In percent
 LOSE_GOD_CHANCE = 1
 GAIN_GOD_CHANCE = 8
 
-# in percent
-DOMAIN_GAIN_CHANCE = 1
-DOMAIN_LOSE_CHANCE = 1
-
-MAX_DOMAIN_COUNT = 5
-
-MAX_IMPORTANCE = 10
-TOLERANCE_MULTIPLIER = 1
-
 MAX_BASE_TOLERANCE = 100
-
-INTOLERANT_DOMAINS = ['war', 'fire', 'death', 'lightning', 'thunder',
-                      'wind', 'chaos', 'the underworld',  # Kenny - Addition
-                      'blight', 'disease', 'conquest', 'sacrifice',
-                      'lust', 'revenge', 'gluttony', 'envy', 'wrath',
-                      'xenophobia', 'zeal', 'apathy'
-                      ]
-TOLERANT_DOMAINS = ['peace', 'wisdom', 'children', 'knowledge',
-                    'writing', 'music', 'storytelling', 'friendship',
-                    'the hearth', 'unity',  # Kenny - Addition
-                    'piety', 'charity', 'books', 'writing',
-                    'tales', 'mastery', 'observations', 'understanding',
-                    'morale', 'fervor', 'keen', 'passion'
-                    ]
-
-DOMAINS = {'fire': {'general': 0.5},
-           'wind': {'artist': 1},
-           'water': {'artist': 1},
-           'air': {'artist': 1},
-           'lightning': {'artist': 1},
-           'death': {'general': 0.5},
-           'children': {},
-           'fertility': {},
-           'harvest': {'administrator': 1},
-           'wisdom': {'oracle': 1, 'scientist': 1, 'historian': 1, 'philosopher': 1},
-           'war': {'general': 1},
-           'smithing': {},
-           'animals': {'artist': 1},
-           'earth': {'artist': 1},
-           'rivers': {'artist': 1},
-           'peace': {'administrator': 1},
-           'knowledge': {'historian': 1, 'scientist': 1},
-           'writing': {'writer': 1, 'historian': 1, 'philosopher': 1},
-           'music': {'composer': 1},
-           'storytelling': {'writer': 1, 'oracle': 1, 'hero': 1},
-           'luck': {},
-           'thunder': {'artist': 1},
-           'friendship': {},
-           'wine': {},
-           'weaving': {'seneschal': 1},
-           'the sun': {},
-           'the hearth': {},
-           'the moon': {},
-           'the sky': {},
-           'messenger': {},
-           'chaos': {'revolutionary': 1},
-           'unity': {'drillmaster': 1, 'quartermaster': 1},
-           'the underworld': {'conqueror': 1},
-           'creation': {'emperor': 1},
-           'everything': {},  # For monotheistic religions
-
-           'blight': {'revolutionary': 0.5},
-           'disease': {},
-           'conquest': {'scientist': 0.5, 'general': 0.5},
-           'sacrifice': {'oracle': 0.5},
-           'lust': {'artist': 0.5},
-           'revenge': {'hero': 0.5, 'revolutionary': 0.5},
-           'gluttony': {'composer': 1, 'artist': 1, 'writer': 1},
-           'envy': {'historian': 0.5, 'oracle': 1},
-           'wrath': {'revolutionary': 0.5, 'hero': 1},
-           'xenophobia': {'hero': 1, 'general': 1},
-           'zeal': {'revolutionary': 0.5, 'hero': 0.5, 'general': 0.5},
-           'apathy': {'philosopher': 0.5, 'scientist': 0.5},
-
-           'piety': {'oracle': 1, 'prophet': 0.5, 'priest': 1, 'bishop': 0.75},
-           'charity': {'hero': 1, 'professor': 1},
-           'books': {'writer': 1, 'bard': 1},
-           'mastery': {'master': 1, 'professional': 1},
-           'observations': {'philosopher': 0.5, 'scientist': 0.5, 'professor': 0.5},
-           'understanding': {'philosopher': 1, 'professor': 1},
-           'morale': {'singer': 1, 'lord': 1},
-           'fervor': {'revolutionary': 0.5, 'scientist': 0.5},
-           'keen': {'general': 0.5, 'administrator': 0.5},
-           'passion': {'hero': 1, 'administrator': 1}
-           }
 
 
 class Religion:

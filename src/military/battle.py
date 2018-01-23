@@ -5,16 +5,11 @@ import sys
 
 import internal.utility as utility
 
-from military.soldier import Soldier
+from military.soldier import Soldier, TROOP_RADIUS
 from military.unit import Unit
 
 PROJECTILE_MOVEMENT_SPEED = 6
 PROJECTILE_RADIUS = 3
-
-TROOP_MOVEMENT_SPEED = 1
-TROOP_RADIUS = 5
-# How many steps away the target unit should be before switching to melee.
-CC_RANGE = 50
 
 # How often on average to check for a new target for the unit
 SWITCH_TARGET_COUNT = 8

@@ -1,10 +1,26 @@
 import random
 
-from culture.language import LOSE_PLACE_CITY_NAME, LOSE_NAME_MODIFIER, GAIN_NAME_MODIFIER, MODIFIERS
+# Chances (1 in x)
+LOSE_PLACE_CITY_NAME = 8  # Only applies if the nation no longer owns the city.
+LOSE_NAME_MODIFIER = 30  # Per modifier
+GAIN_NAME_MODIFIER = 30  # Per history step
 
+MODIFIERS = ["Grand", "Holy", "Constitutional", "Parliamentary", "Federated", "Democratic", "People's", "Free",
+             "Illustrious", "Glorious", "United", "Imperial", "Sovereign", "Regal"]
+
+GOVERNMENT_TYPES = ["Principality", "Commonwealth", "Kingdom", "Hegemony", "Khanate",
+                    "Socialist State", "Sultanate", "Republic", "Democracy", "Theocracy",
+                    "Confederacy", "Oligarchy", "Aristocracy", "Meritocracy", "States",
+                    "Empire", "Tsardom", "Caliphate", "Emirate", "Tribes", "Clan",
+                    "Duchy", "Autocracy"]
 
 class NationName:
-    def __init__(self, modifiers, government_type, places):
+    def __init__(self, places, modifiers=None, government_type=None):
+        if modifiers is None:
+            modifiers = random.sample(MODIFIERS, max(0, 3))
+        if government_type is None:
+            government_type = random.choice(GOVERNMENT_TYPES)
+
         self.modifiers = modifiers
         self.government_type = government_type
         self.places = places
@@ -14,10 +30,7 @@ class NationName:
         return cls(info['modifiers'], info['government_type'], info['places'])
 
     def get_info(self):
-        res = {}
-        res['modifiers'] = self.modifiers
-        res['government_type'] = self.government_type
-        res['places'] = self.places
+        res = {'modifiers': self.modifiers, 'government_type': self.government_type, 'places': self.places}
 
         return res
 
@@ -25,7 +38,7 @@ class NationName:
         parent_cities_names = map(lambda city: city.name, parent.cities)
 
         for place in self.places:
-            #We can't get rid of the last one.
+            # We can't get rid of the last one.
             if not place in parent_cities_names and len(self.places) > 1:
                 if random.randint(0, LOSE_PLACE_CITY_NAME) == 0:
                     self.remove_place(place)

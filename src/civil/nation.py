@@ -3,18 +3,17 @@ import civil.people as people
 
 import culture.culture as culture
 import culture.language as language
-import culture.nation_name
 
-import internal.group as group
 import internal.utility as utility
 import internal.gui as gui
 import internal.events as events
 import internal.event_analysis as event_analysis
-import research.equipment_list
+from culture.nation_name import NationName
+from internal.group.group import Group
 
 from military.troop import Troop
 
-import research.tech as research
+from research import equipment_list, tech
 
 import math
 import random
@@ -24,7 +23,7 @@ from Tkinter import *
 OFFICE_MORALE_BONUS = 4
 
 NATION_COLORS = ['dark orange', 'cadet blue', 'gold', 'deep sky blue',
-                 'firebrick', 'maroon', 'sienna', 'dark slate blue',
+                 'firebrick', 'maroon', 'dark slate blue',
                  'deep pink', 'dark orchid', 'slate gray', 'violet',
                  'navy', 'magenta', 'sandy brown', 'saddle brown',
                  'orchid', 'violet red', 'medium slate blue', 'purple', 'blue violet',
@@ -39,13 +38,6 @@ NATION_COLORS = ['dark orange', 'cadet blue', 'gold', 'deep sky blue',
 OFFICE_MODIFIERS = ['tax_rate', 'army_spending', 'morale']
 OFFICE_MODIFIER_MAX = 2
 
-GOVERNMENT_TYPES = ["Principality", "Commonwealth", "Kingdom", "Hegemony", "Khanate",
-                    "Socialist State", "Sultanate", "Republic", "Democracy", "Theocracy",
-                    "Confederacy", "Oligarchy", "Aristocracy", "Meritocracy", "States",  # Kenny - Additions from here
-                    "Empire", "Tsardom", "Caliphate", "Emirate", "Tribes", "Clan",
-                    "Duchy", "Autocracy"
-
-                    ]
 INIT_CITY_COUNT = 1
 
 CITY_FOUND_COST = 100000
@@ -156,22 +148,22 @@ class Nation:
 
         self.moving_armies = []
 
-        self.sidearm_list = random.sample(research.equipment_list.sidearm_list, 3)
-        self.basic_weapon_list = random.sample(research.equipment_list.basic_weapon_list, 2)
-        self.weapon_list = random.sample(research.equipment_list.weapon_list, 4)
-        self.basic_ranged_weapon_list = random.sample(research.equipment_list.basic_ranged_weapon_list, 1)
-        self.ranged_weapon_list = random.sample(research.equipment_list.ranged_weapon_list, 2)
+        self.sidearm_list = random.sample(equipment_list.sidearm_list, 3)
+        self.basic_weapon_list = random.sample(equipment_list.basic_weapon_list, 2)
+        self.weapon_list = random.sample(equipment_list.weapon_list, 4)
+        self.basic_ranged_weapon_list = random.sample(equipment_list.basic_ranged_weapon_list, 1)
+        self.ranged_weapon_list = random.sample(equipment_list.ranged_weapon_list, 2)
 
-        self.armor_list = random.sample(research.equipment_list.armor_list, 2)
-        self.basic_armor_list = random.sample(research.equipment_list.basic_armor_list, 2)
+        self.armor_list = random.sample(equipment_list.armor_list, 2)
+        self.basic_armor_list = random.sample(equipment_list.basic_armor_list, 2)
 
-        self.mount_list = random.sample(research.equipment_list.mount_list, 2)
-        self.basic_mount_list = random.sample(research.equipment_list.basic_mount_list, 2)
-        self.mount_none = research.equipment_list.mount_none
+        self.mount_list = random.sample(equipment_list.mount_list, 2)
+        self.basic_mount_list = random.sample(equipment_list.basic_mount_list, 2)
+        self.mount_none = equipment_list.mount_none
 
         self.army_structure = Troop.init_troop(self.language.make_word(self.language.name_length, True), self)
 
-        self.tech = research.base_tech_tree()
+        self.tech = tech.base_tech_tree()
         self.current_research = None
 
         self.tax_rate = random.random() * TAX_MULTIPLIER
@@ -189,8 +181,7 @@ class Nation:
         else:
             place_name = self.language.make_name_word()
 
-        self.name = culture.nation_name.NationName(random.sample(language.MODIFIERS, max(0, random.randint(0, 8) - 5)),
-                                                   random.choice(GOVERNMENT_TYPES), [place_name])
+        self.name = NationName([place_name])
         # self.continent =
 
         # Otherwise we were initialized with some cities and such stuff
@@ -539,7 +530,7 @@ class Nation:
         x, y = self.get_average_city_position()
         candidates = self.get_city_candidate_cells()
         candidate = utility.weighted_random_choice(candidates, lambda _, cell: 1.0 / (
-                    utility.distance_squared((cell.x, cell.y), (x, y)) + 1.0))
+                utility.distance_squared((cell.x, cell.y), (x, y)) + 1.0))
         self.cities.append(city.City(self, name, candidate, self.parent))
 
         self.chance_add_new_name(self.cities[-1].name)
@@ -868,8 +859,8 @@ class Nation:
                             action = self.parent.do_attack(self, city, enemy, attacking_city)
 
                             self.moving_armies.append(
-                                group.Group(self.parent, self.id, city.army, (fx, fy), (dx, dy), self.color, lambda s: False,
-                                            action, self.parent.canvas, is_army=True, has_boat=(city.resources['boats'] > 0)))
+                                Group(self.parent, self.id, city.army, (fx, fy), (dx, dy), self.color, lambda s: False,
+                                      action, is_army=True, has_boat=(city.resources['boats'] > 0)))
 
                             self.parent.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': self.id,
                                                                                                     'nation_b': enemy.id,

@@ -1,6 +1,6 @@
-from tech.armor import Armor
-from tech.mount import Mount
-from tech.weapon import Weapon
+from armor import Armor
+from mount import Mount
+from weapon import Weapon
 
 # TODO: Reintroduce, once mechanics are clearly defined
 # trebuchet = Weapon('Trebuchet', 950, 600, 1.5, 60, 1, 1, 1, reload_time=800/2, ammunition=5, projectile_speed=30, siege_weapon=True, projectile_size=20)

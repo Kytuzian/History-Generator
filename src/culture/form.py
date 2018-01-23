@@ -1,12 +1,11 @@
 import random
 import re
 
-import research.equipment_list
-from culture.generator import IRREGULAR_VERBS, is_valid, PAINTS, MEDIUMS, SKETCHING, MATERIALS, ANIMALS, NATURE, \
-    PHILOSOPHIES, gen_simple_form, COLORS, FLOWERS, SCIENTIFIC_SUBJECTS, NOUNS, VERBS, PREPOSITIONS, ADJECTIVES, \
+from generator import IRREGULAR_VERBS, PAINTS, MEDIUMS, SKETCHING, MATERIALS, ANIMALS, NATURE, \
+    PHILOSOPHIES, COLORS, FLOWERS, SCIENTIFIC_SUBJECTS, NOUNS, VERBS, PREPOSITIONS, ADJECTIVES, \
     COUNTABLE_WORDS, IRREGULAR_PLURALS
 from internal import utility as utility
-from research import tech as research
+from research import equipment_list
 
 
 class Form:
@@ -329,9 +328,9 @@ class Form:
                 else:
                     base = base.replace('<nation_treaty>', '')
             while '<weapon>' in base:
-                base = base.replace('<weapon>', self.choice(research.equipment_list.weapon_list).name, 1)
+                base = base.replace('<weapon>', self.choice(equipment_list.weapon_list).name, 1)
             while '<armor>' in base:
-                base = base.replace('<armor>', self.choice(research.equipment_list.armor_list).name, 1)
+                base = base.replace('<armor>', self.choice(equipment_list.armor_list).name, 1)
             while '<color>' in base:
                 base = base.replace('<color>', self.choice(COLORS), 1)
             while '<flower>' in base:
@@ -489,3 +488,31 @@ class Form:
             base = base.replace('  ', ' ').strip()
 
             self.chosen_tags[tag] = base
+
+
+def is_valid(nation):
+    def f(choice):
+        if choice in ['<god>', '<notable_person>', '<notable_person_role>', '<name>', '<art>',
+                      '<art_creator>', '<battle>']:
+            if nation is not None:
+                if choice in ['art', 'art_creator']:
+                    if len(nation.culture.art) == 0:
+                        return False
+                elif choice == 'battle':
+                    if len(nation.parent.battle_history) == 0:
+                        return False
+            else:
+                return False
+        return True
+
+    return f
+
+
+def gen_simple_form(form, nation=None, creator=None, custom_tags=None, custom_weights=None):
+    if custom_tags is None:
+        custom_tags = {}
+    if custom_weights is None:
+        custom_weights = {}
+    gen = Form([[form]], custom_tags=custom_tags, custom_weights=custom_weights)
+
+    return gen.generate(nation=nation, creator=creator)[0]

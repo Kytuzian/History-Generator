@@ -1,9 +1,10 @@
 import math
 
 from internal import utility as utility
-from military.battle import TROOP_MOVEMENT_SPEED
 from military.rank_position import RankPosition
 from research.equipment_list import all_ranged_weapons
+
+TROOP_MOVEMENT_SPEED = 1
 
 
 class Unit:
@@ -75,7 +76,7 @@ class Unit:
                 self.canvas.delete(self.name_id)
 
     def handle_ranks(self):
-        #Fill up earlier positions in the formation
+        # Fill up earlier positions in the formation
         for rank_i, rank in enumerate(self.ranks):
             for position_i, position in enumerate(rank):
                 if not position.has_soldier():
@@ -84,12 +85,12 @@ class Unit:
                     if next_soldier is not None:
                         position.change_soldier(self.get_next_soldier(rank_i, position_i))
 
-        #clear out empty ranks
+        # clear out empty ranks
         for rank_i, rank in enumerate(self.ranks):
             for position_i, position in enumerate(rank):
-                if not position.has_soldier(): #Remove the rest of this, because there are no soldiers after this
+                if not position.has_soldier():  # Remove the rest of this, because there are no soldiers after this
                     self.ranks[rank_i] = rank[:position_i]
-                    self.ranks = self.ranks[:rank_i + 1] #We don't need any of the rest of the ranks either
+                    self.ranks = self.ranks[:rank_i + 1]  # We don't need any of the rest of the ranks either
                     return
 
     def get_next_soldier(self, ri, pi):
@@ -121,7 +122,7 @@ class Unit:
 
                 if vector_format == 'xy':
                     return (float(dx) / d * self.get_effective_speed(), float(dy) / d * self.get_effective_speed())
-                elif vector_format == 'polar': #Magnitude and angle
+                elif vector_format == 'polar':  # Magnitude and angle
                     return (self.get_effective_speed(), math.atan2(dy, dx))
             else:
                 return (0, 0)
@@ -158,7 +159,7 @@ class Unit:
             self.dx, self.dy = tx - self.x, ty - self.y
 
             # print(self.x, self.y)
-            #If we aren't in range, we need to move closer.
+            # If we aren't in range, we need to move closer.
             if not self.in_range():
                 d = utility.distance((tx, ty), (self.x, self.y))
 

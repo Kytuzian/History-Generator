@@ -1,13 +1,14 @@
-import utility
+import internal.utility
 
-
-#Edit this for pathfinding
+# Edit this for pathfinding
 GROUP_SPEED_MULTIPLIER = 10
-ARMY_SPEED_MULTIPLIER = 2 # Armies can move twice as far as other groups.
+ARMY_SPEED_MULTIPLIER = 2  # Armies can move twice as far as other groups.
+
 
 # A group of some band of people, who go to some place, and do something when they get there
 class Group:
-    def __init__(self, parent, name, members, start_position, end_position, color, on_step, on_end, canvas, is_army=False, has_boat=False):
+    def __init__(self, parent, name, members, start_position, end_position, color, on_step, on_end,
+                 is_army=False, has_boat=False):
         self.name = name
         self.parent = parent
 
@@ -18,16 +19,18 @@ class Group:
         self.on_step = on_step
         self.on_end = on_end
 
-        self.canvas = canvas
+        self.canvas = self.parent.canvas
 
         self.x, self.y = start_position
         self.end_x, self.end_y = end_position
 
         self.color = color
-        self.id = self.canvas.create_rectangle(self.x * utility.CELL_SIZE, self.y * utility.CELL_SIZE, self.x * utility.CELL_SIZE + utility.CELL_SIZE, self.y * utility.CELL_SIZE + utility.CELL_SIZE, fill=color)
+        self.id = self.canvas.create_rectangle(self.x * internal.utility.CELL_SIZE, self.y * internal.utility.CELL_SIZE,
+                                               self.x * internal.utility.CELL_SIZE + internal.utility.CELL_SIZE,
+                                               self.y * internal.utility.CELL_SIZE + internal.utility.CELL_SIZE, fill=color)
 
         self.cur_path = []
-        self.path_ids = [] # The ids of the path squares we're going to draw
+        self.path_ids = []  # The ids of the path squares we're going to draw
 
         self.can_move_amount = 0
         self.move_dist = GROUP_SPEED_MULTIPLIER
@@ -53,22 +56,22 @@ class Group:
             moves += 1
 
             # TODO: Handle having/not having boats
-            if x < len(self.parent.cells) - 1:# and (self.parent.cells[x + 1][y].can_move(self) or self.has_boat):
+            if x < len(self.parent.cells) - 1:  # and (self.parent.cells[x + 1][y].can_move(self) or self.has_boat):
                 if not (x + 1, y) in visited:
                     visited[(x + 1, y)] = True
                     open.append((x + 1, y, x, y, moves))
 
-            if x > 0:# and (self.parent.cells[x - 1][y].can_move(self) or self.has_boat):
+            if x > 0:  # and (self.parent.cells[x - 1][y].can_move(self) or self.has_boat):
                 if not (x - 1, y) in visited:
                     visited[(x - 1, y)] = True
                     open.append((x - 1, y, x, y, moves))
 
-            if y < len(self.parent.cells[x]) - 1:# and (self.parent.cells[x][y + 1].can_move(self) or self.has_boat):
+            if y < len(self.parent.cells[x]) - 1:  # and (self.parent.cells[x][y + 1].can_move(self) or self.has_boat):
                 if not (x, y + 1) in visited:
                     visited[(x, y + 1)] = True
                     open.append((x, y + 1, x, y, moves))
 
-            if y > 0:# and (self.parent.cells[x][y - 1].can_move(self) or self.has_boat):
+            if y > 0:  # and (self.parent.cells[x][y - 1].can_move(self) or self.has_boat):
                 if not (x, y - 1) in visited:
                     visited[(x, y - 1)] = True
                     open.append((x, y - 1, x, y, moves))
@@ -77,7 +80,7 @@ class Group:
             ci = 0
 
             for i, (cx, cy, px, py, cur_moves) in enumerate(open):
-                d = utility.distance_squared((cx, cy), (self.end_x, self.end_y))
+                d = internal.utility.distance_squared((cx, cy), (self.end_x, self.end_y))
                 if min_score == -1 or (d + cur_moves) < min_score:
                     min_score = d + cur_moves
                     ci = i
@@ -127,10 +130,10 @@ class Group:
         self.path_ids = []
         # DRAW THE PATH SQUARES HERE
         for x, y in self.cur_path:
-            id = self.canvas.create_rectangle(int(x) * utility.CELL_SIZE,
-                                              int(y) * utility.CELL_SIZE,
-                                              int(x) * utility.CELL_SIZE + utility.CELL_SIZE,
-                                              int(y) * utility.CELL_SIZE + utility.CELL_SIZE,
+            id = self.canvas.create_rectangle(int(x) * internal.utility.CELL_SIZE,
+                                              int(y) * internal.utility.CELL_SIZE,
+                                              int(x) * internal.utility.CELL_SIZE + internal.utility.CELL_SIZE,
+                                              int(y) * internal.utility.CELL_SIZE + internal.utility.CELL_SIZE,
                                               fill=self.color, width=0)
             self.path_ids.append(id)
 
@@ -154,14 +157,15 @@ class Group:
         self.x = x
         self.y = y
 
-        self.canvas.coords(self.id, int(self.x) * utility.CELL_SIZE,
-                                    int(self.y) * utility.CELL_SIZE,
-                                    int(self.x) * utility.CELL_SIZE + utility.CELL_SIZE,
-                                    int(self.y) * utility.CELL_SIZE + utility.CELL_SIZE)
+        self.canvas.coords(self.id, int(self.x) * internal.utility.CELL_SIZE,
+                           int(self.y) * internal.utility.CELL_SIZE,
+                           int(self.x) * internal.utility.CELL_SIZE + internal.utility.CELL_SIZE,
+                           int(self.y) * internal.utility.CELL_SIZE + internal.utility.CELL_SIZE)
 
     def step(self, groups):
-        #We are at our destination, do the stuff
-        if utility.rough_match(self.x, self.end_x, GROUP_SPEED_MULTIPLIER) and utility.rough_match(self.y, self.end_y, GROUP_SPEED_MULTIPLIER):
+        # We are at our destination, do the stuff
+        if internal.utility.rough_match(self.x, self.end_x, GROUP_SPEED_MULTIPLIER) and internal.utility.rough_match(self.y, self.end_y,
+                                                                                                                     GROUP_SPEED_MULTIPLIER):
             self.canvas.delete(self.id)
             self.on_end(self)
 
@@ -172,10 +176,9 @@ class Group:
 
         # Do simple movement for all non-army groups, as they aren't as important
         if not self.is_army:
-            dist = utility.distance((self.x, self.y), (self.end_x, self.end_y))
+            dist = internal.utility.distance((self.x, self.y), (self.end_x, self.end_y))
 
             self.move_to(self.x + float(self.end_x - self.x) / dist * GROUP_SPEED_MULTIPLIER,
                          self.y + float(self.end_y - self.y) / dist * GROUP_SPEED_MULTIPLIER)
 
         return False
-

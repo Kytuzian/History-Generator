@@ -1,6 +1,6 @@
 import random
 
-from civil.city import base_resources
+from civil.resources import base_resources
 
 # building_effects['Barracks'] = {'population_capacity': 15,  'sergeants':1, 'morale_bonus': 25, 'train_bonus':5,
 # 'weapons':2,'cost': 500, 'size': 30} building_effects['Blacksmith'] = {'population_capacity': 2,  'weapons': 10,

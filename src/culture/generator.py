@@ -1,5 +1,3 @@
-from culture.form import Form
-
 # Canvas intentionally included twice, because it makes the medium more likely to be a canvas, which is more accurate
 MEDIUMS = ['canvas', 'canvas', 'beaverboard', 'wood', 'paper', 'panel']
 PAINTS = ['tempera', 'oil', 'watercolor']
@@ -101,31 +99,3 @@ IRREGULAR_VERBS = {'run': {'all;past;all': 'ran'}}
 base_words = MEDIUMS + PAINTS + SKETCHING + MATERIALS + ANIMALS + NATURE + \
              NOUNS + ADJECTIVES + VERBS + PREPOSITIONS + \
              CONJUNCTIONS + PHILOSOPHIES
-
-
-def is_valid(nation):
-    def f(choice):
-        if choice in ['<god>', '<notable_person>', '<notable_person_role>', '<name>', '<art>',
-                      '<art_creator>', '<battle>']:
-            if nation is not None:
-                if choice in ['art', 'art_creator']:
-                    if len(nation.culture.art) == 0:
-                        return False
-                elif choice == 'battle':
-                    if len(nation.parent.battle_history) == 0:
-                        return False
-            else:
-                return False
-        return True
-
-    return f
-
-
-def gen_simple_form(form, nation=None, creator=None, custom_tags=None, custom_weights=None):
-    if custom_tags is None:
-        custom_tags = {}
-    if custom_weights is None:
-        custom_weights = {}
-    gen = Form([[form]], custom_tags=custom_tags, custom_weights=custom_weights)
-
-    return gen.generate(nation=nation, creator=creator)[0]

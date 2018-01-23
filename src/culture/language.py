@@ -5,17 +5,12 @@ import generator
 
 import internal.utility as utility
 
-from culture.morphemes import Morphemes
+from morphemes import Morphemes
 
 vowel_sounds = ['ah', 'ae', 'aa', 'uh', 'eh', 'ee', 'ar', 'er', 'ow', 'ih', 'aw', 'oi',
                 'oo', 'ou', 'or', 'our', 'i']
 consonant_sounds = ['b', 'k', 's', 'd', 'f', 'g', 'h', 'j', 'l', 'm', 'n', 'ng',
                     'p', 'kw', 'r', 't', 'v', 'w', 'x', 'y', 'z', 'ch', 'sh', 'th']
-
-# Chances (1 in x)
-LOSE_PLACE_CITY_NAME = 8  # Only applies if the nation no longer owns the city.
-LOSE_NAME_MODIFIER = 30  # Per modifier
-GAIN_NAME_MODIFIER = 30  # Per history step
 
 STARTING_NAME_COUNT = 100
 
@@ -33,31 +28,6 @@ def generate_sound_word(length):
             consonants += 1
             res.append(random.choice(consonant_sounds))
     return '-'.join(res)
-
-
-# for i in xrange(10):
-#     print(generate_sound_word(random.randint(2, 8)))
-
-MODIFIERS = ["Grand", "Holy", "Constitutional", "Parliamentary", "Federated", "Democratic", "People's", "Free",
-             "Illustrious", "Glorious", "United", "Imperial", "Sovereign", "Regal"]
-
-
-# Returns the characteristics and such of the word
-# Morphemes, is plural and such
-def analyze_word(word):
-    res = {}
-    res['word'] = word
-
-    if word.endswith('es'):
-        res['plural'] = 'es'
-    elif word.endswith('s'):
-        res['plural'] = 's'
-    elif word.startswith('re'):
-        res['again'] = 're'
-    elif word.endswith('ing'):
-        res['gerund'] = 'ing'
-
-    return res
 
 
 class Language:

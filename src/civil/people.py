@@ -2,12 +2,12 @@ from Tkinter import *
 
 import random
 
-import culture.culture as culture
-import culture.form
-import culture.generator as generator
-import internal.group as group
+from culture import culture
+from culture.culture import ART_CATEGORIES
+from culture.form import Form
 import internal.events as events
 import internal.utility as utility
+from internal.group.group import Group
 
 AVERAGE_MAX_LIFE_EXPECTANCY = 60
 
@@ -93,10 +93,10 @@ class Period:
         else:
             custom_tags['creation_rate'] = ['normal', 'average', 'standard']
 
-        if self.role in culture.ART_CATEGORIES.keys():
-            gen = culture.form.Form(PERIOD_FORMS, custom_tags=custom_tags)
+        if self.role in ART_CATEGORIES.keys():
+            gen = Form(PERIOD_FORMS, custom_tags=custom_tags)
         else:
-            gen = culture.form.Form(NORMAL_FORMS, custom_tags=custom_tags)
+            gen = Form(NORMAL_FORMS, custom_tags=custom_tags)
 
         self.name = gen.generate(nation=self.person.nation, creator=self.person)[0]
 
@@ -331,7 +331,7 @@ class Person:
                 if self.target is None:
                     self.target = random.choice(self.nation.cities)
 
-                self.travel = group.Group(self.nation.parent, self.name, [self], self.city.position, self.target.position, self.nation.color, None, self.arrival, self.nation.parent.canvas)
+                self.travel = Group(self.nation.parent, self.name, [self], self.city.position, self.target.position, self.nation.color, None, self.arrival)
 
             self.periods[-1].length += 1
 
@@ -342,7 +342,7 @@ class Person:
                         self.nation.current_research.do_research(amount)
                 elif self.periods[-1].role == 'revolutionary':
                     self.nation.mod_morale(-self.effectiveness**2)
-            if self.periods[-1].role in culture.ART_CATEGORIES:
+            if self.periods[-1].role in ART_CATEGORIES:
                 # Let's make some art
                 if random.randint(0, self.periods[-1].art_create_chance) == 0:
                     new_art = culture.create_art(self.nation, self)

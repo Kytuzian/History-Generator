@@ -24,6 +24,7 @@ import internal.gui as gui
 import internal.group as group
 
 import military.battle as battle
+from internal.group.group import Group
 
 DEFAULT_SIMULATION_SPEED = 300  # ms
 
@@ -610,7 +611,7 @@ class Main:
                 done = False
 
         if not done:
-            self.after_id = self.parent.after(self.delay.get() / 2, self.do_army_move)
+            self.after_id = self.parent.after(self.delay.get() / 10, self.do_army_move)
         else:  # If we're done, clean up
             self.end_army_move()
 
@@ -713,10 +714,10 @@ class Main:
                 if len(sender.cities) > 0:
                     return_destination = random.choice(sender.cities)
                     sender.moving_armies.append(
-                        group.Group(self, sender.name, reinforcing.members, reinforce_city.position,
-                                    return_destination.position, sender.color, lambda s: False,
-                                    self.reinforce(sender, return_destination), self.canvas,
-                                    is_army=True))
+                        Group(self, sender.name, reinforcing.members, reinforce_city.position,
+                              return_destination.position, sender.color, lambda s: False,
+                              self.reinforce(sender, return_destination),
+                              is_army=True))
 
                     self.events.append(events.EventArmyDispatched('ArmyDispatched',
                                                                   {'nation_a': sender.id, 'nation_b': sender.id,
@@ -741,10 +742,10 @@ class Main:
             else:  # if a third party is involved, let's just return back home
                 return_destination = random.choice(sender.cities)
                 sender.moving_armies.append(
-                    group.Group(self, sender.name, reinforcing.members, reinforce_city.position,
-                                return_destination.position,
-                                sender.color, lambda s: False, self.reinforce(sender, return_destination), self.canvas,
-                                is_army=True))
+                    Group(self, sender.name, reinforcing.members, reinforce_city.position,
+                          return_destination.position,
+                          sender.color, lambda s: False, self.reinforce(sender, return_destination),
+                          is_army=True))
 
                 self.events.append(events.EventArmyDispatched('ArmyDispatched',
                                                               {'nation_a': sender.id, 'nation_b': sender.id,
@@ -813,10 +814,9 @@ class Main:
                     attacker.cities) > 0:  # It really ought to be, but it could happen that we lose all our cities before we can go back.
                 return_destination = random.choice(attacker.cities)
                 attacker.moving_armies.append(
-                    group.Group(self, attacker.name, attacking_army, city.position, return_destination.position,
-                                attacker.color, lambda s: False, self.reinforce(attacker, return_destination),
-                                self.canvas,
-                                is_army=True))
+                    Group(self, attacker.name, attacking_army, city.position, return_destination.position,
+                          attacker.color, lambda s: False, self.reinforce(attacker, return_destination),
+                          is_army=True))
 
                 self.events.append(events.EventArmyDispatched('ArmyDispatched',
                                                               {'nation_a': attacker.id, 'nation_b': attacker.id,

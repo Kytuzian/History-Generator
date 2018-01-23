@@ -1,6 +1,6 @@
 import math
 
-from military.battle import TROOP_RADIUS
+from military.soldier import TROOP_RADIUS
 
 
 class RankPosition:

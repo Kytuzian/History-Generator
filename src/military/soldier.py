@@ -2,10 +2,12 @@ import math
 import random
 
 from internal import utility as utility
-from military.battle import TROOP_RADIUS, CC_RANGE
 from military.projectile import Projectile
 from research.equipment_list import unarmed
 
+TROOP_RADIUS = 5
+# How many steps away the target unit should be before switching to melee.
+CC_RANGE = 50
 
 class Soldier:
     def __init__(self, unit, name, health, strength, ranged, weapons, armor, discipline, canvas, mount, quality):
