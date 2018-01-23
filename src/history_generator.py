@@ -6,10 +6,11 @@ import shutil
 import os
 import sys
 
+import civil.battle_history as battle_history
+import civil.treaty as treaty
 import internal.utility as utility
 
 import civil.city as city
-import civil.diplomacy as diplomacy
 import civil.nation as nation
 
 import culture.religion as religion
@@ -671,7 +672,7 @@ class Main:
                 a.at_war.append(b)
                 b.at_war.append(a)
 
-                new_treaty = diplomacy.Treaty(self, self.get_current_date(), a, b, 'war')
+                new_treaty = treaty.Treaty(self, self.get_current_date(), a, b, 'war')
 
                 self.treaties.append(new_treaty)
                 a.treaties.append(new_treaty)
@@ -684,7 +685,7 @@ class Main:
                 a.trading.append(b)
                 b.trading.append(a)
 
-                new_treaty = diplomacy.Treaty(self, self.get_current_date(), a, b, 'trade')
+                new_treaty = treaty.Treaty(self, self.get_current_date(), a, b, 'trade')
 
                 self.treaties.append(new_treaty)
                 a.treaties.append(new_treaty)
@@ -903,8 +904,8 @@ class Main:
             print('----------------------')
 
         self.battle_history.append(
-            diplomacy.BattleHistory(self, attack_city, winner, a, b, self.get_current_date(), battle.a_stats,
-                                    battle.b_stats))
+            battle_history.BattleHistory(self, attack_city, winner, a, b, self.get_current_date(), battle.a_stats,
+                                         battle.b_stats))
 
         self.after_id = self.parent.after(self.delay.get(), self.main_loop)
 
