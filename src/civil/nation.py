@@ -9,10 +9,11 @@ import internal.utility as utility
 import internal.gui as gui
 import internal.events as events
 import internal.event_analysis as event_analysis
+import research.equipment_list
 
 from military.troop import Troop
 
-import research.research as research
+import research.tech as research
 
 import math
 import random
@@ -154,18 +155,18 @@ class Nation:
 
         self.moving_armies = []
 
-        self.sidearm_list = random.sample(research.sidearm_list, 3)
-        self.basic_weapon_list = random.sample(research.basic_weapon_list, 2)
-        self.weapon_list = random.sample(research.weapon_list, 4)
-        self.basic_ranged_weapon_list = random.sample(research.basic_ranged_weapon_list, 1)
-        self.ranged_weapon_list = random.sample(research.ranged_weapon_list, 2)
+        self.sidearm_list = random.sample(research.equipment_list.sidearm_list, 3)
+        self.basic_weapon_list = random.sample(research.equipment_list.basic_weapon_list, 2)
+        self.weapon_list = random.sample(research.equipment_list.weapon_list, 4)
+        self.basic_ranged_weapon_list = random.sample(research.equipment_list.basic_ranged_weapon_list, 1)
+        self.ranged_weapon_list = random.sample(research.equipment_list.ranged_weapon_list, 2)
 
-        self.armor_list = random.sample(research.armor_list, 2)
-        self.basic_armor_list = random.sample(research.basic_armor_list, 2)
+        self.armor_list = random.sample(research.equipment_list.armor_list, 2)
+        self.basic_armor_list = random.sample(research.equipment_list.basic_armor_list, 2)
 
-        self.mount_list = random.sample(research.mount_list, 2)
-        self.basic_mount_list = random.sample(research.basic_mount_list, 2)
-        self.mount_none = research.mount_none
+        self.mount_list = random.sample(research.equipment_list.mount_list, 2)
+        self.basic_mount_list = random.sample(research.equipment_list.basic_mount_list, 2)
+        self.mount_none = research.equipment_list.mount_none
 
         self.army_structure = Troop.init_troop(self.language.make_word(self.language.name_length, True), self)
 

@@ -1,11 +1,12 @@
 import random
 import re
 
+import research.equipment_list
 from culture.generator import IRREGULAR_VERBS, is_valid, PAINTS, MEDIUMS, SKETCHING, MATERIALS, ANIMALS, NATURE, \
     PHILOSOPHIES, gen_simple_form, COLORS, FLOWERS, SCIENTIFIC_SUBJECTS, NOUNS, VERBS, PREPOSITIONS, ADJECTIVES, \
     COUNTABLE_WORDS, IRREGULAR_PLURALS
 from internal import utility as utility
-from research import research as research
+from research import tech as research
 
 
 class Form:
@@ -328,9 +329,9 @@ class Form:
                 else:
                     base = base.replace('<nation_treaty>', '')
             while '<weapon>' in base:
-                base = base.replace('<weapon>', self.choice(research.weapon_list).name, 1)
+                base = base.replace('<weapon>', self.choice(research.equipment_list.weapon_list).name, 1)
             while '<armor>' in base:
-                base = base.replace('<armor>', self.choice(research.armor_list).name, 1)
+                base = base.replace('<armor>', self.choice(research.equipment_list.armor_list).name, 1)
             while '<color>' in base:
                 base = base.replace('<color>', self.choice(COLORS), 1)
             while '<flower>' in base:

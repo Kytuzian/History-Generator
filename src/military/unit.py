@@ -3,7 +3,7 @@ import math
 from internal import utility as utility
 from military.battle import TROOP_MOVEMENT_SPEED
 from military.rank_position import RankPosition
-from research.research import all_ranged_weapons
+from research.equipment_list import all_ranged_weapons
 
 
 class Unit:

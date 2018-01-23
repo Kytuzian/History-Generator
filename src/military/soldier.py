@@ -4,7 +4,7 @@ import random
 from internal import utility as utility
 from military.battle import TROOP_RADIUS, CC_RANGE
 from military.projectile import Projectile
-from research.research import unarmed
+from research.equipment_list import unarmed
 
 
 class Soldier:
