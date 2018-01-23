@@ -10,7 +10,7 @@ import internal.gui as gui
 import internal.events as events
 import internal.event_analysis as event_analysis
 
-import military.martial as martial
+from military.troop import Troop
 
 import research.research as research
 
@@ -167,7 +167,7 @@ class Nation:
         self.basic_mount_list = random.sample(research.basic_mount_list, 2)
         self.mount_none = research.mount_none
 
-        self.army_structure = martial.Troop.init_troop(self.language.make_word(self.language.name_length, True), self)
+        self.army_structure = Troop.init_troop(self.language.make_word(self.language.name_length, True), self)
 
         self.tech = research.base_tech_tree()
         self.current_research = None

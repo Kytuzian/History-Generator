@@ -1,12 +1,11 @@
-from Tkinter import *
-
-import random
 import math
+import random
+from Tkconstants import W, E, END
+from Tkinter import Tk, Canvas, StringVar, OptionMenu, Listbox
 
-import internal.gui as gui
-import internal.utility as utility
+from internal import utility as utility, gui as gui
+from military.battle import TROOP_RADIUS
 
-from battle import TROOP_RADIUS
 
 class Troop:
     @classmethod
