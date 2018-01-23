@@ -3,6 +3,7 @@ import civil.people as people
 
 import culture.culture as culture
 import culture.language as language
+import culture.nation_name
 
 import internal.group as group
 import internal.utility as utility
@@ -188,8 +189,8 @@ class Nation:
         else:
             place_name = self.language.make_name_word()
 
-        self.name = language.NationName(random.sample(language.MODIFIERS, max(0, random.randint(0, 8) - 5)),
-                                        random.choice(GOVERNMENT_TYPES), [place_name])
+        self.name = culture.nation_name.NationName(random.sample(language.MODIFIERS, max(0, random.randint(0, 8) - 5)),
+                                                   random.choice(GOVERNMENT_TYPES), [place_name])
         # self.continent =
 
         # Otherwise we were initialized with some cities and such stuff

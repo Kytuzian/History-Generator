@@ -1,21 +1,24 @@
+from math import *
+import random
+
 import generator
 
 import internal.utility as utility
 
-from math import *
-import random
+from culture.morphemes import Morphemes
 
 vowel_sounds = ['ah', 'ae', 'aa', 'uh', 'eh', 'ee', 'ar', 'er', 'ow', 'ih', 'aw', 'oi',
                 'oo', 'ou', 'or', 'our', 'i']
 consonant_sounds = ['b', 'k', 's', 'd', 'f', 'g', 'h', 'j', 'l', 'm', 'n', 'ng',
                     'p', 'kw', 'r', 't', 'v', 'w', 'x', 'y', 'z', 'ch', 'sh', 'th']
 
-#Chances (1 in x)
-LOSE_PLACE_CITY_NAME = 8 #Only applies if the nation no longer owns the city.
-LOSE_NAME_MODIFIER = 30 #Per modifier
-GAIN_NAME_MODIFIER = 30 #Per history step
+# Chances (1 in x)
+LOSE_PLACE_CITY_NAME = 8  # Only applies if the nation no longer owns the city.
+LOSE_NAME_MODIFIER = 30  # Per modifier
+GAIN_NAME_MODIFIER = 30  # Per history step
 
 STARTING_NAME_COUNT = 100
+
 
 def generate_sound_word(length):
     res = []
@@ -31,96 +34,13 @@ def generate_sound_word(length):
             res.append(random.choice(consonant_sounds))
     return '-'.join(res)
 
+
 # for i in xrange(10):
 #     print(generate_sound_word(random.randint(2, 8)))
 
-MODIFIERS = ["Grand", "Holy", "Constitutional", "Parliamentary", "Federated", "Democratic", "People's", "Free", "Illustrious", "Glorious", "United", "Imperial", "Sovereign", "Regal"]
+MODIFIERS = ["Grand", "Holy", "Constitutional", "Parliamentary", "Federated", "Democratic", "People's", "Free",
+             "Illustrious", "Glorious", "United", "Imperial", "Sovereign", "Regal"]
 
-class NationName:
-    def __init__(self, modifiers, government_type, places):
-        self.modifiers = modifiers
-        self.government_type = government_type
-        self.places = places
-
-    @classmethod
-    def load(cls, info):
-        return cls(info['modifiers'], info['government_type'], info['places'])
-
-    def get_info(self):
-        res = {}
-        res['modifiers'] = self.modifiers
-        res['government_type'] = self.government_type
-        res['places'] = self.places
-
-        return res
-
-    def history_step(self, parent):
-        parent_cities_names = map(lambda city: city.name, parent.cities)
-
-        for place in self.places:
-            #We can't get rid of the last one.
-            if not place in parent_cities_names and len(self.places) > 1:
-                if random.randint(0, LOSE_PLACE_CITY_NAME) == 0:
-                    self.remove_place(place)
-
-        for modifier in self.modifiers:
-            if random.randint(0, LOSE_NAME_MODIFIER) == 0:
-                self.remove_modifier(modifier)
-
-        if random.randint(0, GAIN_NAME_MODIFIER) == 0:
-            self.add_modifier(random.choice(MODIFIERS))
-
-    def add_modifier(self, modifier_name):
-        self.modifiers.append(modifier_name)
-
-    def remove_modifier(self, modifier_name):
-        self.modifiers.remove(modifier_name)
-
-    def add_place(self, place_name):
-        self.places.append(place_name)
-
-    def remove_place(self, place_name):
-        self.places.remove(place_name)
-
-    def short_name(self):
-        return self.places[0]
-
-    def get_name(self):
-        modifier_part = ' '.join(self.modifiers)
-
-        if len(self.places) > 2:
-            place_part = '{}, and {}'.format(', '.join(self.places[:-1]), self.places[-1])
-        elif len(self.places) == 2:
-            place_part = '{} and {}'.format(self.places[0], self.places[1])
-        else:
-            place_part = self.places[0]
-
-        if len(self.modifiers) > 0:
-            return 'The {} {} of {}'.format(modifier_part, self.government_type, place_part)
-        else:
-            return 'The {} of {}'.format(self.government_type, place_part)
-
-    def __repr__(self):
-        return self.get_name()
-
-class Morphemes:
-    def __init__(self, language):
-        self.language = language
-
-        self.morph = {}
-
-    def add(self, name):
-        is_morph = random.choice([True, False])
-        is_pre = random.choice([True, False])
-
-        self.morph[name] = {}
-        self.morph[name]['chars'] = self.language.make_word(3)
-        self.morph[name]['is_morph'] = is_morph
-        self.morph[name]['is_pre'] = is_pre
-
-    def create_morph(self, word):
-        analysis = analyze_word(word)
-        res = ''
 
 # Returns the characteristics and such of the word
 # Morphemes, is plural and such
@@ -139,8 +59,9 @@ def analyze_word(word):
 
     return res
 
+
 class Language:
-    def __init__(self, start_words=generator.base_words, name_length=random.randint(4, 10), base_language = None):
+    def __init__(self, start_words=generator.base_words, name_length=random.randint(4, 10), base_language=None):
         self.letters = []
         self.startLetters = []
         self.endLetters = []
@@ -149,7 +70,7 @@ class Language:
 
         self.first_names = []
         self.last_names = []
-        self.names = [] # Names for things like gods, cities, things that only have one name
+        self.names = []  # Names for things like gods, cities, things that only have one name
 
         self.to_dictionary = {}
         self.to_prefix_dictionary = {}
@@ -206,24 +127,24 @@ class Language:
 
     def create(self):
         self.letters = self.chooseLetters()
-        #print("Letters", self.letters)
+        # print("Letters", self.letters)
 
         self.startLetters = self.chooseFromLetters()
-        #print("Start Letters", self.startLetters)
+        # print("Start Letters", self.startLetters)
         self.endLetters = self.chooseFromLetters()
-        #print("End Letters", self.endLetters)
+        # print("End Letters", self.endLetters)
 
         self.letterSections = self.chooseLetterSections()
-        #print("Letter Sections", self.letterSections)
+        # print("Letter Sections", self.letterSections)
 
         self.vowels = self.getVowels()
 
         if not self.vowels:
             self.vowels = ['a']
-        #print("Vowels", self.vowels)
+        # print("Vowels", self.vowels)
 
         self.vowel_frequency = random.randint(4, 10)
-        #print("Vowel Frequency", self.vowel_frequency)
+        # print("Vowel Frequency", self.vowel_frequency)
 
     def generate_name(self):
         first_name = ""
@@ -309,6 +230,7 @@ class Language:
                     return count
 
             return count
+
         # To make sure we don't have too many consonants in a row while creating a word.
         def consec_consonants_at_end(word):
             count = 0
@@ -333,7 +255,8 @@ class Language:
         while len(result) < length:
             useSection = random.randint(0, 10)
 
-            if (useSection > self.vowel_frequency and consec_consonants_at_end(result) < 3) or (consec_vowels_at_end(result) > 2):
+            if (useSection > self.vowel_frequency and consec_consonants_at_end(result) < 3) or (
+                    consec_vowels_at_end(result) > 2):
                 result += random.choice(self.letterSections)
             else:
                 result += random.choice(self.vowels)
@@ -357,7 +280,8 @@ class Language:
     def translateToLanguage(self, other_word):
         if other_word in self.to_dictionary:
             return self.to_dictionary[other_word]
-        elif other_word in map(lambda i: i.lower(), self.first_names) or other_word in map(lambda i: i.lower(), self.last_names):
+        elif other_word in map(lambda i: i.lower(), self.first_names) or other_word in map(lambda i: i.lower(),
+                                                                                           self.last_names):
             return other_word
         else:
             # Check for near matches (for example, jump might be in the dictionary, but jumping might not be).
@@ -408,5 +332,3 @@ class Language:
             result += f(i) + " "
 
         return result[:-1]
-
-# a = Language()
