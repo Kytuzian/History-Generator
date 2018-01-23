@@ -500,9 +500,9 @@ class Nation:
             total += city.morale
         if total != 0:
             if total < 0:
-                self.mod_morale(-math.math.log(-total, 2))
+                self.mod_morale(-math.log(-total, 2))
             else:
-                self.mod_morale(math.math.log(total, 2))
+                self.mod_morale(math.log(total, 2))
 
         self.handle_people_monthly()
 
@@ -720,12 +720,12 @@ class Nation:
 
         self.handle_treaties()
 
-        for city in self.cities:
+        for curCity in self.cities:
             # It's more likely to found a new city when this city is near population capacity
             # Because as there's no more space, people want to go to a new city
             try:
                 found_city_chance = max(1, int(
-                    len(self.cities) ** 4 * math.math.log(city.population_capacity - city.population)))
+                    len(self.cities) ** 4 * math.math.log(curCity.population_capacity - curCity.population)))
             except:  # Log is negative
                 found_city_chance = max(1, len(self.cities) ** 4)
             if random.randint(0, found_city_chance) == 0 and self.money > CITY_FOUND_COST:
@@ -745,9 +745,9 @@ class Nation:
                 else:  # There's nothing left to research
                     self.current_research = None
             else:
-                self.current_research.do_research(random.randint(1, int(math.log(city.population + 1) ** 2 + 1)))
+                self.current_research.do_research(random.randint(1, int(math.log(curCity.population + 1) ** 2 + 1)))
 
-                for cell in city.cells:
+                for cell in curCity.cells:
                     for building in cell.buildings:
                         research_rate = building.get_research_rate()
 

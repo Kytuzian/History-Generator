@@ -3,6 +3,7 @@ import random
 
 from Tkinter import *
 
+import civil.building
 import internal.utility as utility
 import civil.city as city
 import internal.gui as gui
@@ -105,7 +106,7 @@ class Cell:
         self.temperature_multiplier = max(0, temperature_multiplier)
         self.temperature = None
 
-        self.buildings = city.base_buildings(None)
+        self.buildings = civil.building.base_buildings(None)
 
         self.high_temp_range = random.random() / 5
         self.low_temp_range = random.random() / 5
@@ -330,7 +331,7 @@ class Cell:
             self.owner.add_cell(self)
         else:
             self.new_type = '' #There is no cell type for an unowned cell.
-            self.buildings = city.base_buildings(None)
+            self.buildings = civil.building.base_buildings(None)
 
         self.update_self()
 
