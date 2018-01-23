@@ -1,6 +1,7 @@
 import math
 import random
 
+import culture.form
 from civil.diplomacy import TRADE_CARAVAN_MULTIPLIER, WAR_CITY_MULTIPLIER, TRADE_END_DIVISOR, TREATY_NAMES
 
 import culture.generator as generator
@@ -208,7 +209,7 @@ class Treaty:
             custom_tags['treaty_length_years'] = ['{} years'.format(treaty_length[0])]
             custom_tags['treaty_length'] = ['{} years and {} months'.format(treaty_length[0], treaty_length[1])]
 
-            gen = generator.Form(TREATY_NAMES[self.treaty_type], custom_tags=custom_tags)
+            gen = culture.form.Form(TREATY_NAMES[self.treaty_type], custom_tags=custom_tags)
 
             name = gen.generate(nation=requesting_nation)[0]
 

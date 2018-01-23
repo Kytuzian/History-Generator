@@ -1,0 +1,490 @@
+import random
+import re
+
+from culture.generator import IRREGULAR_VERBS, is_valid, PAINTS, MEDIUMS, SKETCHING, MATERIALS, ANIMALS, NATURE, \
+    PHILOSOPHIES, gen_simple_form, COLORS, FLOWERS, SCIENTIFIC_SUBJECTS, NOUNS, VERBS, PREPOSITIONS, ADJECTIVES, \
+    COUNTABLE_WORDS, IRREGULAR_PLURALS
+from internal import utility as utility
+from research import research as research
+
+
+class Form:
+    def __init__(self, texts, custom_tags=None, custom_weights=None):
+        if custom_weights is None:
+            custom_weights = {}
+        if custom_tags is None:
+            custom_tags = {}
+        self.tags = {}
+        self.chosen_tags = {}
+
+        self.custom_tags = custom_tags
+        self.custom_weights = dict(custom_weights)
+
+        self.forms = []
+
+        for text_choices in texts:
+            self.forms.append([])
+            for text in text_choices:
+                self.forms[-1].append(self.separate_text(text))
+
+    def get_info(self):
+        res = {'tags': self.tags, 'chosen_tags': self.chosen_tags, 'custom_tags': self.custom_tags,
+               'custom_weights': self.custom_weights, 'forms': self.forms}
+
+        return res
+
+    def copy(self):
+        return Form(dict(self.tags), dict(self.chosen_tags), list(self.forms))
+
+    def separate_text(self, text):
+        new_form = []
+
+        while len(text) > 0:
+            start_pos = text.find('<')
+
+            if start_pos == -1:
+                new_form.append(text)
+                break
+            else:
+                if start_pos > 0:
+                    new_form.append(text[:start_pos])
+
+                level = 1
+                end_pos = start_pos + 1
+                continue_until_space = False
+
+                while end_pos < len(text):
+                    if text[end_pos] == '<':
+                        level += 1
+                    elif text[end_pos] == ' ':
+                        if continue_until_space and level == 0:
+                            end_pos -= 1
+                            break
+                    elif text[end_pos] == '>':
+                        level -= 1
+                        if level == 0:
+                            # If two tags are right next to each other, it will grab both
+                            if len(text) > end_pos + 1:
+                                if text[end_pos + 1] == '<':
+                                    level += 1
+
+                                    end_pos += 1
+                                elif not text[end_pos + 1] in '.,?!|; ':
+                                    continue_until_space = True
+                                else:
+                                    break
+                            else:
+                                break
+
+                    end_pos += 1
+
+                tag_text = text[start_pos:end_pos + 1]
+                tag_name = str(len(self.tags))
+
+                split_tag = tag_text.split(':')
+
+                if len(split_tag) > 1:
+                    tag_name = split_tag[0][1:]
+                    tag_text = '<' + split_tag[1]
+
+                self.tags[tag_name] = tag_text
+                new_form.append('tag:{}'.format(tag_name))
+
+                text = text[end_pos + 1:]
+
+        return new_form
+
+    def do_conjugate(self, verb, person, tense, number):
+        if verb in IRREGULAR_VERBS:
+            for conj in IRREGULAR_VERBS[verb]:
+                conj_person, conj_tense, conj_number = conj.split(';')
+
+                if conj_person == 'all' or person in conj_person.split(','):
+                    if conj_tense == 'all' or tense in conj_tense.split(','):
+                        if conj_number == 'all' or number in conj_number.split(','):
+                            return IRREGULAR_VERBS[verb][conj]
+
+        # Handle regular verbs
+        if tense == 'pres':
+            if number == 'pl' or person == '2':  # Second person is always plural because English
+                return verb
+            else:
+                return verb + 's'
+        elif tense == 'past':
+            return verb + 'ed'
+        elif tense == 'future':
+            return 'will ' + verb
+
+    def do_conjugate_type(self, verb, conj_type):
+        if verb in IRREGULAR_VERBS:
+            if conj_type in IRREGULAR_VERBS[verb]:
+                return IRREGULAR_VERBS[verb][conj_type]
+
+        if conj_type == 'gerund':
+            if len(verb) >= 3:
+                if not verb[-1] in 'aeiou' and verb[-2] in 'aeiou' and not verb[-3] in 'aeiou':
+                    return verb + verb[-1] + 'ing'
+                else:
+                    return verb + 'ing'
+            else:
+                return verb + 'ing'
+        elif conj_type == 'infintive':
+            return 'to ' + verb
+
+    # A replacement for random.choice, so we can keep track of what we chose and use it to
+    def choice(self, options, amount=1):
+        def weight(_, v):
+            if v in self.custom_weights:
+                return self.custom_weights[v]
+            else:
+                return 1
+
+        converted = {}
+        for i in xrange(len(options)):
+            if isinstance(options[i], list):
+                converted[utility.tuplize(options[i])] = options[i]
+                options[i] = utility.tuplize(options[i])
+
+        chosen_item = utility.weighted_random_choice(options, weight=weight)
+
+        if chosen_item in self.custom_weights:
+            self.custom_weights[chosen_item] += amount
+        else:
+            self.custom_weights[chosen_item] = 1 + amount
+
+        if chosen_item in converted:
+            return converted[chosen_item]
+        else:
+            return chosen_item
+
+    def generate(self, nation=None, creator=None):
+        self.chosen_tags = {}
+
+        actual_forms = map(lambda form_choices: self.choice(form_choices), self.forms)
+        self.generate_tags(actual_forms, nation=nation, creator=creator)
+
+        result = []
+        for form in actual_forms:
+            form_result = ''
+
+            for part in form:
+                if part.startswith('tag:'):
+                    tag_name = part.split(':')[1]
+
+                    form_result += self.chosen_tags[tag_name]
+                else:
+                    form_result += part
+
+            form_result = form_result.replace('  ', ' ').strip()
+
+            result.append(form_result)
+
+        return result
+
+    def generate_tags(self, actual_forms, nation=None, creator=None):
+        # So that tags are generated in the correct order.
+        tag_order = []
+        for form in actual_forms:
+            for part in form:
+                if part.startswith('tag:'):
+                    tag_order.append(part.split(':')[1])
+
+        for tag in tag_order:
+            base = self.tags[tag]
+
+            # () allow you to group text without using any actual tag
+            # For example, <test:(<animal>'s hair)> allows you to give the name 'test' to 'lion's hair'
+            while '<(' in base:
+                i = base.find('<(')
+
+                # Get the full tag and remove the brackets
+                group = utility.get_container(base, '<', '>', i)
+                base = base.replace(group, group[2:-2])  # Remove the containing stuff
+
+            # Checks if tags exist. Replaces the tag's text with the first tag that exists. Otherwise replaces it with nothing.
+            while '<tagexists' in base:
+                i = base.find('<tagexists')
+                section = utility.get_container(base, '<', '>', i)
+                check_tags = section[1:-1].split(';')[1:]
+                replacement = ''
+
+                for tag_name in check_tags:
+                    if tag_name in self.chosen_tags:
+                        replacement = self.chosen_tags[tag_name]
+
+                base = base.replace(section, replacement)
+
+            while '|' in base:
+                start_pos, end_pos = utility.find_container_of(base, '<', '>', '|')
+                choice_section = base[start_pos + 1:end_pos]
+
+                choice = utility.separate_container(choice_section, '<', '>', '|')
+                valid_choice = filter(is_valid(nation), choice)
+
+                base = base.replace('<' + choice_section + '>', self.choice(valid_choice), 1)
+
+            while ',' in base:
+                start_pos, end_pos = utility.find_container_of(base, '<', '>', ',')
+                select_section = base[start_pos + 1:end_pos]
+
+                select = utility.separate_container(select_section, '<', '>', ',')
+                valid_select = filter(is_valid(nation), select)
+                search = '<' + select_section + '>'
+                replacement = '<{}>'.format(
+                    '> <'.join(random.sample(valid_select, random.randint(1, len(valid_select)))))
+
+                base = base.replace(search, replacement)
+
+            base = base.replace('<> ', '')
+            base = base.replace('<>', '')
+
+            while '<paint>' in base:
+                base = base.replace('<paint>', self.choice(PAINTS), 1)
+            while '<medium>' in base:
+                base = base.replace('<medium>', self.choice(MEDIUMS), 1)
+            while '<sketch>' in base:
+                base = base.replace('<sketch>', self.choice(SKETCHING), 1)
+            while '<material>' in base:
+                base = base.replace('<material>', self.choice(MATERIALS), 1)
+            while '<animal>' in base:
+                base = base.replace('<animal>', self.choice(ANIMALS), 1)
+            while '<nature>' in base:
+                base = base.replace('<nature>', self.choice(NATURE), 1)
+            while '<philosophy>' in base:
+                base = base.replace('<philosophy>', self.choice(PHILOSOPHIES), 1)
+            while '<nation>' in base:
+                if nation is not None:
+                    base = base.replace('<nation>', str(self.choice(nation.parent.nations).name), 1)
+                else:
+                    base = base.replace('<nation>', '')
+            while '<notable_person>' in base:
+                if nation is not None:
+                    base = base.replace('<notable_person>', self.choice(nation.notable_people).name, 1)
+                else:
+                    base = base.replace('<notable_person>', '')
+            while '<notable_person_role>' in base:
+                if nation is not None:
+                    person = self.choice(nation.notable_people)
+                    base = base.replace('<notable_person_role>',
+                                        '{} the {}'.format(person.name, person.periods[-1].role), 1)
+                else:
+                    base = base.replace('<notable_person_role>', '')
+            while '<god>' in base:
+                if nation is not None:
+                    religion_populations = nation.get_nation_religion_populations()
+                    if len(religion_populations) > 0:
+                        religion, _ = utility.weighted_random_choice(religion_populations,
+                                                                     weight=lambda i, (_, adherents): adherents)
+                        base = base.replace('<god>', self.choice(religion.gods).name, 1)
+                    else:
+                        base = base.replace('<god>', '')
+                else:
+                    base = base.replace('<god>', '')
+            while '<name>' in base:
+                if nation is not None:
+                    base = base.replace('<name>', nation.language.generate_name(), 1)
+                else:
+                    base = base.replace('<name>', '')
+            while '<art>' in base:
+                if nation is not None and len(nation.culture.art) > 0:
+                    base = base.replace('<art>', '\'{}\''.format(self.choice(nation.culture.art).subject), 1)
+                else:
+                    base = base.replace('<art>', '')
+            while '<art_creator>' in base:
+                if nation is not None and len(nation.culture.art) > 0:
+                    art = self.choice(nation.culture.art)
+                    base = base.replace('<art_creator>', '{}\'s \'{}\''.format(art.creator.name, art.subject), 1)
+                else:
+                    base = base.replace('<art_creator>', '')
+            while '<place>' in base:
+                if nation is not None and len(nation.parent.get_all_cities()) > 0:
+                    base = base.replace('<place>', self.choice(nation.parent.get_all_cities()).name, 1)
+                else:
+                    base = base.replace('<place>', '')
+            while '<nation_place>' in base:
+                if nation is not None and len(nation.cities) > 0:
+                    base = base.replace('<nation_place>', self.choice(nation.cities).name, 1)
+                else:
+                    base = base.replace('<nation_place>', '')
+            while '<battle>' in base:
+                if nation is not None and len(nation.parent.battle_history) > 0:
+                    battle = self.choice(nation.parent.battle_history)
+
+                    battle_bases = ['<The Battle of|The Battle for|>{}'.format(battle.location.name)]
+                    base = base.replace('<battle>', gen_simple_form(self.choice(battle_bases)), 1)
+                else:
+                    base = base.replace('<battle>', '')
+            while '<treaty>' in base:
+                if nation is not None and len(nation.parent.treaties) > 0:
+                    treaty = self.choice(nation.parent.treaties).get_treaty_name(nation.parent.get_current_date(),
+                                                                                 nation)
+                    base = base.replace('<treaty>', treaty)
+                else:
+                    base = base.replace('<treaty>', '')
+            while '<nation_treaty>' in base:
+                if nation is not None and len(nation.treaties) > 0:
+                    treaty = self.choice(nation.treaties).get_treaty_name(nation.parent.get_current_date(), nation)
+                    base = base.replace('<nation_treaty>', treaty)
+                else:
+                    base = base.replace('<nation_treaty>', '')
+            while '<weapon>' in base:
+                base = base.replace('<weapon>', self.choice(research.weapon_list).name, 1)
+            while '<armor>' in base:
+                base = base.replace('<armor>', self.choice(research.armor_list).name, 1)
+            while '<color>' in base:
+                base = base.replace('<color>', self.choice(COLORS), 1)
+            while '<flower>' in base:
+                base = base.replace('<flower>', self.choice(FLOWERS), 1)
+            while '<scientific_subject>' in base:
+                base = base.replace('<scientific_subject>', self.choice(SCIENTIFIC_SUBJECTS), 1)
+            while '<n>' in base:
+                base = base.replace('<n>', self.choice(NOUNS), 1)
+            while '<v>' in base:
+                base = base.replace('<v>', self.choice(VERBS), 1)
+            while '<prep>' in base:
+                base = base.replace('<prep>', self.choice(PREPOSITIONS), 1)
+            while '<adj>' in base:
+                base = base.replace('<adj>', self.choice(ADJECTIVES), 1)
+
+            if creator is not None:
+                if '<self>' in base:
+                    base = base.replace('<self>', creator.name)
+                if '<self_role>' in base:
+                    base = base.replace('<self_role>', '{} the {}'.format(creator.name, creator.periods[-1].role))
+
+            randoms = re.findall(r'<rand(.*?);(.*?);(.*?)>', base)
+
+            for rand_type, minimum, maximum in randoms:
+                if rand_type == 'int':
+                    minimum, maximum = int(minimum), int(maximum)
+                    res = random.randint(minimum, maximum)
+                elif rand_type == 'om':  # Float
+                    minimum, maximum = float(minimum), float(maximum)
+                    res = random.random() * (maximum - minimum) + minimum
+
+                base = base.replace('<rand{};{};{}>'.format(rand_type, minimum, maximum), str(res))
+
+            # So we can access the previously used tags
+            remaining_tags = re.findall(r'<(.*?)>', base)
+
+            for check_tag in remaining_tags:
+                if check_tag in self.chosen_tags:
+                    base = base.replace('<' + check_tag + '>', self.chosen_tags[check_tag])
+                elif check_tag in self.custom_tags:
+                    base = base.replace('<' + check_tag + '>', self.choice(self.custom_tags[check_tag]))
+
+            while True:
+                try:
+                    i = base.index('<article>')
+
+                    base = base[:i] + base[i + len('<article>'):]
+
+                    next_word = re.sub(r'<.*?>', '', base)
+
+                    article = 'the '
+                    for word in COUNTABLE_WORDS:
+                        if next_word.startswith(word):
+                            article = random.choice(['<indef>', 'the '])
+                            break
+
+                    base = base[:i] + article + base[i:]
+                except:
+                    break
+            while True:
+                try:
+                    i = base.index('<indef>')
+
+                    base = base[:i] + base[i + len('<indef>'):]
+
+                    test = re.sub(r'<.*?>', '', str(base))
+                    if test[i].lower() in 'aeiou':
+                        article = 'an '
+                    else:
+                        article = 'a '
+
+                    base = base[:i] + article + base[i:]
+                except:
+                    break
+            while True:
+                try:
+                    i = base.index('<cap>')
+
+                    base = base[:i] + base[i + len('<cap>'):]
+
+                    test = re.sub(r'<.*?>', '', str(base))
+                    base = base[:i] + test[i].upper() + base[i + 1:]
+                except:
+                    break
+            while True:
+                try:
+                    i = base.index('<lower>')
+
+                    base = base[:i] + base[i + len('<lower>'):]
+
+                    test = re.sub(r'<.*?>', '', str(base))
+                    base = base[:i] + test[i].lower() + base[i + 1:]
+                except:
+                    break
+            while True:
+                try:
+                    i = base.index('<all_lower>')
+
+                    base = base[:i] + base[i + len('<all_lower>'):]
+
+                    test = re.sub(r'<.*?>', '', str(base))
+                    base = base[:i] + test[i:].lower()
+                except:
+                    break
+            while True:
+                try:
+                    i = base.index('<titlecase>')
+
+                    base = base[:i] + base[i + len('<titlecase>'):]
+
+                    test = re.sub(r'<.*?>', '', str(base))
+                    base = base[:i] + utility.titlecase(test[i:])
+                except:
+                    break
+            while True:
+                try:
+                    i = base.index('<pl>')
+
+                    base = base[:i] + base[i + len('<pl>'):]
+
+                    test = re.sub(r'<.*?>', '', str(base[i:]))
+                    words = test.split()
+                    if len(words) > 0:
+                        next_word = words[0]
+                        if next_word in COUNTABLE_WORDS:
+                            if next_word in IRREGULAR_PLURALS:
+                                pluralized = IRREGULAR_PLURALS[next_word]
+                            else:
+                                pluralized = str(next_word)
+                                if next_word.endswith('s') or next_word.endswith('x') or next_word.endswith(
+                                        'ch') or next_word.endswith('sh'):
+                                    pluralized += 'es'
+                                elif next_word.endswith('y'):
+                                    pluralized = pluralized[:-1] + 'ies'
+                                else:
+                                    pluralized += 's'
+
+                            base = base.replace(next_word, pluralized)
+                except:
+                    break
+
+            conjugate = re.findall(r'<conj;(.*?);(.*?);(.*?);(.*?)>', base)
+
+            for person, tense, number, verb in conjugate:
+                conjugated = self.do_conjugate(verb, person, tense, number)
+
+                base = base.replace('<conj;{};{};{};{}>'.format(person, tense, number, verb), conjugated)
+
+            conjugate = re.findall(r'<conj;(.*?);(.*?)>', base)
+            for conj_type, verb in conjugate:
+                conjugated = self.do_conjugate_type(verb, conj_type)
+
+                base = base.replace('<conj;{};{}>'.format(conj_type, verb), conjugated)
+
+            base = base.replace('  ', ' ').strip()
+
+            self.chosen_tags[tag] = base

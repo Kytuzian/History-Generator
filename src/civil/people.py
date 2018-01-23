@@ -3,6 +3,7 @@ from Tkinter import *
 import random
 
 import culture.culture as culture
+import culture.form
 import culture.generator as generator
 import internal.group as group
 import internal.events as events
@@ -93,9 +94,9 @@ class Period:
             custom_tags['creation_rate'] = ['normal', 'average', 'standard']
 
         if self.role in culture.ART_CATEGORIES.keys():
-            gen = generator.Form(PERIOD_FORMS, custom_tags=custom_tags)
+            gen = culture.form.Form(PERIOD_FORMS, custom_tags=custom_tags)
         else:
-            gen = generator.Form(NORMAL_FORMS, custom_tags=custom_tags)
+            gen = culture.form.Form(NORMAL_FORMS, custom_tags=custom_tags)
 
         self.name = gen.generate(nation=self.person.nation, creator=self.person)[0]
 
