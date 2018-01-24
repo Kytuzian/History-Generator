@@ -4,6 +4,7 @@ import culture.culture as culture
 
 main = None
 
+
 def get_nation_name(id):
     for nation in main.nations:
         if nation.id == id:
@@ -14,6 +15,7 @@ def get_nation_name(id):
             return main.old_nations[nation]
 
     raise Exception('{} not found in {}'.format(id, map(lambda nation: (nation.id, nation.name), main.nations)))
+
 
 class Event:
     def __init__(self, name, event_data, date):
@@ -94,6 +96,7 @@ class Event:
     def __repr__(self):
         return str(self.to_dict())
 
+
 class EventArmyRaised(Event):
     def setup(self):
         self.nation_name = self.event_data['nation_a']
@@ -102,7 +105,9 @@ class EventArmyRaised(Event):
         self.equipment_name = self.event_data['equipment']
 
     def text_version(self):
-        return '{} raised an army of {} {} on {}.'.format(get_nation_name(self.nation_name), self.number_raised, self.army_name, self.equipment_name, self.date)
+        return '{} raised an army of {} {} on {}.'.format(get_nation_name(self.nation_name), self.number_raised,
+                                                          self.army_name, self.equipment_name, self.date)
+
 
 class EventTroopCreated(Event):
     def setup(self):
@@ -112,7 +117,11 @@ class EventTroopCreated(Event):
         self.armor_name = self.event_data['armor_a']
 
     def text_version(self):
-        return '{} created a new troop, {}, wielding {}, {}, and {} on {}.'.format(get_nation_name(self.nation_name), self.army_name, self.equipment_name[0].name, self.equipment_name[1].name, self.armor_name.name, self.date)
+        return '{} created a new troop, {}, wielding {}, {}, and {} on {}.'.format(get_nation_name(self.nation_name),
+                                                                                   self.army_name,
+                                                                                   self.equipment_name[0].name,
+                                                                                   self.equipment_name[1].name,
+                                                                                   self.armor_name.name, self.date)
 
 
 class EventNationFounded(Event):
@@ -122,12 +131,14 @@ class EventNationFounded(Event):
     def text_version(self):
         return '{} was founded on {}.'.format(get_nation_name(self.nation_name), self.date)
 
+
 class EventNationEliminated(Event):
     def setup(self):
         self.nation_name = self.event_data['nation_a']
 
     def text_version(self):
         return '{}: {} was eliminated.'.format(self.date, get_nation_name(self.nation_name))
+
 
 class EventReligionCreated(Event):
     def setup(self):
@@ -139,9 +150,21 @@ class EventReligionCreated(Event):
 
     def text_version(self):
         if self.founder is not None:
-            return '{}: The religion of {} was founded in the city of {} in the nation of {} by {}.'.format(self.date, self.religion_name, get_nation_name(self.nation), self.city, self.nation, self.founder)
+            return '{}: The religion of {} was founded in the city of {} in the nation of {} by {}.'.format(self.date,
+                                                                                                            self.religion_name,
+                                                                                                            get_nation_name(
+                                                                                                                self.nation),
+                                                                                                            self.city,
+                                                                                                            self.nation,
+                                                                                                            self.founder)
         else:
-            return '{}: The religion of {} was founded in the city of {} in the nation of {}.'.format(self.date, self.religion_name, get_nation_name(self.nation), self.city, self.nation)
+            return '{}: The religion of {} was founded in the city of {} in the nation of {}.'.format(self.date,
+                                                                                                      self.religion_name,
+                                                                                                      get_nation_name(
+                                                                                                          self.nation),
+                                                                                                      self.city,
+                                                                                                      self.nation)
+
 
 class EventReligionGodAdded(Event):
     def setup(self):
@@ -150,7 +173,9 @@ class EventReligionGodAdded(Event):
         self.religion_name = self.event_data['religion_a']
 
     def text_version(self):
-        return 'A new god, {}, has been added to the pantheon of {} on {}.'.format(self.god_name, self.religion_name, self.date)
+        return 'A new god, {}, has been added to the pantheon of {} on {}.'.format(self.god_name, self.religion_name,
+                                                                                   self.date)
+
 
 class EventReligionGodRemoved(Event):
     def setup(self):
@@ -159,7 +184,9 @@ class EventReligionGodRemoved(Event):
         self.religion_name = self.event_data['religion_a']
 
     def text_version(self):
-        return 'A god, {}, has been removed from the pantheon of {} on {}.'.format(self.god_name, self.religion_name, self.date)
+        return 'A god, {}, has been removed from the pantheon of {} on {}.'.format(self.god_name, self.religion_name,
+                                                                                   self.date)
+
 
 class EventReligionDomainAdded(Event):
     def setup(self):
@@ -169,7 +196,9 @@ class EventReligionDomainAdded(Event):
         self.domain_name = self.event_data['domain_a']
 
     def text_version(self):
-        return '{} of {} has gained the domain of {} on {}.'.format(self.god_name, self.religion_name, self.domain_name, self.date)
+        return '{} of {} has gained the domain of {} on {}.'.format(self.god_name, self.religion_name, self.domain_name,
+                                                                    self.date)
+
 
 class EventReligionDomainRemoved(Event):
     def setup(self):
@@ -179,7 +208,9 @@ class EventReligionDomainRemoved(Event):
         self.domain_name = self.event_data['domain_a']
 
     def text_version(self):
-        return '{} of {} has lost the domain of {} on {}.'.format(self.god_name, self.religion_name, self.domain_name, self.date)
+        return '{} of {} has lost the domain of {} on {}.'.format(self.god_name, self.religion_name, self.domain_name,
+                                                                  self.date)
+
 
 class EventCityMerged(Event):
     def setup(self):
@@ -189,7 +220,10 @@ class EventCityMerged(Event):
         self.nation_name = self.event_data['nation_a']
 
     def text_version(self):
-        return 'The cities of {} and {} in {} merged with each other on {}.'.format(self.merger, self.mergee, get_nation_name(self.nation_name), self.date)
+        return 'The cities of {} and {} in {} merged with each other on {}.'.format(self.merger, self.mergee,
+                                                                                    get_nation_name(self.nation_name),
+                                                                                    self.date)
+
 
 class EventCityFounded(Event):
     def setup(self):
@@ -200,13 +234,16 @@ class EventCityFounded(Event):
     def text_version(self):
         return '{} was founded in {} on {}.'.format(self.city_name, get_nation_name(self.nation_name), self.date)
 
+
 class EventDiplomacyTrade(Event):
     def setup(self):
         self.offerer = self.event_data['nation_a']
         self.offeree = self.event_data['nation_b']
 
     def text_version(self):
-        return '{} has formed a trade agreement with {}.'.format(get_nation_name(self.offerer), get_nation_name(self.offeree))
+        return '{} has formed a trade agreement with {}.'.format(get_nation_name(self.offerer),
+                                                                 get_nation_name(self.offeree))
+
 
 class EventDiplomacyTradeEnd(Event):
     def setup(self):
@@ -214,7 +251,9 @@ class EventDiplomacyTradeEnd(Event):
         self.nation_b = self.event_data['nation_b']
 
     def text_version(self):
-        return '{}: The trade agreement between {} and {} has ended.'.format(self.date, get_nation_name(self.nation_a), get_nation_name(self.nation_b))
+        return '{}: The trade agreement between {} and {} has ended.'.format(self.date, get_nation_name(self.nation_a),
+                                                                             get_nation_name(self.nation_b))
+
 
 class EventDiplomacyWar(Event):
     def setup(self):
@@ -224,7 +263,9 @@ class EventDiplomacyWar(Event):
         self.reason = self.event_data['reason']
 
     def text_version(self):
-        return '{} declared war on {} for {} reasons'.format(get_nation_name(self.attacker), get_nation_name(self.defender), self.reason)
+        return '{} declared war on {} for {} reasons'.format(get_nation_name(self.attacker),
+                                                             get_nation_name(self.defender), self.reason)
+
 
 class EventDiplomacyWarEnd(Event):
     def setup(self):
@@ -232,7 +273,9 @@ class EventDiplomacyWarEnd(Event):
         self.nation_b = self.event_data['nation_b']
 
     def text_version(self):
-        return '{}: The war between {} and {} has ended.'.format(self.date, get_nation_name(self.nation_a), get_nation_name(self.nation_b))
+        return '{}: The war between {} and {} has ended.'.format(self.date, get_nation_name(self.nation_a),
+                                                                 get_nation_name(self.nation_b))
+
 
 class EventArmyDispatched(Event):
     def setup(self):
@@ -247,7 +290,12 @@ class EventArmyDispatched(Event):
         self.army_size = self.event_data['army_size']
 
     def text_version(self):
-        return '{} has dispatched an army of {} from {} to {} {}\'s city of {}'.format(get_nation_name(self.attacker), self.army_size, self.city_a, self.reason, get_nation_name(self.defender), self.city_b)
+        return '{} has dispatched an army of {} from {} to {} {}\'s city of {}'.format(get_nation_name(self.attacker),
+                                                                                       self.army_size, self.city_a,
+                                                                                       self.reason,
+                                                                                       get_nation_name(self.defender),
+                                                                                       self.city_b)
+
 
 class EventAttack(Event):
     def setup(self):
@@ -260,7 +308,10 @@ class EventAttack(Event):
         self.remaining_soldiers = self.event_data['remaining_soldiers']
 
     def text_version(self):
-        return '{} attacked {}\'s city of {} on {}. They {}, and the winner had {} soldiers remaining.'.format(get_nation_name(self.attacker), get_nation_name(self.defender), self.city_b, self.date, self.success, self.remaining_soldiers)
+        return '{} attacked {}\'s city of {} on {}. They {}, and the winner had {} soldiers remaining.'.format(
+            get_nation_name(self.attacker), get_nation_name(self.defender), self.city_b, self.date, self.success,
+            self.remaining_soldiers)
+
 
 class EventRevolt(Event):
     def setup(self):
@@ -270,7 +321,9 @@ class EventRevolt(Event):
         self.cities = self.event_data['cities']
 
     def text_version(self):
-        return 'A revolt occurred in {}, resulting in the creation of {} made up of {}'.format(get_nation_name(self.parent_nation), get_nation_name(self.new_name), self.cities)
+        return 'A revolt occurred in {}, resulting in the creation of {} made up of {}'.format(
+            get_nation_name(self.parent_nation), get_nation_name(self.new_name), self.cities)
+
 
 class EventTechResearch(Event):
     def setup(self):
@@ -278,7 +331,10 @@ class EventTechResearch(Event):
         self.tech_name = self.event_data['tech_a']
 
     def text_version(self):
-        return '{}: The nation of {} has researched the technology of {}.'.format(self.date, get_nation_name(self.research_nation), self.tech_name)
+        return '{}: The nation of {} has researched the technology of {}.'.format(self.date,
+                                                                                  get_nation_name(self.research_nation),
+                                                                                  self.tech_name)
+
 
 class EventRearmUnit(Event):
     def setup(self):
@@ -288,7 +344,9 @@ class EventRearmUnit(Event):
         self.new_armor = self.event_data['armor']
 
     def text_version(self):
-        return '{}: The nation of {} has rearmed it\'s unit of {} with {} and {}.'.format(self.date, get_nation_name(self.nation_a), self.unit_name, self.new_weapons, self.new_armor)
+        return '{}: The nation of {} has rearmed it\'s unit of {} with {} and {}.'.format(self.date, get_nation_name(
+            self.nation_a), self.unit_name, self.new_weapons, self.new_armor)
+
 
 class EventNotablePersonBirth(Event):
     def setup(self):
@@ -297,7 +355,9 @@ class EventNotablePersonBirth(Event):
         self.person_role = self.event_data['person_a_role']
 
     def text_version(self):
-        return '{}: {}, a {}, was born in the nation of {}'.format(self.date, self.person_name, self.person_role, get_nation_name(self.nation_a))
+        return '{}: {}, a {}, was born in the nation of {}'.format(self.date, self.person_name, self.person_role,
+                                                                   get_nation_name(self.nation_a))
+
 
 class EventNotablePersonDeath(Event):
     def setup(self):
@@ -306,7 +366,9 @@ class EventNotablePersonDeath(Event):
         self.person_role = self.event_data['person_a_role']
 
     def text_version(self):
-        return '{}: {}, a {} from the nation of {}, has died.'.format(self.date, self.person_name, self.person_role, get_nation_name(self.nation_a))
+        return '{}: {}, a {} from the nation of {}, has died.'.format(self.date, self.person_name, self.person_role,
+                                                                      get_nation_name(self.nation_a))
+
 
 class EventNotablePersonPeriod(Event):
     def setup(self):
@@ -323,9 +385,15 @@ class EventNotablePersonPeriod(Event):
             return '{}: {} has begun a new period, called his {}.'.format(self.date, self.person_name, self.period_name)
         else:
             if self.person_role in culture.ART_CATEGORIES.keys():
-                return '{}: {}, who was previously a {}, is now a {}, and has started his {}.'.format(self.date, self.person_name, self.person_prev_role, self.person_role, self.period_name)
+                return '{}: {}, who was previously a {}, is now a {}, and has started his {}.'.format(self.date,
+                                                                                                      self.person_name,
+                                                                                                      self.person_prev_role,
+                                                                                                      self.person_role,
+                                                                                                      self.period_name)
             else:
-                return '{}: {}, who was previously a {}, is now a {}.'.format(self.date, self.person_name, self.person_prev_role, self.person_role)
+                return '{}: {}, who was previously a {}, is now a {}.'.format(self.date, self.person_name,
+                                                                              self.person_prev_role, self.person_role)
+
 
 class EventArtCreated(Event):
     def setup(self):
@@ -336,4 +404,5 @@ class EventArtCreated(Event):
         self.art = self.event_data['art']
 
     def text_version(self):
-        return '{}: In the nation of {}, the {} {} created: {}'.format(self.date, get_nation_name(self.nation_a), self.person_role, self.person_name, self.art)
+        return '{}: In the nation of {}, the {} {} created: {}'.format(self.date, get_nation_name(self.nation_a),
+                                                                       self.person_role, self.person_name, self.art)

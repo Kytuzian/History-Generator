@@ -1,12 +1,14 @@
-2017-07-24
+2018-01-22
 Major changes:
 
 Minor changes:
-- You can now use the arrow keys to move around the main view (mostly because
-scrolling wasn't working one computer).
+- You can now use the arrow keys to move around the main view.
 - The events will now show at the bottom of the screen instead of the
 terminal.
 - Made resizing better.
+- Many minor tweaks.
+- Added shields, mounts, gunpowder weapons.
+- Added many, many new weapons and armors.
 
 Bug fixes:
 

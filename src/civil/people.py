@@ -182,9 +182,7 @@ class Person:
         self.alive = True
 
         e = events.EventNotablePersonBirth('NotablePersonBirth', {'nation_a': self.nation.id, 'person_a': self.name, 'person_a_role': self.periods[-1].role}, self.nation.parent.get_current_date())
-        self.nation.parent.events.append(e)
-
-        self.nation.parent.write_to_gen_log(e.text_version())
+        self.nation.parent.event_log.add_event(e)
 
     def save(self, path):
         res = {'name': self.name, 'home': self.home.name, 'city': self.city.name, 'age': self.age,
@@ -301,18 +299,14 @@ class Person:
         self.periods.append(Period(self,role=role))
 
         e = events.EventNotablePersonPeriod('NotablePersonPeriod', {'nation_a': self.nation.id, 'person_a': self.name, 'person_a_prev_role': prev_role, 'person_a_role': self.periods[-1].role, 'period_name': self.periods[-1].name}, self.nation.parent.get_current_date())
-        self.nation.parent.events.append(e)
-
-        self.nation.parent.write_to_gen_log(e.text_version())
+        self.nation.parent.event_log.add_event(e)
 
     def get_effectiveness(self):
         return self.effectiveness
 
     def handle_death(self):
         e = events.EventNotablePersonDeath('NotablePersonDeath', {'nation_a': self.nation.id, 'person_a': self.name, 'person_a_role': self.periods[-1].role}, self.nation.parent.get_current_date())
-        self.nation.parent.events.append(e)
-
-        self.nation.parent.write_to_gen_log(e.text_version())
+        self.nation.parent.event_log.add_event(e)
 
     def arrival(self, group):
         self.city = self.target
@@ -352,9 +346,7 @@ class Person:
                         self.periods[-1].art.append(new_art)
 
                         e = events.EventArtCreated('ArtCreated', {'nation_a': self.nation.id, 'person_a': self.name, 'person_a_role': self.periods[-1].role, 'art': str(new_art)}, self.nation.parent.get_current_date())
-                        self.nation.parent.events.append(e)
-
-                        self.nation.parent.write_to_gen_log(self.nation.parent.events[-1].text_version())
+                        self.nation.parent.event_log.add_event(e)
 
                 # Let's start a new artistic period in our lives (maybe)
                 if random.randint(0, BASE_START_ARTISTIC_PERIOD_CHANCE - self.periods[-1].length) == 0:

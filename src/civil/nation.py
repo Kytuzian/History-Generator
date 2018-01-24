@@ -20,6 +20,10 @@ import random
 
 from Tkinter import *
 
+
+# The chance (1 in x) that the parent nation won't declare war on a nation that declares independence.
+PEACEFUL_REVOLT_CHANCE = 50
+
 OFFICE_MORALE_BONUS = 4
 
 NATION_COLORS = ['dark orange', 'cadet blue', 'gold', 'deep sky blue',
@@ -535,10 +539,7 @@ class Nation:
 
         self.chance_add_new_name(self.cities[-1].name)
 
-        self.parent.write_to_gen_log(
-            "{}: A new city was founded in the nation of {}, called {}".format(self.parent.get_current_date(),
-                                                                               self.name, self.cities[-1].name))
-        self.parent.events.append(
+        self.parent.event_log.add_event(
             events.EventCityFounded('CityFounded', {'nation_a': self.id, 'city_a': self.cities[-1].name},
                                     self.parent.get_current_date()))
 
@@ -682,9 +683,7 @@ class Nation:
             e = events.EventRearmUnit('RearmUnit',
                                       {'nation_a': self.id, 'unit_a': rearm_unit.name, 'weapons': weapon_string,
                                        'armor': rearm_unit.armor.name}, self.parent.get_current_date())
-            self.parent.events.append(e)
-
-            self.parent.write_to_gen_log(self.parent.events[-1].text_version())
+            self.parent.event_log.add_event(e)
 
             for city in self.cities:
                 city.rearm_army(rearm_unit)
@@ -726,11 +725,9 @@ class Nation:
 
             if self.current_research is None or self.current_research.is_unlocked():
                 if self.current_research is not None and self.current_research.is_unlocked():
-                    self.parent.events.append(events.EventTechResearch('TechResearch', {'nation_a': self.id,
+                    self.parent.event_log.add_event(events.EventTechResearch('TechResearch', {'nation_a': self.id,
                                                                                         'tech_a': self.current_research.name},
                                                                        self.parent.get_current_date()))
-
-                    self.parent.write_to_gen_log(self.parent.events[-1].text_version())
                 available = self.tech.get_available_research()
 
                 if len(available) > 0:
@@ -816,14 +813,15 @@ class Nation:
                         "The following cities joined the revolt, along with {} soldiers: {}".format(army_revolted,
                                                                                                     revolted_nation.cities))
 
-                    self.parent.events.append(events.EventRevolt('Revolt',
+                    self.parent.event_log.add_event(events.EventRevolt('Revolt',
                                                                  {'nation_a': self.id, 'nation_b': revolted_nation.id,
                                                                   'cities': [city.name for city in
                                                                              revolted_nation.cities]},
                                                                  self.parent.get_current_date()))
 
                     # We don't have peaceful revolts, naturally a nation would attempt to put down the revolt.
-                    self.parent.start_war(self, revolted_nation)
+                    if random.randint(0, PEACEFUL_REVOLT_CHANCE) != 0:
+                        self.parent.start_war(self, revolted_nation)
 
     def handle_army_dispatch(self):
         # Determine if we want to launch an attack with this city's army
@@ -862,7 +860,7 @@ class Nation:
                                 Group(self.parent, self.id, city.army, (fx, fy), (dx, dy), self.color, lambda s: False,
                                       action, is_army=True, has_boat=(city.resources['boats'] > 0)))
 
-                            self.parent.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': self.id,
+                            self.parent.event_log.add_event(events.EventArmyDispatched('ArmyDispatched', {'nation_a': self.id,
                                                                                                     'nation_b': enemy.id,
                                                                                                     'city_a': city.name,
                                                                                                     'city_b': attacking_city.name,
@@ -927,10 +925,6 @@ class Nation:
 
                 # Relations are the same both ways.
                 nation.relations[self.id] = self.relations[nation.id]
-
-        # print('{}\'s Relations:'.format(self.name))
-        # for nation in self.relations:
-        #     print('\t{}: {}'.format(events.get_nation_name(nation), self.relations[nation]))
 
     def handle_diplomacy(self):
         # We can only start warring/trading if there are nations other than us.

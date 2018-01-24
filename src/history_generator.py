@@ -21,9 +21,9 @@ import internal.terrain.terrain as terrain
 import internal.terrain.noise as noise
 import internal.db as db
 import internal.gui as gui
-import internal.group as group
 
 import military.battle as battle
+from internal.event_log import EventLog
 from internal.group.group import Group
 
 DEFAULT_SIMULATION_SPEED = 300  # ms
@@ -33,7 +33,9 @@ class Main:
     nation_count = 8
 
     def __init__(self):
-        self.events = []
+        events.main = self
+
+        self.old_nations = {}
 
         self.year = 1
         self.month = 1
@@ -68,35 +70,17 @@ class Main:
         self.graphical_battles = True
         self.fast_battles = False
 
-        self.clear_gen_log()
-
         self.world_name = ''
 
         self.db = None  # The DB connection. Will be created after setup so we can give it a real name.
 
-        self.setup()
+        self.event_log_box = Listbox(self.parent, height=10)
+        self.event_log = EventLog(self, self.db, self.event_log_box)
 
-    def clear_gen_log(self):
-        with open('gen_log.txt', 'w') as f:
-            f.write('')
+        self.setup()
 
     def get_real_date(self):
         return '{}-{}-{}'.format(self.year, self.month, self.day)
-
-    def write_to_gen_log(self, message):
-        # Don't write blank messages to the log
-        if message == '':
-            return
-
-        if self.db is not None:
-            self.db.gen_log_insert(self.get_real_date(), message)
-
-        # print(message)
-
-        self.event_log_box.insert(END, message)
-
-        if self.event_log_box.size() > utility.listbox_capacity(self.event_log_box):
-            self.event_log_box.delete(0)
 
     def zoom(self, size):
         utility.CELL_SIZE = int(self.zoom_scale.get())
@@ -230,7 +214,6 @@ class Main:
 
         self.nations = []
         self.religions = []
-        self.old_nations = {}
 
         for new_nation in xrange(self.nation_count):
             self.add_nation(nation.Nation(self))
@@ -248,16 +231,14 @@ class Main:
         self.db = db.DB(self.world_name)
         self.db.setup()
 
-        events.main = self
-
     def create_religion(self, city, nation, founder=None):
         new_religion = religion.Religion(nation.language, nation.language.make_name_word())
 
-        self.events.append(events.EventReligionCreated('ReligionCreated', {'nation_a': nation.id, 'city_a': city.name,
-                                                                           'person_a': founder.name,
-                                                                           'religion_a': new_religion.name},
-                                                       self.get_current_date()))
-        self.write_to_gen_log(self.events[-1].text_version())
+        self.event_log.add_event(
+            events.EventReligionCreated('ReligionCreated', {'nation_a': nation.id, 'city_a': city.name,
+                                                            'person_a': founder.name,
+                                                            'religion_a': new_religion.name},
+                                        self.get_current_date()))
 
         self.religions.append(new_religion)
         new_religion.adherents[city.name] = 1  # Hooray! We have an adherent
@@ -349,7 +330,6 @@ class Main:
 
         self.nation_selector.bind('<Double-Button-1>', self.select_nation)
 
-        self.event_log_box = Listbox(self.parent, height=10)
         self.event_log_box.grid(row=15, column=3, stick=W + E)
 
         # Set up hotkeys
@@ -434,8 +414,8 @@ class Main:
                     if not check_nation.id in nation.relations:
                         nation.relations[check_nation.id] = 0  # Initially we start out neutral with all nations.
 
-        self.events.append(
-            events.EventNationFounded("NationFounded", {"nation_a": self.nations[-1].id}, self.get_current_date()))
+        self.event_log.add_event(events.EventNationFounded("NationFounded",
+                                                           {"nation_a": self.nations[-1].id}, self.get_current_date()))
 
     def remove_nation(self, nation):
         # Remove this nation from other treaties.
@@ -446,9 +426,8 @@ class Main:
             trade_treaty = nation.get_treaty_with(remove_trade, 'trade')
             trade_treaty.end(self.get_current_date())
 
-        self.events.append(
-            events.EventNationEliminated("NationEliminated", {"nation_a": nation.id}, self.get_current_date()))
-        self.write_to_gen_log(self.events[-1].text_version())
+        self.event_log.add_event(events.EventNationEliminated("NationEliminated",
+                                                              {"nation_a": nation.id}, self.get_current_date()))
 
         self.old_nations[nation.id] = nation.name
 
@@ -588,13 +567,11 @@ class Main:
 
                 self.refresh_nation_selector()
 
-                self.write_out_events('event_log.txt')
-
                 self.month += 1
 
                 self.start_army_move()
         except KeyboardInterrupt:
-            self.write_out_events('event_log.txt')
+            pass
 
     # Set everything up (like paths and such) so that the armies can later move
     def start_army_move(self):
@@ -641,13 +618,6 @@ class Main:
     def get_current_date(self):
         return self.year, self.month, self.day
 
-    def write_out_events(self, filename):
-        with open(filename, 'a') as f:
-            for event in self.events:
-                f.write('{}\n'.format(event.to_dict()))
-
-            self.events = []
-
     def get_nation_by_name(self, name):
         for i in self.nations:
             if i.name == name:
@@ -657,18 +627,15 @@ class Main:
         if a != b and not b in a.at_war and not a in b.at_war:
             if not b in a.trading and not a in b.trading:
                 if is_holy_war:
-                    self.write_to_gen_log(
-                        "{}: {} has started a holy war with {} because of religious differences.".format(
-                            self.get_current_date(), a.name, b.name))
-                    self.events.append(events.EventDiplomacyWar('DiplomacyWar', {'nation_a': a.id, 'nation_b': b.id,
-                                                                                 'reason': 'religious'},
-                                                                self.get_current_date()))
+                    self.event_log.add_event(
+                        events.EventDiplomacyWar('DiplomacyWar', {'nation_a': a.id, 'nation_b': b.id,
+                                                                  'reason': 'religious'},
+                                                 self.get_current_date()))
                 else:
-                    self.write_to_gen_log(
-                        "{}: {} has gone to war with {}!".format(self.get_current_date(), a.name, b.name))
-                    self.events.append(events.EventDiplomacyWar('DiplomacyWar', {'nation_a': a.id, 'nation_b': b.id,
-                                                                                 'reason': 'economic'},
-                                                                self.get_current_date()))
+                    self.event_log.add_event(
+                        events.EventDiplomacyWar('DiplomacyWar', {'nation_a': a.id, 'nation_b': b.id,
+                                                                  'reason': 'economic'},
+                                                 self.get_current_date()))
 
                 a.at_war.append(b)
                 b.at_war.append(a)
@@ -692,17 +659,12 @@ class Main:
                 a.treaties.append(new_treaty)
                 b.treaties.append(new_treaty)
 
-                self.write_to_gen_log(
-                    "{}: {} has begun to trade with {}".format(self.get_current_date(), a.name, b.name))
-
-                self.events.append(events.EventDiplomacyTrade('DiplomacyTrade', {'nation_a': a.id, 'nation_b': b.id},
-                                                              self.get_current_date()))
+                self.event_log.add_event(
+                    events.EventDiplomacyTrade('DiplomacyTrade', {'nation_a': a.id, 'nation_b': b.id},
+                                               self.get_current_date()))
 
     def return_levies(self, sender, reinforce_city):
         def do(reinforcing):
-            self.write_to_gen_log(
-                '{} levied soldiers returned to {}'.format(reinforcing.members.size(), reinforce_city.name))
-
             sender.moving_armies.remove(reinforcing)
             self.canvas.delete(reinforcing.id)
 
@@ -719,7 +681,7 @@ class Main:
                               self.reinforce(sender, return_destination),
                               is_army=True))
 
-                    self.events.append(events.EventArmyDispatched('ArmyDispatched',
+                    self.event_log.add_event(events.EventArmyDispatched('ArmyDispatched',
                                                                   {'nation_a': sender.id, 'nation_b': sender.id,
                                                                    'city_a': reinforce_city.name,
                                                                    'city_b': return_destination.name,
@@ -747,7 +709,7 @@ class Main:
                           sender.color, lambda s: False, self.reinforce(sender, return_destination),
                           is_army=True))
 
-                self.events.append(events.EventArmyDispatched('ArmyDispatched',
+                self.event_log.add_event(events.EventArmyDispatched('ArmyDispatched',
                                                               {'nation_a': sender.id, 'nation_b': sender.id,
                                                                'city_a': reinforce_city.name,
                                                                'city_b': return_destination.name, 'reason': 'reinforce',
@@ -782,43 +744,33 @@ class Main:
 
             city.army = city.army.zero()
 
-            self.write_to_gen_log(
-                "{}: A battle has begun between {} and {}".format(self.get_current_date(), attacker.name,
-                                                                  defender.name))
-            self.write_to_gen_log(
-                "{} has {} soldiers, and {} has {} soldiers, for a total of {} soldiers.".format(attacker.name,
-                                                                                                 attacking_army.size(),
-                                                                                                 defender.name,
-                                                                                                 defending_army.size(),
-                                                                                                 attacking_army.size() + defending_army.size()))
-
             if attacking_army.size() == 0:
                 attacking_army.add_number(1, attacker)
 
-            currentBattle = battle.Battle(attacker, attacking_army, defender, defending_army, attacking_city, city,
+            current_battle = battle.Battle(attacker, attacking_army, defender, defending_army, attacking_city, city,
                                           self.end_battle,
                                           use_graphics=self.graphical_battles, fast_battles=self.fast_battles)
-            currentBattle.setup_soldiers()
+            current_battle.setup_soldiers()
 
-            if not currentBattle.check_end_battle():
-                self.write_to_gen_log("Battle started. {} currently running.".format(len(self.battles)))
-
-                currentBattle.main_phase()
+            if not current_battle.check_end_battle():
+                current_battle.main_phase()
 
                 if self.graphical_battles and not self.fast_battles:
-                    self.battles.append(currentBattle)
+                    self.battles.append(current_battle)
         elif city in attacker.cities:  # if we already own it, just join the army that's already there
             city.army.add_army(attacking_army)
-        else:  # If somebody other than us or the person we intended to attack owns this city, just go back to reinforce one of our cities.
-            if len(
-                    attacker.cities) > 0:  # It really ought to be, but it could happen that we lose all our cities before we can go back.
+        else:  # If somebody other than us or the person we intended to attack owns this city, just go back to
+            # reinforce one of our cities.
+
+            # It could happen that we lose all our cities before we can go back.
+            if len(attacker.cities) > 0:
                 return_destination = random.choice(attacker.cities)
                 attacker.moving_armies.append(
                     Group(self, attacker.name, attacking_army, city.position, return_destination.position,
                           attacker.color, lambda s: False, self.reinforce(attacker, return_destination),
                           is_army=True))
 
-                self.events.append(events.EventArmyDispatched('ArmyDispatched',
+                self.event_log.add_event(events.EventArmyDispatched('ArmyDispatched',
                                                               {'nation_a': attacker.id, 'nation_b': attacker.id,
                                                                'city_a': city.name, 'city_b': return_destination.name,
                                                                'reason': 'reinforce',
@@ -835,13 +787,9 @@ class Main:
             self.battles.remove(battle)
 
         print('')
-        self.write_to_gen_log("Battle ended.")
 
-        self.write_to_gen_log('Statistics:')
-        self.write_to_gen_log('{}:'.format(a.name))
-        utility.show_dict(battle.a_stats, recurse=False, gen=self)
-        self.write_to_gen_log('{}:'.format(b.name))
-        utility.show_dict(battle.b_stats, recurse=False, gen=self)
+        # utility.show_dict(battle.a_stats, recurse=False, gen=self)
+        # utility.show_dict(battle.b_stats, recurse=False, gen=self)
 
         for unit in a.army_structure.make_upgrade_list():
             if unit.name in battle.a_stats:
@@ -860,16 +808,10 @@ class Main:
 
         # Determine the winner
         if battle.a_army.size() > 0:
-            self.write_to_gen_log(
-                "{}: {} has triumphed with {} remaining troops!".format(self.get_current_date(), a.name,
-                                                                        battle.a_army.size()))
-
-            self.events.append(events.EventAttack('Attack',
+            self.event_log.add_event(events.EventAttack('Attack',
                                                   {'nation_a': a.id, 'nation_b': b.id, 'city_b': attack_city.name,
                                                    'success': True, 'remaining_soldiers': battle.a_army.size()},
                                                   self.get_current_date()))
-
-            self.write_to_gen_log("They have taken the city of {} from {}.".format(attack_city.name, b.name))
 
             attack_city.capture(battle.a_army, a, battle.attacking_city)
             a.capture_city(attack_city)
@@ -879,11 +821,7 @@ class Main:
 
             winner = a
         elif battle.b_army.size() > 0:
-            self.write_to_gen_log(
-                "{}: {} has triumphed with {} remaining troops!".format(self.get_current_date(), b.name,
-                                                                        battle.b_army.size()))
-
-            self.events.append(events.EventAttack('Attack',
+            self.event_log.add_event(events.EventAttack('Attack',
                                                   {'nation_a': a.id, 'nation_b': b.id, 'city_b': attack_city.name,
                                                    'success': False, 'remaining_soldiers': battle.b_army.size()},
                                                   self.get_current_date()))

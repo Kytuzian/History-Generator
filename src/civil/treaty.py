@@ -1,11 +1,12 @@
 import math
 import random
 
-from culture.form import Form
 from civil.diplomacy import TRADE_CARAVAN_MULTIPLIER, WAR_CITY_MULTIPLIER, TRADE_END_DIVISOR, TREATY_NAMES
 
 import internal.utility as utility
 import internal.events as events
+from culture.form import Form
+
 
 class Treaty:
     def __init__(self, parent, starting_date, nation_a, nation_b, treaty_type, signing_city=None, treaty_details=None):
@@ -174,14 +175,13 @@ class Treaty:
 
             if ender is None:
                 ender = self.nation_a
-            self.parent.events.append(events.EventDiplomacyTradeEnd('DiplomacyTradeEnd', {'nation_a': ender.id, 'nation_b': self.get_other_nation(ender).id}, self.parent.get_current_date()))
-            self.parent.write_to_gen_log(self.parent.events[-1].text_version())
+
+            self.parent.event_log.add_event(events.EventDiplomacyTradeEnd('DiplomacyTradeEnd', {'nation_a': ender.id, 'nation_b': self.get_other_nation(ender).id}, self.parent.get_current_date()))
         elif self.treaty_type == 'war':
             self.nation_a.at_war.remove(self.nation_b)
             self.nation_b.at_war.remove(self.nation_a)
 
-            self.parent.events.append(events.EventDiplomacyWarEnd('DiplomacyWarEnd', {'nation_a': self.nation_a.id, 'nation_b': self.nation_b.id}, self.parent.get_current_date()))
-            self.parent.write_to_gen_log(self.parent.events[-1].text_version())
+            self.parent.event_log.add_event(events.EventDiplomacyWarEnd('DiplomacyWarEnd', {'nation_a': self.nation_a.id, 'nation_b': self.nation_b.id}, self.parent.get_current_date()))
 
     def get_treaty_names(self, current_date, requesting_nation):
         if not requesting_nation.id in self.names or len(self.names[requesting_nation.id]) == 0:
@@ -207,7 +207,7 @@ class Treaty:
             custom_tags['treaty_length_years'] = ['{} years'.format(treaty_length[0])]
             custom_tags['treaty_length'] = ['{} years and {} months'.format(treaty_length[0], treaty_length[1])]
 
-            gen = culture.form.Form(TREATY_NAMES[self.treaty_type], custom_tags=custom_tags)
+            gen = Form(TREATY_NAMES[self.treaty_type], custom_tags=custom_tags)
 
             name = gen.generate(nation=requesting_nation)[0]
 
