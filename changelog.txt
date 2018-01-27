@@ -9,6 +9,7 @@ terminal.
 - Many minor tweaks.
 - Added shields, mounts, gunpowder weapons.
 - Added many, many new weapons and armors.
+- Added possibility of peaceful revolution.
 
 Bug fixes:
 

@@ -79,9 +79,9 @@ class Religion:
         if self.polytheistic:
             for god in self.gods:
                 if random.randint(0, 100) < LOSE_GOD_CHANCE:
-                    parent.event_log.add_event(events.EventReligionGodRemoved('ReligionGodRemoved',
-                                                                        {'god_a': god.name, 'religion_a': self.name},
-                                                                        parent.get_current_date()))
+                    parent.event_log.add_event('ReligionGodRemoved',
+                                               {'god_a': god.name, 'religion_a': self.name},
+                                               parent.get_current_date())
 
                     self.gods.remove(god)
                 else:
@@ -90,9 +90,9 @@ class Religion:
             if random.randint(0, 100) < GAIN_GOD_CHANCE:
                 self.add_god()
 
-                parent.event_log.add_event(events.EventReligionGodAdded('ReligionGodAdded', {'god_a': self.gods[-1].name,
-                                                                                       'religion_a': self.name},
-                                                                  parent.get_current_date()))
+                parent.event_log.add_event('ReligionGodAdded',
+                                           {'god_a': self.gods[-1].name,'religion_a': self.name},
+                                           parent.get_current_date())
 
     def show_information_gui(self):
         self.gui_window = Tk()

@@ -2,7 +2,6 @@ from Tkinter import *
 import tkMessageBox
 import random
 
-import shutil
 import os
 import sys
 
@@ -74,8 +73,106 @@ class Main:
 
         self.db = None  # The DB connection. Will be created after setup so we can give it a real name.
 
+        # Set up the GUI
+
         self.event_log_box = Listbox(self.parent, height=10)
         self.event_log = EventLog(self, self.db, self.event_log_box)
+
+        self.parent.columnconfigure(3, weight=1)
+        self.parent.rowconfigure(13, weight=1)
+
+        self.parent.bind('<MouseWheel>', self.on_vertical)
+        self.parent.bind('<Shift-MouseWheel>', self.on_horizontal)
+        self.parent.bind('<Left>', lambda _: self.scroll_canvas(-utility.SCROLL_SPEED, 0))
+        self.parent.bind('<Right>', lambda _: self.scroll_canvas(utility.SCROLL_SPEED, 0))
+        self.parent.bind('<Up>', lambda _: self.scroll_canvas(0, -utility.SCROLL_SPEED))
+        self.parent.bind('<Down>', lambda _: self.scroll_canvas(0, utility.SCROLL_SPEED))
+
+        self.canvas = Canvas(self.parent, bd=1, relief=RIDGE, scrollregion=(0, 0, utility.S_WIDTH, utility.S_HEIGHT))
+        self.canvas.bind('<Button-1>', self.get_cell_information)
+        self.canvas.config(background='white')
+
+        self.canvas.grid(row=0, column=3, rowspan=14, sticky=W + E + N + S)
+
+        self.continuous = gui.Button(self.parent, text="[R]un until battle", command=self.toggle_run_until_battle)
+        self.continuous.grid(row=0, sticky=W)
+
+        self.minimize_battles = gui.Checkbutton(self.parent, text='Minimize battle windows',
+                                                command=self.toggle_minimize_battles)
+        self.minimize_battles.grid(row=0, column=1, columnspan=2, sticky=W)
+
+        self.religion_history_button = gui.Button(self.parent, text="R[e]ligion history",
+                                                  command=self.open_religion_history_window)
+        self.religion_history_button.grid(row=2, column=0, sticky=W)
+
+        self.world_history_button = gui.Button(self.parent, text="[W]orld history",
+                                               command=self.open_world_history_window)
+        self.world_history_button.grid(row=2, column=1, sticky=W)
+
+        self.zoom_label = gui.Label(self.parent, text='Zoom (Cell Size):')
+        self.zoom_label.grid(row=3, column=0, sticky=W)
+
+        self.graphical_battles_checkbox = gui.Checkbutton(self.parent, text='Graphical Battles',
+                                                          command=self.toggle_graphical_battles)
+        self.graphical_battles_checkbox.grid(row=3, column=1, sticky=W)
+        self.graphical_battles_checkbox.select()  # Graphical battles are the default
+
+        self.fast_battles_checkbox = gui.Checkbutton(self.parent, text='Fast Battles', command=self.toggle_fast_battles)
+        self.fast_battles_checkbox.grid(row=4, column=1, sticky=W)
+
+        self.zoom_scale = gui.Scale(self.parent, from_=1, to_=20, orient=HORIZONTAL)
+        self.zoom_scale.grid(row=4, column=0, sticky=W)
+        self.zoom_scale.bind('<ButtonRelease-1>', self.zoom)
+        self.zoom_scale.set(utility.CELL_SIZE)
+
+        self.advance_button = gui.Button(self.parent, text="[A]dvance Step", command=self.advance_once)
+        self.advance_button.grid(row=5, sticky=W)
+
+        self.run_continuously_checkbutton = gui.Checkbutton(self.parent, text='Run continuously',
+                                                            command=self.toggle_continuous)
+        self.run_continuously_checkbutton.grid(row=5, column=1, sticky=W)
+
+        self.simulation_speed_label = gui.Label(self.parent, text='Simulation Speed (ms):')
+        self.simulation_speed_label.grid(row=6, column=0, sticky=W)
+
+        self.save_button = gui.Button(self.parent, text='[S]ave', command=self.save)
+        self.save_button.grid(row=6, column=1, sticky=W)
+
+        self.delay = gui.Scale(self.parent, from_=10, to_=1000, orient=HORIZONTAL)
+        self.delay.grid(row=7, sticky=W)
+        self.delay.set(DEFAULT_SIMULATION_SPEED)
+
+        self.advance_time_button = gui.Button(self.parent, text='Advance [B]y:', command=self.run_to)
+        self.advance_time_button.grid(row=8, column=0, sticky=W)
+
+        self.years_box = Entry(self.parent)
+        self.years_box.grid(row=9, column=0, sticky=W)
+
+        self.nation_selector_label = gui.Label(self.parent, text='Nations:')
+        self.nation_selector_label.grid(row=10, column=0, sticky=W)
+
+        self.nation_selector = Listbox(self.parent)
+        self.nation_selector.grid(row=11, column=0, columnspan=3, sticky=W + E)
+
+        self.nation_selector.bind('<Double-Button-1>', self.select_nation)
+
+        self.event_log_box.grid(row=15, column=3, stick=W + E)
+
+        # Set up hotkeys
+        self.parent.bind('R', lambda _: self.toggle_run_until_battle())
+        self.parent.bind('r', lambda _: self.toggle_run_until_battle())
+        self.parent.bind('E', lambda _: self.open_religion_history_window())
+        self.parent.bind('e', lambda _: self.open_religion_history_window())
+        self.parent.bind('W', lambda _: self.open_world_history_window())
+        self.parent.bind('w', lambda _: self.open_world_history_window())
+        self.parent.bind('A', lambda _: self.advance_once())
+        self.parent.bind('a', lambda _: self.advance_once())
+        self.parent.bind('S', lambda _: self.save())
+        self.parent.bind('s', lambda _: self.save())
+        self.parent.bind('B', lambda _: self.run_to())
+        self.parent.bind('b', lambda _: self.run_to())
+
+        self.refresh_nation_selector()
 
         self.setup()
 
@@ -177,12 +274,6 @@ class Main:
     #     self.continents.append(continent)
 
     def setup(self):
-        self.create_gui()
-
-        # Clear out the event log
-        with open('event_log.txt', 'w') as f:
-            f.write('')
-
         size = utility.S_WIDTH // utility.CELL_SIZE
         data = noise.generate_noise(size, 'Generating terrain: ')
         print('')
@@ -234,11 +325,10 @@ class Main:
     def create_religion(self, city, nation, founder=None):
         new_religion = religion.Religion(nation.language, nation.language.make_name_word())
 
-        self.event_log.add_event(
-            events.EventReligionCreated('ReligionCreated', {'nation_a': nation.id, 'city_a': city.name,
-                                                            'person_a': founder.name,
-                                                            'religion_a': new_religion.name},
-                                        self.get_current_date()))
+        self.event_log.add_event('ReligionCreated', {'nation_a': nation.id, 'city_a': city.name,
+                                                     'person_a': founder.name,
+                                                     'religion_a': new_religion.name},
+                                 self.get_current_date())
 
         self.religions.append(new_religion)
         new_religion.adherents[city.name] = 1  # Hooray! We have an adherent
@@ -249,104 +339,7 @@ class Main:
         else:
             self.ids[id_type] = 0
 
-        return '{} {}'.format(id_type, self.ids[id_type])
-
-    def create_gui(self):
-        self.parent.columnconfigure(3, weight=1)
-        self.parent.rowconfigure(13, weight=1)
-
-        self.parent.bind('<MouseWheel>', self.on_vertical)
-        self.parent.bind('<Shift-MouseWheel>', self.on_horizontal)
-        self.parent.bind('<Left>', lambda _: self.scroll_canvas(-utility.SCROLL_SPEED, 0))
-        self.parent.bind('<Right>', lambda _: self.scroll_canvas(utility.SCROLL_SPEED, 0))
-        self.parent.bind('<Up>', lambda _: self.scroll_canvas(0, -utility.SCROLL_SPEED))
-        self.parent.bind('<Down>', lambda _: self.scroll_canvas(0, utility.SCROLL_SPEED))
-
-        self.canvas = Canvas(self.parent, bd=1, relief=RIDGE, scrollregion=(0, 0, utility.S_WIDTH, utility.S_HEIGHT))
-        self.canvas.bind('<Button-1>', self.get_cell_information)
-        self.canvas.config(background='white')
-
-        self.canvas.grid(row=0, column=3, rowspan=14, sticky=W + E + N + S)
-
-        self.continuous = gui.Button(self.parent, text="[R]un until battle", command=self.toggle_run_until_battle)
-        self.continuous.grid(row=0, sticky=W)
-
-        self.minimize_battles = gui.Checkbutton(self.parent, text='Minimize battle windows',
-                                                command=self.toggle_minimize_battles)
-        self.minimize_battles.grid(row=0, column=1, columnspan=2, sticky=W)
-
-        self.religion_history_button = gui.Button(self.parent, text="R[e]ligion history",
-                                                  command=self.open_religion_history_window)
-        self.religion_history_button.grid(row=2, column=0, sticky=W)
-
-        self.world_history_button = gui.Button(self.parent, text="[W]orld history",
-                                               command=self.open_world_history_window)
-        self.world_history_button.grid(row=2, column=1, sticky=W)
-
-        self.zoom_label = gui.Label(self.parent, text='Zoom (Cell Size):')
-        self.zoom_label.grid(row=3, column=0, sticky=W)
-
-        self.graphical_battles_checkbox = gui.Checkbutton(self.parent, text='Graphical Battles',
-                                                          command=self.toggle_graphical_battles)
-        self.graphical_battles_checkbox.grid(row=3, column=1, sticky=W)
-        self.graphical_battles_checkbox.select()  # Graphical battles are the default
-
-        self.fast_battles_checkbox = gui.Checkbutton(self.parent, text='Fast Battles', command=self.toggle_fast_battles)
-        self.fast_battles_checkbox.grid(row=4, column=1, sticky=W)
-
-        self.zoom_scale = gui.Scale(self.parent, from_=1, to_=20, orient=HORIZONTAL)
-        self.zoom_scale.grid(row=4, column=0, sticky=W)
-        self.zoom_scale.bind('<ButtonRelease-1>', self.zoom)
-        self.zoom_scale.set(utility.CELL_SIZE)
-
-        self.advance_button = gui.Button(self.parent, text="[A]dvance Step", command=self.advance_once)
-        self.advance_button.grid(row=5, sticky=W)
-
-        self.run_continuously_checkbutton = gui.Checkbutton(self.parent, text='Run continuously',
-                                                            command=self.toggle_continuous)
-        self.run_continuously_checkbutton.grid(row=5, column=1, sticky=W)
-
-        self.simulation_speed_label = gui.Label(self.parent, text='Simulation Speed (ms):')
-        self.simulation_speed_label.grid(row=6, column=0, sticky=W)
-
-        self.save_button = gui.Button(self.parent, text='[S]ave', command=self.save)
-        self.save_button.grid(row=6, column=1, sticky=W)
-
-        self.delay = gui.Scale(self.parent, from_=10, to_=1000, orient=HORIZONTAL)
-        self.delay.grid(row=7, sticky=W)
-        self.delay.set(DEFAULT_SIMULATION_SPEED)
-
-        self.advance_time_button = gui.Button(self.parent, text='Advance [B]y:', command=self.run_to)
-        self.advance_time_button.grid(row=8, column=0, sticky=W)
-
-        self.years_box = Entry(self.parent)
-        self.years_box.grid(row=9, column=0, sticky=W)
-
-        self.nation_selector_label = gui.Label(self.parent, text='Nations:')
-        self.nation_selector_label.grid(row=10, column=0, sticky=W)
-
-        self.nation_selector = Listbox(self.parent)
-        self.nation_selector.grid(row=11, column=0, columnspan=3, sticky=W + E)
-
-        self.nation_selector.bind('<Double-Button-1>', self.select_nation)
-
-        self.event_log_box.grid(row=15, column=3, stick=W + E)
-
-        # Set up hotkeys
-        self.parent.bind('R', lambda _: self.toggle_run_until_battle())
-        self.parent.bind('r', lambda _: self.toggle_run_until_battle())
-        self.parent.bind('E', lambda _: self.open_religion_history_window())
-        self.parent.bind('e', lambda _: self.open_religion_history_window())
-        self.parent.bind('W', lambda _: self.open_world_history_window())
-        self.parent.bind('w', lambda _: self.open_world_history_window())
-        self.parent.bind('A', lambda _: self.advance_once())
-        self.parent.bind('a', lambda _: self.advance_once())
-        self.parent.bind('S', lambda _: self.save())
-        self.parent.bind('s', lambda _: self.save())
-        self.parent.bind('B', lambda _: self.run_to())
-        self.parent.bind('b', lambda _: self.run_to())
-
-        self.refresh_nation_selector()
+        return self.ids[id_type]
 
     def advance_once(self):
         self.advance_num = 1
@@ -414,8 +407,7 @@ class Main:
                     if not check_nation.id in nation.relations:
                         nation.relations[check_nation.id] = 0  # Initially we start out neutral with all nations.
 
-        self.event_log.add_event(events.EventNationFounded("NationFounded",
-                                                           {"nation_a": self.nations[-1].id}, self.get_current_date()))
+        self.event_log.add_event("NationFounded", {"nation_a": self.nations[-1].id}, self.get_current_date())
 
     def remove_nation(self, nation):
         # Remove this nation from other treaties.
@@ -426,8 +418,7 @@ class Main:
             trade_treaty = nation.get_treaty_with(remove_trade, 'trade')
             trade_treaty.end(self.get_current_date())
 
-        self.event_log.add_event(events.EventNationEliminated("NationEliminated",
-                                                              {"nation_a": nation.id}, self.get_current_date()))
+        self.event_log.add_event("NationEliminated", {"nation_a": nation.id}, self.get_current_date())
 
         self.old_nations[nation.id] = nation.name
 
@@ -489,9 +480,7 @@ class Main:
         except:
             pass
 
-        # Save the event log. That's kind of important, I guess.
-        self.write_out_events('event_log.txt')
-        shutil.copyfile('event_log.txt', 'saves/{}/event_log.txt'.format(self.world_name))
+        self.event_log.save()
 
         res = {'date': self.get_current_date(),
                'width': utility.S_WIDTH // utility.CELL_SIZE,
@@ -627,15 +616,13 @@ class Main:
         if a != b and not b in a.at_war and not a in b.at_war:
             if not b in a.trading and not a in b.trading:
                 if is_holy_war:
-                    self.event_log.add_event(
-                        events.EventDiplomacyWar('DiplomacyWar', {'nation_a': a.id, 'nation_b': b.id,
-                                                                  'reason': 'religious'},
-                                                 self.get_current_date()))
+                    self.event_log.add_event('DiplomacyWar', {'nation_a': a.id, 'nation_b': b.id,
+                                                              'reason': 'religious'},
+                                             self.get_current_date())
                 else:
-                    self.event_log.add_event(
-                        events.EventDiplomacyWar('DiplomacyWar', {'nation_a': a.id, 'nation_b': b.id,
-                                                                  'reason': 'economic'},
-                                                 self.get_current_date()))
+                    self.event_log.add_event('DiplomacyWar', {'nation_a': a.id, 'nation_b': b.id,
+                                                              'reason': 'economic'},
+                                             self.get_current_date())
 
                 a.at_war.append(b)
                 b.at_war.append(a)
@@ -659,9 +646,8 @@ class Main:
                 a.treaties.append(new_treaty)
                 b.treaties.append(new_treaty)
 
-                self.event_log.add_event(
-                    events.EventDiplomacyTrade('DiplomacyTrade', {'nation_a': a.id, 'nation_b': b.id},
-                                               self.get_current_date()))
+                self.event_log.add_event('DiplomacyTrade', {'nation_a': a.id, 'nation_b': b.id},
+                                         self.get_current_date())
 
     def return_levies(self, sender, reinforce_city):
         def do(reinforcing):
@@ -681,13 +667,13 @@ class Main:
                               self.reinforce(sender, return_destination),
                               is_army=True))
 
-                    self.event_log.add_event(events.EventArmyDispatched('ArmyDispatched',
-                                                                  {'nation_a': sender.id, 'nation_b': sender.id,
-                                                                   'city_a': reinforce_city.name,
-                                                                   'city_b': return_destination.name,
-                                                                   'reason': 'reinforce',
-                                                                   'army_size': reinforcing.members.size()},
-                                                                  self.get_current_date()))
+                    self.event_log.add_event('ArmyDispatched',
+                                             {'nation_a': sender.id, 'nation_b': sender.id,
+                                              'city_a': reinforce_city.name,
+                                              'city_b': return_destination.name,
+                                              'reason': 'reinforce',
+                                              'army_size': reinforcing.members.size()},
+                                             self.get_current_date())
 
         return do
 
@@ -709,12 +695,13 @@ class Main:
                           sender.color, lambda s: False, self.reinforce(sender, return_destination),
                           is_army=True))
 
-                self.event_log.add_event(events.EventArmyDispatched('ArmyDispatched',
-                                                              {'nation_a': sender.id, 'nation_b': sender.id,
-                                                               'city_a': reinforce_city.name,
-                                                               'city_b': return_destination.name, 'reason': 'reinforce',
-                                                               'army_size': reinforcing.members.size()},
-                                                              self.get_current_date()))
+                self.event_log.add_event('ArmyDispatched',
+                                         {'nation_a': sender.id, 'nation_b': sender.id,
+                                          'city_a': reinforce_city.name,
+                                          'city_b': return_destination.name,
+                                          'reason': 'reinforce',
+                                          'army_size': reinforcing.members.size()},
+                                         self.get_current_date())
 
         return do
 
@@ -748,8 +735,8 @@ class Main:
                 attacking_army.add_number(1, attacker)
 
             current_battle = battle.Battle(attacker, attacking_army, defender, defending_army, attacking_city, city,
-                                          self.end_battle,
-                                          use_graphics=self.graphical_battles, fast_battles=self.fast_battles)
+                                           self.end_battle,
+                                           use_graphics=self.graphical_battles, fast_battles=self.fast_battles)
             current_battle.setup_soldiers()
 
             if not current_battle.check_end_battle():
@@ -770,12 +757,13 @@ class Main:
                           attacker.color, lambda s: False, self.reinforce(attacker, return_destination),
                           is_army=True))
 
-                self.event_log.add_event(events.EventArmyDispatched('ArmyDispatched',
-                                                              {'nation_a': attacker.id, 'nation_b': attacker.id,
-                                                               'city_a': city.name, 'city_b': return_destination.name,
-                                                               'reason': 'reinforce',
-                                                               'army_size': attacking_army.size()},
-                                                              self.get_current_date()))
+                self.event_log.add_event('ArmyDispatched',
+                                         {'nation_a': attacker.id, 'nation_b': attacker.id,
+                                          'city_a': city.name,
+                                          'city_b': return_destination.name,
+                                          'reason': 'reinforce',
+                                          'army_size': attacking_army.size()},
+                                         self.get_current_date())
 
     def end_battle(self, battle):
         a = battle.a
@@ -808,10 +796,10 @@ class Main:
 
         # Determine the winner
         if battle.a_army.size() > 0:
-            self.event_log.add_event(events.EventAttack('Attack',
-                                                  {'nation_a': a.id, 'nation_b': b.id, 'city_b': attack_city.name,
-                                                   'success': True, 'remaining_soldiers': battle.a_army.size()},
-                                                  self.get_current_date()))
+            self.event_log.add_event('Attack',
+                                     {'nation_a': a.id, 'nation_b': b.id, 'city_b': attack_city.name,
+                                      'success': True, 'remaining_soldiers': battle.a_army.size()},
+                                     self.get_current_date())
 
             attack_city.capture(battle.a_army, a, battle.attacking_city)
             a.capture_city(attack_city)
@@ -821,10 +809,10 @@ class Main:
 
             winner = a
         elif battle.b_army.size() > 0:
-            self.event_log.add_event(events.EventAttack('Attack',
-                                                  {'nation_a': a.id, 'nation_b': b.id, 'city_b': attack_city.name,
-                                                   'success': False, 'remaining_soldiers': battle.b_army.size()},
-                                                  self.get_current_date()))
+            self.event_log.add_event('Attack',
+                                     {'nation_a': a.id, 'nation_b': b.id, 'city_b': attack_city.name,
+                                      'success': False, 'remaining_soldiers': battle.b_army.size()},
+                                     self.get_current_date())
 
             b.mod_morale(city.MORALE_INCREMENT)
             a.mod_morale(-city.MORALE_INCREMENT)
@@ -900,7 +888,7 @@ class StartUp:
         Main().start()
 
     def load(self):
-        Main.load(self.load_var.get())
+        Main().load(self.load_var.get())
 
     def archaeology(self):
         return

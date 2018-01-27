@@ -181,8 +181,11 @@ class Person:
 
         self.alive = True
 
-        e = events.EventNotablePersonBirth('NotablePersonBirth', {'nation_a': self.nation.id, 'person_a': self.name, 'person_a_role': self.periods[-1].role}, self.nation.parent.get_current_date())
-        self.nation.parent.event_log.add_event(e)
+        self.nation.parent.event_log.add_event('NotablePersonBirth',
+                                               {'nation_a': self.nation.id,
+                                                'person_a': self.name,
+                                                'person_a_role': self.periods[-1].role},
+                                               self.nation.parent.get_current_date())
 
     def save(self, path):
         res = {'name': self.name, 'home': self.home.name, 'city': self.city.name, 'age': self.age,
@@ -298,15 +301,23 @@ class Person:
 
         self.periods.append(Period(self,role=role))
 
-        e = events.EventNotablePersonPeriod('NotablePersonPeriod', {'nation_a': self.nation.id, 'person_a': self.name, 'person_a_prev_role': prev_role, 'person_a_role': self.periods[-1].role, 'period_name': self.periods[-1].name}, self.nation.parent.get_current_date())
-        self.nation.parent.event_log.add_event(e)
+        self.nation.parent.event_log.add_event('NotablePersonPeriod',
+                                               {'nation_a': self.nation.id,
+                                                'person_a': self.name,
+                                                'person_a_prev_role': prev_role,
+                                                'person_a_role': self.periods[-1].role,
+                                                'period_name': self.periods[-1].name},
+                                               self.nation.parent.get_current_date())
 
     def get_effectiveness(self):
         return self.effectiveness
 
     def handle_death(self):
-        e = events.EventNotablePersonDeath('NotablePersonDeath', {'nation_a': self.nation.id, 'person_a': self.name, 'person_a_role': self.periods[-1].role}, self.nation.parent.get_current_date())
-        self.nation.parent.event_log.add_event(e)
+        self.nation.parent.event_log.add_event('NotablePersonDeath',
+                                               {'nation_a': self.nation.id,
+                                                'person_a': self.name,
+                                                'person_a_role': self.periods[-1].role},
+                                               self.nation.parent.get_current_date())
 
     def arrival(self, group):
         self.city = self.target
@@ -345,8 +356,12 @@ class Person:
                         self.nation.culture.add_art(new_art)
                         self.periods[-1].art.append(new_art)
 
-                        e = events.EventArtCreated('ArtCreated', {'nation_a': self.nation.id, 'person_a': self.name, 'person_a_role': self.periods[-1].role, 'art': str(new_art)}, self.nation.parent.get_current_date())
-                        self.nation.parent.event_log.add_event(e)
+                        self.nation.parent.event_log.add_event('ArtCreated',
+                                                               {'nation_a': self.nation.id,
+                                                                'person_a': self.name,
+                                                                'person_a_role': self.periods[-1].role,
+                                                                'art': str(new_art)},
+                                                               self.nation.parent.get_current_date())
 
                 # Let's start a new artistic period in our lives (maybe)
                 if random.randint(0, BASE_START_ARTISTIC_PERIOD_CHANCE - self.periods[-1].length) == 0:

@@ -330,13 +330,13 @@ class City:
                       self.nation.color, lambda s: False, self.parent.return_levies(self.nation, attacking_city),
                       is_army=True))
 
-            self.parent.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': self.nation.id,
-                                                                                    'nation_b': self.nation.id,
-                                                                                    'city_a': self.name,
-                                                                                    'city_b': attacking_city.name,
-                                                                                    'reason': 'return levies',
-                                                                                    'army_size': send_army.size()},
-                                                                 self.parent.get_current_date()))
+            self.parent.event_log.add_event('ArmyDispatched', {'nation_a': self.nation.id,
+                                                               'nation_b': self.nation.id,
+                                                               'city_a': self.name,
+                                                               'city_b': attacking_city.name,
+                                                               'reason': 'return levies',
+                                                               'army_size': send_army.size()},
+                                            self.parent.get_current_date())
 
     def destroy_self(self):
         for cell in self.cells:

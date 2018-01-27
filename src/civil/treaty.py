@@ -176,12 +176,18 @@ class Treaty:
             if ender is None:
                 ender = self.nation_a
 
-            self.parent.event_log.add_event(events.EventDiplomacyTradeEnd('DiplomacyTradeEnd', {'nation_a': ender.id, 'nation_b': self.get_other_nation(ender).id}, self.parent.get_current_date()))
+            self.parent.event_log.add_event('DiplomacyTradeEnd',
+                                            {'nation_a': ender.id,
+                                             'nation_b': self.get_other_nation(ender).id},
+                                            self.parent.get_current_date())
         elif self.treaty_type == 'war':
             self.nation_a.at_war.remove(self.nation_b)
             self.nation_b.at_war.remove(self.nation_a)
 
-            self.parent.event_log.add_event(events.EventDiplomacyWarEnd('DiplomacyWarEnd', {'nation_a': self.nation_a.id, 'nation_b': self.nation_b.id}, self.parent.get_current_date()))
+            self.parent.event_log.add_event('DiplomacyWarEnd',
+                                            {'nation_a': self.nation_a.id,
+                                             'nation_b': self.nation_b.id},
+                                            self.parent.get_current_date())
 
     def get_treaty_names(self, current_date, requesting_nation):
         if not requesting_nation.id in self.names or len(self.names[requesting_nation.id]) == 0:

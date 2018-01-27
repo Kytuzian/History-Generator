@@ -118,7 +118,11 @@ class God:
 
             self.domains.remove(lost_domain)
 
-            parent.event_log.add_event(events.EventReligionDomainRemoved('ReligionDomainRemoved', {'god_a': self.name, 'religion_a': self.religion.name, 'domain_a': lost_domain}, parent.get_current_date()))
+            parent.event_log.add_event('ReligionDomainRemoved',
+                                       {'god_a': self.name,
+                                        'religion_a': self.religion.name,
+                                        'domain_a': lost_domain},
+                                       parent.get_current_date())
 
         if len(self.domains) <= MAX_DOMAIN_COUNT and random.randint(0, 100) < DOMAIN_GAIN_CHANCE:
             gained_domain = random.choice(DOMAINS.keys())
@@ -126,7 +130,11 @@ class God:
             if not gained_domain in self.domains:
                 self.domains.append(gained_domain)
 
-                parent.event_log.add_event(events.EventReligionDomainAdded('ReligionDomainAdded', {'god_a': self.name, 'religion_a': self.religion.name, 'domain_a': gained_domain}, parent.get_current_date()))
+                parent.event_log.add_event('ReligionDomainAdded',
+                                           {'god_a': self.name,
+                                            'religion_a': self.religion.name,
+                                            'domain_a': gained_domain},
+                                           parent.get_current_date())
 
     def get_tolerance_score(self):
         score = 0

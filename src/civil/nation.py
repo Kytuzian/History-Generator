@@ -20,7 +20,6 @@ import random
 
 from Tkinter import *
 
-
 # The chance (1 in x) that the parent nation won't declare war on a nation that declares independence.
 PEACEFUL_REVOLT_CHANCE = 50
 
@@ -539,9 +538,8 @@ class Nation:
 
         self.chance_add_new_name(self.cities[-1].name)
 
-        self.parent.event_log.add_event(
-            events.EventCityFounded('CityFounded', {'nation_a': self.id, 'city_a': self.cities[-1].name},
-                                    self.parent.get_current_date()))
+        self.parent.event_log.add_event('CityFounded', {'nation_a': self.id, 'city_a': self.cities[-1].name},
+                                        self.parent.get_current_date())
 
         self.cities[-1].army = self.army_structure.copy().zero()
 
@@ -680,10 +678,9 @@ class Nation:
             rearm_unit.do_rearm(self)
 
             weapon_string = ', '.join(map(lambda w: w.name, rearm_unit.weapons))
-            e = events.EventRearmUnit('RearmUnit',
-                                      {'nation_a': self.id, 'unit_a': rearm_unit.name, 'weapons': weapon_string,
-                                       'armor': rearm_unit.armor.name}, self.parent.get_current_date())
-            self.parent.event_log.add_event(e)
+            self.parent.event_log.add_event('RearmUnit',
+                                            {'nation_a': self.id, 'unit_a': rearm_unit.name, 'weapons': weapon_string,
+                                             'armor': rearm_unit.armor.name}, self.parent.get_current_date())
 
             for city in self.cities:
                 city.rearm_army(rearm_unit)
@@ -725,9 +722,9 @@ class Nation:
 
             if self.current_research is None or self.current_research.is_unlocked():
                 if self.current_research is not None and self.current_research.is_unlocked():
-                    self.parent.event_log.add_event(events.EventTechResearch('TechResearch', {'nation_a': self.id,
-                                                                                        'tech_a': self.current_research.name},
-                                                                       self.parent.get_current_date()))
+                    self.parent.event_log.add_event('TechResearch', {'nation_a': self.id,
+                                                                     'tech_a': self.current_research.name},
+                                                    self.parent.get_current_date())
                 available = self.tech.get_available_research()
 
                 if len(available) > 0:
@@ -797,7 +794,8 @@ class Nation:
 
                     army_revolted = sum([city.army.size() for city in revolted_nation.cities])
 
-                    # The revolting nation increases their morale because they're now free from whatever issues they saw with the old regime
+                    # The revolting nation increases their morale because they're now free from whatever issues they
+                    # saw with the old regime
                     revolted_nation.mod_morale(
                         city.MORALE_INCREMENT * len(revolted_cities) * int(math.log(army_revolted + 2)))
 
@@ -805,19 +803,12 @@ class Nation:
                     self.mod_morale(len(revolted_cities) * city.MORALE_INCREMENT * int(
                         math.log(sum([city.army.size() for city in self.cities]) + 2)))
 
-                    self.parent.write_to_gen_log('{}:'.format(self.parent.get_current_date()))
-                    self.parent.write_to_gen_log(
-                        "There was a revolt in the nation of {}, resulting in the creation of the new nation state of {}.".format(
-                            self.name, revolted_nation.name))
-                    self.parent.write_to_gen_log(
-                        "The following cities joined the revolt, along with {} soldiers: {}".format(army_revolted,
-                                                                                                    revolted_nation.cities))
-
-                    self.parent.event_log.add_event(events.EventRevolt('Revolt',
-                                                                 {'nation_a': self.id, 'nation_b': revolted_nation.id,
-                                                                  'cities': [city.name for city in
-                                                                             revolted_nation.cities]},
-                                                                 self.parent.get_current_date()))
+                    self.parent.event_log.add_event('Revolt',
+                                                    {'nation_a': self.id,
+                                                     'nation_b': revolted_nation.id,
+                                                     'cities': [city.name for city in
+                                                                revolted_nation.cities]},
+                                                    self.parent.get_current_date())
 
                     # We don't have peaceful revolts, naturally a nation would attempt to put down the revolt.
                     if random.randint(0, PEACEFUL_REVOLT_CHANCE) != 0:
@@ -860,13 +851,13 @@ class Nation:
                                 Group(self.parent, self.id, city.army, (fx, fy), (dx, dy), self.color, lambda s: False,
                                       action, is_army=True, has_boat=(city.resources['boats'] > 0)))
 
-                            self.parent.event_log.add_event(events.EventArmyDispatched('ArmyDispatched', {'nation_a': self.id,
-                                                                                                    'nation_b': enemy.id,
-                                                                                                    'city_a': city.name,
-                                                                                                    'city_b': attacking_city.name,
-                                                                                                    'reason': 'attack',
-                                                                                                    'army_size': city.army.size()},
-                                                                                 self.parent.get_current_date()))
+                            self.parent.event_log.add_event('ArmyDispatched', {'nation_a': self.id,
+                                                                              'nation_b': enemy.id,
+                                                                              'city_a': city.name,
+                                                                              'city_b': attacking_city.name,
+                                                                              'reason': 'attack',
+                                                                              'army_size': city.army.size()},
+                                                            self.parent.get_current_date())
 
                             city.army = city.army.zero()
 

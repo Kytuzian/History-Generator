@@ -3,6 +3,7 @@ import ast
 import culture.culture as culture
 
 main = None
+EVENT_LOAD_SCRIPT = 'db/event/load_event.sql'
 
 
 def get_nation_name(id):
@@ -18,8 +19,10 @@ def get_nation_name(id):
 
 
 class Event:
-    def __init__(self, name, event_data, date):
+    def __init__(self, event_id, name, event_data, date):
         self.name = name
+
+        self.event_id = event_id
 
         self.event_data = event_data
 
@@ -34,61 +37,68 @@ class Event:
         return {'name': self.name, 'event_data': self.event_data, 'date': self.date}
 
     @staticmethod
-    def from_str(strdata):
-        return Event.from_dict(ast.literal_eval(strdata))
+    def from_db(db, event_id):
+        dict = {'event_data': {}, 'id': event_id}
+
+        for event_data in db.query(EVENT_LOAD_SCRIPT, {'event_id': event_id}):
+            dict['name'] = event_data['event_type']
+            dict['date'] = event_data['event_date']
+            dict['event_data'][event_data['field_name']] = ast.literal_eval(event_data['field_value'])
+
+        return Event.from_dict(dict)
 
     @staticmethod
     def from_dict(dict):
         if dict['name'] == 'NationFounded':
-            return EventNationFounded(dict['name'], dict['event_data'], dict['date'])
+            return EventNationFounded(dict['id'], dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'NationEliminated':
-            return EventNationEliminated(dict['name'], dict['event_data'], dict['date'])
+            return EventNationEliminated(dict['id'], dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'CityFounded':
-            return EventCityFounded(dict['name'], dict['event_data'], dict['date'])
+            return EventCityFounded(dict['id'], dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'CityMerged':
-            return EventCityMerged(dict['name'], dict['event_data'], dict['date'])
+            return EventCityMerged(dict['id'], dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'ReligionCreated':
-            return EventReligionCreated(dict['name'], dict['event_data'], dict['date'])
+            return EventReligionCreated(dict['id'], dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'ReligionGodAdded':
-            return EventReligionGodAdded(dict['name'], dict['event_data'], dict['date'])
+            return EventReligionGodAdded(dict['id'], dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'ReligionGodRemoved':
-            return EventReligionGodRemoved(dict['name'], dict['event_data'], dict['date'])
+            return EventReligionGodRemoved(dict['id'], dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'ReligionDomainAdded':
-            return EventReligionDomainAdded(dict['name'], dict['event_data'], dict['date'])
+            return EventReligionDomainAdded(dict['id'], dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'ReligionDomainRemoved':
-            return EventReligionDomainRemoved(dict['name'], dict['event_data'], dict['date'])
+            return EventReligionDomainRemoved(dict['id'], dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'DiplomacyTrade':
-            return EventDiplomacyTrade(dict['name'], dict['event_data'], dict['date'])
+            return EventDiplomacyTrade(dict['id'], dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'DiplomacyTradeEnd':
-            return EventDiplomacyTradeEnd(dict['name'], dict['event_data'], dict['date'])
+            return EventDiplomacyTradeEnd(dict['id'], dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'DiplomacyWar':
-            return EventDiplomacyWar(dict['name'], dict['event_data'], dict['date'])
+            return EventDiplomacyWar(dict['id'], dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'DiplomacyWarEnd':
-            return EventDiplomacyWarEnd(dict['name'], dict['event_data'], dict['date'])
+            return EventDiplomacyWarEnd(dict['id'], dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'ArmyDispatched':
-            return EventArmyDispatched(dict['name'], dict['event_data'], dict['date'])
+            return EventArmyDispatched(dict['id'], dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'Attack':
-            return EventAttack(dict['name'], dict['event_data'], dict['date'])
+            return EventAttack(dict['id'], dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'Revolt':
-            return EventRevolt(dict['name'], dict['event_data'], dict['date'])
+            return EventRevolt(dict['id'], dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'TechResearch':
-            return EventTechResearch(dict['name'], dict['event_data'], dict['date'])
+            return EventTechResearch(dict['id'], dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'RearmUnit':
-            return EventRearmUnit(dict['name'], dict['event_data'], dict['date'])
+            return EventRearmUnit(dict['id'], dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'NotablePersonBirth':
-            return EventNotablePersonBirth(dict['name'], dict['event_data'], dict['date'])
+            return EventNotablePersonBirth(dict['id'], dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'NotablePersonDeath':
-            return EventNotablePersonDeath(dict['name'], dict['event_data'], dict['date'])
+            return EventNotablePersonDeath(dict['id'], dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'NotablePersonPeriod':
-            return EventNotablePersonPeriod(dict['name'], dict['event_data'], dict['date'])
+            return EventNotablePersonPeriod(dict['id'], dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'ArtCreated':
-            return EventArtCreated(dict['name'], dict['event_data'], dict['date'])
+            return EventArtCreated(dict['id'], dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'ArmyRaised':
-            return EventArmyRaised(dict['name'], dict['event_data'], dict['date'])
+            return EventArmyRaised(dict['id'], dict['name'], dict['event_data'], dict['date'])
         elif dict['name'] == 'TroopCreated':
-            return EventTroopCreated(dict['name'], dict['event_data'], dict['date'])
+            return EventTroopCreated(dict['id'], dict['name'], dict['event_data'], dict['date'])
         else:
-            return Event(dict['name'], dict['event_data'], dict['date'])
+            return Event(dict['id'], dict['name'], dict['event_data'], dict['date'])
 
     def text_version(self):
         return ''

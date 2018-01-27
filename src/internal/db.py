@@ -9,40 +9,41 @@ class DB:
 
     def query(self, fname, params=None):
         with open(fname) as f:
-            query = f.read()
+            contents = f.read()
 
         result = []
-
         cursor = self.conn.cursor()
 
-        if params is None:
-            res = list(cursor.execute(query))
-        else:
-            res = list(cursor.execute(query, params))
+        for query in contents.split(';'):
+            if params is None:
+                res = list(cursor.execute(query))
+            else:
+                res = list(cursor.execute(query, params))
 
-        if len(res) > 0:
-            columns = res[0]
+            if len(res) > 0:
+                columns = res[0]
 
-            for row in res[1:]:
-                result.append({})
+                for row in res[1:]:
+                    result.append({})
 
-                for i, col in enumerate(columns):
-                    result[col] = row[i]
+                    for i, col in enumerate(columns):
+                        result[col] = row[i]
 
         return result
 
     def execute(self, fname, params=None):
         with open(fname) as f:
-            statement = f.read()
+            contents = f.read()
 
-        cursor = self.conn.cursor()
+        for statement in contents.split(';'):
+            cursor = self.conn.cursor()
 
-        if params is None:
-            cursor.execute(statement)
-        else:
-            cursor.execute(statement, params)
+            if params is None:
+                cursor.execute(statement)
+            else:
+                cursor.execute(statement, params)
 
-        self.conn.commit()
+            self.conn.commit()
 
     def setup(self):
         # Create all the tables
@@ -59,6 +60,8 @@ class DB:
         self.execute('db/setup/armors.sql')
         self.execute('db/setup/equipment_list.sql')
         self.execute('db/setup/treaties.sql')
+        self.execute('db/setup/events.sql')
+        self.execute('db/setup/event_types.sql')
+        self.execute('db/setup/event_data.sql')
 
         self.conn.commit()
-
