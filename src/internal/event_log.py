@@ -3,7 +3,7 @@ from Tkconstants import END
 from internal import utility
 from internal.events import Event
 
-EVENT_LOG_SELECT_SCRIPT = "db/event/load_event_ids.sql"
+EVENT_LOG_SELECT_SCRIPT = 'db/event/load_event_ids.sql'
 
 
 class EventLog:
@@ -21,7 +21,8 @@ class EventLog:
 
         # self.update_event_log_box(event)
 
-    def save(self):
+    def save(self, db):
+        self.db = db
         map(self.write_to_db, self.events)
 
     def load(self):

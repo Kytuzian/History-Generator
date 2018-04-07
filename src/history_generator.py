@@ -471,49 +471,50 @@ class Main:
         self.parent.mainloop()
 
     def save(self):
-        try:
-            os.makedirs('saves/{}/'.format(self.world_name))
-            os.makedirs('saves/{}/nations/'.format(self.world_name))
-            os.makedirs('saves/{}/religions/'.format(self.world_name))
-            os.makedirs('saves/{}/battle_history/'.format(self.world_name))
-            os.makedirs('saves/{}/treaties/'.format(self.world_name))
-        except:
-            pass
+        # try:
+        #     os.makedirs('saves/{}/'.format(self.world_name))
+        #     os.makedirs('saves/{}/nations/'.format(self.world_name))
+        #     os.makedirs('saves/{}/religions/'.format(self.world_name))
+        #     os.makedirs('saves/{}/battle_history/'.format(self.world_name))
+        #     os.makedirs('saves/{}/treaties/'.format(self.world_name))
+        # except:
+        #     pass
 
-        self.event_log.save()
+        self.db.save()
+        self.event_log.save(self.db)
 
-        res = {'date': self.get_current_date(),
-               'width': utility.S_WIDTH // utility.CELL_SIZE,
-               'height': utility.S_HEIGHT // utility.CELL_SIZE,
-               'old_nations': self.old_nations,
-               'ids': self.ids}
-
-        with open('saves/{}/main.txt'.format(self.world_name), 'w') as f:
-            f.write(str(res))
-
-        i = 0
-        total_cells = len(self.cells) * len(self.cells[0])
-
-        with open('saves/{}/cells.txt'.format(self.world_name), 'w') as f:
-            for row in self.cells:
-                for cell in row:
-                    utility.show_bar(i, total_cells, message='Saving cells ({} of {}): '.format(i, total_cells))
-                    i += 1
-
-                    f.write('{}\n'.format(cell.get_info()))
-        print('')
-
-        for i, nation in enumerate(self.nations):
-            utility.show_bar(i, len(self.nations), message='Saving nations: ')
-
-            os.makedirs('saves/{}/nations/{}/'.format(self.world_name, nation.id))
-            nation.save('saves/{}/nations/{}/'.format(self.world_name, nation.id))
-
-        for battle in self.battle_history:
-            battle.save('saves/{}/battle_history/'.format(self.world_name))
-
-        for treaty in self.treaties:
-            treaty.save('saves/{}/treaties/'.format(self.world_name))
+        # res = {'date': self.get_current_date(),
+        #        'width': utility.S_WIDTH // utility.CELL_SIZE,
+        #        'height': utility.S_HEIGHT // utility.CELL_SIZE,
+        #        'old_nations': self.old_nations,
+        #        'ids': self.ids}
+        #
+        # with open('saves/{}/main.txt'.format(self.world_name), 'w') as f:
+        #     f.write(str(res))
+        #
+        # i = 0
+        # total_cells = len(self.cells) * len(self.cells[0])
+        #
+        # with open('saves/{}/cells.txt'.format(self.world_name), 'w') as f:
+        #     for row in self.cells:
+        #         for cell in row:
+        #             utility.show_bar(i, total_cells, message='Saving cells ({} of {}): '.format(i, total_cells))
+        #             i += 1
+        #
+        #             f.write('{}\n'.format(cell.get_info()))
+        # print('')
+        #
+        # for i, nation in enumerate(self.nations):
+        #     utility.show_bar(i, len(self.nations), message='Saving nations: ')
+        #
+        #     os.makedirs('saves/{}/nations/{}/'.format(self.world_name, nation.id))
+        #     nation.save('saves/{}/nations/{}/'.format(self.world_name, nation.id))
+        #
+        # for battle in self.battle_history:
+        #     battle.save('saves/{}/battle_history/'.format(self.world_name))
+        #
+        # for treaty in self.treaties:
+        #     treaty.save('saves/{}/treaties/'.format(self.world_name))
 
         print('')
 

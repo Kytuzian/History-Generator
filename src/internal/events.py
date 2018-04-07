@@ -4,6 +4,9 @@ import culture.culture as culture
 
 main = None
 EVENT_LOAD_SCRIPT = 'db/event/load_event.sql'
+EVENT_LOG_INSERT_SCRIPT = 'db/event/insert_event_data.sql'
+EVENT_INSERT_SCRIPT = 'db/event/insert_event.sql'
+EVENT_TYPE_GET_SCRIPT = 'db/event/event_type_get.sql'
 
 
 def get_nation_name(id):
@@ -42,10 +45,17 @@ class Event:
 
         for event_data in db.query(EVENT_LOAD_SCRIPT, {'event_id': event_id}):
             dict['name'] = event_data['event_type']
-            dict['date'] = event_data['event_date']
+            dict['date'] = ast.literal_eval(event_data['event_date'])
             dict['event_data'][event_data['field_name']] = ast.literal_eval(event_data['field_value'])
 
         return Event.from_dict(dict)
+
+    def save(self, db):
+        event_type_id = db.query(EVENT_TYPE_GET_SCRIPT, {'name': self.name})[0]['id']
+        db.execute(EVENT_INSERT_SCRIPT, {'event_id': self.event_id, 'event_type_id': event_type_id, 'event_date': str(self.date)})
+
+        for key in self.event_data:
+            db.execute(EVENT_LOG_INSERT_SCRIPT, {'event_id': self.event_id, 'field_name': key, 'field_value': str(self.event_data[key])})
 
     @staticmethod
     def from_dict(dict):

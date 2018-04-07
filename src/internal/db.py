@@ -1,11 +1,18 @@
 import sqlite3
-
+import os
 
 class DB:
     def __init__(self, name):
         self.name = name
 
-        self.conn = sqlite3.connect('saves/' + name + '.db')
+        self.conn = sqlite3.connect('saves/{}.db'.format(self.name))
+
+    def save(self):
+        # Clear the old db.
+        self.conn.close()
+        os.remove('saves/{}.db'.format(self.name))
+        self.conn = sqlite3.connect('saves/{}.db'.format(self.name))
+        self.setup()
 
     def query(self, fname, params=None):
         with open(fname) as f:
@@ -16,18 +23,18 @@ class DB:
 
         for query in contents.split(';'):
             if params is None:
-                res = list(cursor.execute(query))
+                cursor.execute(query)
             else:
-                res = list(cursor.execute(query, params))
+                cursor.execute(query, params)
+
+            res = cursor.fetchall()
 
             if len(res) > 0:
-                columns = res[0]
-
-                for row in res[1:]:
+                for row in res:
                     result.append({})
 
-                    for i, col in enumerate(columns):
-                        result[col] = row[i]
+                    for i, col in enumerate(cursor.description):
+                        result[-1][col[0]] = row[i]
 
         return result
 

@@ -306,8 +306,8 @@ class Nation:
         self.listbox_display.bind('<Double-Button-1>', self.selected)
 
     def save(self, path):
-        self.parent.db.save_nation(self)
-        self.parent.db.save_name(self.name)
+        # self.parent.db.save_nation(self)
+        # self.parent.db.save_name(self.name)
         return
 
     def selected(self, event):

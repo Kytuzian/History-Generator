@@ -1,6 +1,6 @@
-CREATE TABLE events
+create table events
 (
-    id INTEGER PRIMARY KEY,
-    event_type_id INTEGER,
+    id integer,
+    event_type_id integer,
     event_date TEXT
 )
