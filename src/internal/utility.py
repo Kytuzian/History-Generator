@@ -283,6 +283,10 @@ def rgb_color(r, g, b):
     return '#{}{}{}'.format(hex(r)[2:].ljust(2, '0'), hex(g)[2:].ljust(2, '0'), hex(b)[2:].ljust(2, '0'))
 
 
+def flatten(l):
+    return [i for xs in l for i in xs]
+
+
 # From https://gist.github.com/jtriley/1108174
 def get_terminal_size():
     """ getTerminalSize()

@@ -1,0 +1,28 @@
+insert into cells
+(
+    id,
+    type,
+    x,
+    y,
+    height,
+    temperature_multiplier,
+    moisture,
+    owner,
+    building_capacity,
+    high_temp_range,
+    low_temp_range
+)
+values
+(
+    :cell_id,
+    :type,
+    :x,
+    :y,
+    :height,
+    :temperature_multiplier,
+    :moisture,
+    :owner,
+    :building_capacity,
+    :high_temp_range,
+    :low_temp_range
+);

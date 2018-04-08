@@ -3,7 +3,7 @@ from Tkconstants import END
 from internal import utility
 from internal.events import Event
 
-EVENT_LOG_SELECT_SCRIPT = 'db/event/load_event_ids.sql'
+EVENT_LOG_SELECT_SCRIPT = 'db/internal/event/load_event_ids.sql'
 
 
 class EventLog:

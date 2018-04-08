@@ -70,5 +70,7 @@ class DB:
         self.execute('db/setup/events.sql')
         self.execute('db/setup/event_types.sql')
         self.execute('db/setup/event_data.sql')
+        self.execute('db/setup/cells.sql')
+        self.execute('db/setup/buildings.sql')
 
         self.conn.commit()

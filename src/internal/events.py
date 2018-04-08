@@ -3,10 +3,10 @@ import ast
 import culture.culture as culture
 
 main = None
-EVENT_LOAD_SCRIPT = 'db/event/load_event.sql'
-EVENT_LOG_INSERT_SCRIPT = 'db/event/insert_event_data.sql'
-EVENT_INSERT_SCRIPT = 'db/event/insert_event.sql'
-EVENT_TYPE_GET_SCRIPT = 'db/event/event_type_get.sql'
+EVENT_LOAD_SCRIPT = 'db/internal/event/load_event.sql'
+EVENT_LOG_INSERT_SCRIPT = 'db/internal/event/insert_event_data.sql'
+EVENT_INSERT_SCRIPT = 'db/internal/event/insert_event.sql'
+EVENT_TYPE_GET_SCRIPT = 'db/internal/event/event_type_get.sql'
 
 
 def get_nation_name(id):

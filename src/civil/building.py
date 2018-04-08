@@ -96,11 +96,9 @@ class Building:
         self.effects = effects
         self.number = number
 
-    def get_info(self):
-        # We don't need to save effects because we have a whole list of those above we can reference them from
-        res = {'name': self.name, 'number': self.number}
-
-        return res
+    def save(self, db, cell_id):
+        # only save name, number, cell_id, get the effects from the dictionary above.
+        db.execute('db/civil/building_insert.sql', {'cell_id': cell_id, 'name': self.name, 'number': self.number})
 
     def produce(self):
         return

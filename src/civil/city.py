@@ -37,6 +37,8 @@ class City:
 
         self.parent = parent
 
+        self.id = self.parent.get_next_id('city')
+
         self.population = 10
         self.population_capacity = 10
 

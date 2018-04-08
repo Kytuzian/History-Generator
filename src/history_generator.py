@@ -2,11 +2,12 @@ from Tkinter import *
 import tkMessageBox
 import random
 
-import os
 import sys
 
 import civil.battle_history as battle_history
 import civil.treaty as treaty
+import internal.terrain.cell
+import internal.terrain.weather
 import internal.utility as utility
 
 import civil.city as city
@@ -16,7 +17,6 @@ import culture.religion as religion
 
 import internal.events as events
 import internal.event_analysis as event_analysis
-import internal.terrain.terrain as terrain
 import internal.terrain.noise as noise
 import internal.db as db
 import internal.gui as gui
@@ -24,6 +24,7 @@ import internal.gui as gui
 import military.battle as battle
 from internal.event_log import EventLog
 from internal.group.group import Group
+from internal.progress_bar import map_task, sequence_tasks, call_task, ProgressBar
 
 DEFAULT_SIMULATION_SPEED = 300  # ms
 
@@ -283,10 +284,11 @@ class Main:
             self.cells.append([])
             for y in xrange(cells_y):
                 utility.show_bar(x * cells_y + y, cells_x * cells_y, message='Generating world: ', number_limit=True)
-                self.cells[-1].append(terrain.Cell(self, '', x, y, data[x][y], random.random() ** 6, 0, None))
+                self.cells[-1].append(
+                    internal.terrain.cell.Cell(self, '', x, y, data[x][y], random.random() ** 6, 0, None))
 
         print('')
-        self.weather = terrain.Weather(self.cells, self)
+        self.weather = internal.terrain.weather.Weather(self.cells, self)
         self.weather.run(10)
 
         for x, row in enumerate(self.cells):
@@ -471,17 +473,12 @@ class Main:
         self.parent.mainloop()
 
     def save(self):
-        # try:
-        #     os.makedirs('saves/{}/'.format(self.world_name))
-        #     os.makedirs('saves/{}/nations/'.format(self.world_name))
-        #     os.makedirs('saves/{}/religions/'.format(self.world_name))
-        #     os.makedirs('saves/{}/battle_history/'.format(self.world_name))
-        #     os.makedirs('saves/{}/treaties/'.format(self.world_name))
-        # except:
-        #     pass
+        task = sequence_tasks([call_task(self.db.save, []),
+                               call_task(self.event_log.save, [self.db])] +
+                              utility.flatten(map(lambda row: map(lambda cell: call_task(cell.save, []), row), self.cells)))
 
-        self.db.save()
-        self.event_log.save(self.db)
+        progress_bar = ProgressBar('Saving...', task)
+        progress_bar.loop()
 
         # res = {'date': self.get_current_date(),
         #        'width': utility.S_WIDTH // utility.CELL_SIZE,
