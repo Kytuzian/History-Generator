@@ -26,6 +26,12 @@ CELL_SIZE = 6  # cells are squares, this is the side length
 SCROLL_SPEED = CELL_SIZE
 
 
+def sum_dict(d):
+    total = 0
+    for k in d:
+        total += d[k]
+    return total
+
 def listbox_capacity(listbox):
     font = tkFont.Font(listbox, listbox['font'])
 

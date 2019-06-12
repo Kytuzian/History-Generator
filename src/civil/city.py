@@ -8,6 +8,7 @@ import random
 
 from Tkinter import *
 
+from civil.city_header import CityHeader
 from civil.resources import base_resources, base_resource_prices
 from internal.group.caravan import Caravan
 from internal.group.group import Group
@@ -71,6 +72,8 @@ class City:
         self.merges = []
 
         self.caravans = []
+
+        self.city_header = CityHeader(self)
 
         # self.can_build_boats = False
 
@@ -422,21 +425,10 @@ class City:
         return (x // self.total_cell_count(), y // self.total_cell_count())
 
     def remake_display_name(self):
-        self.parent.canvas.delete(self.name_id)
-        self.name_id = -1
-
-        self.handle_display_name()
+        self.city_header.remake()
 
     def handle_display_name(self):
-        x, y = self.get_average_position()
-        x = x * utility.CELL_SIZE
-        y = y * utility.CELL_SIZE
-
-        if self.name_id == -1:
-            self.name_id = self.parent.canvas.create_text(x, y - utility.CELL_SIZE, text=self.name)
-        else:
-            self.parent.canvas.coords(self.name_id, x, y - utility.CELL_SIZE)
-            self.parent.canvas.itemconfig(self.name_id, text='{} ({})'.format(self.name, self.population))
+        self.city_header.handle()
 
     # We'll get rid of cells or transform city cells back into surroundings cells
     def handle_abandonment(self):
@@ -668,7 +660,6 @@ class City:
         self.consumed_resources = base_resources()
         self.produced_resources = base_resources()
 
-        self.handle_display_name()
         self.handle_disconnected_cells()
 
         if self.population < self.calculate_population_capacity():
@@ -701,6 +692,9 @@ class City:
         self.calculate_population_capacity()
 
         self.age += 1
+
+        # do this at the end so we have access to the produced resources for the resource indicators
+        self.handle_display_name()
 
     def get_tax_score(self):
         amount = self.population
