@@ -606,3 +606,4 @@ class Battle:
                     self.after_id = self.parent.after(self.battle_speed.get(), self.main_phase)
 
                     break
+

@@ -254,9 +254,9 @@ class City:
 
         self.merges.append(other.name)
 
-        self.parent.events.append(events.EventCityMerged('CityMerged', {'nation_a': self.nation.id, 'city_a': self.name,
-                                                                        'city_b': other.name},
-                                                         self.parent.get_current_date()))
+        self.parent.event_log.add_event('CityMerged', {'nation_a': self.nation.id, 'city_a': self.name,
+                                                       'city_b': other.name},
+                                            self.parent.get_current_date()))
         self.parent.write_to_gen_log(self.parent.events[-1].text_version())
 
         other.destroy = True
@@ -290,13 +290,13 @@ class City:
                           self.parent.reinforce(self.nation, return_destination),
                           is_army=True, has_boat=(self.resources['boats'] > 0)))
 
-                self.parent.events.append(events.EventArmyDispatched('ArmyDispatched', {'nation_a': self.nation.id,
-                                                                                        'nation_b': self.nation.id,
-                                                                                        'city_a': self.name,
-                                                                                        'city_b': return_destination.name,
-                                                                                        'reason': 'evacuate',
-                                                                                        'army_size': self.army.size()},
-                                                                     self.parent.get_current_date()))
+                self.parent.event_log.add_event('ArmyDispatched', {'nation_a': self.nation.id,
+                                                                   'nation_b': self.nation.id,
+                                                                   'city_a': self.name,
+                                                                   'city_b': return_destination.name,
+                                                                   'reason': 'evacuate',
+                                                                   'army_size': self.army.size()},
+                                                    self.parent.get_current_date()))
 
         if self.is_capital:  # We lose twice as much morale for losing the capital
             self.nation.mod_morale(-MORALE_INCREMENT * CAPITAL_CITY_MORALE_BONUS)
