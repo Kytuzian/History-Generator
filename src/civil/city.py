@@ -256,7 +256,7 @@ class City:
 
         self.parent.event_log.add_event('CityMerged', {'nation_a': self.nation.id, 'city_a': self.name,
                                                        'city_b': other.name},
-                                            self.parent.get_current_date()))
+                                            self.parent.get_current_date())
         self.parent.write_to_gen_log(self.parent.events[-1].text_version())
 
         other.destroy = True
@@ -296,7 +296,7 @@ class City:
                                                                    'city_b': return_destination.name,
                                                                    'reason': 'evacuate',
                                                                    'army_size': self.army.size()},
-                                                    self.parent.get_current_date()))
+                                                    self.parent.get_current_date())
 
         if self.is_capital:  # We lose twice as much morale for losing the capital
             self.nation.mod_morale(-MORALE_INCREMENT * CAPITAL_CITY_MORALE_BONUS)
@@ -398,8 +398,8 @@ class City:
                             self.parent.start_war(self.nation, neighbor.owner.nation, is_holy_war=False)
                         else:  # Nah jk let's just trade.
                             self.parent.start_trade_agreement(self.nation, neighbor.owner.nation)
-                elif neighbor.owner != self and neighbor.owner.nation == self.nation:  # It's not a neighboring
-                    # nation, but it is a neighboring city, so we'll merge together with it.
+                elif neighbor.owner != self and neighbor.owner.nation == self.nation:
+                    # It's not a neighboring nation, but it is a neighboring city, so we'll merge together with it.
                     self.combine_cities(neighbor.owner)
 
                     # Use the newly combined lists of cells to determine the result now.
@@ -664,8 +664,8 @@ class City:
 
         if self.population < self.calculate_population_capacity():
             t = float(self.resources['food']) / self.population * self.population_capacity / self.population
-            rate = 1.0 / (1.0 + self.population ** 0.5 * math.e ** (-t)) / 9.0
-            new_pop = self.population * (1.0 + rate / 12.0) ** 12.0 + 2
+            rate = 0.005 * t
+            new_pop = self.population * (1.0 + rate / 12.0) # + 1
             # print(self.resources['food'], self.population_capacity, self.population, t, rate, new_pop)
             change = new_pop - self.population
             self.handle_population_change(change)

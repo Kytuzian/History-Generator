@@ -511,7 +511,7 @@ def clamp(a, maxv, minv):
 
 
 def product(l):
-    return reduce(lambda a, b: a * b, l)
+    return reduce(lambda a, b: a * b, l, 1)
 
 
 def flatten(l):

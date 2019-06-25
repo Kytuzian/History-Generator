@@ -756,20 +756,20 @@ class Nation:
             if len(self.cities) > 1:
                 if random.randint(0, max(1, 50 + self.morale)) == 0:
                     revolted_cities = []
-                    for city in self.cities:
+                    for c in self.cities:
                         # Not all cities can revolt
-                        if random.randint(0, max(1, int(city.morale))) == 0 and len(self.cities) > 1:
-                            revolted_cities.append(city)
-                            self.remove_city(city)
+                        if random.randint(0, max(1, int(c.morale))) == 0 and len(self.cities) > 1:
+                            revolted_cities.append(c)
+                            self.remove_city(c)
 
                     # At least one city has to revolt, we already decided a revolt was happening, dammit!
                     if len(revolted_cities) == 0:
                         min_morale = self.cities[0].morale
                         lowest_morale = self.cities[0]
-                        for city in self.cities:
-                            if city.morale < min_morale:
+                        for c in self.cities:
+                            if c.morale < min_morale:
                                 min_morale = city.morale
-                                lowest_morale = city
+                                lowest_morale = c
                         revolted_cities.append(lowest_morale)
                         self.remove_city(lowest_morale)
 
@@ -792,7 +792,7 @@ class Nation:
                     revolted_nation.armor_list = list(self.armor_list)
                     revolted_nation.basic_armor_list = list(self.basic_armor_list)
 
-                    army_revolted = sum([city.army.size() for city in revolted_nation.cities])
+                    army_revolted = sum([c.army.size() for c in revolted_nation.cities])
 
                     # The revolting nation increases their morale because they're now free from whatever issues they
                     # saw with the old regime
@@ -801,12 +801,12 @@ class Nation:
 
                     # The old nation increases their morale because the haters are now gone.
                     self.mod_morale(len(revolted_cities) * city.MORALE_INCREMENT * int(
-                        math.log(sum([city.army.size() for city in self.cities]) + 2)))
+                        math.log(sum([c.army.size() for c in self.cities]) + 2)))
 
                     self.parent.event_log.add_event('Revolt',
                                                     {'nation_a': self.id,
                                                      'nation_b': revolted_nation.id,
-                                                     'cities': [city.name for city in
+                                                     'cities': [c.name for c in
                                                                 revolted_nation.cities]},
                                                     self.parent.get_current_date())
 
