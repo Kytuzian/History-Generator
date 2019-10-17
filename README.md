@@ -43,7 +43,7 @@ Nations have a capital city which will give more morale to the enemy when captur
 
 Nations also have a technology level. The full tech tree is described in the Tech section.
 
-#Notable People
+# Notable People
 Notable people can be any of the following:
 
 - General: Currently no purpose.
@@ -61,7 +61,7 @@ Notable people can be any of the following:
 # Art
 This includes literature, music, as well as "normal" visual arts (paintings, statues, et cetera).
 
-See the Art Detail section for...details about art.
+See the Art Detail section for more information.
 
 - Drawings
     - Paintings
