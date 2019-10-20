@@ -1,17 +1,23 @@
 import sqlite3
 import os
 
+DB_SAVES_DIR = 'saves'
+
 class DB:
     def __init__(self, name):
         self.name = name
+        self.path = '{}/{}.db'.format(DB_SAVES_DIR, self.name)
 
-        self.conn = sqlite3.connect('saves/{}.db'.format(self.name))
+        if not os.path.is_dir(DB_SAVES_DIR):
+            os.makedirs(DB_SAVES_DIR)
+
+        self.conn = sqlite3.connect(self.path)
 
     def save(self):
         # Clear the old db.
         self.conn.close()
         os.remove('saves/{}.db'.format(self.name))
-        self.conn = sqlite3.connect('saves/{}.db'.format(self.name))
+        self.conn = sqlite3.connect(self.path)
         self.setup()
 
     def query(self, fname, params=None):

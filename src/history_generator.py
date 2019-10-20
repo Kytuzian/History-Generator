@@ -210,69 +210,9 @@ class Main:
     def on_horizontal(self, event):
         self.scroll_canvas(-event.delta, 0)
 
-    # 0 Right
-    # 1 Left
-    # 2 Bottom
-    # 3 Top
-
     def get_neighbor_cells(self, cell, cells):
         return [cells[cell.x + 1][cell.y], cells[cell.x - 1][cell.y], cells[cell.x][cell.y + 1],
                 cells[cell.x][cell.y - 1]]
-
-    # def find_cells_in_continent(self, start_cell, cells):
-    #     start_x = start_cell.x
-    #     start_y = start_cell.y
-
-    #     continent = Continent(start_cell)
-    #     start_cell.continent = continent
-
-    #     end_reached = False
-
-    #     visited = {}
-
-    #     while(not end_reached):
-
-    #         # if start_x < len(cells) - 1 and not cells[start_x + 1][start_y].terrain.is_water():
-    #         #     cell = cells[start_x + 1][start_y]
-
-    #         #     if not (start_x + 1, start_y) in visited:
-    #         #         visited[(start_x + 1, start_y)] = True
-    #         #         continent.add_cell(cell)
-    #         #         cell.continent = continent
-    #         #         cells[start_x + 1][start_y].terrain.color = utility.rgb_color(0, 0, 0)
-    #         #         start_x += 1
-
-    #         # if start_y < len(cells) - 1 and not cells[start_x][start_y + 1].terrain.is_water():
-    #         #     cell = cells[start_x][start_y + 1]
-
-    #         #     if not (start_x, start_y + 1) in visited:
-    #         #         visited[(start_x, start_y + 1)] = True
-    #         #         continent.add_cell(cell)
-    #         #         cell.continent = continent
-    #         #         cells[start_x][start_y + 1].terrain.color = utility.rgb_color(0, 0, 0)
-    #         #         start_y += 1
-
-    #         # if start_x > 0 and not cells[start_x - 1][start_y].terrain.is_water():
-    #         #     cell = cells[start_x - 1][start_y]#.terrain.color = utility.rgb_color(0, 0, 0)
-
-    #         #     if not (start_x - 1, start_y) in visited:
-    #         #         visited[(start_x - 1, start_y)] = True
-    #         #         continent.add_cell(cell)
-    #         #         cell.continent = continent
-    #         #         cells[start_x - 1][start_y].terrain.color = utility.rgb_color(0, 0, 0)
-    #         #         start_x -= 1
-
-    #         # if start_y > 0 and not cells[start_x][start_y - 1].terrain.is_water():
-    #         #     cell = cells[start_x][start_y - 1]#.terrain.color = utility.rgb_color(0, 0, 0)
-
-    #         #     if not (start_x, start_y - 1) in visited:
-    #         #         visited[(start_x, start_y - 1)] = True
-    #         #         continent.add_cell(cell)
-    #         #         cell.continent = continent
-    #         #         cells[start_x][start_y - 1].terrain.color = utility.rgb_color(0, 0, 0)
-    #         #         start_y -= 1
-
-    #     self.continents.append(continent)
 
     def setup(self):
         size = utility.S_WIDTH // utility.CELL_SIZE
@@ -297,13 +237,6 @@ class Main:
                 cell.reset_color()
 
         print('')
-
-        # for x, row in enumerate(self.cells):
-        #     for y, cell in enumerate(row):
-        #         if cell.terrain.name == 'water':
-        #             continue
-        #         else:
-        #             find_cells_in_continent(cell)
 
         self.nations = []
         self.religions = []
@@ -435,7 +368,9 @@ class Main:
         if self.parent.focus_get() is not None:
             cell_x, cell_y = event.x // utility.CELL_SIZE, event.y // utility.CELL_SIZE
 
-            self.cells[cell_x][cell_y].show_information_gui()
+            # If the user click on an area outside of the drawn map, we'll give an error, but we should really just ignore it.
+            if cell_x < len(self.cells) and cell_y < len(self.cells[cell_x]):
+                self.cells[cell_x][cell_y].show_information_gui()
 
     def run_to(self):
         try:
@@ -518,47 +453,42 @@ class Main:
     def main_loop(self):
         self.parent.title("Map View ({}): Year {}".format(self.world_name, self.year))
 
-        try:
-            if self.month == 12:
-                self.year += 1
-                self.month = 1
+        if self.month == 12:
+            self.year += 1
+            self.month = 1
 
-                for r in self.religions:
-                    r.history_step(self)
+            for r in self.religions:
+                r.history_step(self)
 
-                for nat in self.nations:
-                    nat.history_step()
+            for nat in self.nations:
+                nat.history_step()
 
-                    if len(nat.cities) == 0 and len(nat.moving_armies) == 0 and len(self.battles) == 0:
-                        self.remove_nation(nat)
+                if len(nat.cities) == 0 and len(nat.moving_armies) == 0 and len(self.battles) == 0:
+                    self.remove_nation(nat)
 
-            if len(self.battles) == 0 or self.day == 30:
-                # for religion in self.religions:
-                #     print(religion.adherents)
-                for nat in self.nations:
-                    nat.grow_population()
-                    nat.handle_diplomacy()
+        if len(self.battles) == 0 or self.day == 30:
+            for nat in self.nations:
+                nat.grow_population()
+                nat.handle_diplomacy()
 
-                    if len(nat.cities) == 0 and len(nat.moving_armies) == 0 and len(self.battles) == 0:
-                        self.remove_nation(nat)
+                if len(nat.cities) == 0 and len(nat.moving_armies) == 0 and len(self.battles) == 0:
+                    self.remove_nation(nat)
 
-                # We only want to handle moving the groups after we handle each city.
-                # This is because the groups involve caravans, which need to know
-                # about a city's production in the last month, so that we can calculate prices
-                for nat in self.nations:
-                    nat.group_step()
+            # We only want to handle moving the groups after we handle each city.
+            # This is because the groups involve caravans, which need to know
+            # about a city's production in the last month, so that we can calculate prices
+            for nat in self.nations:
+                nat.group_step()
 
-                # We can only have one nation per color
-                if random.randint(0, len(self.nations) ** 3 + 5) == 0 and len(self.nations) < len(nation.NATION_COLORS):
-                    self.add_nation(nation.Nation(self))
+            # We can only have one nation per color
+            if random.randint(0, len(self.nations) ** 3 + 5) == 0 and len(self.nations) < len(nation.NATION_COLORS):
+                self.add_nation(nation.Nation(self))
 
-                self.refresh_nation_selector()
+            self.refresh_nation_selector()
 
-                self.month += 1
+            self.month += 1
 
-                self.start_army_move()
-        except KeyboardInterrupt:
-            pass
+            self.start_army_move()
 
     # Set everything up (like paths and such) so that the armies can later move
     def start_army_move(self):

@@ -15,26 +15,25 @@ class EventLog:
         self.events = []
 
     def add_event(self, name, data, date):
-        dict = {'id': self.parent.get_next_id('event'), 'name': name, 'event_data': data, 'date': date}
+        d = {'id': self.parent.get_next_id('event'), 'name': name, 'event_data': data, 'date': date}
+        new_event = Event.from_dict(d)
 
-        self.events.append(Event.from_dict(dict))
+        self.events.append(new_event)
 
-        # self.update_event_log_box(event)
+        self.update_event_log_box(new_event)
 
     def save(self, db):
         self.db = db
-        map(self.write_to_db, self.events)
+        for event in self.events:
+            event.save(db)
 
     def load(self):
         for event in self.db.query(EVENT_LOG_SELECT_SCRIPT, {}):
             Event.from_db(self.db, event['id'])
-
-    def write_to_db(self, event):
-        if self.db is not None:
-            event.save(self.db)
 
     def update_event_log_box(self, event):
         self.event_log_box.insert(END, event.text_version())
 
         if self.event_log_box.size() > utility.listbox_capacity(self.event_log_box):
             self.event_log_box.delete(0)
+

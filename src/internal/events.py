@@ -2,24 +2,23 @@ import ast
 
 import culture.culture as culture
 
-main = None
-EVENT_LOAD_SCRIPT = 'db/internal/event/load_event.sql'
+main = None # TODO: Make this nicer...
+EVENT_LOAD_SCRIPT = 'db/internal/event/load_event.sql' # TODO: Collect script constants and move them to some manager class
 EVENT_LOG_INSERT_SCRIPT = 'db/internal/event/insert_event_data.sql'
 EVENT_INSERT_SCRIPT = 'db/internal/event/insert_event.sql'
 EVENT_TYPE_GET_SCRIPT = 'db/internal/event/event_type_get.sql'
 
+def get_nation_name(nation_id):
+    if main is not None:
+        for nation in main.nations:
+            if nation.id == nation_id:
+                return nation.name
 
-def get_nation_name(id):
-    for nation in main.nations:
-        if nation.id == id:
-            return nation.name
+        for nation in main.old_nations:
+            if nation == nation_id:
+                return main.old_nations[nation]
 
-    for nation in main.old_nations:
-        if nation == id:
-            return main.old_nations[nation]
-
-    raise Exception('{} not found in {}'.format(id, map(lambda nation: (nation.id, nation.name), main.nations)))
-
+    return ''
 
 class Event:
     def __init__(self, event_id, name, event_data, date):
