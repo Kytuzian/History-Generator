@@ -173,7 +173,7 @@ class Person:
         else:
             self.religion = None
 
-        # Each artist's life is separated into one (or many periods)
+        # Each person's life is separated into one (or many periods)
         self.periods = []
         self.start_new_period(role=role)
 
@@ -196,6 +196,16 @@ class Person:
 
         with open(path + self.name + '.txt', 'w') as f:
             f.write(str(res))
+
+    def get_tolerance_score(self):
+        if self.periods[-1].role == 'priest':
+            return (1 - person.effectiveness) * PRIEST_TOLERANCE_BONUS
+        elif self.periods[-1].role == 'bishop':
+            return (1 - person.effectiveness) * (PRIEST_TOLERANCE_BONUS * 2)
+        elif self.periods[-1].role == 'prophet':
+            return (1 - person.effectiveness) * (PRIEST_TOLERANCE_BONUS * 3)
+        else:
+            return 0
 
     def show_information_gui(self):
         self.gui_window = Tk()

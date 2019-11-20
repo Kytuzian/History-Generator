@@ -1,6 +1,5 @@
 from Tkinter import *
 import tkMessageBox
-import random
 
 import sys
 
@@ -57,7 +56,7 @@ class StartUp:
     def archaeology(self):
         return
 
-
+# TODO: Improve argument handling (e.g., use argparse)
 if len(sys.argv) > 1:
     for arg in sys.argv[1:]:
         params = arg.split('=')

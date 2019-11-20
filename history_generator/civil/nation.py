@@ -185,7 +185,6 @@ class Nation:
             place_name = self.language.make_name_word()
 
         self.name = NationName([place_name])
-        # self.continent =
 
         # Otherwise we were initialized with some cities and such stuff
         if len(self.cities) == 0:
@@ -219,9 +218,6 @@ class Nation:
         for troop in self.troop_tree:
             self.troops_display.insert(END, '-----------')
             name_text = 'Tier {} Troop: {} '.format(troop.tier, troop.name)
-
-            # for i in xrange(troop.elite):
-            #     name_text += '*'
 
             self.troops_display.insert(END, name_text)
             self.troops_display.insert(END, 'Stats: Health - {}, Strength - {}, Speed - {}, Discipline - {}'.format(
@@ -306,107 +302,17 @@ class Nation:
         self.listbox_display.bind('<Double-Button-1>', self.selected)
 
     def save(self):
-        self.parent.db.execute('db/civil/nation_insert.sql', {'cell_id': self.cell_id,
-                                                                       'type': self.type,
-                                                                       'x': self.x, 'y': self.y,
-                                                                       'height': self.terrain.height,
-                                                                       'temperature_multiplier': self.temperature_multiplier,
-                                                                       'moisture': self.terrain.moisture,
-                                                                       'owner': self.owner.id if self.owner is not None else -1,
-                                                                       'building_capacity': self.building_capacity,
-                                                                       'high_temp_range': self.high_temp_range,
-                                                                       'low_temp_range': self.low_temp_range})
-
-        self.language.save()
-        self.displaying = ''
-        self.language = language.Language()  # Create a new, random language
-
-        self.age = 0
-
-        self.parent = parent
-
-        # Take a color that hasn't already been used.
-        self.color = random.choice(parent.available_colors())
-
-        CELLS_WIDTH = utility.S_WIDTH // utility.CELL_SIZE
-        CELLS_HEIGHT = utility.S_WIDTH // utility.CELL_SIZE
-        x = random.randint(int(CELLS_WIDTH * 0.1), int(CELLS_WIDTH * 0.9))
-        y = random.randint(int(CELLS_HEIGHT * 0.1), int(CELLS_HEIGHT * 0.9))
-
-        if cities is not None:
-            self.cities = cities
-
-            for city in self.cities:
-                city.nation = self
-
-                for cell in city.cells:
-                    cell.update_self()
-        else:
-            self.cities = []
-
-        self.money = 0
-
-        self.id = parent.get_next_id('nation')
-
-        self.notable_people = []
-        self.culture = culture.Culture(self)
-
-        self.ruler = None
-        self.main_religion = None
-
-        self.at_war = []
-        self.allied = []
-        self.trading = []
-        self.relations = {}
-
-        self.troop_tree = []
-
-        self.treaties = []
-
-        self.caravans = []
-
-        self.moving_armies = []
-
-        self.sidearm_list = random.sample(equipment_list.sidearm_list, 3)
-        self.basic_weapon_list = random.sample(equipment_list.basic_weapon_list, 2)
-        self.weapon_list = random.sample(equipment_list.weapon_list, 4)
-        self.basic_ranged_weapon_list = random.sample(equipment_list.basic_ranged_weapon_list, 1)
-        self.ranged_weapon_list = random.sample(equipment_list.ranged_weapon_list, 2)
-
-        self.armor_list = random.sample(equipment_list.armor_list, 2)
-        self.basic_armor_list = random.sample(equipment_list.basic_armor_list, 2)
-
-        self.mount_list = random.sample(equipment_list.mount_list, 2)
-        self.basic_mount_list = random.sample(equipment_list.basic_mount_list, 2)
-        self.mount_none = equipment_list.mount_none
-
-        self.army_structure = Troop.init_troop(self.language.make_word(self.language.name_length, True), self)
-
-        self.tech = tech.base_tech_tree()
-        self.current_research = None
-
-        self.tax_rate = random.random() * TAX_MULTIPLIER
-
-        self.morale = 0
-
-        self.army_spending = random.random() * 0.6 + 0.2
-        self.elite = random.randint(3, 6)
-
-        if len(self.cities) > 0:
-            if random.randint(0, 2) == 0:
-                place_name = self.cities[0].name
-            else:
-                place_name = self.language.make_name_word()
-        else:
-            place_name = self.language.make_name_word()
-
-        self.name = NationName([place_name])
-        # self.continent =
-
-        # Otherwise we were initialized with some cities and such stuff
-        if len(self.cities) == 0:
-            for i in xrange(INIT_CITY_COUNT):
-                self.create_city(self.name.places[0])
+        pass
+        # self.parent.db.execute('db/civil/nation_insert.sql', {'cell_id': self.cell_id,
+        #                                                                'type': self.type,
+        #                                                                'x': self.x, 'y': self.y,
+        #                                                                'height': self.terrain.height,
+        #                                                                'temperature_multiplier': self.temperature_multiplier,
+        #                                                                'moisture': self.terrain.moisture,
+        #                                                                'owner': self.owner.id if self.owner is not None else -1,
+        #                                                                'building_capacity': self.building_capacity,
+        #                                                                'high_temp_range': self.high_temp_range,
+        #                                                                'low_temp_range': self.low_temp_range})
 
     def selected(self, event):
         if self.displaying == 'city':  # We can't select any other options
@@ -703,24 +609,9 @@ class Nation:
             val += religion.get_tolerance() * p
 
         for person in self.notable_people:
+            # So we don't double-count the influence of the rule
             if person.alive and not person == self.ruler:
-                if person.periods[-1].role == 'priest':
-                    # Priests can either make the nation more or less tolerant, depending
-                    amount = (1 - person.effectiveness) * PRIEST_TOLERANCE_BONUS
-
-                    val += amount
-
-                if person.periods[-1].role == 'bishop':
-                    # Priests can either make the nation more or less tolerant, depending
-                    amount = (1 - person.effectiveness) * (PRIEST_TOLERANCE_BONUS * 2)
-
-                    val += amount
-
-                if person.periods[-1].role == 'prophet':
-                    # Priests can either make the nation more or less tolerant, depending
-                    amount = (1 - person.effectiveness) * (PRIEST_TOLERANCE_BONUS * 3)
-
-                    val += amount
+                val += person.get_tolerance_score()
 
         val = int(self.get_tolerance_bonus() * val)
         return max(1, val)
@@ -750,10 +641,7 @@ class Nation:
             amount += weapon.cost
 
         amount += troop.armor.cost
-
         amount += troop.mount.cost
-
-        # print('{} ({},{},{}) costs {}'.format(troop.name, troop.tier, troop.weapons, troop.armor, amount))
 
         return amount
 
@@ -761,7 +649,7 @@ class Nation:
         return SOLDIER_UPKEEP
 
     def mod_morale(self, amount):
-        if amount > 0:
+        if amount >= 0:
             amount = amount * self.get_morale_bonus()
         else:
             amount = amount / self.get_morale_bonus()
@@ -775,7 +663,7 @@ class Nation:
             rearm_unit = random.choice(units)
             rearm_unit.do_rearm(self)
 
-            weapon_string = ', '.join(map(lambda w: w.name, rearm_unit.weapons))
+            weapon_string = ', '.join([w.name for w in rearm_unit.weapons])
             self.parent.event_log.add_event('RearmUnit',
                                             {'nation_a': self.id, 'unit_a': rearm_unit.name, 'weapons': weapon_string,
                                              'armor': rearm_unit.armor.name}, self.parent.get_current_date())
@@ -788,7 +676,7 @@ class Nation:
             was_alive = person.alive
             person.history_step()
 
-            # Only do it once.
+            # Only run this if the person used to be alive, but is no longer (i.e., they died)
             if not person.alive and was_alive:
                 person.handle_death()
 
@@ -810,11 +698,7 @@ class Nation:
         for curCity in self.cities:
             # It's more likely to found a new city when this city is near population capacity
             # Because as there's no more space, people want to go to a new city
-            try:
-                found_city_chance = max(1, int(
-                    len(self.cities) ** 4 * math.math.log(curCity.population_capacity - curCity.population)))
-            except:  # Log is negative
-                found_city_chance = max(1, len(self.cities) ** 4)
+            found_city_chance = max(1, int(len(self.cities)**2 * float(curCity.population_capacity) / curCity.population))
             if random.randint(0, found_city_chance) == 0 and self.money > CITY_FOUND_COST:
                 self.create_city()
 
@@ -845,7 +729,7 @@ class Nation:
         self.age += 1
 
         # More cities means less happiness
-        self.mod_morale(-(len(self.cities) ** 2 + 1))
+        self.mod_morale(-(len(self.cities)**2 + 1))
 
     def handle_revolt(self):
         # Not for realism, but this really shouldn't happen, because then they'd be sharing colors.
@@ -1000,11 +884,9 @@ class Nation:
                     if war_treaty is not None:
                         # This way, if we lose more troops than them, our relations will go down even more, even though they go down by default just for being at war
 
-                        relative_troops_lost = min(-1, war_treaty[nation.id]['troops_lost'] - war_treaty[self.id][
-                            'troops_lost'])
+                        relative_troops_lost = min(-1, war_treaty[nation.id]['troops_lost'] - war_treaty[self.id]['troops_lost'])
 
-                        self.relations[nation.id] += relative_troops_lost / war_treaty.length(
-                            self.parent.get_current_date())
+                        self.relations[nation.id] += relative_troops_lost / war_treaty.length(self.parent.get_current_date())
 
                 max_relation_change = int(math.log(self.get_tolerance() + nation.get_tolerance() + 1))
 
@@ -1027,14 +909,11 @@ class Nation:
                 # We can't start trading with an enemy we're at war with or vice versa.
                 # And we certainly can't start fighting/trading with ourselves.
                 if other != self and not other in self.at_war and not other in self.trading:
-                    normal_war_chance = int(
-                        max(24, len(self.at_war) + 2 * self.get_tolerance() + 3 * self.relations[other.id]))
-                    holy_war_chance = int(
-                        max(12, len(self.at_war) + self.get_tolerance() + 3 * self.relations[other.id]))
+                    normal_war_chance = int(max(24, len(self.at_war) + 2 * self.get_tolerance() + 3 * self.relations[other.id]))
+                    holy_war_chance = int(max(12, len(self.at_war) + self.get_tolerance() + 3 * self.relations[other.id]))
 
                     effective_money = max(self.money ** 2, 1)  # The less money we have, the more we want to trade.
-                    trade_chance = int(
-                        max(24, math.log(effective_money) + self.get_tolerance() - 3 * self.relations[other.id]))
+                    trade_chance = int(max(24, math.log(effective_money) + self.get_tolerance() - 3 * self.relations[other.id]))
 
                     # print('War chance with {} ({}) is {}'.format(other.name.short_name(), self.relations[other.id], normal_war_chance))
                     # print('Holy war chance with {} ({}) is {}'.format(other.name.short_name(), self.relations[other.id], holy_war_chance))
@@ -1069,3 +948,4 @@ class Nation:
     def __repr__(self):
         return '{} ({}): ${}; Pop: {}'.format(self.name.short_name(), self.color, int(self.money),
                                               sum([i.population for i in self.cities]))
+
