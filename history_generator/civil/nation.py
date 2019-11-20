@@ -306,9 +306,107 @@ class Nation:
         self.listbox_display.bind('<Double-Button-1>', self.selected)
 
     def save(self):
-        # self.parent.db.save_nation(self)
-        # self.parent.db.save_name(self.name)
-        return
+        self.parent.db.execute('db/civil/nation_insert.sql', {'cell_id': self.cell_id,
+                                                                       'type': self.type,
+                                                                       'x': self.x, 'y': self.y,
+                                                                       'height': self.terrain.height,
+                                                                       'temperature_multiplier': self.temperature_multiplier,
+                                                                       'moisture': self.terrain.moisture,
+                                                                       'owner': self.owner.id if self.owner is not None else -1,
+                                                                       'building_capacity': self.building_capacity,
+                                                                       'high_temp_range': self.high_temp_range,
+                                                                       'low_temp_range': self.low_temp_range})
+
+        self.language.save()
+        self.displaying = ''
+        self.language = language.Language()  # Create a new, random language
+
+        self.age = 0
+
+        self.parent = parent
+
+        # Take a color that hasn't already been used.
+        self.color = random.choice(parent.available_colors())
+
+        CELLS_WIDTH = utility.S_WIDTH // utility.CELL_SIZE
+        CELLS_HEIGHT = utility.S_WIDTH // utility.CELL_SIZE
+        x = random.randint(int(CELLS_WIDTH * 0.1), int(CELLS_WIDTH * 0.9))
+        y = random.randint(int(CELLS_HEIGHT * 0.1), int(CELLS_HEIGHT * 0.9))
+
+        if cities is not None:
+            self.cities = cities
+
+            for city in self.cities:
+                city.nation = self
+
+                for cell in city.cells:
+                    cell.update_self()
+        else:
+            self.cities = []
+
+        self.money = 0
+
+        self.id = parent.get_next_id('nation')
+
+        self.notable_people = []
+        self.culture = culture.Culture(self)
+
+        self.ruler = None
+        self.main_religion = None
+
+        self.at_war = []
+        self.allied = []
+        self.trading = []
+        self.relations = {}
+
+        self.troop_tree = []
+
+        self.treaties = []
+
+        self.caravans = []
+
+        self.moving_armies = []
+
+        self.sidearm_list = random.sample(equipment_list.sidearm_list, 3)
+        self.basic_weapon_list = random.sample(equipment_list.basic_weapon_list, 2)
+        self.weapon_list = random.sample(equipment_list.weapon_list, 4)
+        self.basic_ranged_weapon_list = random.sample(equipment_list.basic_ranged_weapon_list, 1)
+        self.ranged_weapon_list = random.sample(equipment_list.ranged_weapon_list, 2)
+
+        self.armor_list = random.sample(equipment_list.armor_list, 2)
+        self.basic_armor_list = random.sample(equipment_list.basic_armor_list, 2)
+
+        self.mount_list = random.sample(equipment_list.mount_list, 2)
+        self.basic_mount_list = random.sample(equipment_list.basic_mount_list, 2)
+        self.mount_none = equipment_list.mount_none
+
+        self.army_structure = Troop.init_troop(self.language.make_word(self.language.name_length, True), self)
+
+        self.tech = tech.base_tech_tree()
+        self.current_research = None
+
+        self.tax_rate = random.random() * TAX_MULTIPLIER
+
+        self.morale = 0
+
+        self.army_spending = random.random() * 0.6 + 0.2
+        self.elite = random.randint(3, 6)
+
+        if len(self.cities) > 0:
+            if random.randint(0, 2) == 0:
+                place_name = self.cities[0].name
+            else:
+                place_name = self.language.make_name_word()
+        else:
+            place_name = self.language.make_name_word()
+
+        self.name = NationName([place_name])
+        # self.continent =
+
+        # Otherwise we were initialized with some cities and such stuff
+        if len(self.cities) == 0:
+            for i in xrange(INIT_CITY_COUNT):
+                self.create_city(self.name.places[0])
 
     def selected(self, event):
         if self.displaying == 'city':  # We can't select any other options

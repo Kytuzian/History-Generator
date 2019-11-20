@@ -6,7 +6,7 @@ INSERT INTO nations
     tax_rate,
     elite,
     army_spending,
-    ruler 
+    ruler
 )
 VALUES
 (
@@ -17,4 +17,4 @@ VALUES
     :elite,
     :army_spending,
     :ruler
-)
+);

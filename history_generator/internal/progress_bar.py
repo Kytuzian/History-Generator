@@ -105,3 +105,4 @@ class ProgressBar:
             self.parent.after(1, self.loop)
         else:
             self.parent.destroy()
+

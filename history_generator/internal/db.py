@@ -8,7 +8,7 @@ class DB:
         self.name = name
         self.path = '{}/{}.db'.format(DB_SAVES_DIR, self.name)
 
-        if not os.path.is_dir(DB_SAVES_DIR):
+        if not os.path.isdir(DB_SAVES_DIR):
             os.makedirs(DB_SAVES_DIR)
 
         self.conn = sqlite3.connect(self.path)
@@ -80,3 +80,4 @@ class DB:
         self.execute('db/setup/buildings.sql')
 
         self.conn.commit()
+

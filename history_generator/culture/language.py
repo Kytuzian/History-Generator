@@ -70,16 +70,6 @@ class Language:
         self.morph.add('singular')
         self.morph.add('plural')
 
-    def __repr__(self):
-        print("Letters", self.letters)
-        print("Start Letters", self.startLetters)
-        print("End Letters", self.endLetters)
-        print("Letter Sections", self.letterSections)
-        print("Vowels", self.vowels)
-        print("Vowel Frequency", self.vowel_frequency)
-
-        return ""
-
     def create_from_language(self, base_language):
         self.letters = utility.mutate(base_language.letters, 5)
 
@@ -111,10 +101,8 @@ class Language:
 
         if not self.vowels:
             self.vowels = ['a']
-        # print("Vowels", self.vowels)
 
         self.vowel_frequency = random.randint(4, 10)
-        # print("Vowel Frequency", self.vowel_frequency)
 
     def generate_name(self):
         first_name = ""
@@ -302,3 +290,4 @@ class Language:
             result += f(i) + " "
 
         return result[:-1]
+
