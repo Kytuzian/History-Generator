@@ -1,6 +1,6 @@
 import random
 
-import utility
+import internal.utility as utility
 
 from internal import events as events
 
