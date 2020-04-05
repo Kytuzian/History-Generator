@@ -19,9 +19,9 @@ MAX_BASE_TOLERANCE = 100
 
 
 class Religion:
-    def __init__(self, language, name):
+    def __init__(self, parent, language, name):
+        self.parent = parent
         self.name = name
-
         self.language = language
 
         self.polytheistic = random.randint(0, 100) > MONOTHEISM_CHANCE
@@ -112,7 +112,7 @@ class Religion:
 
         self.gods_display.grid(row=1, columnspan=2, sticky=W + E)
 
-        all_events = event_analysis.find_religion_mentions(self.name)
+        all_events = event_analysis.find_religion_mentions(self.parent.event_log, self.name)
         all_events = sorted(all_events.event_list, key=lambda event: event.date)
 
         self.event_log_display = Listbox(self.gui_window)

@@ -23,11 +23,8 @@ def get_nation_name(nation_id):
 class Event:
     def __init__(self, event_id, name, event_data, date):
         self.name = name
-
         self.event_id = event_id
-
         self.event_data = event_data
-
         self.date = date
 
         self.setup()

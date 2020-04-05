@@ -341,7 +341,7 @@ class Nation:
                     break
 
     def display_events(self):
-        all_events = event_analysis.find_nation_mentions(self.id)
+        all_events = event_analysis.find_nation_mentions(self.parent.event_log, self.id)
         all_events = all_events.search('name',
                                        r'NationFounded|TechResearch|CityFounded|CityMerged|Attack|DiplomacyWar|DiplomacyTrade|Revolt')
         all_events = sorted(all_events.event_list, key=lambda event: event.date)

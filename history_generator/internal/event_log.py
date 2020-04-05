@@ -28,8 +28,10 @@ class EventLog:
             event.save(db)
 
     def load(self):
+        self.events = []
+
         for event in self.db.query(EVENT_LOG_SELECT_SCRIPT, {}):
-            Event.from_db(self.db, event['id'])
+            self.events.append(Event.from_db(self.db, event['id']))
 
     def update_event_log_box(self, event):
         self.event_log_box.insert(END, event.text_version())

@@ -37,11 +37,8 @@ class Result:
 
 
 class Analyser:
-    def __init__(self, event_log=None, fname='event_log.txt'):
-        if event_log is None:
-            self.event_list = self.load_events(fname)
-        else:
-            self.event_list = event_log
+    def __init__(self, event_log):
+        self.event_list = event_log.events
 
     # Only for event data
     def search_or(self, data_names, search_regex=r'.*'):
@@ -50,24 +47,14 @@ class Analyser:
     def search(self, data_name, search_regex=r'.*', comp=lambda a, b: a > b, date=(0,)):
         return Result(self.event_list).search(data_name, search_regex, comp, date)
 
-    def load_events(self, fname):
-        event_list = []
-
-        with open(fname) as f:
-            lines = f.read().split('\n')[:-1]
-            event_list = map(events.Event.from_str, lines)
-
-        return event_list
-
-
 class HistoryWindow:
-    def __init__(self, title, event_types):
+    def __init__(self, event_log, title, event_types):
         self.title = title
 
         self.event_types = event_types
         self.display_event_types = event_types
 
-        self.event_log = Analyser().search('name', '|'.join(self.event_types))
+        self.event_log = Analyser(event_log).search('name', '|'.join(self.event_types))
 
         self.show_information_gui()
 
@@ -110,14 +97,12 @@ class HistoryWindow:
     def get_sorted_events(self, analyser):
         return sorted(analyser.event_list, key=lambda event: event.date)
 
+def find_nation_mentions(event_log, name):
+    return Analyser(event_log).search_or(['nation_a', 'nation_b'], name)
 
-def find_nation_mentions(name):
-    return Analyser().search_or(['nation_a', 'nation_b'], name)
+def find_city_mentions(event_log, names):
+    return Analyser(event_log).search_or(['city_a', 'city_b'], '|'.join(names))
 
+def find_religion_mentions(event_log, name):
+    return Analyser(event_log).search_or(['religion_a', 'religion_b'], name)
 
-def find_city_mentions(names):
-    return Analyser().search_or(['city_a', 'city_b'], '|'.join(names))
-
-
-def find_religion_mentions(name):
-    return Analyser().search_or(['religion_a', 'religion_b'], name)

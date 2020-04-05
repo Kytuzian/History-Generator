@@ -246,7 +246,7 @@ class Main:
 
         # Initially create one new religion for every nation
         for i in xrange(self.nation_count):
-            new_religion = religion.Religion(self.nations[i].language, self.nations[i].language.make_name_word())
+            new_religion = religion.Religion(self, self.nations[i].language, self.nations[i].language.make_name_word())
             new_religion.adherents[self.nations[i].cities[0].name] = self.nations[i].cities[0].population
             self.religions.append(new_religion)
 
@@ -258,7 +258,7 @@ class Main:
         self.db.setup()
 
     def create_religion(self, city, nation, founder=None):
-        new_religion = religion.Religion(nation.language, nation.language.make_name_word())
+        new_religion = religion.Religion(self, nation.language, nation.language.make_name_word())
 
         self.event_log.add_event('ReligionCreated', {'nation_a': nation.id, 'city_a': city.name,
                                                      'person_a': founder.name,
@@ -281,12 +281,12 @@ class Main:
         self.main_loop()
 
     def open_religion_history_window(self):
-        self.religion_history_window = event_analysis.HistoryWindow('Religion History',
+        self.religion_history_window = event_analysis.HistoryWindow(self.event_log, 'Religion History',
                                                                     ['ReligionGodAdded', 'ReligionGodRemoved',
                                                                      'ReligionDomainAdded', 'ReligionDomainRemoved'])
 
     def open_world_history_window(self):
-        self.world_history_window = event_analysis.HistoryWindow('World History',
+        self.world_history_window = event_analysis.HistoryWindow(self.event_log, 'World History',
                                                                  ['NationFounded', 'CityFounded', 'CityMerged',
                                                                   'ReligionGodAdded', 'ReligionGodRemoved',
                                                                   'ReligionDomainAdded', 'ReligionDomainRemoved',

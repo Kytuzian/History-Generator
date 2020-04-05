@@ -145,7 +145,7 @@ class City:
                                         command=self.nation.show_information_gui)
         self.nation_button.grid(row=6, column=1, sticky=W)
 
-        all_events = event_analysis.find_city_mentions([self.name] + self.merges)
+        all_events = event_analysis.find_city_mentions(self.parent.event_log, [self.name] + self.merges)
         all_events = all_events.search('name', r'Attack|CityFounded|CityMerged')
         all_events = sorted(all_events.event_list, key=lambda event: event.date)
 

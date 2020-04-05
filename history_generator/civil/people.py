@@ -338,7 +338,7 @@ class Person:
             self.travel.step([])
 
         if self.alive:
-            if self.target is None and random.randint(0, RELOCATE_CHANCE) == 0:
+            if self.target is None and random.randint(0, RELOCATE_CHANCE) == 0 and len(self.nation.cities) > 0:
                 if self.city != self.home:
                     if random.randint(0, GO_HOME) == 0:
                         self.target = self.home
