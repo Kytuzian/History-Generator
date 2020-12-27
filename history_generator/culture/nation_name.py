@@ -35,7 +35,7 @@ class NationName:
         return res
 
     def history_step(self, parent):
-        parent_cities_names = map(lambda city: city.name, parent.cities)
+        parent_cities_names = list(map(lambda city: city.name, parent.cities))
 
         for place in self.places:
             # We can't get rid of the last one.

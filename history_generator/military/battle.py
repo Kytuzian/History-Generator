@@ -1,4 +1,4 @@
-from Tkinter import *
+from tkinter import *
 
 import random
 import sys
@@ -87,13 +87,15 @@ class Battle:
         self.battle_speed_label.pack()
         self.battle_speed_label.place(x=10, y=10)
 
-    def setup_army(self, army, force, color, (xmin, xmax), (ymin, ymax), limit):
+    def setup_army(self, army, force, color, xbound, ybound, limit):
+        xmin, xmax = xbound
+        ymin, ymax = ybound
         sx, sy = 0, 0
 
         # print("Setting up a max of {} soldiers of {} for this unit type.".format(limit, army.number))
 
         new_units = []
-        for soldier in xrange(army.number):
+        for soldier in range(army.number):
             if soldier % (army.ranks * army.rank_size) == 0:
                 force.append(Unit(army.zero(), force, [], self.canvas))
                 new_units.append(force[-1])
@@ -145,13 +147,13 @@ class Battle:
                 if unit.soldier_type.mount.name == 'None':
                     unit.name_id = self.canvas.create_text(unit.x, unit.y, text=(
                         "{} ({}; {}): {}, {}".format(unit.soldier_type.name,
-                                                     ', '.join(map(lambda w: w.name, unit.soldier_type.weapons)),
+                                                     ', '.join(list(map(lambda w: w.name, unit.soldier_type.weapons))),
                                                      unit.soldier_type.armor.name, unit.soldier_type.strength,
                                                      unit.soldier_type.health)))
                 else:
                     unit.name_id = self.canvas.create_text(unit.x, unit.y, text=(
                         "{} ({}; {}): {}, {}, {}".format(unit.soldier_type.name,
-                                                         ', '.join(map(lambda w: w.name, unit.soldier_type.weapons)),
+                                                         ', '.join(list(map(lambda w: w.name, unit.soldier_type.weapons))),
                                                          unit.soldier_type.armor.name, unit.soldier_type.strength,
                                                          unit.soldier_type.health, unit.soldier_type.mount.name)))
 

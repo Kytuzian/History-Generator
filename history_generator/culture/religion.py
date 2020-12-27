@@ -1,12 +1,12 @@
 import random
 
-from Tkinter import *
+from tkinter import *
 
 import internal.events as events
 import internal.event_analysis as event_analysis
 import internal.gui as gui
 import civil.people as people
-from god import God, DOMAINS
+from culture.god import God, DOMAINS
 
 # In percent
 MONOTHEISM_CHANCE = 20
@@ -28,7 +28,7 @@ class Religion:
 
         self.gods = []
         if self.polytheistic:
-            for new_god in xrange(random.randint(1, 10)):
+            for new_god in range(random.randint(1, 10)):
                 self.add_god()
         else:
             self.add_god(['everything'])
@@ -67,7 +67,7 @@ class Religion:
 
         for god in self.gods:
             for domain in god.domains:
-                for (role, weight) in DOMAINS[domain].iteritems():
+                for (role, weight) in DOMAINS[domain].items():
                     role_weights[role] += god.importance * weight
 
         return role_weights

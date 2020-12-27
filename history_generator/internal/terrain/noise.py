@@ -6,9 +6,11 @@
 import random
 import math
 
-import utility
+from functools import reduce
 
-perm = range(256)
+import internal.utility as utility
+
+perm = list(range(256))
 random.shuffle(perm)
 perm += perm
 dirs = [(math.cos(a * 2.0 * math.pi / 256),
@@ -35,15 +37,15 @@ def fBm(x, y, per, octs):
 
 def put_data(im, data, w, h):
     data = reduce(lambda a, b: a + b, data)
-    for x in xrange(w):
-        for y in xrange(h):
+    for x in range(w):
+        for y in range(h):
             im.putpixel((x, y), int(data[x * h + y] * 255))
 
 def generate_noise(size, message=''):#, fname='noise.png'):
     freq, octs = 1/32.0, 5
     data = []
     global perm
-    perm = range(256)
+    perm = list(range(256))
     random.shuffle(perm)
     perm += perm
     for y in range(size):
@@ -54,7 +56,7 @@ def generate_noise(size, message=''):#, fname='noise.png'):
 
     # if fname != None:
     #     im = Image.new("L", (size, size))
-    #     put_data(im, map(lambda i: max(0, i), data), size, size)
+    #     put_data(im, list(map(lambda i: max(0, i), data), size, size)
     #     im.save(fname)
 
     return data

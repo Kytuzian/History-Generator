@@ -1,5 +1,7 @@
 import math
 
+from functools import reduce
+
 from internal import utility as utility
 from internal.terrain.cloud import Cloud
 
@@ -115,7 +117,7 @@ class Weather:
     def normalize_moistures(self):
         print('Normalizing moistures.')
         moistures = reduce(lambda a, b: a + b,
-                           map(lambda row: map(lambda cell: cell.terrain.moisture, row), self.cells))
+                           map(lambda row: list(map(lambda cell: cell.terrain.moisture, row)), self.cells))
         max_amount = max(moistures)
 
         for row in self.cells:
@@ -123,11 +125,11 @@ class Weather:
                 cell.terrain.moisture /= max_amount
 
     def run(self, steps):
-        for step in xrange(steps + 1):
+        for step in range(steps + 1):
             utility.show_bar(step, steps + 1, message='Generating rainfall patterns: ', number_limit=True)
             self.step()
 
-            data = reduce(lambda a, b: a + b, map(lambda row: map(lambda cell: cell.terrain.moisture, row), self.cells))
+            data = reduce(lambda a, b: a + b, map(lambda row: list(map(lambda cell: cell.terrain.moisture, row)), self.cells))
             max_amount = max(data)
             if max_amount != 0:
-                data = map(lambda i: i / max_amount, data)
+                data = list(map(lambda i: i / max_amount, data))

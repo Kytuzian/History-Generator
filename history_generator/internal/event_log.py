@@ -1,4 +1,4 @@
-from Tkconstants import END
+from tkinter.constants import END
 
 from internal import utility
 from internal.events import Event

@@ -1,11 +1,13 @@
 import math
 import random
-from Tkconstants import W, E, END
-from Tkinter import Tk, Canvas, StringVar, OptionMenu, Listbox
+
+from functools import reduce
+
+from tkinter import Tk, Canvas, StringVar, OptionMenu, Listbox
+from tkinter.constants import W, E, END
 
 from internal import utility as utility, gui as gui
 from military.soldier import TROOP_RADIUS
-
 
 class Troop:
     @classmethod
@@ -140,7 +142,7 @@ class Troop:
         res['discipline'] = self.discipline
         res['rank_size'] = self.rank_size
         res['ranks'] = self.ranks
-        res['weapons'] = map(lambda eqp: eqp.get_info(), self.weapons)
+        res['weapons'] = list(map(lambda eqp: eqp.get_info(), self.weapons))
         res['armor'] = self.armor.get_info()
         res['elite'] = self.elite
         res['tier'] = self.tier
@@ -152,7 +154,7 @@ class Troop:
 
         res['arms_history'] = []
         for weapons, armor in self.arms_history:
-            res['arms_history'].append((map(lambda eqp: eqp.get_info(), weapons), armor.get_info()))
+            res['arms_history'].append((list(map(lambda eqp: eqp.get_info(), weapons)), armor.get_info()))
 
         res['stats_history'] = self.stats_history
 
@@ -267,8 +269,8 @@ class Troop:
         self.arrangement_canvas.config(background='white')
         self.arrangement_canvas.grid(row=7, sticky=W)
 
-        for x in xrange(1, self.rank_size + 1):
-            for y in xrange(1, self.ranks + 1):
+        for x in range(1, self.rank_size + 1):
+            for y in range(1, self.ranks + 1):
                 base_x, base_y = x * (TROOP_RADIUS + 1), y * (TROOP_RADIUS + 1)
                 self.arrangement_canvas.create_oval(base_x, base_y, base_x + TROOP_RADIUS, base_y + TROOP_RADIUS)
 
@@ -288,7 +290,7 @@ class Troop:
         self.stats_label = gui.Label(self.gui_window, text='Stats:')
         self.stats_label.grid(row=10, column=0, sticky=W)
 
-        self.stats_choice = OptionMenu(self.gui_window, self.history_choice, *map(self.stringify_history, range(len(self.arms_history))))
+        self.stats_choice = OptionMenu(self.gui_window, self.history_choice, *list(map(self.stringify_history, range(len(self.arms_history)))))
         self.stats_choice.config(background='white')
         self.stats_choice['menu'].config(background='white')
         self.stats_choice.grid(row=10, column=1, sticky=W)
@@ -312,7 +314,7 @@ class Troop:
         return amount
 
     def stringify_history(self, i):
-        weapon_str = ', '.join(map(lambda i: i.name, self.arms_history[i][0]))
+        weapon_str = ', '.join(list(map(lambda i: i.name, self.arms_history[i][0])))
         armor_str = self.arms_history[i][1].name
         mount_str = self.mount.name
         return '{}: ({}, {}), {}'.format(i, weapon_str, armor_str, mount_str)
@@ -398,10 +400,10 @@ class Troop:
         return sorted([self] + reduce(lambda a, b: a + b, [i.make_upgrade_list() for i in self.upgrades], []), key=lambda a: a.strength * a.health)
 
     def copy(self):
-        return Troop(self.name, self.strength, self.health, 0, self.ranged, self.speed, self.discipline, self.rank_size, self.ranks, [i.copy() for i in self.weapons], self.armor.copy(), self.elite, self.tier, map(lambda i: i.copy(), self.upgrades), self.mount, stats_history=map(dict, self.stats_history), arms_history=list(self.arms_history))
+        return Troop(self.name, self.strength, self.health, 0, self.ranged, self.speed, self.discipline, self.rank_size, self.ranks, [i.copy() for i in self.weapons], self.armor.copy(), self.elite, self.tier, list(map(lambda i: i.copy(), self.upgrades)), self.mount, stats_history=list(map(dict, self.stats_history)), arms_history=list(self.arms_history))
 
     def is_empty(self):
-        return all(map(lambda i: i.is_empty(), self.upgrades)) and self.number == 0
+        return self.number == 0 and all(list(map(lambda i: i.is_empty(), self.upgrades)))
 
     def trim_empty(self):
         i = 0

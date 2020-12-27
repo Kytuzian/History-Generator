@@ -1,10 +1,8 @@
 class Projectile:
-    def __init__(self, (x, y), (dx, dy), launcher, strength, target, speed):
-        self.x = x
-        self.y = y
+    def __init__(self, p, d, launcher, strength, target, speed):
+        self.x, self.y = p
 
-        self.dx = dx
-        self.dy = dy
+        self.dx, self.dy = d
 
         self.launcher = launcher
 
@@ -21,3 +19,4 @@ class Projectile:
         self.target = target
 
         self.speed = speed
+

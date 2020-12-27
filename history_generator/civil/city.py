@@ -1,12 +1,14 @@
+import math
+import random
+
+from functools import reduce
+
+from tkinter import *
+
 import internal.events as events
 import internal.event_analysis as event_analysis
 import internal.gui as gui
 import internal.utility as utility
-
-import math
-import random
-
-from Tkinter import *
 
 from civil.city_header import CityHeader
 from civil.resources import base_resources, base_resource_prices
@@ -79,11 +81,11 @@ class City:
 
     def save(self, path):
         res = {'name': self.name, 'population': self.population, 'nation': self.nation.id, 'age': self.age,
-               'morale': self.morale, 'cells': map(lambda cell: cell.id, self.cells), 'army': self.army.get_info(),
+               'morale': self.morale, 'cells': list(map(lambda cell: cell.id, self.cells)), 'army': self.army.get_info(),
                'resources': self.resources, 'resource_prices': self.resource_prices,
                'consumed_resources': self.consumed_resources, 'produced_resources': self.produced_resources,
                'is_capital': self.is_capital, 'merges': self.merges,
-               'caravans': map(lambda caravan: caravan.get_info(), self.caravans)}
+               'caravans': list(map(lambda caravan: caravan.get_info(), self.caravans))}
 
         with open(path + self.name + '.txt', 'w') as f:
             f.write(str(res))
@@ -183,7 +185,7 @@ class City:
 
         for cell in self.cells:
             for building in cell.buildings:
-                for caravan in xrange(building.send_caravans()):
+                for caravan in range(building.send_caravans()):
                     self.send_caravan()
 
     def get_resource_differences(self, other):
@@ -275,10 +277,10 @@ class City:
                     person.nation = new_nation
                     new_nation.notable_people.append(person)
         else:
-            raise Exception('{} not in {}'.format(self.name, map(lambda c: c.name, self.nation.cities)))
+            raise Exception('{} not in {}'.format(self.name, list(map(lambda c: c.name, self.nation.cities))))
 
         if original_cities == len(self.nation.cities):
-            raise Exception('{} was not removed from {}.'.format(self.name, map(lambda c: c.name, self.nation.cities)))
+            raise Exception('{} was not removed from {}.'.format(self.name, list(map(lambda c: c.name, self.nation.cities))))
 
         # If there is an army still here, we should send it away first, instead of just deleting it from existence.
         if self.army.size() > 0:
@@ -529,7 +531,9 @@ class City:
 
     def get_random_religion(self):
         religion_populations = self.get_religion_populations()
-        weight = lambda _, (religion, adherents): adherents
+        def weight(i, info):
+            religion, adherents = info
+            return adherents
         religion, _ = utility.weighted_random_choice(religion_populations, weight=weight)
         return religion
 
@@ -547,7 +551,7 @@ class City:
             else:
                 pop_change = self.population - original_population
 
-            for i in xrange(pop_change):
+            for i in range(pop_change):
                 religion = self.get_random_religion()
 
                 if lose:

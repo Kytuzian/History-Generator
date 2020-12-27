@@ -1,5 +1,4 @@
-from Tkinter import *
-import tkMessageBox
+from tkinter import *
 
 import sys
 

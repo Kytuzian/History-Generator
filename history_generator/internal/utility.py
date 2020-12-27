@@ -4,7 +4,9 @@ import struct
 import subprocess
 import time
 
-import tkFont
+from functools import reduce
+
+from tkinter import font
 
 from math import *
 
@@ -33,9 +35,9 @@ def sum_dict(d):
     return total
 
 def listbox_capacity(listbox):
-    font = tkFont.Font(listbox, listbox['font'])
+    new_font = font.Font(listbox, listbox['font'])
 
-    return listbox.winfo_height() / font.metrics()['ascent']
+    return listbox.winfo_height() / new_font.metrics()['ascent']
 
 
 def count(l):
@@ -52,7 +54,7 @@ def count(l):
 def tuplize(l):
     res = l
 
-    for i in xrange(len(res)):
+    for i in range(len(res)):
         if isinstance(res[i], list):
             res[i] = tuplize(res[i])
 
@@ -176,9 +178,7 @@ def capitalize_first_letter(s):
 
 
 def displayify_text(s):
-    words = s.split('_')
-    words = map(capitalize_first_letter, words)
-    return ' '.join(words)
+    return ' '.join(list(map(capitalize_first_letter, s.split('_'))))
 
 
 def base_war_stats():
@@ -417,7 +417,9 @@ def show_bar(i, total, start_time=None, width=80, message='', number_limit=False
     sys.stdout.flush()
 
 
-def calculate_interception(v_e, v_p, (x_e, y_e), (x_p, y_p), theta_e):
+def calculate_interception(v_e, v_p, e, p, theta_e):
+    (x_e, y_e) = e
+    (x_p, y_p) = p
     t1 = -(v_e * x_e * cos(theta_e) - v_e * x_p * cos(theta_e) + v_e * y_e * sin(theta_e) - v_e * y_p * sin(
         theta_e) + sqrt(-(v_e ** 2 * sin(theta_e) ** 2 - v_p ** 2) * x_e ** 2 + 2 * (
                 v_e ** 2 * sin(theta_e) ** 2 - v_p ** 2) * x_e * x_p - (
@@ -459,11 +461,13 @@ def calculate_interception(v_e, v_p, (x_e, y_e), (x_p, y_p), theta_e):
         return (t2, theta_p2)
 
 
-def calculate_xy_vector((magnitude, angle)):
-    return (magnitude * cos(angle), magnitude * sin(angle))
+def calculate_xy_vector(x):
+    magnitude, angle = x
+    return magnitude * cos(angle), magnitude * sin(angle)
 
 
-def calculate_polar_vector((dx, dy)):
+def calculate_polar_vector(d):
+    dx, dy = d
     magnitude = sqrt(dx ** 2 + dy ** 2)
 
     return (magnitude, atan2(dy, dx))
@@ -526,26 +530,27 @@ def flatten(l):
 def mutate(l, amount, base="qwertyuiopasdfghjklzxcvbnm"):
     result = []
 
-    for i in xrange(random.randint(1, len(l) / amount + 1)):
+    for i in range(random.randint(1, len(l) / amount + 1)):
         l.remove(random.choice(l))
 
-    for i in xrange(random.randint(1, len(l) / amount + 1)):
+    for i in range(random.randint(1, len(l) / amount + 1)):
         l.append(random.choice(l) if random.randint(0, 2) == 0 else random.choice(base))
 
     return l
 
-
-def distance((x1, y1), (x2, y2)):
-    return sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
-
-
-def distance_squared((x1, y1), (x2, y2)):
+def distance_squared(p1, p2):
+    x1, y1 = p1
+    x2, y2 = p2
     return (x1 - x2) ** 2 + (y1 - y2) ** 2
 
+def distance(p1, p2):
+    return sqrt(distance_squared(p1, p2))
 
 # This is faster than just do a distance check because we only have to calculate half of it sometimes.
 # Full calculation is slower, but it's faster on average.
-def collided((x1, y1, r1), (x2, y2, r2)):
+def collided(s1, s2):
+    x1, y1, r1 = s1
+    x2, y2, r2 = s2
     x_dist = (x1 - x2) ** 2
     length = (r1 + r2) ** 2
     if x_dist < length:
@@ -558,7 +563,8 @@ def collided((x1, y1, r1), (x2, y2, r2)):
         return False
 
 
-def intersect((x, y), check, radius=1, ignore_exact=False):
+def intersect(p, check, radius=1, ignore_exact=False):
+    x, y = p
     for index, ((cx, cy), cradius) in enumerate(check):
         if collided((x, y, radius), (cx, cy, cradius)):
             if ignore_exact and x == cx and y == cy:

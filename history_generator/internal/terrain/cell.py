@@ -1,7 +1,8 @@
 import math
 import random
-from Tkconstants import W, END, E
-from Tkinter import Tk, Listbox
+
+from tkinter import Tk, Listbox
+from tkinter.constants import W, END, E
 
 from civil import building as building
 from internal import utility as utility, gui as gui
@@ -89,8 +90,8 @@ class Cell:
     def build_buildings(self):
         improvement_chance = int((self.building_count() + 1) / (math.sqrt(self.owner.population) + 1))
         if random.randint(0, improvement_chance + 1) == 0:
-            available_buildings = filter(lambda b: b.get_size() <= self.get_available_building_capacity(),
-                                         self.buildings)
+            available_buildings = list(filter(lambda b: b.get_size() <= self.get_available_building_capacity(),
+                                         self.buildings))
 
             if len(available_buildings) > 0:
                 build_building = utility.weighted_random_choice(available_buildings,

@@ -1,7 +1,7 @@
 import random
 import re
 
-from generator import IRREGULAR_VERBS, PAINTS, MEDIUMS, SKETCHING, MATERIALS, ANIMALS, NATURE, \
+from culture.generator import IRREGULAR_VERBS, PAINTS, MEDIUMS, SKETCHING, MATERIALS, ANIMALS, NATURE, \
     PHILOSOPHIES, COLORS, FLOWERS, SCIENTIFIC_SUBJECTS, NOUNS, VERBS, PREPOSITIONS, ADJECTIVES, \
     COUNTABLE_WORDS, IRREGULAR_PLURALS
 from internal import utility as utility
@@ -140,7 +140,7 @@ class Form:
                 return 1
 
         converted = {}
-        for i in xrange(len(options)):
+        for i in range(len(list(options))):
             if isinstance(options[i], list):
                 converted[utility.tuplize(options[i])] = options[i]
                 options[i] = utility.tuplize(options[i])
@@ -160,7 +160,7 @@ class Form:
     def generate(self, nation=None, creator=None):
         self.chosen_tags = {}
 
-        actual_forms = map(lambda form_choices: self.choice(form_choices), self.forms)
+        actual_forms = list(map(lambda form_choices: self.choice(form_choices), self.forms))
         self.generate_tags(actual_forms, nation=nation, creator=creator)
 
         result = []
@@ -219,7 +219,7 @@ class Form:
                 choice_section = base[start_pos + 1:end_pos]
 
                 choice = utility.separate_container(choice_section, '<', '>', '|')
-                valid_choice = filter(is_valid(nation), choice)
+                valid_choice = list(filter(is_valid(nation), choice))
 
                 base = base.replace('<' + choice_section + '>', self.choice(valid_choice), 1)
 
@@ -228,7 +228,7 @@ class Form:
                 select_section = base[start_pos + 1:end_pos]
 
                 select = utility.separate_container(select_section, '<', '>', ',')
-                valid_select = filter(is_valid(nation), select)
+                valid_select = list(filter(is_valid(nation), select))
                 search = '<' + select_section + '>'
                 replacement = '<{}>'.format(
                     '> <'.join(random.sample(valid_select, random.randint(1, len(valid_select)))))
@@ -274,7 +274,7 @@ class Form:
                     religion_populations = nation.get_nation_religion_populations()
                     if len(religion_populations) > 0:
                         religion, _ = utility.weighted_random_choice(religion_populations,
-                                                                     weight=lambda i, (_, adherents): adherents)
+                                weight=lambda i, x: x[1])
                         base = base.replace('<god>', self.choice(religion.gods).name, 1)
                     else:
                         base = base.replace('<god>', '')

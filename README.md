@@ -1,8 +1,9 @@
 # Installation
-You will need Python 2.7 (preinstalled on OS X and most Linux distributions).
-If you're using Windows just go to https://www.python.org/ and get 2.7.
+You will need Python 3 (tested with 3.8.5, hopefully works with others).
+If you're using Windows just go to [https://www.python.org/](https://www.python.org) and download Python 3.
+If you are on Linux you may need to install Tkinter separately; on Ubuntu with `apt` you can run `sudo apt install python3-tk`.
 
-All you need to do then is navigate to the place where you decompressed it, and type the following:
+Then, all you need to do then is navigate to the place where you downloaded it, and type the following:
 
 ```
 python history_generator

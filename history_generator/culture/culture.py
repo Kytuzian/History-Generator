@@ -1,10 +1,10 @@
-from Tkinter import *
+from tkinter import *
 
 import internal.gui as gui
 import internal.utility as utility
 
-from form import Form
-from art import Art
+from culture.form import Form
+from culture.art import Art
 
 ART_CATEGORIES = {'artist': ['drawing', 'statue'],
                   'writer': ['play', 'novel', 'essay', 'poem', 'myth'],

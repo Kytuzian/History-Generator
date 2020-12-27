@@ -18,7 +18,7 @@ from research import equipment_list, tech
 import math
 import random
 
-from Tkinter import *
+from tkinter import *
 
 # The chance (1 in x) that the parent nation won't declare war on a nation that declares independence.
 PEACEFUL_REVOLT_CHANCE = 50
@@ -57,8 +57,6 @@ TAX_MULTIPLIER = 2
 NAME_SWITCH_THRESHOLD = 70
 
 NOTABLE_PERSON_BIRTH_CHANCE = 150
-
-PRIEST_TOLERANCE_BONUS = 5
 
 GOVERNMENT_TYPE_BONUSES = {"Principality": {'food': 1, 'morale': 0.75, 'efficiency': 1, 'tolerance': 1,
                                             'conscription': 1.5},
@@ -188,7 +186,7 @@ class Nation:
 
         # Otherwise we were initialized with some cities and such stuff
         if len(self.cities) == 0:
-            for i in xrange(INIT_CITY_COUNT):
+            for i in range(INIT_CITY_COUNT):
                 self.create_city(self.name.places[0])
 
     # doesn't work at the moment
@@ -558,7 +556,8 @@ class Nation:
         religion_populations = self.get_nation_religion_populations()
 
         if len(religion_populations) > 0:
-            religion, _ = utility.weighted_random_choice(religion_populations, lambda i, (_, adherents): adherents)
+            # TODO: Can probably refactor this out, lots of places use weighted_random_choice to select a religion
+            religion, _ = utility.weighted_random_choice(religion_populations, lambda i, info: info[1])
             religion.adherents[self.cities[-1].name] = self.cities[-1].population
 
     def add_city(self, city):
@@ -586,7 +585,7 @@ class Nation:
         res = {}
         for religion in self.parent.religions:
             for city_name in religion.adherents:
-                if city_name in map(lambda i: i.name, self.cities):
+                if city_name in list(map(lambda i: i.name, self.cities)):
                     if not religion in res:
                         res[religion] = religion.adherents[city_name]
                     else:
@@ -605,7 +604,7 @@ class Nation:
             for (religion, adherents) in religion_populations:
                 final[religion] = float(adherents) / total
 
-        for (religion, p) in final.iteritems():
+        for (religion, p) in final.items():
             val += religion.get_tolerance() * p
 
         for person in self.notable_people:
@@ -848,9 +847,9 @@ class Nation:
             treaty.history_step(self, self.parent.get_current_date())
 
     def get_current_treaties_with(self, nation):
-        current_treaties = filter(lambda treaty: treaty.is_current, self.treaties)
+        current_treaties = list(filter(lambda treaty: treaty.is_current, self.treaties))
 
-        return filter(lambda treaty: treaty.nation_a == nation or treaty.nation_b == nation, current_treaties)
+        return list(filter(lambda treaty: treaty.nation_a == nation or treaty.nation_b == nation, current_treaties))
 
     def get_treaty_with(self, nation, treaty_type):
         # First check for current treaties

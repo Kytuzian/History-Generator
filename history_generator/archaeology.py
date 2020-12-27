@@ -1,4 +1,4 @@
-from Tkinter import *
+from tkinter import *
 
 import culture.language as language
 import internal.utility as utility
@@ -47,7 +47,7 @@ class Translation:
     def refresh_text(self):
         # Redo the translations we've tried so far, so we can see what we've got.
         res = self.alien_text['text']
-        for rep, repval in self.replacements.iteritems():
+        for rep, repval in self.replacements.items():
             res = res.replace(rep, repval)
 
         self.english_text['text'] = res

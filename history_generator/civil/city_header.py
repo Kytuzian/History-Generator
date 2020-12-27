@@ -15,7 +15,9 @@ class CityHeader:
         x, y = self.city.get_average_position()
         return x * utility.CELL_SIZE, y * utility.CELL_SIZE
 
-    def lerp(self, (r1,g1,b1), (r2,g2,b2), t):
+    def lerp(self, rgb1, rgb2, t):
+        r1,g1,b1 = rgb1
+        r2,g2,b2 = rgb2
         return r2 + (r1 - r2) * t, g2 + (g1 - g2) * t, b2 + (b1 - b2) * t
 
     def remake(self):

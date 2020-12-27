@@ -128,7 +128,7 @@ class Building:
     def send_caravans(self):
         if 'caravan_chance' in self.effects:
             c = 0
-            for i in xrange(self.number):
+            for i in range(self.number):
                 if random.randint(0, self.effects['caravan_chance']) == 0:
                     c += 1
             return c

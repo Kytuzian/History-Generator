@@ -1,4 +1,4 @@
-from Tkinter import *
+from tkinter import *
 
 import random
 
@@ -21,6 +21,8 @@ BASE_START_ARTISTIC_PERIOD_CHANCE = 720
 RELIGION_ROLE_INFLUENCE = 1
 ART_ROLE_INFLUENCE = 2
 LENGTH_ROLE_INFLUENCE = 2
+
+PRIEST_TOLERANCE_BONUS = 5
 
 # Chance to relocate every month
 RELOCATE_CHANCE = 72
@@ -78,7 +80,7 @@ class Period:
             # Could possibly change roles. This is less likely if the person has spent more time in a particular role, and if they have created more works.
             # If it's our first run, then our role is only determined by our religion, otherwise, religion plays a more minor role as the person becomes more cemented.
             role_weights = person.get_role_weights()
-            self.role = utility.weighted_random_choice(PERSON_ROLES.keys(), lambda _, role: role_weights[role])
+            self.role = utility.weighted_random_choice(list(PERSON_ROLES.keys()), lambda _, role: role_weights[role])
 
         base_create_chance = PERSON_ROLES[self.role]['art_create_chance']
         base_create_variance = PERSON_ROLES[self.role]['art_create_variance']
@@ -105,7 +107,7 @@ class Period:
         # We'll retrieve it when we load the game.
         res = {'length': self.length, 'custom_weights': self.custom_weights,
                'art_create_chance': self.art_create_chance, 'role': self.role, 'name': self.name,
-               'art': map(lambda art: art.name, self.art)}
+               'art': list(map(lambda art: art.name, self.art))}
 
         return res
 
@@ -128,7 +130,7 @@ class Period:
                 return 1
 
         converted = {}
-        for i in xrange(len(options)):
+        for i in range(len(options)):
             if isinstance(options[i], list):
                 converted[utility.tuplize(options[i])] = options[i]
                 options[i] = utility.tuplize(options[i])
@@ -224,7 +226,7 @@ class Person:
         self.periods_label = Label(self.gui_window, text='Period:')
         self.periods_label.grid(row=1, column=0, sticky=W)
 
-        self.periods_choice = OptionMenu(self.gui_window, self.period_choice, *map(lambda period: period.name, self.periods))
+        self.periods_choice = OptionMenu(self.gui_window, self.period_choice, *list(map(lambda period: period.name, self.periods)))
         self.periods_choice.grid(row=2, column=0, columnspan=2, sticky=W)
 
         self.period_select = Button(self.gui_window, text='Select', command=self.select_period)
@@ -289,7 +291,7 @@ class Person:
 
         if self.religion is not None:
             religion_weights = self.religion.get_role_weights()
-            for (role, weight) in religion_weights.iteritems():
+            for (role, weight) in religion_weights.items():
                 res[role] += weight * RELIGION_ROLE_INFLUENCE
 
         return res

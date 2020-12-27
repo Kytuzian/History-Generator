@@ -1,7 +1,6 @@
-import events
+import internal.events
 
-from Tkinter import *
-
+from tkinter import *
 
 class Result:
     def __init__(self, event_list):
@@ -24,13 +23,13 @@ class Result:
 
     def search(self, data_name, search_regex=r'.*', comp=lambda a, b: a > b, date=(0,)):
         if not data_name in ['name', 'date']:
-            return Result(filter(
+            return Result(list(filter(
                 lambda e: data_name in e.event_data and len(re.findall(search_regex, e.event_data[data_name])) > 0,
-                self.event_list))
+                self.event_list)))
         elif data_name == 'name':
-            return Result(filter(lambda e: len(re.findall(search_regex, e.name)) > 0, self.event_list))
+            return Result(list(filter(lambda e: len(re.findall(search_regex, e.name)) > 0, self.event_list)))
         elif data_name == 'date':
-            return Result(filter(lambda e: comp(date, e.date), self.event_list))
+            return Result(list(filter(lambda e: comp(date, e.date), self.event_list)))
 
     def __repr__(self):
         return str(self.event_list)

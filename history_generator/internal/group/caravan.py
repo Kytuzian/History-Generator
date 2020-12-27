@@ -2,7 +2,7 @@ import math
 import random
 
 from civil.resources import base_resource_prices
-from group import Group
+from internal.group.group import Group
 from internal import utility
 
 # The maximum number of people that can be converted per religion per caravan

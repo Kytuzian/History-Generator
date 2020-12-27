@@ -29,7 +29,7 @@ class Unit:
     def setup_ammunition(self):
         use_weapon = None
         for weapon in self.soldier_type.weapons:
-            if weapon.name in map(lambda w: w.name, all_ranged_weapons):
+            if weapon.name in list(map(lambda w: w.name, all_ranged_weapons)):
                 use_weapon = weapon
 
         if use_weapon is None:
@@ -41,9 +41,9 @@ class Unit:
         self.ranks = []
 
         i = 0
-        for rank in xrange(self.soldier_type.ranks):
+        for rank in range(self.soldier_type.ranks):
             self.ranks.append([])
-            for rank_position in xrange(self.soldier_type.rank_size):
+            for rank_position in range(self.soldier_type.rank_size):
                 self.ranks[-1].append(RankPosition(self, rank, rank_position, self.canvas))
 
                 if len(self.soldiers) > i:

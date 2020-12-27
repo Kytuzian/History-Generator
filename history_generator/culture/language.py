@@ -1,11 +1,11 @@
 from math import *
 import random
 
-import generator
+import culture.generator as generator
 
 import internal.utility as utility
 
-from morphemes import Morphemes
+from culture.morphemes import Morphemes
 
 vowel_sounds = ['ah', 'ae', 'aa', 'uh', 'eh', 'ee', 'ar', 'er', 'ow', 'ih', 'aw', 'oi',
                 'oo', 'ou', 'or', 'our', 'i']
@@ -18,7 +18,7 @@ STARTING_NAME_COUNT = 100
 def generate_sound_word(length):
     res = []
     consonants = 0
-    for sound in xrange(length):
+    for sound in range(length):
         l = random.choice([vowel_sounds, consonant_sounds])
 
         if random.choice([False, True]) or consonants > 1:
@@ -58,7 +58,7 @@ class Language:
         else:
             self.create()
 
-        for i in xrange(STARTING_NAME_COUNT):
+        for i in range(STARTING_NAME_COUNT):
             self.generate_name()
 
         # Initialize it with all the base words.
@@ -138,7 +138,7 @@ class Language:
 
         result = []
 
-        for i in xrange(letterCount):
+        for i in range(letterCount):
             result.append(random.choice(letters))
 
         return result
@@ -148,7 +148,7 @@ class Language:
 
         result = []
 
-        for i in xrange(count):
+        for i in range(count):
             result.append(random.choice(self.letters))
 
         return result
@@ -158,12 +158,12 @@ class Language:
 
         result = []
 
-        for i in xrange(count):
+        for i in range(count):
             sectionLength = random.randint(1, 2)
 
             section = ""
 
-            for x in xrange(sectionLength):
+            for x in range(sectionLength):
                 section += random.choice(self.letters)
 
             result.append(section)
@@ -230,7 +230,7 @@ class Language:
     def make_words(self, count):
         result = []
 
-        for i in xrange(count):
+        for i in range(count):
             result.append(self.make_word(random.randint(1, 10)))
 
         return result
@@ -238,8 +238,8 @@ class Language:
     def translateToLanguage(self, other_word):
         if other_word in self.to_dictionary:
             return self.to_dictionary[other_word]
-        elif other_word in map(lambda i: i.lower(), self.first_names) or other_word in map(lambda i: i.lower(),
-                                                                                           self.last_names):
+        elif other_word in list(map(lambda i: i.lower(), self.first_names)) or\
+             other_word in list(map(lambda i: i.lower(), self.last_names)):
             return other_word
         else:
             # Check for near matches (for example, jump might be in the dictionary, but jumping might not be).

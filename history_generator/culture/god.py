@@ -125,7 +125,7 @@ class God:
                                        parent.get_current_date())
 
         if len(self.domains) <= MAX_DOMAIN_COUNT and random.randint(0, 100) < DOMAIN_GAIN_CHANCE:
-            gained_domain = random.choice(DOMAINS.keys())
+            gained_domain = random.choice(list(DOMAINS.keys()))
 
             if not gained_domain in self.domains:
                 self.domains.append(gained_domain)

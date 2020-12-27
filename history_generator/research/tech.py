@@ -95,7 +95,7 @@ class Tech:
         res['research_points'] = self.research_points
 
         res['effect_strength'] = self.effect_strength
-        res['next_techs'] = map(lambda tech: tech.get_info(), self.next_techs)
+        res['next_techs'] = list(map(lambda tech: tech.get_info(), self.next_techs))
         # We don't need to save best_techs, we can just recalculate them when we load.
 
         return res

@@ -1,6 +1,7 @@
-from Tkinter import *
-import tkMessageBox
+from tkinter import *
 import random
+
+from functools import reduce
 
 import sys
 
@@ -220,9 +221,9 @@ class Main:
         print('')
         cells_x = utility.S_WIDTH // utility.CELL_SIZE
         cells_y = utility.S_HEIGHT // utility.CELL_SIZE
-        for x in xrange(cells_x):
+        for x in range(cells_x):
             self.cells.append([])
-            for y in xrange(cells_y):
+            for y in range(cells_y):
                 utility.show_bar(x * cells_y + y, cells_x * cells_y, message='Generating world: ', number_limit=True)
                 self.cells[-1].append(
                     internal.terrain.cell.Cell(self, '', x, y, data[x][y], random.random() ** 6, 0, None))
@@ -241,11 +242,11 @@ class Main:
         self.nations = []
         self.religions = []
 
-        for new_nation in xrange(self.nation_count):
+        for new_nation in range(self.nation_count):
             self.add_nation(nation.Nation(self))
 
         # Initially create one new religion for every nation
-        for i in xrange(self.nation_count):
+        for i in range(self.nation_count):
             new_religion = religion.Religion(self, self.nations[i].language, self.nations[i].language.make_name_word())
             new_religion.adherents[self.nations[i].cities[0].name] = self.nations[i].cities[0].population
             self.religions.append(new_religion)
@@ -383,10 +384,10 @@ class Main:
                 self.after_id = self.parent.after(self.delay.get(), self.main_loop)
             else:
                 self.end_year = self.year
-                tkMessageBox.showerror('Negative Years', 'Cannot advance a negative or zero amount of time.')
+                messagebox.showerror('Negative Years', 'Cannot advance a negative or zero amount of time.')
         except ValueError:
             self.end_year = self.year
-            tkMessageBox.showerror('Invalid Year', '"{}" is not a valid integer'.format(self.years_box.get()))
+            messagebox.showerror('Invalid Year', '"{}" is not a valid integer'.format(self.years_box.get()))
             return
 
     def toggle_run_until_battle(self):
@@ -506,7 +507,7 @@ class Main:
                 done = False
 
         if not done:
-            self.after_id = self.parent.after(self.delay.get() / 10, self.do_army_move)
+            self.after_id = self.parent.after(int(self.delay.get() / 10), self.do_army_move)
         else:  # If we're done, clean up
             self.end_army_move()
 
@@ -766,7 +767,7 @@ class Main:
 
     def all_cities(self, ignore_nation=None):
         if len(self.nations) > 0:
-            return reduce(lambda a, b: a + b, map(lambda a: a.cities if a != ignore_nation else [], self.nations))
+            return reduce(lambda a, b: a + b, list(map(lambda a: a.cities if a != ignore_nation else [], self.nations)))
         else:
             return []
 

@@ -1,5 +1,5 @@
-from Tkconstants import W, WORD, END, N, E, S
-from Tkinter import Tk, Text
+from tkinter import Tk, Text
+from tkinter.constants import W, WORD, END, N, E, S
 
 from internal import gui as gui
 

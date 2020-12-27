@@ -1,10 +1,9 @@
-from Tkinter import *
-import ttk
+from tkinter import *
+import tkinter.ttk as ttk
 
 import time
 
 from internal import utility
-
 
 def sequence_tasks(tasks, delta=100):
     i = [0]
